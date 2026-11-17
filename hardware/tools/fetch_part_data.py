@@ -108,7 +108,10 @@ def symbol_pins(ee):
     if not ee or not ee.get("result"):
         return pins, pads
     res = ee["result"]
-    for s in res.get("dataStr", {}).get("shape", []):
+    shapes = list(res.get("dataStr", {}).get("shape", []))
+    for sub in res.get("subparts") or []:   # multi-part symbols (e.g. a dual op-amp) keep pins per sub-part
+        shapes += (sub.get("dataStr") or {}).get("shape", [])
+    for s in shapes:
         if s.startswith("P~"):
             segs = s.split("^^")
             num = segs[0].split("~")[3]
