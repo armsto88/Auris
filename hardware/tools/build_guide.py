@@ -1170,7 +1170,7 @@ U301_RIGHT = [  # data and SIM side
     ("23", "MAIN_RTS", "M_RTS", "U302 A3 ← LTE_RTS"),
     ("22", "MAIN_CTS", "M_CTS", "U302 A4 → LTE_CTS"),
     ("25", "STATUS", "M_STATUS", "U302 A5 → LTE_STATUS"),
-    ("24", "VDD_EXT", "VDD_EXT", "1.8 V out: U302 VCCA, OE delay; TP304"),
+    ("24", "VDD_EXT", "VDD_EXT", "1.8 V out: U302 VCCA and OE divider; TP304"),
     ("16", "NET_STATUS", "M_NETSTAT", "TP305 only"),
     ("14", "USIM_VDD", "USIM_VDD", "J301 C1, C313, R309, D301"),
     ("11", "USIM_DATA", "SIM_DATA_M", "R308 → J301 C7"),
@@ -1196,7 +1196,7 @@ def fig_l_supply():
     s.text(915, 56, "U301", "des", "middle"); s.text(915, 72, "VBAT 42, 43", "pin", "middle")
     s.text(20, 140, "Quectel asks for about 100 µF with ESR ≤ 0.7 Ω plus a 100 nF, 33 pF, 10 pF, 3.9 pF and 1.8 pF array at the VBAT pins,", "note")
     s.text(20, 154, "smallest value closest. VBAT trace at least 2 mm wide. The supply must be able to deliver 2 A: U207 on the power sheet does,", "note")
-    s.text(20, 168, "and its 470 µF bulk and D205 clamp sit at the converter. TP301 on VBAT_M. Lift R301 to measure module current.", "note")
+    s.text(20, 168, "and its 470 µF bulk sits at the converter (D205 not fitted). TP301 on VBAT_M. Lift R301 to measure module current.", "note")
     return s.svg()
 
 

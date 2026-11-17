@@ -42,13 +42,13 @@ flowchart LR
 | # | Decision | Source and rationale |
 |---|---|---|
 | P1 | **CN3791 buck MPPT charger**, 600 mA, series Schottky against night back-feed | Node v4. Holds the panel at its maximum-power voltage; roughly a third more energy than a linear charger from the same panel (estimate, doc 20). ADR-007 |
-| P2 | **TMP390A2 cut-out clamps the MPPT pin**; cold trip **+5 °C** (owner decision 2026-11-17; was 0 °C from 2026-10-23, FieldMesh +5 °C). The TMP390's ±2.5 °C accuracy let the 0 °C setting charge down to −2.5 °C; +5 °C keeps charging ≥ +2.5 °C at the cost of winter charging | Li-ion must not charge below 0 °C. +5 °C blocks more December charging at 50–56°N (F4-01): watch the winter energy balance. Panel-powered, so it costs nothing at night |
+| P2 | **TMP390A2 cut-out clamps the MPPT pin**; cold trip **+5 °C** (owner decision 2026-11-17; was 0 °C from 2026-10-23, FieldMesh +5 °C). Below 0 °C the TMP390A2 is only specified to ±2.5 °C, so the 0 °C setting could charge down to −2.5 °C; at +5 °C its 0–70 °C accuracy (±1.5 °C, SBOS904A §6.5) puts the trip at +3.5…+6.5 °C, at the cost of winter charging | Li-ion must not charge below 0 °C. +5 °C blocks more December charging at 50–56°N (F4-01): watch the winter energy balance. Panel-powered, so it costs nothing at night |
 | P3 | **Two panel inputs in parallel**, no USB charging. **6 V-class panels only** (Voc ≤ 10 V at −40 °C): D201 starts conducting at 13.3 V, so a 12 V panel (Voc 22–25 V) would burn it | Integrated and cabled panels both supported (ADR-022). A 5 V USB input sits below the 6 V MPPT point and cannot share the CN3791. USB is service only and wakes the board |
 | P4 | **FieldMesh Node v4 battery pack** (protected 1S2P 18650, ≈ 5200 mAh, ≥ 600 mA charge, ≥ 1.5 A discharge) on a keyed JST PH | Owner decision 2026-10-23 (ADR-022); shared supply and harness with FieldMesh |
 | P5 | **TPL720F33 keep-alive** for the RTC and latch only; **CR1220** on RTC VBAT | Node v4 / Hub v2. 1.4 µA quiescent; time survives a flat battery (F4-04). ADR-010 |
 | P6 | **FieldMesh wake latch** with the RTC-inverter resistors raised from 100 kΩ to **1 MΩ** | ≈ 5 µA instead of ≈ 46 µA idle. Wake sources wired-OR: RTC alarm, PWR_HOLD, VBUS (new), button. ADR-003 |
 | P7 | **TPS63802 main 3.3 V**, power-save mode, always on while awake; its power-good holds the ESP32-S3 EN low until 3V3 is up (2026-11-17) | Node v4. Holds 3.3 V down to an empty cell. ADR-008 |
-| P8 | **TPS63020 3.9 V modem rail**, forced PWM, EN and PG to the MCU, 470 µF bulk and SMAJ5.0A, for the **EG800K-EU** (3.4–4.3 V, LTE only) | Hub v2 r6, bench-tested there with an A7670G. ADR-011. The EG800K-EU (ADR-006) has no 2G, so no 2 A GSM bursts. The bulk capacitance may be more than it needs; keep it for the prototype |
+| P8 | **TPS63020 3.9 V modem rail**, forced PWM, EN and PG (1 MΩ pull-up) to the MCU, 470 µF bulk, for the **EG800K-EU** (3.4–4.3 V, LTE only). D205 (SMAJ5.0A) not fitted since 2026-11-17 | Hub v2 r6, bench-tested there with an A7670G. ADR-011. The EG800K-EU (ADR-006) has no 2G, so no 2 A GSM bursts. The bulk capacitance may be more than it needs; keep it for the prototype |
 | P9 | **Battery state from an ADC divider on VBAT_SW**; no fuel gauge. A second divider reads the panel | Node v4. No sleep drain; saves the MAX17048 (1.51 USD). ADR-027 |
 
 ## Calculations
@@ -60,7 +60,7 @@ flowchart LR
 | Charge current | 120 mV / R202 = 0.12 / 0.200 | **600 mA** (550–650 mA); R202 dissipates 72–85 mW |
 | Charger inductor | L > 5 × (VCC − VBAT) µH and ripple ≤ 0.3 × ICH (CN3791 Rev 1.0 p.8) | ≥ 27 µH at the cold Voc (8.3 V) and a 3.0 V cell, ≥ 38 µH for the ripple rule: **L201 47 µH** (was 22 µH, which failed both) |
 | Cut-out, hot | R208 = 2.49 kΩ (TMP390 table 7-1) | trips **+42 °C**, resets +37 °C |
-| Cut-out, cold | R209 = 18.7 kΩ, 5 °C hysteresis column (table 7-2) | trips **+5 °C**, resets +10 °C (±2.5 °C) |
+| Cut-out, cold | R209 = 18.7 kΩ, 5 °C hysteresis column (table 7-2) | trips **+5 °C** (+3.5…+6.5 °C), resets +10 °C |
 | Main 3.3 V | 0.5 V × (1 + 510k/91k) | **3.30 V** |
 | Modem rail | 0.5 V × (1 + 680k/100k) | **3.90 V** |
 | Battery sense | R217 / (R216 + R217) = 100k / 320k | × 0.3125: 3.0 V → 0.94 V, 4.2 V → 1.31 V. 13 µA while awake, none asleep |
@@ -102,7 +102,7 @@ Use a current-limited bench supply in place of the battery (3.7 V, 200 mA limit)
 
 | Item | Detail | Next step |
 |---|---|---|
-| VMODEM TVS | Quectel recommends VRWM 4.7 V at the module supply; D205 is an SMAJ5.0A (VRWM 5.0 V) from Hub v2 | See `hardware/lte/README.md` open item 3 |
+| VMODEM TVS | D205 (SMAJ5.0A) is not fitted (owner decision 2026-11-17): it clamped above the EG800K's 6 V absolute maximum | See `hardware/lte/README.md` open item 3 |
 | Battery fuse margin during LTE | About 0.9 A from a 3.0 V cell during LTE transmit, ≈ 1 A with the MCU awake. The 1812L110PR held only 0.80 A at 60 °C and 0.60 A at 85 °C, so F202 is now a **1812L200THPR** (hold 1.50 A at 60 °C, 1.29 A at 85 °C, R1max 0.07 Ω; 2026-11-17 review). Its 3.5 A trip is above the JST PH's 2 A rating: the pack's own protection covers 2–3.5 A faults | Test 9: F202 drop and temperature |
 | D203/D204 leakage | PMEG4010CEH: 7,994 at JLC (2026-11-17). Very low VF but ≈ 90 µA leakage each at 85 °C | A lower-leakage Schottky (e.g. PMEG6010CEH) if hot-enclosure sleep current matters; measure first |
 | MPPT divider | Set for the Node v4 panel. The CN3791 only starts when MPPT exceeds 1.23 V, i.e. panel Voc > 6.17 V at this setting; a hot panel (60–70 °C) may sit near that | Recalculate R204 for the chosen panel at its typical operating temperature (ADR-022) |

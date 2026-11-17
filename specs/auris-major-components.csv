@@ -12,10 +12,10 @@ Fuel gauge,MAX17048G+T10,C2682616,NOT_CHOSEN,2.16,1.58,Dropped 2026-10-23 (ADR-0
 microSD holder,TF PUSH,C393941,CANDIDATE,0.06,0.05,Verify durability and mechanical sealing,Preliminary hardware concept / discussion clarifications
 Nano SIM holder,SNO-1303-C,C428450,CANDIDATE,0.43,0.25,Push-push; SRV05-4 ESD fitted; consumer part rated −35…+75 °C (review 2026-11-17),Preliminary hardware concept / discussion clarifications
 USB-C,HC-TYPE-C-16P-01A,C2894897,CANDIDATE,0.08,0.07,Native USB programming and service only; no charging (2026-10-23),Preliminary hardware concept / discussion clarifications
-Main high-side PFET,AO3401A,C15127,SELECTED_CONCEPT,0.06,0.05,Q210 main switch and Q205 battery reverse FET; FieldMesh wake latch (ADR-003),Preliminary hardware concept / discussion clarifications
+Main high-side PFET,AO3401A,C15127,SELECTED_CONCEPT,0.06,0.05,"Q210 main switch and Q205 battery reverse FET; FieldMesh wake latch (ADR-003). Since 2026-11-17 also Q201/Q202 (replacing AO3407A), plus Q101 and Q401",Preliminary hardware concept / discussion clarifications
 Wake latch NFETs (3),2N7002 (JSCJ),C8545,SELECTED_CONCEPT,,,"Wired-OR wake latch: RTC alarm, PWR_HOLD, USB (ADR-003); also the audio preamp gate driver Q102 since 2026-11-17 (was AO3400A C20917)",Preliminary hardware concept / discussion clarifications
 LTE FPC antenna,TX4G-FPC-8121 or equivalent,C454897,CANDIDATE,0.51,0.29,Regional band/layout validation,Preliminary hardware concept / discussion clarifications
 RF connectors (2),U.FL / IPEX Gen-1,TBD,CANDIDATE,0.12,0.12,Total allowance for two connectors,Preliminary hardware concept / discussion clarifications
-Always-on LDO,TPL720F33-3TR,C2842389,SELECTED_CONCEPT,,,Selected 2026-10-23 (ADR-010); plus CR1220 on DS3231 VBAT,Preliminary hardware concept / discussion clarifications
-LTE supply,TPS63020DSJR (3.9 V),C15483,SELECTED_CONCEPT,,,"Selected 2026-10-23 (ADR-011, FieldMesh Hub v2 rail); pulse test still required",Preliminary hardware concept / discussion clarifications
+Always-on LDO,TPL720F33-3TR,C2842389,SELECTED_CONCEPT,,,"Selected 2026-10-23 (ADR-010); plus CR1220 on DS3231 VBAT (C217 1 nF, input cap C236 added 2026-11-17)",Preliminary hardware concept / discussion clarifications
+LTE supply,TPS63020DSJR (3.9 V),C15483,SELECTED_CONCEPT,,,"Selected 2026-10-23 (ADR-011, FieldMesh Hub v2 rail); pulse test still required. D205 SMAJ5.0A not fitted and PG pull-up 1 MΩ (2026-11-17)",Preliminary hardware concept / discussion clarifications
 Protection and passives,"ESD, bulk capacitors, filters, inductors",Mixed,TBD,,,Not priced in source BOM,Preliminary hardware concept / discussion clarifications

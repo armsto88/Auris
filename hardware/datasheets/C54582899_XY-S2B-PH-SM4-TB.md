@@ -15,7 +15,7 @@
 |---|---|---|---|---|
 | 1 | BAT+ | Circuit 1 | BAT_CONN | OK (FieldMesh pack convention; JST defines numbering, not polarity) |
 | 2 | BAT− | Circuit 2 | GND | OK |
-| MP1, MP2 | — | Auxiliary solder tabs (EasyEDA pads/pins 3, 4) | GND | OK |
+| 3, 4 | MP1, MP2 | Auxiliary solder tabs (EasyEDA pads/pins 3, 4) | GND | OK |
 
 ## Limits that matter for Auris
 
@@ -40,12 +40,12 @@ None. F202 (PPTC) and Q205 follow on BAT_CONN. The 2 A rating is above the ≈ 1
 
 ## EasyEDA symbol and footprint
 
-Source: JLCEDA/EasyEDA Official Library, record C54582899. Symbol pins 1, 2 (contacts) and 3, 4 (tabs), names equal numbers; the same 4-pin layout as C295747. Footprint `CONN-SMD_P2.00_S2B-PH-SM4-TB-LF-SN`: **all 18 footprint shapes are identical to C295747's record** (pads 1 and 2: 1.0 × 3.8 mm at 2.0 mm pitch; tabs 3 and 4: 1.5 × 3.4 mm, 6.7 mm apart, 5.85 mm behind the contact pads). Netlist rows 1/2 match by number; MP1/MP2 are mounting rows, which the capture gives to the spare symbol pins 3/4 (both GND). OK.
+Source: JLCEDA/EasyEDA Official Library, record C54582899. Symbol pins 1, 2 (contacts) and 3, 4 (tabs), names equal numbers; the same 4-pin layout as C295747. Footprint `CONN-SMD_P2.00_S2B-PH-SM4-TB-LF-SN`: **all 18 footprint shapes are identical to C295747's record** (pads 1 and 2: 1.0 × 3.8 mm at 2.0 mm pitch; tabs 3 and 4: 1.5 × 3.4 mm, 6.7 mm apart, 5.85 mm behind the contact pads). Netlist rows 1–4 match by number: the tab rows are numbered 3 and 4 (names MP1/MP2) since the PCB net-check fix of 2026-11-17; before, MP1/MP2 were mounting rows that the capture gave to the spare symbol pins 3/4 (both GND). The PCB net check passed for J203. OK.
 
 ## Findings
 
-| Severity | Designator / pin | Issue | Evidence | Fix |
-|---|---|---|---|---|
-| should fix (deployment) | J203 | Rated only −25…+85 °C; units see −40 °C | JLC C54582899 | Already decided: rev A only, genuine JST S2B-PH-SM4-TB (C295747, −40…+105 °C) for deployment units (consignment or when restocked) |
-| note | J203 | No datasheet; mating with JST PHR-2, retention force, contact resistance and the exact tab position are unverified; JLC's 7.59 mm depth differs from JST's ≈ 8.6 mm | JLC records C54582899 vs C295747; ePH p.4 | First article: fit check on the footprint, mate/unmate with the pack plug, measure the drop at 1 A (expect ≤ 20 mV) |
-| OK | J203 | Pin numbering, footprint identical to JST, current and voltage vs the load | EasyEDA C54582899 = C295747 | — |
+| Severity | Designator / pin | Issue | Evidence | Fix | Status |
+|---|---|---|---|---|---|
+| should fix (deployment) | J203 | Rated only −25…+85 °C; units see −40 °C | JLC C54582899 | Already decided: rev A only, genuine JST S2B-PH-SM4-TB (C295747, −40…+105 °C) for deployment units (consignment or when restocked) | owner decision (review W8/P15): clone for rev A, genuine JST for deployment |
+| note | J203 | No datasheet; mating with JST PHR-2, retention force, contact resistance and the exact tab position are unverified; JLC's 7.59 mm depth differs from JST's ≈ 8.6 mm | JLC records C54582899 vs C295747; ePH p.4 | First article: fit check on the footprint, mate/unmate with the pack plug, measure the drop at 1 A (expect ≤ 20 mV) | open (bench, review P15/P24) |
+| OK | J203 | Pin numbering, footprint identical to JST, current and voltage vs the load | EasyEDA C54582899 = C295747 | — | owner decision (review P15): J203 → XY-S2B-PH-SM4-TB C54582899 in the BOM and netlist |

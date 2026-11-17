@@ -17,10 +17,10 @@
 | 2 | Circuit 2 | Contact | MIC1_SRC | OK |
 | 3 | Circuit 3 | Contact | MIC1_RET | OK |
 | 4 | Circuit 4 | Contact | MIC1_SHLD | OK |
-| 5 | Tab | Reinforcement, copper alloy, tin-plated (eGH p. 3); not connected to any contact | — (not in netlist) | Recommend GND, see findings |
-| 6 | Tab | Reinforcement | — (not in netlist) | Recommend GND |
+| 5 | Tab | Reinforcement, copper alloy, tin-plated (eGH p. 3); not connected to any contact | GND (row `J101,5,MP1`; owner decision 2026-11-17) | OK |
+| 6 | Tab | Reinforcement | GND (row `J101,6,MP2`) | OK |
 
-Pins 5/6 are the EasyEDA symbol's numbers for the two tabs; JST does not number them.
+Pins 5/6 are the EasyEDA symbol's numbers for the two tabs; JST does not number them. J102 (DNP) has the same rows with the MIC2_* nets and pins 5/6 on GND.
 
 ## Limits that matter for Auris
 
@@ -47,13 +47,13 @@ None. Mic-side wiring: 1 = output (drain), 2 = source (EM273; R113 ties it to re
 
 Source: JLCEDA/EasyEDA Official Library ([lceda.cn](https://lceda.cn/), [easyeda.com](https://easyeda.com)), record C189895.
 
-- Symbol pins 1–6, named "1"–"6". Netlist rows 1–4 match by number; pins 5 and 6 are not in the netlist and the capture leaves them unconnected (warning only).
+- Symbol pins 1–6, named "1"–"6". Netlist rows 1–6 match by number. Pins 5 and 6 are on GND since 2026-11-17; before that they had no rows and the capture left them unconnected (warning only).
 - Footprint: signal pads 1–4 in a row at 1.25 mm pitch (4.921 units), 0.6 × 1.7 mm; tab pads 5 (beside pad 4) and 6 (beside pad 1), 1.0 × 2.7 mm. Silkscreen dot and documentation circle at pad 1.
 
 ## Findings
 
-| Severity | Designator / pin | Issue | Evidence | Fix |
-|---|---|---|---|---|
-| should fix | J101.5/6 (J102.5/6) | Mounting tabs have no net, so the capture leaves floating copper beside the µV mic line | EasyEDA C189895 symbol pins 5/6; eGH p. 3 (tabs are separate reinforcement metal) | Recommendation only: add `J101,5,MP1,GND,Y,Mechanical solder tab` and `J101,6,MP2,GND,Y,Mechanical solder tab` (and the same for J102 with fit N). The tabs are not part of the mic return, so tying them to GND does not break the "mic return joins GND only through R114" rule |
-| note | C189895 temperature | JLC/`parts.csv` say −25…+85 °C; JST says −40…+105 °C | eGH p. 1 | Correct `parts.csv` temp_min/temp_max to −40/105 |
-| note | J101 contacts | Tin-plated contacts on a µV signal outdoors | eGH pp. 2–3 | Decide with the acoustic-head connector choice (README open item); gold-plated GH contacts are available from JST on request |
+| Severity | Designator / pin | Issue | Evidence | Fix | Status |
+|---|---|---|---|---|---|
+| should fix | J101.5/6 (J102.5/6) | Mounting tabs have no net, so the capture leaves floating copper beside the µV mic line | EasyEDA C189895 symbol pins 5/6; eGH p. 3 (tabs are separate reinforcement metal) | Recommendation only: add `J101,5,MP1,GND,Y,Mechanical solder tab` and `J101,6,MP2,GND,Y,Mechanical solder tab` (and the same for J102 with fit N). The tabs are not part of the mic return, so tying them to GND does not break the "mic return joins GND only through R114" rule | owner decision (review A7: J101/J102 pins 5–6 on GND) |
+| note | C189895 temperature | JLC/`parts.csv` say −25…+85 °C; JST says −40…+105 °C | eGH p. 1 | Correct `parts.csv` temp_min/temp_max to −40/105 | open (`parts.csv` still lists −25/85) |
+| note | J101 contacts | Tin-plated contacts on a µV signal outdoors | eGH pp. 2–3 | Decide with the acoustic-head connector choice (README open item); gold-plated GH contacts are available from JST on request | open (review A9 note; decide with the acoustic-head connector) |

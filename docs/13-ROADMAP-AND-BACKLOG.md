@@ -7,14 +7,16 @@
 **Goal:** manufacturable *concept* with documented constraints and testable candidate choices, not yet a production schematic.
 
 - [ ] H0-01 Obtain samples for microphone and PCM1863DBT/DBTR; validate availability and whether analog noise floor is suitable.
-- [ ] H0-02 Bench the CN3791 solar charger and TMP390A2 cut-out (drawn in `hardware/power/`, 2026-10-23) with the real panel and the Node v4 pack: MPPT divider, harvest, night leakage, cold trip. USB charging dropped.
+- [ ] H0-02 Bench the CN3791 solar charger and TMP390A2 cut-out (drawn in `hardware/power/`, 2026-10-23) with the real panel and the Node v4 pack: MPPT divider, harvest, night leakage, cold trip (+5 °C since 2026-11-17), 47 µH L201 efficiency. USB charging dropped.
 - [ ] H0-03 Measure EG800K-EU transmit current across cell voltage/temp (sheet drawn in `hardware/lte/`, 2026-10-23); choose safe supply and bulk/trace plan.
 - [ ] H0-04 Bench the wake latch (drawn in `hardware/power/`, 2026-10-23): RTC VCC/VBAT/INT handling, button/USB wake, ship-mode switch, latch current and emergency shutdown.
-- [ ] H0-05 Card bus chosen (1-bit SD mode, ADR-012); select the card power switch; prove sustained audio writes, write-latency buffering and recoverable file format.
-- [ ] H0-06 Pin-map ESP32-S3 peripherals, boot/USB/radio restrictions and thermal constraints. All sections have proposed pins (MCU tab of the hardware guide); UART0 given up for the SD bus, console over USB; GPIO3 spare.
+- [ ] H0-05 Card bus chosen (1-bit SD mode, ADR-012); card power switch drawn (AO3401A + 2N7002), card detect on GPIO3 (2026-11-17); prove sustained audio writes, write-latency buffering and recoverable file format.
+- [ ] H0-06 Pin-map ESP32-S3 peripherals, boot/USB/radio restrictions and thermal constraints. All sections have proposed pins (MCU tab of the hardware guide and `hardware/mcu/`); UART0 given up for the SD bus, console over USB; GPIO3 = microSD card detect (2026-11-17). Pin budget, straps and boot glitches checked in the 2026-11-17 review; N16R8 +65 °C rating still open.
 - [ ] H0-07 Draft enclosure/audio-port/RF placement with water, wind and condensation design constraints.
 
 **Exit:** signed pin map/power tree and measured high-risk breadboard results; only then schematic freeze.
+
+**Status 2026-11-17:** all four sheets are drawn, reviewed against datasheets and captured in EasyEDA with a passing PCB net check (`hardware/review/2026-11-17-schematic-review.md`). Open before freeze: modem procurement, the module temperature rating, microSD ESD, test pads, the CR1220 cell part, and the bench items above.
 
 ## Phase 1 — Local recorder proof of function (engineering MVP)
 

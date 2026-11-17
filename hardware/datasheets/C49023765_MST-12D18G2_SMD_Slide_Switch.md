@@ -7,7 +7,7 @@
 | LCSC | C49023765 · JLC extended · see `parts.csv` for stock and price |
 | Manufacturer | Shenzhen Shouhan Technology (首韩科技, SHOU HAN) |
 | Package | SMD, body 9.1 × 3.5 mm, 3 terminals at 2.5 mm pitch, 2 Ø0.9 mm plastic posts at 6.8 mm, actuator 2.0 mm · EasyEDA footprint `SW-SMD_3P-L9.1-W3.5-P2.50_MST-12D18G2` |
-| Used by | power: SW202 (common SYS_GATE; LATCH_LOGIC in one position, NC in the other: "open = board can never turn on") |
+| Used by | none since 2026-11-17: power SW202 (common SYS_GATE; LATCH_LOGIC in one position, NC in the other: "open = board can never turn on") moved to ALPS SSSS811101 (C109335) |
 | Datasheet | Shouhan specification for approval MST-12D18G2, 2nd edition, 2022-03-18 (4 pages, with drawing) · manufacturer site not checked (local `pdf/C49023765_MST-12D18G2_SMD_Slide_Switch.pdf`) |
 | Rated temperature | −25 to +70 °C (spec §1.2 p.3; drawing table p.1) |
 
@@ -49,8 +49,8 @@ Source: EasyEDA library record C49023765. Symbol pins "1", "2", "3". Footprint `
 
 ## Findings
 
-| Severity | Designator / pin | Issue | Evidence | Fix |
-|---|---|---|---|---|
-| should fix | SW202 | Rated −25 to +70 °C; units see −40 °C and hot enclosures | spec §1.2 p.3 | power-bom.csv SW202: **SSSS811101, C109335** (ALPS, −40 to +85 °C). Netlist: keep SW202 1 LATCH_LOGIC, 2 SYS_GATE (common), 3 NC, and add `SW202,MP1..MP4,MP,GND` for the frame terminals (the capture maps MP rows onto symbol pins 4–7). Footprint changes |
-| note | SW202 with the ALPS part | Steady current through the switch is ≈ 30–42 µA, just under ALPS's 50 µA minimum rated load | ALPS SSSS811101 page 1 (rating min.) | Optional: R228 100 kΩ → 47 kΩ (FRC0402F4702TS, C2906872, already in BOM) gives 64–89 µA while awake and nothing in sleep. Turn-off time constant R228·C218 halves to 2.2 ms. Check with the latch owner |
-| OK | SW202 | Common = pin 2, netlist rows, footprint posts | drawing p.1; EasyEDA C49023765 | — |
+| Severity | Designator / pin | Issue | Evidence | Fix | Status |
+|---|---|---|---|---|---|
+| should fix | SW202 | Rated −25 to +70 °C; units see −40 °C and hot enclosures | spec §1.2 p.3 | power-bom.csv SW202: **SSSS811101, C109335** (ALPS, −40 to +85 °C). Netlist: keep SW202 1 LATCH_LOGIC, 2 SYS_GATE (common), 3 NC, and add `SW202,MP1..MP4,MP,GND` for the frame terminals (the capture maps MP rows onto symbol pins 4–7). Footprint changes | owner decision (review P13: SW202 is SSSS811101, frame pads 4–7 on GND) |
+| note | SW202 with the ALPS part | Steady current through the switch is ≈ 30–42 µA, just under ALPS's 50 µA minimum rated load | ALPS SSSS811101 page 1 (rating min.) | Optional: R228 100 kΩ → 47 kΩ (FRC0402F4702TS, C2906872, already in BOM) gives 64–89 µA while awake and nothing in sleep. Turn-off time constant R228·C218 halves to 2.2 ms. Check with the latch owner | owner decision (review P13: R228 47 kΩ, fitted as 0402WGF4702TCE C25792 rather than the FRC part named here) |
+| OK | SW202 | Common = pin 2, netlist rows, footprint posts | drawing p.1; EasyEDA C49023765 | — | no action |
