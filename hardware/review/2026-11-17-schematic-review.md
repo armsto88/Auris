@@ -13,7 +13,7 @@
 |---|---:|---|
 | Blockers | 2 | W1 modem not orderable (needs owner action) · W2 USB D+ back-feed kept the board on (fixed) |
 | Must fix | 9 | 8 fixed or applied (W3 stock, P1 L201, P2 F202, P3 R237, P4 BT201, A1 C127, A2 U104, L2 J301 tabs) · M2 module temperature needs an owner decision |
-| Should fix | 33 | 20 fixed, 5 applied as owner decisions, 8 open or needing a decision (W6, W7, W8, W12, W17, A5, A6, L7) |
+| Should fix | 33 | 21 fixed, 5 applied as owner decisions, 7 open or needing a decision (W6, W7, W8, W12, W17, A5, L7) |
 | Notes | 18 | Bench, layout and firmware items |
 
 Cross-references (P14 = W10, P15 = W3, A4 = W16, L1 = W1, L6 = P10, M1 = W2, M3 = W15, M9 = W8) are counted once.
@@ -298,10 +298,11 @@ CN3791 pinout and topology match its Fig. 1; MPPT 1.205 × 5.02 = 6.05 V (5.83�
 - **Fix:** project footprint to TI's pattern, or inspect the first boards.
 - **Status:** open (layout).
 
-#### A6 · should fix · U103 — symbol sub-part B power pins
+#### A6 · should fix · U103 — symbol sub-part B power pins (fixed)
 - **Wrong:** The OPA1662 symbol repeats the supply pins on sub-part B; in the EasyEDA library record its V− is pin **9** (labelled 4), which has no pad. The capture leaves sub-part B's supply pins unwired.
-- **Fix:** they share pads 4 and 8 with sub-part A, which are wired. After Update PCB, confirm pad 4 = GND, pad 8 = AVDD_PRE and no missing-pad error.
-- **Status:** open (verify at PCB).
+- **Evidence:** EasyEDA DRC on 2026-11-17: "pins with the same number are connected to different networks" (2 fatal errors) and U103.8/U103.4 floating.
+- **Fix:** the capture script now gives a sub-part's repeated pins the net of their namesake; AUDIO re-captured (279 wires). The PCB check confirms pad 4 = GND and pad 8 = AVDD_PRE.
+- **Status:** fixed.
 
 #### A7 · should fix · J101/J102 pins 5–6 — mechanical tabs unwired
 - **Fix:** GND (owner decision 2026-11-17). The tabs are reinforcement metal, not part of the mic return, so R114 remains the only return-to-ground join.
@@ -385,7 +386,7 @@ All 109 module pads match LA Table 6 by number and name, and QuecOpen V1.2 (whic
 - **Status:** fixed (docs); firmware open.
 
 #### M6 · should fix · J401 shell, J402 cover and card detect unwired
-- **Fix:** J401 pins 1–4 and J402 pads 10–13 → GND; J402 card detect → GPIO3 (SD_CD) with R419 100 kΩ to 3V3; the unfitted VBUS sense (R407/R408) is removed. Owner decision 2026-11-17. The capture matched J402's card detect to symbol pin "CD", which is also the footprint pad name; confirm after Update PCB.
+- **Fix:** J401 pins 1–4 and J402 pads 10–13 → GND; J402 card detect → GPIO3 (SD_CD) with R419 100 kΩ to 3V3; the unfitted VBUS sense (R407/R408) is removed. Owner decision 2026-11-17. The PCB check confirms the card-detect net reaches J402's `CD` pad.
 - **Status:** owner decision.
 
 #### M7 · should fix · GPIO0 — external pull-up
@@ -418,13 +419,15 @@ All 41 module pads match Table 3-1, and the EasyEDA symbol/footprint match modul
 |---|---|---|
 | 1 | BT201, C127 unwired | Fixed: pad 1 = + on both footprints; netlists use pin numbers; re-captured and wired (P4, A1) |
 | 2 | Pins with no netlist row (J301 8, J401 shell, J402 CD and 10–13, J101/J102 5–6) | Owner decision: shells, covers and tabs to GND; card detect to GPIO3 (L2, M6, A7) |
-| 3 | Page sizes | POWER A2, AUDIO A2 and MCU A3 are set. **LTE now needs A2** (its layout grew to 391 × 287 mm with C316–C323; the page is A3): set it in the page properties |
+| 3 | Page sizes | POWER A2, AUDIO A2, LTE A2 (its layout grew with C316–C323) and MCU A3, all set by the owner |
 | 4 | Test-pad footprint 0.5 mm vs 1.0 mm | Open: EasyEDA's library has only "Test-Point" with a 0.5 mm footprint; assign a 1.0 mm pad at PCB layout (W12) |
 | 5 | LTE template parts C1/TP1 | Removed by the re-capture |
 | 6 | Supply risk | Modem: W1 (blocker). Second antenna covering 700–2700 MHz: still open (LTE open item 5) |
 | 7 | Australian heat | W8 |
 
-Re-capture results (2026-11-17, all pages saved): LTE 53 parts, 158 net wires, 72 no-connect flags; POWER 123 parts, 290 wires, 3 NC; AUDIO 114 parts, 277 wires, 1 NC; MCU 34 parts, 128 wires, 7 NC. Every netlist row is either a wire or an NC flag; the only warnings are expected name matches (diodes, LEDs, mounting pads, merged USB-C pads) and the library test points. The PCB-level net check (`easyeda_check.py`) still needs Design > Update PCB.
+Re-capture results (2026-11-17, all pages saved): LTE 53 parts, 158 net wires, 72 no-connect flags; POWER 123 parts, 290 wires, 3 NC; AUDIO 114 parts, 277 wires, 1 NC; MCU 34 parts, 128 wires, 7 NC. Every netlist row is either a wire or an NC flag; the only warnings are expected name matches (diodes, LEDs, mounting pads, merged USB-C pads) and the library test points. AUDIO was re-captured once more after the DRC found U103's repeated supply pins unwired (A6).
+
+**PCB-level check** (after Design > Update PCB, `easyeda_check.py` on the export): **all checks passed** — every part of all four sheets is on the PCB with its BOM's LCSC code, every pad is on the net the CSVs name, NC pins are unconnected and no other pad is connected. J402's card detect reaches its `CD` pad. EasyEDA DRC: the two U103 fatal errors are cleared by A6.
 
 ## 7. Decisions still needed
 

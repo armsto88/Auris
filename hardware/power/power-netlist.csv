@@ -110,8 +110,8 @@ Q204,2,E,GND,Y,
 Q204,3,C,MPPT,Y,
 J203,1,BAT+,BAT_CONN,Y,"XY-S2B-PH-SM4-TB (JST PH compatible): FieldMesh Node v4 pack, protected 1S2P 18650, ~5200 mAh. Check polarity on every pack batch"
 J203,2,BAT-,GND,Y,
-J203,MP1,MP,GND,Y,
-J203,MP2,MP,GND,Y,
+J203,3,MP1,GND,Y,Mounting pad (symbol and footprint pad 3) to GND
+J203,4,MP2,GND,Y,
 F202,1,1,BAT_CONN,Y,"1812L200THPR: hold 1.50 A at 60 °C, 1.29 A at 85 °C (modem bursts ≈ 1 A); trip 3.5 A at 20 °C"
 F202,2,2,BAT_FUSED,Y,
 Q205,1,G,Q205_G,Y,AO3401A: Battery path FET (Node v4 Q5). Does not block a reversed pack while the panel is live

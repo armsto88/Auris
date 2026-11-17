@@ -74,7 +74,7 @@
     {"d": "Q203", "lcsc": "C20526", "fit": true, "pins": [["1", "B", "TEMP_EN_DRV"], ["2", "E", "GND"], ["3", "C", "TEMP_CLAMP"]], "block": "p_temp"},
     {"d": "R213", "lcsc": "C25741", "fit": true, "pins": [["1", "1", "SOLAR_IN"], ["2", "2", "TEMP_CLAMP"]], "block": "p_temp"},
     {"d": "Q204", "lcsc": "C20526", "fit": true, "pins": [["1", "B", "TEMP_CLAMP"], ["2", "E", "GND"], ["3", "C", "MPPT"]], "block": "p_temp"},
-    {"d": "J203", "lcsc": "C54582899", "fit": true, "pins": [["1", "BAT+", "BAT_CONN"], ["2", "BAT-", "GND"], ["MP1", "MP", "GND"], ["MP2", "MP", "GND"]], "block": "p_battery"},
+    {"d": "J203", "lcsc": "C54582899", "fit": true, "pins": [["1", "BAT+", "BAT_CONN"], ["2", "BAT-", "GND"], ["3", "MP1", "GND"], ["4", "MP2", "GND"]], "block": "p_battery"},
     {"d": "F202", "lcsc": "C207074", "fit": true, "pins": [["1", "1", "BAT_CONN"], ["2", "2", "BAT_FUSED"]], "block": "p_battery"},
     {"d": "Q205", "lcsc": "C15127", "fit": true, "pins": [["1", "G", "Q205_G"], ["2", "S", "RAW_BAT"], ["3", "D", "BAT_FUSED"]], "block": "p_battery"},
     {"d": "R214", "lcsc": "C25741", "fit": true, "pins": [["1", "1", "GND"], ["2", "2", "Q205_G"]], "block": "p_battery"},

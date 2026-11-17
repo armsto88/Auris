@@ -108,9 +108,19 @@ def check_part(p, cs, devices, net_size):
     if p["lcsc"] and dev["lcsc"] != p["lcsc"]:
         errors.append(f"LCSC {dev['lcsc'] or 'none'} on the PCB, BOM says {p['lcsc']}")
     pads, used = c["pads"], set()
+    # A pad can stand for several netlist pins: USB-C "A1B12" is pads A1 and B12 merged into one.
+    merged = {}
+    for pad in pads:
+        parts = re.findall(r"[A-Z]+\d+", pad)
+        if len(parts) > 1 and "".join(parts) == pad:
+            for q in parts:
+                merged.setdefault(q, pad)
     for pin, name, net in p["pins"]:
         pad = pin
-        if pin not in pads:   # netlist names the pin, or the pad has no net: look the name up on the symbol
+        if pin not in pads and pin in merged:
+            pad = merged[pin]
+            info.append(f"pin {pin} is pad {pad}")
+        elif pin not in pads:   # netlist names the pin, or the pad has no net: look the name up on the symbol
             nums = [n for n in (dev["symbol"].get(name) or dev["symbol"].get(pin) or []) if n not in used]
             # a name on several pads (USB-C GND) is fine when every row with that name has the same net
             one_net = all(r[2] == net for r in p["pins"] if r[1] == name)
