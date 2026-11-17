@@ -122,11 +122,12 @@ def template_step(parts):
             need.setdefault(p["prefix"], []).append(p["d"])
     if not need:
         return "Nothing to prepare: every part on this sheet has an LCSC code.", []
-    kinds = {"TP": "a test pad (any test-point part from the library)", "C": "a 0402 capacitor"}
+    kinds = {"TP": "a test pad", "C": "a 0402 capacitor"}
     asks = [f"{kinds.get(pre, 'a ' + pre + ' part')} for {', '.join(ds)}" for pre, ds in need.items()]
-    step = ("Place one template part per kind on the page, keeping its default designator: "
-            + "; ".join(asks) + ". These parts have no LCSC code, so the script copies the template's"
-            " library part. It leaves the template where it is, so delete it afterwards.")
+    step = ("Optional: place one template part per kind on the page, keeping its default designator: "
+            + "; ".join(asks) + ". These parts have no LCSC code, so the script places more of the"
+            " template's library part (found by its LCSC code or else by its name), or, with no template"
+            " on the page, the default in CFG.templateDefaults. Delete any template afterwards.")
     return step, list(need)
 
 
