@@ -14,3 +14,7 @@ dist/
 # Recordings should be stored in designated evidence storage, not automatically committed.
 *.wav
 *.flac
+
+# Datasheet PDFs and raw part-data JSON: local cache only (vendor copyright, repo size)
+hardware/datasheets/pdf/
+hardware/datasheets/cache/
