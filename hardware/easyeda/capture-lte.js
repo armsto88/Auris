@@ -284,6 +284,18 @@
         });
       } else for (const [num, name] of later) missing.push(name && name !== num ? `${num} (${name})` : num);
     }
+    // Sub-parts of a multi-part symbol repeat shared pins (a dual op-amp's V+ and V- on both
+    // halves). They are the same pad, so each copy gets the net its namesake was given; left
+    // unwired, EasyEDA's DRC stops with "pins with the same number are connected to different
+    // networks" (U103, 2026-11-17).
+    const netByNum = new Map();
+    for (const [p, n] of netOf) if (!netByNum.has(p.num)) netByNum.set(p.num, n);
+    for (const p of pins) {
+      if (used.has(p) || !netByNum.has(p.num)) continue;
+      used.add(p);
+      links.push({ cell: p.cell, num: p.num, name: p.name, net: netByNum.get(p.num), pin: p });
+      byName.push(`${p.num} (${p.name}) on sub-part ${p.cell + 1} as a copy of pin ${p.num}`);
+    }
     const extra = pins.filter((p) => !used.has(p)).map((p) => p.num);
     return { links, missing, extra, byName };
   }
