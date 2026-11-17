@@ -1,0 +1,20 @@
+designators,qty,value,description,package,suggested_mpn,lcsc,fit,notes
+U401,1,ESP32-S3-WROOM-1-N16R8,"MCU / radio module, 16 MB flash, 8 MB octal PSRAM, PCB antenna",SMD 25.5x18 mm,ESP32-S3-WROOM-1-N16R8,C2913202,Y,Not the -1U variant (different footprint). Keep the antenna end clear of copper and the LTE antenna. Rated −40 to +65 °C
+C401,1,22 µF,X5R ceramic,0805,CL21A226MAQNNNE,C45783,Y,Module bulk decoupling
+C402 C405 C406,3,100 nF,X5R/X7R ceramic,0402,CL05B104KO5NNNC,C1525,Y,
+C403,1,1 µF,X5R ceramic,0603,CL10A105KB8NNNC,C15849,Y,EN delay
+C404,1,10 µF,X5R/X7R ceramic,0603,CL10A106KP8NNNC,C19702,Y,Card supply
+R401 R409 R410 R411 R412 R413 R415 R417,8,10 kΩ,"1%, thick film",0402,0402WGF1002TCE,C25744,Y,
+R402 R414 R419,3,100 kΩ,"1%, thick film",0402,0402WGF1003TCE,C25741,Y,R402 GPIO45 pull-down; R414 card-switch gate pull-up; R419 card-detect pull-up
+R403 R404,2,5.1 kΩ,"1%, thick film",0402,0402WGF5101TCE,C25905,Y,USB-C CC pull-downs
+R405 R406,2,0 Ω,Jumper,0402,0402WGF0000TCE,C17168,Y,USB series links
+J401,1,USB-C 16-pin,"USB-C receptacle, service port only, no charging",SMD,HC-TYPE-C-16P-01A,C2894897,Y,Programming and service only (decision 2026-10-23)
+J402,1,microSD push-push,microSD holder with card detect,SMD,TF PUSH,C393941,Y,Card must be swappable without opening the main seal (F5-06). Cover pads 10–13 to GND; card detect (pin 9) to GPIO3. SHOU HAN rates storage −25…+85 °C only: qualify at −40 °C
+D401,1,SRV05-4,"4-line TVS array, 3 pF",SOT-23-6,SRV05-4.TCT,C13612,Y,"USB ESD on D+, D−, CC1, CC2; pin 5 (REF2) open so the ESP32's D+ pull-up cannot back-feed VBUS. Same part as D301"
+Q401,1,AO3401A,P-FET,SOT-23,AO3401A,C15127,Y,Chosen 2026-11-17: card-supply switch
+Q402,1,2N7002,N-FET,SOT-23,2N7002,C8545,Y,Chosen 2026-11-17: card-supply switch driver
+TP401 TP402 TP403,3,Test pad,SMD test pad,1.0 mm pad,,,Y,Copper pad on the PCB; nothing to order
+D402,1,ESD 5.5 V bidir,"Low-capacitance ESD diode, ~10 pF",0402 (X1SON-2),TPD1E10B06DPYR,C48260,Y,"VBUS ESD at J401, same part as audio D101. D401 pin 5 is left open"
+R416,1,100 Ω,"1%, thick film",0402,0402WGF1000TCE,C25076,Y,Status LED: 2–7 mA for VF 2.6–3.1 V (was 2.2 kΩ ≈ 0.25 mA: too dim for F5-05). JLC basic part
+LED401,1,Green,"Status LED, green",0805,KT-0805G,C2297,Y,"JLC basic part; same green InGaN (VF 2.6–3.1 V, 430 mcd at 5 mA) as KT-0603G"
+R418,1,33 Ω,"1%, thick film",0402,0402WGF330JTCE,C25105,Y,SD_CLK series termination at U401. JLC basic part

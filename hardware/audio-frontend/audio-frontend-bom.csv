@@ -1,0 +1,55 @@
+designators,qty,value,description,package,suggested_mpn,lcsc,fit,notes
+U101,1,TPS7A2033PDBVR,"LDO 3.3 V 300 mA, 7 uVrms, EN",SOT-23-5,TPS7A2033PDBVR,C2862740,Y,LCSC code from preliminary BOM
+U102,1,PCM1863DBTR,"Audio ADC, 2-ch, 24-bit, PGA, I2C",TSSOP-30,PCM1863DBTR,C529569,Y,"Reel version of PCM1863DBT (C1520794 had 1 in stock). Fallback: PCM1862DBTR C544647, same footprint"
+U103,1,OPA1662AIDR,"Dual low-noise op-amp, 3.3 nV/rtHz, 3-36 V",SOIC-8,OPA1662AIDR,C882794,Y,
+Y101,1,24.576 MHz,"Crystal, CL 12 pF, +/-10 ppm tol, +/-20 ppm -40..85 C, ESR 50 ohm",3225 4-pad,X322524576MOB4SI,C70568,Y,"YXC. Alt: Epson X1E0000210427 C841675 (12 pF, 40 ohm). C111/C112 15 pF suit CL 12 pF"
+U104,1,TS5A23166,"Dual SPST analog switch, ron <= 1.8 ohm, off leakage <= 50 nA at 3.3 V",VSSOP-8 (DCU),TS5A23166DCUR,C49148,Y,Analog HPF corner select (preamp path). Replaces SN74LVC2G66DCUR (C181970: 0 at JLC 2026-11-17); same DCU pinout and active-high control (TI SCDS196J)
+U105,1,TS5A23166,"Dual SPST analog switch, ron <= 1.8 ohm, off leakage <= 50 nA at 3.3 V",VSSOP-8 (DCU),TS5A23166DCUR,C49148,N,Mic 2 option
+Q101,1,AO3401A,P-FET preamp supply switch,SOT-23,AO3401A,C15127,Y,"AOS original, JLC basic part"
+J101,1,4-pin 1.25 mm,"Locking wire-to-board, right angle",JST GH 4-pin,SM04B-GHS-TB(LF)(SN),C189895,Y,Mechanical choice TBD with acoustic head. 2026-10-25: LCSC stock 9885
+J102,1,4-pin 1.25 mm,"Locking wire-to-board, right angle",JST GH 4-pin,SM04B-GHS-TB(LF)(SN),C189895,N,Mic 2 option
+D101,1,ESD 5.5 V bidir,"Low-capacitance ESD diode, ~10 pF",0402 (X1SON-2),TPD1E10B06DPYR,C48260,Y,TI original
+D102,1,ESD 5.5 V bidir,"Low-capacitance ESD diode, ~10 pF",0402 (X1SON-2),TPD1E10B06DPYR,C48260,N,Mic 2 option
+FB101 FB102,2,600 ohm @ 100 MHz,"Ferrite bead, 200 mA, 0.45 ohm DCR",0603,GZ1608D601TF,C1002,Y,Sunlord. JLC basic part
+FB103,1,600 ohm @ 100 MHz,"Ferrite bead, 200 mA, 0.45 ohm DCR",0603,GZ1608D601TF,C1002,N,Mic 2 option
+C103 C106 C108 C110 C126 C128 C140,7,0.1 uF,"X7R, 16 V",0402,CL05B104KO5NNNC,C1525,Y,Decoupling. JLC basic part
+C115 C141,2,0.1 uF,"X7R, 16 V",0402,CL05B104KO5NNNC,C1525,N,C115: mic DC sense option; C141: mic 2 option
+C101 C102 C104 C107 C109,5,10 uF,"X5R, 25 V",0805,CL21A106KAYNNNE,C15850,Y,"C101/C102: U101 input and output at the pins (TI asks for 1 uF each; 10 uF stays above that after DC-bias derating). C104 AVDD, C107 PCM LDO, C109 DVDD at U102. 25 V part keeps more capacitance at 3.3 V. JLC basic part"
+C127,1,10 uF,"Tantalum (MnO2), 16 V, 10%",3216 (case A),TAJA106K016RNJ,C7171,Y,"VMID_PRE bulk; + to VMID_PRE. Tantalum, not X5R: a piezoelectric ceramic on the op-amp bias node would turn enclosure vibration into signal. JLC basic part"
+C125,1,22 uF,"X5R, 25 V, 20%",0805,CL21A226MAQNNNE,C45783,Y,Preamp supply filter. JLC basic part
+C105,1,1 uF,"X5R, 50 V",0603,CL10A105KB8NNNC,C15849,Y,PCM VREF (datasheet pin table: 1 uF; app figures show 2.2 uF). JLC basic part
+C111 C112,2,15 pF,"C0G, 50 V, 5%",0402,0402CG150J500NT,C1548,Y,Crystal load caps. JLC basic part
+C113 C120 C129,3,100 pF,"C0G, 50 V, 5%",0402,0402CG101J500NT,C1546,Y,C113: RF shunt at mic connector; C120/C129: op-amp feedback. JLC basic part
+C135,1,100 pF,"C0G, 50 V, 5%",0402,0402CG101J500NT,C1546,N,Mic 2 option
+C118 C124,2,470 pF,"C0G, 50 V, 5%",0402,0402CG471J500NT,C75274,Y,Differential cap at ADC pins
+C134 C139,2,470 pF,"C0G, 50 V, 5%",0402,0402CG471J500NT,C75274,N,Mic 2 option
+C116 C117 C119 C122 C123,5,0.22 uF,"C0G, 50 V, 5%",1206,GRM31C5C1H224JE02L,C464977,Y,"Murata. Signal-path coupling; sets ~36 Hz analog high-pass with 20k ADC input. C0G: no piezo effect, no DC-bias loss"
+C131 C132 C133 C137 C138,5,0.22 uF,"C0G, 50 V, 5%",1206,GRM31C5C1H224JE02L,C464977,N,Mic 2 option
+C114,1,220 uF,"Tantalum (MnO2), 10 V, 10%",6032 (case C),T491C227K010AT,C122293,Y,"KEMET. Mic bias filter; + to MIC1_BIASF. MnO2, not polymer: polymer leakage (up to 0.1CV) would feed noise into the mic bias. 10 V rating for derating at 3.3 V"
+C136,1,220 uF,"Tantalum (MnO2), 10 V, 10%",6032 (case C),T491C227K010AT,C122293,N,Mic 2 option
+C121,1,100 uF,"Tantalum (MnO2), 6.3 V, 10%",3528 (case B),TAJB107K006RNJ,C16133,Y,Preamp Cg; + to PRE1_CG (sits at 1.65 V). JLC basic part
+C130,1,100 uF,"Tantalum (MnO2), 6.3 V, 10%",3528 (case B),TAJB107K006RNJ,C16133,N,Mic 2 option
+R101 R113 R114 R115,4,0 ohm,Jumper,0402,0402WGF0000TCE,C17168,Y,JLC basic part
+R102 R109 R137 R138 R139,5,0 ohm,Jumper,0402,0402WGF0000TCE,C17168,N,Options
+R103 R104 R105,3,33 ohm,"1%, thick film",0402,0402WGF330JTCE,C25105,Y,I2S series termination. JLC basic part
+R119 R120 R124 R125,4,47 ohm,"1%, thick film",0402,0402WGF470JTCE,C25118,Y,"ADC input series R. Thick film is fine here (was thin film): no DC flows, and a 1% mismatch against the ADC's 20 kohm input is negligible"
+R135 R136 R142 R143,4,47 ohm,"1%, thick film",0402,0402WGF470JTCE,C25118,N,Mic 2 option
+R106 R107,2,4.7 kohm,"1%, thick film",0402,0402WGF4701TCE,C25900,Y,Audio I2C pull-ups. JLC basic part
+R108 R110 R111 R112 R121 R126 R128 R132,8,100 kohm,"1%, thick film",0402,0402WGF1003TCE,C25741,Y,"R121/R132 preamp input bias: only op-amp bias current flows, so thick film is fine (was thin film). JLC basic part"
+R116,1,470 ohm,"0.1%, thin film, 25 ppm",0603,RT0603BRD07470RL,C705779,Y,Yageo. Mic bias filter (carries DC: thin film avoids excess noise)
+R140,1,470 ohm,"0.1%, thin film, 25 ppm",0603,RT0603BRD07470RL,C705779,N,Mic 2 option
+R117,1,2.7 kohm,"0.1%, thin film, 25 ppm",0603,RT0603BRD072K7L,C705760,Y,Yageo. Mic load resistor (carries DC: thin film avoids excess noise)
+R141,1,2.7 kohm,"0.1%, thin film, 25 ppm",0603,RT0603BRD072K7L,C705760,N,Mic 2 option
+R122 R133,2,3.0 kohm,"0.1%, thin film, 25 ppm",0402,RT0402BRD073KL,C281777,Y,Yageo. Preamp Rf
+R123,1,1.0 kohm,"0.1%, thin film, 25 ppm",0402,RT0402BRD071KL,C852624,Y,Yageo. Preamp Rg
+R134,1,1.0 kohm,"0.1%, thin film, 25 ppm",0402,RT0402BRD071KL,C852624,N,Mic 2 option
+R127,1,1 kohm,"1%, thick film",0402,0402WGF1001TCE,C11702,Y,FET gate series. JLC basic part
+R129,1,10 ohm,"1%, thick film",0402,0402WGF100JTCE,C25077,Y,Preamp supply filter. JLC basic part
+R130 R131,2,10 kohm,"1%, thick film",0402,0402WGF1002TCE,C25744,Y,Mid-rail divider. JLC basic part
+R118,1,1 Mohm,"1%, thick film",0402,0402WGF1004TCE,C26083,N,Mic DC sense option. JLC basic part
+TP101 TP102 TP103 TP104 TP105 TP106 TP107 TP108 TP109 TP110 TP111,11,Test pad,SMD test pad,1.0 mm pad,,,Y,Copper pad on the PCB; nothing to order
+R144,1,22 kohm,"1%, thick film",0402,0402WGF2202TCE,C25768,Y,"HPF ~100 Hz shunt (102 Hz with the ADC's 40 kohm). No DC flows, so thick film adds no excess noise. JLC basic part"
+R146,1,22 kohm,"1%, thick film",0402,0402WGF2202TCE,C25768,N,Mic 2 option
+R145,1,1.5 kohm,"1%, thick film",0402,0402WGF1501TCE,C25867,Y,"HPF ~1 kHz shunt. No DC flows, so thick film adds no excess noise. JLC basic part"
+R147,1,1.5 kohm,"1%, thick film",0402,0402WGF1501TCE,C25867,N,Mic 2 option
+Q102,1,2N7002,N-FET gate driver,SOT-23,2N7002,C8545,Y,"JSCJ, JLC basic part; same part as the wake latch. Drives Q101's gate against R126 100 kΩ only (was AO3400A)"

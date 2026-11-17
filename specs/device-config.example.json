@@ -1,0 +1,60 @@
+{
+  "$comment": "PROPOSED CONTRACT EXAMPLE - NOT IMPLEMENTED OR STABLE; not a hardware default",
+  "schema_version": "0.1.0-DRAFT",
+  "configuration_id": "cfg-example-revision-001",
+  "device_id": "auris-demo-0001",
+  "project_id": "project-example-001",
+  "deployment_id": "deployment-example-001",
+  "revision": 1,
+  "timezone": "UTC",
+  "recording": {
+    "enabled": true,
+    "audio_profile": "audible-band-candidate",
+    "sample_rate_hz": 48000,
+    "bit_depth": 16,
+    "channels": 1,
+    "format": "wav-pcm",
+    "interval_seconds": 600,
+    "duration_seconds": 60,
+    "schedule": "UTC-interval-example",
+    "front_end": {
+      "path": "preamp",
+      "gain_preset": "factory"
+    },
+    "filters": {
+      "analog_highpass_hz": 100,
+      "adc_decimation": "fir",
+      "adc_dc_highpass": true,
+      "record_filter": [],
+      "analysis_filter": [
+        { "type": "highpass", "response": "butterworth", "order": 4, "corner_hz": 200 }
+      ]
+    }
+  },
+  "synchronization": {
+    "enabled": false,
+    "interval_seconds": 21600,
+    "upload_policy": "telemetry-and-event-metadata",
+    "full_audio_upload": false
+  },
+  "analysis": {
+    "acoustic_indices": [],
+    "sound_level_measurements": [],
+    "detector_id": null,
+    "model_version": null
+  },
+  "storage": {
+    "raw_audio_retention": "local-until-explicit-policy",
+    "file_integrity_check": true
+  },
+  "security": {
+    "provisioning_state": "unprovisioned",
+    "configuration_authentication": "required-design-TBD"
+  },
+  "notes": [
+    "All numeric values are illustrative engineering examples and are not tested design constraints.",
+    "Use an authenticated versioned config with checksum and explicit rollout/rollback before production.",
+    "front_end.path: direct | preamp | ab_test. filters.analog_highpass_hz: 100 (default) | 36 | 1000 (preamp path only). adc_decimation: fir | iir_low_latency.",
+    "record_filter is applied before the WAV is written (destructive, default empty); analysis_filter only affects metrics/detection. Filter types: highpass | lowpass | bandpass | notch, order 2-8."
+  ]
+}

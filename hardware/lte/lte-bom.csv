@@ -1,0 +1,25 @@
+designators,qty,value,description,package,suggested_mpn,lcsc,fit,notes
+U301,1,EG800K-EU,"LTE Cat-1 bis module, Europe/AU/NZ bands",LGA-109 17.7x15.8 mm,EG800KEULC-I03-SNNSA,C44008839,Y,"ADR-006. Keep RESERVED and unused pads open; solid ground under the module, no traces on layer 1 beneath it"
+R301,1,0 Ω,Jumper,0805,0805W8F0000T5E,C17477,Y,Quectel's debug link in the VBAT feed (0603 or larger); lift to measure module current
+C301,1,100 µF 6.3 V,"Tantalum polymer, ESR 70 mΩ",3216 (case A),T520A107M006ATE070,C561794,Y,+ to VBAT_M. Quectel asks for about 100 µF with ESR ≤ 0.7 Ω at the VBAT pins
+C302 C308 C309 C313,4,100 nF,X5R/X7R ceramic,0402,CL05B104KO5NNNC,C1525,Y,At VBAT pins 42/43; U302 VCCA (pin 2); U302 VCCB (pin 19); At the holder; Quectel limit < 1 µF
+C303 C310 C311 C312,4,33 pF,C0G ceramic,0402,0402CG330J500NT,C1562,Y,RF decoupling at VBAT; RF filter at the holder
+C305,1,3.9 pF,C0G ceramic,0402,0402CG3R9C500NT,C1566,Y,RF decoupling at VBAT
+C306,1,1.8 pF,C0G ceramic,0402,0402CG1R8C500NT,C1553,Y,RF decoupling at VBAT; smallest value closest to the pins
+Q301,1,MMBT3904,NPN,SOT-23,MMBT3904,C20526,Y,"Open-collector PWRKEY driver: LTE_PWRKEY high = PWRKEY low. ≥ 700 ms turns the module on, ≥ 650 ms off"
+R302 R311,2,4.7 kΩ,"1%, thick film",0402,0402WGF4701TCE,C25900,Y,Q301 base; Short BOOT_PAD to the GND pad beside it while powering on to force USB download (Quectel value)
+R303,1,47 kΩ,"1%, thick film",0402,0402WGF4702TCE,C25792,Y,Keeps PWRKEY released while the ESP32 boots or is off
+U302,1,TXS0108EPWR,8-bit auto-direction level translator,TSSOP-20,TXS0108EPWR,C17206,Y,"Quectel's recommended translator. A side runs from the module's VDD_EXT, so it is Hi-Z whenever the modem is off and cannot back-power it"
+R304,1,100 kΩ,"1%, thick film",0402,0402WGF1003TCE,C25741,Y,"OE = 0.91 x VDD_EXT with R305; no RC (SCES642L §5.3, §8.3)"
+R305,1,1 MΩ,"1%, thick film",0402,0402WGF1004TCE,C26083,Y,"Holds OE low during power-up, as TI asks"
+J301,1,Nano-SIM holder,Nano-SIM push-push holder,SMD,SNO-1303-C,C428450,Y,Contacts named per ISO 7816 (C1–C7). SOFNG drawing: push-push; 4 cover pads (symbol pin 8 EH) to GND; −35…+75 °C storage rating only. Card detect unused
+R306 R307 R308 R310,4,0 Ω,Jumper,0402,0402WGF0000TCE,C17168,Y,Quectel debug link; π match series element; 50 Ω trace both sides
+R309,1,15 kΩ,"1%, thick film",0402,0402WGF1502TCE,C25756,Y,USIM_DATA pull-up near the holder
+D301,1,SRV05-4,"4-line TVS array, 3 pF",SOT-23-6,SRV05-4.TCT,C13612,Y,Semtech original. SIM ESD; Quectel asks for < 15 pF
+C314 C315,2,DNP,"C0G ceramic, value from tuning",0402,,,N,"π match shunt, module side. Not fitted unless antenna tuning needs it; π match shunt, connector side. Not fitted unless antenna tuning needs it"
+J302,1,U.FL,RF coax connector,SMD,U.FL-R-SMT-1(80),C88374,Y,"To the LTE FPC antenna (TX4G-FPC-8121 C454897, off-board). Keep R310/C314/C315 next to it"
+TP301 TP302 TP303 TP304 TP305 TP306 TP307 TP308 TP309 TP310 TP311 TP312 TP313,13,Test pad,SMD test pad,1.0 mm pad,,,Y,
+C307,1,100 nF,X5R/X7R ceramic,0402,CL05B104KO5NNNC,C1525,N,DNP: an RC on OE breaks TI's 10 ns/V input-edge limit (SCES642L §5.3). OE follows VDD_EXT through R304/R305 (0.91 x VDD_EXT)
+C316,1,10 nF,"X7R ceramic, 50 V",0402,CL05B103KB5NNNC,C15195,Y,PWRKEY filter at the module pin (Quectel EG800K-LA HD Fig. 9). JLC basic part
+C317 C318 C319 C320 C321 C322 C323,7,33 pF,C0G ceramic,0402,0402CG330J500NT,C1562,N,DNP footprints at module UART/status pins for RF interference (QuecOpen Ref V1.2 sheet 3 note 9); fit only if EMC needs it
+C304,1,10 pF,"C0G ceramic, 50 V, 5%",0402,CL05C100JB5NNNC,C32949,Y,RF decoupling at VBAT. JLC basic part (same C0G 50 V 5 % spec as FH 0402CG100J500NT)

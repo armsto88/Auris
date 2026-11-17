@@ -1,0 +1,863 @@
+<title>Auris Hardware Guide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: drawing-sheet title block, a sticky tab bar with one tab per hardware section, then that section's parts table and notes. */
+:root {
+  --paper: #eef2f1;
+  --panel: #fbfcfc;
+  --ink: #1b2326;
+  --muted: #56656b;
+  --rule: #c8d3d5;
+  --net: #0a6b59;
+  --analog: #c97a1c;
+  --dnp: #8d999d;
+  --chip: #e2e9e8;
+  --warn: #7a4f00;
+  --warn-bg: #f4e6c8;
+  --display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --sans: "Barlow", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0f1416; --panel: #151c1f; --ink: #dfe7e9; --muted: #97a6ac; --rule: #2b363a;
+    --net: #4dcfab; --analog: #e5a252; --dnp: #66747a; --chip: #1e282b; --warn: #f0c77f; --warn-bg: #3a2f18;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0f1416; --panel: #151c1f; --ink: #dfe7e9; --muted: #97a6ac; --rule: #2b363a;
+  --net: #4dcfab; --analog: #e5a252; --dnp: #66747a; --chip: #1e282b; --warn: #f0c77f; --warn-bg: #3a2f18;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--paper); color: var(--ink); font: 15px/1.55 var(--sans);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 64px;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper); }
+.wrap { max-width: 1080px; margin: 0 auto; display: grid; gap: 28px; }
+.panel { display: grid; gap: 40px; }
+.panel[hidden] { display: none; }
+h1, h2, h3 { font-family: var(--display); font-weight: 700; letter-spacing: .01em; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2rem, 4.5vw, 2.9rem); line-height: 1.05; }
+h2 { font-size: 1.6rem; line-height: 1.15; }
+h3 { font-size: 1.15rem; }
+p { margin: 0; max-width: 72ch; }
+a { color: var(--net); }
+a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--net); outline-offset: 2px; }
+code, .mono { font-family: var(--mono); font-size: .9em; }
+
+.sheet { display: grid; gap: 18px; }
+.titleblock { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); border: 1.5px solid var(--ink); background: var(--panel); }
+.titleblock div { padding: 8px 12px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); min-width: 0; }
+.titleblock span { display: block; font: 600 .68rem/1.2 var(--sans); letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+.titleblock b { font: 600 .95rem/1.35 var(--mono); }
+.titleblock b.status { display: inline-block; background: var(--warn-bg); color: var(--warn); padding: 1px 8px; border-radius: 3px; font: 600 .86rem/1.5 var(--sans); white-space: nowrap; }
+.lede { display: grid; gap: 10px; }
+
+/* tabs */
+.tabbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--paper); padding-block: 8px; border-bottom: 1.5px solid var(--ink); }
+.tabs { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: thin; }
+.tabs button { flex: 0 0 auto; font: 600 .95rem var(--display); letter-spacing: .03em; text-transform: uppercase; color: var(--muted); background: transparent; border: 1px solid transparent; border-radius: 3px; padding: 7px 12px; cursor: pointer; }
+.tabs button:hover { color: var(--ink); background: var(--chip); }
+.tabs button[aria-selected="true"] { color: var(--panel); background: var(--ink); }
+
+.sub ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.sub a { display: block; text-decoration: none; color: var(--ink); background: var(--chip); padding: 4px 10px; border-radius: 3px; font: 500 .88rem var(--sans); }
+.sub a:hover { color: var(--net); }
+
+section { display: grid; gap: 14px; scroll-margin-top: 70px; }
+.sec-head { display: grid; gap: 6px; }
+.eyebrow { font: 600 .72rem/1 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: .88rem; color: var(--muted); }
+.legend i { display: inline-block; width: 26px; height: 0; vertical-align: middle; margin-right: 6px; border-top: 2px solid var(--ink); }
+.legend i.dash { border-top: 2px dashed var(--dnp); }
+.legend i.net { border: 0; width: auto; height: auto; font: 600 .82rem var(--mono); color: var(--net); font-style: normal; }
+.legend i.an { border-top: 4px solid var(--analog); }
+.notes { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; max-width: 80ch; }
+.callout { border-left: 3px solid var(--warn); background: var(--warn-bg); color: var(--ink); padding: 8px 12px; max-width: 80ch; }
+
+figure { margin: 0; border: 1px solid var(--rule); background: var(--panel); }
+.sch { overflow-x: auto; padding: 10px; color: var(--ink); }
+.sch svg { display: block; width: 100%; min-width: 760px; height: auto; }
+figcaption { border-top: 1px solid var(--rule); padding: 8px 12px; font-size: .88rem; color: var(--muted); }
+
+.sch .w { stroke: currentColor; stroke-width: 1.4; fill: none; stroke-linecap: square; }
+.sch .plate { stroke-width: 2.2; }
+.sch .b { stroke: currentColor; stroke-width: 1.4; fill: var(--panel); }
+.sch .bead { fill: currentColor; }
+.sch .dot { fill: currentColor; }
+.sch .ah { fill: currentColor; }
+.sch .port { stroke: var(--net); stroke-width: 1.2; fill: var(--panel); }
+.sch .ubox { stroke: var(--muted); stroke-dasharray: 3 3; fill: none; }
+.sch .blk { stroke: currentColor; stroke-width: 1.3; fill: var(--panel); }
+.sch .blk.tbd { stroke: var(--dnp); stroke-dasharray: 4 3; }
+.sch .wd { stroke: var(--muted); stroke-width: 1.3; fill: none; stroke-dasharray: 4 3; }
+.sch .an { fill: var(--analog); }
+.sch text { font-family: var(--mono); }
+.sch .des { font: 600 11.5px var(--mono); fill: var(--ink); }
+.sch .val { font: 11px var(--mono); fill: var(--muted); }
+.sch .net { font: 600 11.5px var(--mono); fill: var(--net); }
+.sch .net.dim { fill: var(--dnp); }
+.sch .pin { font: 11px var(--mono); fill: var(--ink); }
+.sch .pnum { font: 10px var(--mono); fill: var(--muted); }
+.sch .note { font: 11px var(--sans); fill: var(--muted); }
+.sch .bt { font: 600 12.5px var(--sans); fill: var(--ink); }
+.sch .bs { font: 10.5px var(--mono); fill: var(--net); }
+.sch .bs2 { font: 10.5px var(--sans); fill: var(--muted); }
+.sch .al { font: 500 11px var(--sans); fill: var(--muted); }
+.sch .dnp .w, .sch .dnp .b { stroke: var(--dnp); stroke-dasharray: 4 3; }
+.sch .dnp .plate { stroke-dasharray: none; }
+.sch .dnp .dot { fill: var(--dnp); }
+.sch .dnp text { fill: var(--dnp); }
+
+.tw { overflow-x: auto; border: 1px solid var(--rule); background: var(--panel); }
+table { border-collapse: collapse; width: 100%; font-size: .88rem; }
+th, td { text-align: left; vertical-align: top; padding: 6px 10px; border-bottom: 1px solid var(--rule); }
+th { font: 600 .7rem/1.3 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); background: var(--chip); position: sticky; top: 0; }
+tbody tr:last-child td { border-bottom: 0; }
+tr.grp td { background: var(--chip); font: 700 .95rem var(--display); letter-spacing: .03em; text-transform: uppercase; }
+tr.grp a { color: var(--ink); text-decoration: none; }
+tr.grp a:hover { color: var(--net); }
+td.ref, .ref { font: 600 .86rem var(--mono); white-space: nowrap; }
+td.valc { font-family: var(--mono); font-size: .84rem; white-space: nowrap; }
+td.num { font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; }
+th.num { text-align: right; }
+td.nt, td .nt { color: var(--muted); min-width: 18ch; }
+td .nt { font-family: var(--sans); font-size: .82rem; white-space: normal; margin-top: 4px; }
+.n { font-family: var(--mono); font-size: .84rem; color: var(--net); font-weight: 600; }
+.pm { color: var(--muted); font-size: .8rem; }
+.pinlist { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 2px 14px; }
+.pinref { font-family: var(--mono); font-size: .8rem; color: var(--muted); }
+tr.dnp td { color: var(--dnp); }
+tr.dnp .n, tr.dnp .ref { color: var(--dnp); }
+.tag { font: 600 .66rem/1 var(--sans); letter-spacing: .06em; background: var(--chip); color: var(--muted); padding: 2px 5px; border-radius: 2px; vertical-align: 1px; white-space: nowrap; }
+.st { font: 600 .76rem var(--sans); white-space: nowrap; padding: 1px 6px; border-radius: 2px; background: var(--chip); color: var(--muted); }
+.st.sel { background: var(--ink); color: var(--panel); }
+.st.tbd { background: var(--warn-bg); color: var(--warn); }
+.lc { font: 600 .86rem var(--mono); color: var(--net); white-space: nowrap; }
+.low { color: var(--warn); font-weight: 600; }
+details { border: 1px solid var(--rule); background: var(--panel); }
+details > summary { cursor: pointer; padding: 8px 12px; font-weight: 600; }
+details[open] > summary { border-bottom: 1px solid var(--rule); }
+details .tw { border: 0; }
+.kv { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+.kv div { background: var(--panel); padding: 10px 12px; display: grid; gap: 2px; min-width: 0; }
+.kv span { font: 600 .68rem/1.2 var(--sans); letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+.kv b { font: 600 1.05rem/1.3 var(--mono); font-variant-numeric: tabular-nums; }
+
+.tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.tools input { flex: 1 1 220px; min-width: 0; padding: 7px 10px; font: 500 .92rem var(--mono); color: var(--ink); background: var(--panel); border: 1px solid var(--rule); border-radius: 3px; }
+.seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 3px; overflow: hidden; }
+.seg button { font: 500 .85rem var(--sans); padding: 6px 12px; border: 0; background: var(--panel); color: var(--ink); cursor: pointer; }
+.seg button + button { border-left: 1px solid var(--rule); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--panel); }
+.count { font-size: .85rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.bomtool { display: grid; gap: 14px; }
+.conn { display: flex; flex-wrap: wrap; gap: 4px 12px; }
+.conn span { font-family: var(--mono); font-size: .8rem; white-space: nowrap; }
+.conn span.off { color: var(--dnp); text-decoration: line-through; text-decoration-thickness: 1px; }
+.prose { display: grid; gap: 8px; }
+.foot { border-top: 1px solid var(--rule); padding-top: 12px; color: var(--muted); font-size: .85rem; }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+
+<div class="wrap">
+  <header class="sheet">
+    <div class="eyebrow">Auris · hardware</div>
+    <h1>Hardware guide</h1>
+    <div class="titleblock">
+      <div><span>Board</span><b>Auris recorder V1</b></div>
+      <div><span>Revision</span><b>A (prototype)</b></div>
+      <div><span>Date</span><b>2026-11-16</b></div>
+      <div><span>Part codes</span><b>LCSC {{snapdate}}</b></div>
+      <div><span>Status</span><b class="status">Concept · not built</b></div>
+    </div>
+    <p>One tab per hardware section. Each tab lists that section's major components with exact LCSC codes, stock and price, followed by the design facts that matter when drawing it. Three sheets are designed down to pin level so far: the audio front end, the power sheet (charger, battery, rails, RTC and wake latch) and the LTE modem. Their tabs have the drawings and wire lists for schematic capture, and the Nets tab checks a capture against all three.</p>
+  </header>
+
+  <div class="tabbar">
+    <div class="tabs" role="tablist" aria-label="Hardware sections">
+      <button type="button" role="tab" id="t-overview" data-tab="overview" aria-controls="tab-overview" aria-selected="true">Overview</button>
+      <button type="button" role="tab" id="t-power" data-tab="power" aria-controls="tab-power" aria-selected="false">Power</button>
+      <button type="button" role="tab" id="t-mcu" data-tab="mcu" aria-controls="tab-mcu" aria-selected="false">MCU</button>
+      <button type="button" role="tab" id="t-rtc" data-tab="rtc" aria-controls="tab-rtc" aria-selected="false">RTC &amp; wake</button>
+      <button type="button" role="tab" id="t-audio" data-tab="audio" aria-controls="tab-audio" aria-selected="false">Audio front end</button>
+      <button type="button" role="tab" id="t-lte" data-tab="lte" aria-controls="tab-lte" aria-selected="false">LTE</button>
+      <button type="button" role="tab" id="t-io" data-tab="io" aria-controls="tab-io" aria-selected="false">Storage &amp; USB</button>
+      <button type="button" role="tab" id="t-nets" data-tab="nets" aria-controls="tab-nets" aria-selected="false">Nets</button>
+    </div>
+  </div>
+
+  <!-- ===================================================== OVERVIEW -->
+  <div class="panel" id="tab-overview" role="tabpanel" aria-labelledby="t-overview">
+    <section>
+      <div class="sec-head"><div class="eyebrow">Whole board</div><h2>Overview</h2></div>
+      <figure>
+        <div class="sch">{{fig:sys}}</div>
+        <figcaption>The ESP32-S3 talks to every other block. The RTC is the only part powered all the time: its alarm wakes the board, the MCU holds power on, does the due job and releases it. LCSC codes are shown under each block.</figcaption>
+      </figure>
+      <div class="kv">
+        <div><span>Major parts, one board</span><b>{{costsum}} USD</b></div>
+        <div><span>Priced at</span><b>100 units</b></div>
+        <div><span>Still to choose</span><b>{{ntbd}}</b></div>
+        <div><span>Lowest stock</span><b>{{lowstock}}</b></div>
+      </div>
+      <p class="pm">The total adds one of each listed part at the LCSC 100-unit price, including the 25 USD microphone allowance. It leaves out passives, PCB, assembly, battery, solar panel, enclosure and anything still to choose. Fallback, alternate and not-chosen parts are not counted.</p>
+    </section>
+    <section>
+      <div class="sec-head"><div class="eyebrow">All sections</div><h2>Major components and LCSC codes</h2></div>
+      {{allcomp}}
+      <p class="pm">Stock and prices from LCSC and JLCPCB on {{snapdate}} (<code>{{snappath}}</code>). They change daily; check again before ordering.</p>
+    </section>
+  </div>
+
+  <!-- ===================================================== POWER -->
+  <div class="panel" id="tab-power" role="tabpanel" aria-labelledby="t-power">
+    <section>
+      <div class="sec-head"><div class="eyebrow">Section</div><h2>Power</h2></div>
+      {{comp:power}}
+    </section>
+    <section>
+      <div class="sec-head"><div class="eyebrow">Power tree</div><h3>Where each rail comes from</h3></div>
+      <figure>
+        <div class="sch">{{fig:powertree}}</div>
+        <figcaption>The CN3791 charges the battery from the panel; the TMP390A2 stops charging when the board is too cold or too hot. The keep-alive LDO keeps only the RTC and wake logic powered. Everything else, including the modem supply, sits behind the main switch, which the wake logic turns on and the MCU holds on with PWR_HOLD. USB does not charge the battery.</figcaption>
+      </figure>
+      <div class="tw"><table>
+        <thead><tr><th>Rail</th><th>Made by</th><th>Feeds</th><th>On when</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="n">SOLAR_IN</td><td>Panel, after the fuse and reverse-polarity switch Q201</td><td>CN3791, temperature cut-out, charge LEDs, panel sense</td><td>While the panel gives power</td><td><span class="st sel">Selected (concept)</span></td></tr>
+          <tr><td class="n">RAW_BAT</td><td>FieldMesh Node v4 pack: protected 1S2P 18650, about 5200 mAh, charged by the CN3791</td><td>Main switch Q210, keep-alive LDO</td><td>Always</td><td><span class="st sel">Selected (concept)</span></td></tr>
+          <tr><td class="n">KEEP_ALIVE</td><td>TPL720F33, 3.3 V</td><td>DS3231 VCC, RTC INT pull-up, wake latch (CR1220 on RTC VBAT)</td><td>Always</td><td><span class="st sel">Selected (concept)</span></td></tr>
+          <tr><td class="n">VBAT_SW</td><td>AO3401A main switch Q210, turned on by the wake latch</td><td>TPS63802, audio LDO, TPS63020, battery sense</td><td>While awake</td><td><span class="st sel">Selected (concept)</span></td></tr>
+          <tr><td class="n">3V3</td><td>TPS63802 buck-boost, 3.31 V</td><td>ESP32-S3, microSD (switched), system I²C pull-ups</td><td>While awake</td><td><span class="st sel">Selected (concept)</span></td></tr>
+          <tr><td class="n">AVDD_A / DVDD_A</td><td>TPS7A2033, EN = AUDIO_EN (audio sheet)</td><td>Audio front end</td><td>While recording</td><td><span class="st">Candidate</span></td></tr>
+          <tr><td class="n">VMODEM</td><td>TPS63020 buck-boost, 3.9 V, EN = MODEM_EN</td><td>EG800K-EU</td><td>During the daily sync</td><td><span class="st sel">Selected (concept)</span></td></tr>
+        </tbody>
+      </table></div>
+      <ul class="notes">
+        <li><b>Where this comes from:</b> the panel input, charger, temperature cut-out, battery input and keep-alive rail are FieldMesh Node v4; the modem rail is FieldMesh Hub v2 r6; the wake latch is common to both. Decisions ADR-007, 008, 010, 011 and the owner's choices of 2026-10-23; review in doc 20. Designed and reviewed there, not yet built or field-proven.</li>
+        <li><b>Changed from FieldMesh:</b> cold trip kept at +5 °C (R209 18.7 kΩ; owner decision 2026-11-17 after the review found the TMP390's ±2.5 °C accuracy let a 0 °C setting charge down to −2.5 °C), latch inverter resistors raised from 100 kΩ to 1 MΩ (about 5 µA instead of 46 µA), a USB wake input added, and no USB charging.</li>
+        <li><b>Sizing target:</b> energy-neutral at 50–56°N in December with the 1S2P pack giving at least 10 days without sun. About 3 W of panel should do with the CN3791; confirm on the bench before choosing the panel.</li>
+        <li><b>Design load:</b> at most 1.0 Wh/day; recording at most 350 mW at the battery (F4-06). Sleep current is about 140–180 µA, mostly the DS3231M itself.</li>
+        <li><b>Charger:</b> the CN3791 holds the panel at its maximum-power voltage, set by R204/R205 to 6.05 V for the Node v4 panel. Recalculate them for the chosen panel. It has no power path and no safety timer, so an awake recorder delays charge termination.</li>
+        <li><b>Battery state:</b> measured as voltage through the R216/R217 divider on VBAT_SW (decision 2026-10-23; the MAX17048 fuel gauge is dropped). State of charge is estimated from voltage before the modem turns on. The divider draws nothing while asleep.</li>
+        <li><b>USB:</b> programming and service only. VBUS wakes the board but does not charge the battery.</li>
+        <li><b>Not on the LCSC list:</b> the battery pack (FieldMesh supply) and the solar panel with its sealed cable.</li>
+      </ul>
+    </section>
+
+    <section>
+      <div class="lede">
+        <p>The power sheet is designed to pin level ({{nparts:power}} parts, {{nfit:power}} fitted, {{nnets:power}} nets). Capture it one block at a time below. Each drawing shows how a block is wired; the table under it is generated from <code>hardware/power/power-netlist.csv</code>, and if the two disagree, the table is right. Calculations and bring-up tests are in <code>hardware/power/README.md</code>.</p>
+        <div class="legend">
+          <span><i></i>wire / fitted part</span>
+          <span><i class="net">NET_NAME</i> net label, use exactly as written</span>
+        </div>
+      </div>
+      <nav class="sub" aria-label="Power blocks">
+        <ol>
+          <li><a href="#p-panel">Panel input</a></li>
+          <li><a href="#p-charger">Charger</a></li>
+          <li><a href="#p-temp">Temperature cut-out</a></li>
+          <li><a href="#p-battery">Battery and keep-alive</a></li>
+          <li><a href="#r-latch">RTC and wake latch</a> <span class="pm">(RTC tab)</span></li>
+          <li><a href="#p-rails">3.3 V and modem rails</a></li>
+          <li><a href="#p-mcu">ESP32 signals</a></li>
+          <li><a href="#p-parts">Parts list</a></li>
+          <li><a href="#nets">Net finder</a></li>
+        </ol>
+      </nav>
+    </section>
+
+    <section id="p-panel">
+      <div class="sec-head"><div class="eyebrow">Block 1</div><h2>Panel input</h2></div>
+      <figure>
+        <div class="sch">{{fig:p_panel}}</div>
+        <figcaption>J201 (panel on the lid) and J202 (cabled panel) are in parallel; fit panels with the same Vmp. F201 and D201 protect against shorts and surges. A correctly wired panel turns Q201 on; a reversed one leaves it off. R238/R239 scale SOLAR_IN for the MCU (SOLAR_ADC, through R240 and C235); the divider draws about 5 µA, from the panel only.</figcaption>
+      </figure>
+      {{parts:p_solar}}
+    </section>
+
+    <section id="p-charger">
+      <div class="sec-head"><div class="eyebrow">Block 2</div><h2>Solar charger (U201 CN3791)</h2></div>
+      <figure>
+        <div class="sch">{{fig:p_charger}}</div>
+        <figcaption>R204/R205 set the panel's maximum-power voltage: 1.205 V × (1 + 402k/100k) = 6.05 V. R202 sets the charge current to 600 mA. D203 stops the battery leaking back into the charger at night, and D204 is the catch diode. LED201 (charging) and LED202 (done) are fed from the panel, so they draw nothing at night. The MPPT pin is also the cut-out's clamp point.</figcaption>
+      </figure>
+      {{parts:p_charger}}
+    </section>
+
+    <section id="p-temp">
+      <div class="sec-head"><div class="eyebrow">Block 3</div><h2>Charge temperature cut-out</h2></div>
+      <figure>
+        <div class="sch">{{fig:p_temp}}</div>
+        <figcaption>U203's two open-drain outputs (too hot, too cold) share TEMP_FAULT_N. Inside the window Q203 holds Q204 off and the charger runs. Outside it, Q204 pulls MPPT low and charging stops. The circuit runs from the panel through U202, so it draws nothing from the battery. Mount U203 against the cells, away from the charger's inductor and diodes.</figcaption>
+      </figure>
+      {{parts:p_temp}}
+    </section>
+
+    <section id="p-battery">
+      <div class="sec-head"><div class="eyebrow">Block 4</div><h2>Battery input, keep-alive rail and battery sense</h2></div>
+      <figure>
+        <div class="sch">{{fig:p_battery}}</div>
+        <figcaption>J203 takes the FieldMesh Node v4 pack: protected 1S2P 18650, about 5200 mAh, at least 600 mA charge and 1.5 A discharge. F202 limits a short; Q205 blocks a reversed pack only while the panel is dark. U204 makes the always-on 3.3 V for the RTC and wake latch. R216/R217 feed BATT_ADC through R218, with C213 holding the sample.</figcaption>
+      </figure>
+      {{parts:p_battery}}
+    </section>
+
+    <section id="p-rails">
+      <div class="sec-head"><div class="eyebrow">Block 6</div><h2>3.3 V and modem rails</h2></div>
+      <figure>
+        <div class="sch">{{fig:p_rails}}</div>
+        <figcaption>Both buck-boost converters run from VBAT_SW and hold their output from a full cell down to an empty one. U206 runs whenever the board is awake: 0.5 V × (1 + 511k/91k) = 3.31 V. U207 is off until the MCU raises MODEM_EN for the daily sync: 0.5 V × (1 + 680k/100k) = 3.9 V. Wait for MODEM_PG before pressing the modem's PWRKEY.</figcaption>
+      </figure>
+      <h3>Main 3.3 V</h3>
+      {{parts:p_3v3}}
+      <h3>Modem 3.9 V</h3>
+      {{parts:p_modem}}
+    </section>
+
+    <section id="p-mcu">
+      <div class="sec-head"><div class="eyebrow">Sheet ports</div><h2>Power signals to the ESP32-S3 and other sheets</h2></div>
+      <div class="prose">
+        <p>These nets leave the power sheet. GND and VBAT_SW are shared with the audio sheet; the GPIO numbers are proposals until the pin map (H0-06) is done.</p>
+      </div>
+      {{powerports}}
+      <details>
+        <summary>Test points</summary>
+        {{parts:p_test}}
+      </details>
+    </section>
+
+    <section id="p-parts">
+      <div class="sec-head"><div class="eyebrow">Ordering</div><h2>Power parts list</h2></div>
+      <div class="bomtool" data-sheet="power">
+        <div class="tools">
+          <input class="bom-q" type="search" placeholder="Search value, part number or reference" aria-label="Search power parts">
+          <span class="count bom-count"></span>
+        </div>
+        <div class="tw"><table><thead><tr><th>Refs</th><th>Qty</th><th>Value</th><th>Description</th><th>Package</th><th>Part number</th><th>LCSC</th><th>Notes</th></tr></thead><tbody class="bom-body"></tbody></table></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===================================================== MCU -->
+  <div class="panel" id="tab-mcu" role="tabpanel" aria-labelledby="t-mcu">
+    <section>
+      <div class="sec-head"><div class="eyebrow">Section</div><h2>MCU</h2></div>
+      {{comp:mcu}}
+      <ul class="notes">
+        <li><b>Module:</b> 16 MB quad flash, 8 MB octal PSRAM, Wi-Fi and BLE on a PCB antenna. Supply 3.0–3.6 V.</li>
+        <li><b>Temperature:</b> the R8 variants are rated −40 to +65 °C ambient, lower than other variants. The enclosure must keep its inside air at or below 65 °C in full sun (F7-01).</li>
+        <li><b>Antenna keep-out:</b> keep copper and the LTE antenna away from the module's antenna end; it is used for the Wi-Fi setup hotspot.</li>
+        <li><b>Pin map:</b> the full allocation is backlog item H0-06. The table below shows every GPIO the audio, power, LTE and storage sections use (proposed 2026-10-23). To fit the microSD bus, the UART0 console was given up: programming, console and debug all run over the built-in USB-Serial-JTAG on GPIO19/20.</li>
+      </ul>
+    </section>
+    <section>
+      <div class="sec-head"><div class="eyebrow">Pins</div><h3>Reserved and allocated GPIOs</h3></div>
+      <div class="tw"><table>
+        <thead><tr><th>GPIO</th><th>Use</th><th>Section</th></tr></thead>
+        <tbody>
+          <tr class="dnp"><td class="ref">0, 46</td><td>Strapping pins, left free. Bring GPIO0 to a pad or button: low at reset forces USB download for recovery</td><td>—</td></tr>
+          <tr><td class="ref">1</td><td><span class="n">BATT_ADC</span> (ADC1_CH0)</td><td>Power</td></tr>
+          <tr><td class="ref">2</td><td><span class="n">SOLAR_ADC</span> (ADC1_CH1)</td><td>Power</td></tr>
+          <tr class="dnp"><td class="ref">3</td><td>Spare. A strapping pin only if the JTAG-select eFuse is burned: never burn it</td><td>—</td></tr>
+          <tr><td class="ref">4</td><td><span class="n">AUD_INT_MCU</span> (optional)</td><td>Audio</td></tr>
+          <tr><td class="ref">5</td><td><span class="n">MIC1_DC_SENSE</span> (optional, ADC1)</td><td>Audio</td></tr>
+          <tr><td class="ref">6</td><td><span class="n">PREAMP_EN</span></td><td>Audio</td></tr>
+          <tr><td class="ref">7</td><td><span class="n">AUDIO_EN</span></td><td>Audio</td></tr>
+          <tr><td class="ref">8</td><td><span class="n">AUD_SCL</span></td><td>Audio</td></tr>
+          <tr><td class="ref">9</td><td><span class="n">AUD_MCLK</span> (optional)</td><td>Audio</td></tr>
+          <tr><td class="ref">10</td><td><span class="n">PWR_HOLD</span>: drive high first thing at boot</td><td>Power</td></tr>
+          <tr><td class="ref">11</td><td><span class="n">MODEM_EN</span></td><td>Power, LTE</td></tr>
+          <tr><td class="ref">12</td><td><span class="n">MODEM_PG</span></td><td>Power, LTE</td></tr>
+          <tr><td class="ref">13, 14</td><td><span class="n">SYS_SDA</span>, <span class="n">SYS_SCL</span> (RTC)</td><td>RTC</td></tr>
+          <tr><td class="ref">15, 16, 17</td><td><span class="n">AUD_BCK</span>, <span class="n">AUD_LRCK</span>, <span class="n">AUD_DOUT</span></td><td>Audio</td></tr>
+          <tr><td class="ref">18</td><td><span class="n">AUD_SDA</span></td><td>Audio</td></tr>
+          <tr class="dnp"><td class="ref">19, 20</td><td>USB D−, D+: programming, console and debug (built-in USB-Serial-JTAG)</td><td>Storage &amp; USB</td></tr>
+          <tr><td class="ref">21</td><td><span class="n">LTE_PWRKEY</span></td><td>LTE</td></tr>
+          <tr class="dnp"><td class="ref">35, 36, 37</td><td>Octal PSRAM: not available on N16R8</td><td>—</td></tr>
+          <tr><td class="ref">38</td><td><span class="n">LTE_STATUS</span> (pull-down)</td><td>LTE</td></tr>
+          <tr><td class="ref">39, 40</td><td><span class="n">LTE_TX</span>, <span class="n">LTE_RX</span> (UART1; pull-up on RX). These are the external JTAG pins; debug runs over USB instead</td><td>LTE</td></tr>
+          <tr><td class="ref">41, 42</td><td><span class="n">LTE_RTS</span>, <span class="n">LTE_CTS</span></td><td>LTE</td></tr>
+          <tr><td class="ref">43</td><td><span class="n">STATUS_LED</span>. Was UART0 TX: flickers with the boot ROM log, which is harmless for an LED</td><td>Storage &amp; USB</td></tr>
+          <tr><td class="ref">44</td><td><span class="n">SD_D0</span>. Was UART0 RX: an input at boot, so the card cannot be driven before firmware runs</td><td>Storage &amp; USB</td></tr>
+          <tr><td class="ref">45</td><td><span class="n">SD_PWR_EN</span>, external 100 kΩ pull-down. Strapping pin: low at boot selects the 3.3 V flash supply, and low also means card power off</td><td>Storage &amp; USB</td></tr>
+          <tr><td class="ref">47, 48</td><td><span class="n">SD_CLK</span>, <span class="n">SD_CMD</span> (3.3 V on N16R8)</td><td>Storage &amp; USB</td></tr>
+          <tr><td class="ref">—</td><td>Still open: optional VBUS sense for the wake reason (GPIO3 spare)</td><td>USB</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+  </div>
+
+  <!-- ===================================================== RTC -->
+  <div class="panel" id="tab-rtc" role="tabpanel" aria-labelledby="t-rtc">
+    <section>
+      <div class="sec-head"><div class="eyebrow">Section</div><h2>RTC and wake</h2></div>
+      {{comp:rtc}}
+      <div class="tw"><table>
+        <thead><tr><th>Wake source</th><th>How it is set</th><th>What the MCU does</th></tr></thead>
+        <tbody>
+          <tr><td><b>Alarm 1</b> (A1F flag)</td><td>One-shot, rewritten by the MCU before every power-down</td><td>Run the next scheduled job, e.g. record the 10-minute slot</td></tr>
+          <tr><td><b>Alarm 2</b> (A2F flag)</td><td>Standing daily match on hour and minute, UTC; never needs touching</td><td>Daily LTE session: heartbeat, config, clock sync</td></tr>
+          <tr><td><b>Wake button</b> (SW201)</td><td>Pulls the latch low directly</td><td>Commissioning, Wi-Fi hotspot, status LED. No alarm flag set means a button or USB wake</td></tr>
+          <tr><td><b>USB present</b></td><td>VBUS turns on Q209 through R225/R226</td><td>USB service. USB does not charge the battery</td></tr>
+        </tbody>
+      </table></div>
+      <ul class="notes">
+        <li><b>Bus:</b> I²C address 0x68 on the system bus (SYS_SDA/SYS_SCL, 4.7 kΩ pull-ups to 3V3), alone on it for now. The audio ADC has its own bus. The fuel gauge was dropped on 2026-10-23.</li>
+        <li><b>INT/SQW:</b> active-low, open-drain, pulled up to the always-on rail and fed to the wake latch. Write <code>INTCN = 1</code> and <code>BBSQW = 0</code> at every boot so it never outputs a square wave.</li>
+        <li><b>Order of events at wake:</b> the MCU asserts PWR_HOLD first, then reads and clears A1F/A2F. Clearing the flag first would drop the INT line and cut its own power.</li>
+        <li><b>Accuracy:</b> ±5 ppm, about 0.43 s/day. The daily LTE sync corrects it (F2-02).</li>
+        <li><b>Supply current:</b> up to 130 µA from VCC in standby, most of the board's sleep current. The VBAT pin runs only the 1 Hz square wave, not alarms, so VCC stays on the keep-alive rail. The CR1220 on VBAT keeps the time if the main battery runs flat.</li>
+        <li><b>Bench checks before schematic freeze</b> (gate G1): alarm INT with the main rail off, A1 and A2 firing together, late or missing PWR_HOLD, brownout near VPF, and leakage into unpowered rails.</li>
+        <li>Full decision: <code>docs/adrs/ADR-002-rtc-selection.md</code>.</li>
+      </ul>
+    </section>
+
+    <section id="r-latch">
+      <div class="sec-head"><div class="eyebrow">Power sheet, block 5</div><h2>RTC and wake latch</h2></div>
+      <figure>
+        <div class="sch">{{fig:p_latch}}</div>
+        <figcaption>Any of four things pulls WAKE_N low and turns on the main switch Q210: the RTC alarm (through the Q206 inverter and Q207), PWR_HOLD from the MCU (Q208), USB power (Q209) or the wake button SW201. R228 and C218 keep Q210 off by default and slow its turn-on, and C219 holds VBAT_SW up during the inrush. SW202 disconnects the latch for shipping; the RTC keeps running. With 1 MΩ for R219, R222 and R223 the latch draws about 5 µA. C216 and C217 decouple U205's VCC and VBAT.</figcaption>
+      </figure>
+      <h3>RTC</h3>
+      {{parts:p_rtc}}
+      <h3>Wake latch and main switch</h3>
+      {{parts:p_latch}}
+    </section>
+  </div>
+
+  <!-- ===================================================== AUDIO -->
+  <div class="panel" id="tab-audio" role="tabpanel" aria-labelledby="t-audio">
+    <section>
+      <div class="sec-head"><div class="eyebrow">Section</div><h2>Audio front end</h2></div>
+      {{comp:audio}}
+      <div class="lede">
+        <p>This section is designed to pin level ({{nparts:audio}} parts, {{nfit:audio}} fitted, {{nnets:audio}} nets). Capture it one block at a time below. Each drawing shows how a block is wired; the table under it is generated from <code>hardware/audio-frontend/audio-frontend-netlist.csv</code>, and if the two disagree, the table is right.</p>
+        <div class="legend">
+          <span><i></i>wire / fitted part</span>
+          <span><i class="dash"></i>not fitted (DNP): place the footprint, leave the part off</span>
+          <span><i class="net">NET_NAME</i> net label, use exactly as written</span>
+          <span><i class="an"></i>analog pin on the ADC</span>
+        </div>
+      </div>
+      <nav class="sub" aria-label="Audio blocks">
+        <ol>
+          <li><a href="#a-overview">Signal flow</a></li>
+          <li><a href="#a-power">Supply</a></li>
+          <li><a href="#a-adc">ADC pin map</a></li>
+          <li><a href="#a-clockio">Clock and MCU link</a></li>
+          <li><a href="#a-mic">Mic input and bias</a></li>
+          <li><a href="#a-direct">Direct path</a></li>
+          <li><a href="#a-presupply">Preamp supply</a></li>
+          <li><a href="#a-preamp">Preamp and high-pass</a></li>
+          <li><a href="#a-mic2">Mic 2 option</a></li>
+          <li><a href="#a-mcu">ESP32 signals</a></li>
+          <li><a href="#a-parts">Parts list</a></li>
+          <li><a href="#nets">Net finder</a></li>
+        </ol>
+      </nav>
+    </section>
+
+    <section id="a-overview">
+      <div class="sec-head"><div class="eyebrow">Signal flow</div><h2>Audio overview</h2></div>
+      <figure>
+        <div class="sch">{{fig:overview}}</div>
+        <figcaption>Mic 1 feeds two paths at once: straight into ADC input pair VIN1 (left channel), and through the preamp and switchable high-pass into VIN3 (right channel). Firmware picks one, or records both for the noise comparison. The ADC drives the I²S clocks; the ESP32 only listens.</figcaption>
+      </figure>
+    </section>
+
+    <section id="a-power">
+      <div class="sec-head"><div class="eyebrow">Block 1</div><h2>Audio supply</h2></div>
+      <figure>
+        <div class="sch">{{fig:power}}</div>
+        <figcaption>U101 makes the clean 3.3 V for the whole audio section from the switched battery rail. C101 and C102 are 10 µF (25 V, 0805) at its pins: TI asks for 1 µF each, and ceramics lose about half their value at working voltage, so 10 µF leaves a wide margin and smooths buck-boost ripple on VBAT_SW. FB101 splits off the ADC's digital supply. Pin decoupling caps at the ADC are listed in the ADC pin map.</figcaption>
+      </figure>
+      {{parts:power}}
+    </section>
+
+    <section id="a-adc">
+      <div class="sec-head"><div class="eyebrow">Block 2</div><h2>ADC pin map (U102 PCM1863)</h2></div>
+      <figure>
+        <div class="sch">{{fig:adc}}</div>
+        <figcaption>Every pin of U102 with its net and the parts attached to it. Pins 1–8 and 27–30 are the analog side: lay them out facing the mic connector and preamp, with digital pins 9–26 toward the ESP32. Mic 2 pins stay unconnected unless mic 2 is fitted.</figcaption>
+      </figure>
+      {{parts:adc}}
+    </section>
+
+    <section id="a-clockio">
+      <div class="sec-head"><div class="eyebrow">Block 3</div><h2>Clock and MCU link</h2></div>
+      <figure>
+        <div class="sch">{{fig:clockio}}</div>
+        <figcaption>The 24.576 MHz crystal makes the ADC the I²S clock master. 33 Ω series resistors sit at the ADC end of the three I²S lines. The I²C pull-ups go to the audio supply, so the bus goes dead with the ADC and cannot power it through its pins.</figcaption>
+      </figure>
+      {{parts:clockio}}
+    </section>
+
+    <section id="a-mic">
+      <div class="sec-head"><div class="eyebrow">Block 4</div><h2>Mic 1 input and bias</h2></div>
+      <figure>
+        <div class="sch">{{fig:mic}}</div>
+        <figcaption>The capsule is biased from AVDD_A through a 1.5 Hz filter (R116, C114) and a 2.7 kΩ load (R117). MIC1_RET joins board ground only through R114 at the connector, and it doubles as the cold reference for the direct path. R113 ties the EM273's source pin to the return, so 2-wire and 3-wire capsules both fit.</figcaption>
+      </figure>
+      {{parts:mic}}
+    </section>
+
+    <section id="a-direct">
+      <div class="sec-head"><div class="eyebrow">Block 5</div><h2>Direct path</h2></div>
+      <figure>
+        <div class="sch">{{fig:direct}}</div>
+        <figcaption>The mic signal and its return go through matched C0G capacitors and 47 Ω resistors into ADC pins 3 and 1. The coupling caps and the ADC's input resistance form a fixed ≈36 Hz high-pass.</figcaption>
+      </figure>
+      {{parts:direct}}
+    </section>
+
+    <section id="a-presupply">
+      <div class="sec-head"><div class="eyebrow">Block 6</div><h2>Preamp supply and mid-rail</h2></div>
+      <figure>
+        <div class="sch">{{fig:presupply}}</div>
+        <figcaption>PREAMP_EN switches the preamp's 3.3 V through Q101/Q102, with R129 and C125 filtering it. R130/R131 make the 1.65 V mid-rail the op-amp inputs sit at.</figcaption>
+      </figure>
+      {{parts:presupply}}
+    </section>
+
+    <section id="a-preamp">
+      <div class="sec-head"><div class="eyebrow">Block 7</div><h2>Preamp and switched high-pass</h2></div>
+      <figure>
+        <div class="sch">{{fig:preamp}}</div>
+        <figcaption>U103A is a +12 dB non-inverting amplifier (gain set by R122 and R123). Its output reaches ADC pins 30 and 28 through matched coupling parts. U104 can switch R144 (≈100 Hz, the default) or R145 (≈1 kHz) across the pair to raise the high-pass corner; with both open it is ≈36 Hz. U103B, the op-amp's second half, idles at mid-rail through R132 and R133 until mic 2 is fitted.</figcaption>
+      </figure>
+      {{parts:preamp}}
+    </section>
+
+    <section id="a-mic2">
+      <div class="sec-head"><div class="eyebrow">Block 8</div><h2>Mic 2 option (not fitted)</h2></div>
+      <div class="prose">
+        <p>Mic 2 is a copy of mic 1 with different reference designators, wired to the ADC's spare input pairs. Place every footprint so a stereo or hydrophone version needs no new board. Leave the parts off for now.</p>
+        <p><b>Hydrophone build (proposed 2026-11-16):</b> use a hydrophone with a built-in preamp, such as the CRT C57 or HTI-96-MIN. Its low-impedance output goes straight into VIN2 through the direct path; the OPA1662 is not used. Fit J102, FB103, C135, D102, R138, R139, C137, C138, R142, R143 and C139. Leave off the bias parts R140, R141 and C136, R137, and the Mic 2 preamp path.</p>
+        <p>These hydrophones need at least 5 V, which the board does not provide. Power them externally for now, for example from the maker's battery box, and keep J102 pin 2 for a later on-board supply. Check the hydrophone's output DC level first: D102 clamps at 5.5 V and the ADC pins take −1.7 to 5.0 V. Still open: a dual footprint at C137/C138 for 1 µF film, giving ≈ 8 Hz instead of ≈ 36 Hz for baleen whales.</p>
+      </div>
+      {{mic2map}}
+      <details>
+        <summary>Mic 2 parts and their nets</summary>
+        {{parts:mic2}}
+      </details>
+    </section>
+
+    <section id="a-mcu">
+      <div class="sec-head"><div class="eyebrow">Sheet ports</div><h2>Audio signals to the ESP32-S3</h2></div>
+      <div class="prose">
+        <p>These are the only nets that leave the audio sheet. Whenever AUDIO_EN is low, firmware must leave every AUD_* pin as an input with no pull-up.</p>
+      </div>
+      {{ports}}
+      <details>
+        <summary>Test points</summary>
+        {{parts:test}}
+      </details>
+    </section>
+
+    <section id="a-parts">
+      <div class="sec-head"><div class="eyebrow">Ordering</div><h2>Audio parts list</h2></div>
+      <div class="bomtool" data-sheet="audio">
+        <div class="tools">
+          <input class="bom-q" type="search" placeholder="Search value, part number or reference" aria-label="Search audio parts">
+          <div class="seg" role="group" aria-label="Fitted filter">
+            <button type="button" data-fit="all" aria-pressed="true">All</button>
+            <button type="button" data-fit="Y" aria-pressed="false">Fitted</button>
+            <button type="button" data-fit="N" aria-pressed="false">Not fitted</button>
+          </div>
+          <span class="count bom-count"></span>
+        </div>
+        <div class="tw"><table><thead><tr><th>Refs</th><th>Qty</th><th>Value</th><th>Description</th><th>Package</th><th>Part number</th><th>LCSC</th><th>Notes</th></tr></thead><tbody class="bom-body"></tbody></table></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===================================================== LTE -->
+  <div class="panel" id="tab-lte" role="tabpanel" aria-labelledby="t-lte">
+    <section>
+      <div class="sec-head"><div class="eyebrow">Section</div><h2>LTE</h2></div>
+      {{comp:lte}}
+      <div class="tw"><table>
+        <thead><tr><th>Modem</th><th>EG800K-EU (selected)</th><th>A7670G (global alternate)</th></tr></thead>
+        <tbody>
+          <tr><td>Network</td><td class="valc">LTE Cat-1 bis only, no 2G</td><td class="valc">LTE Cat-1 + GSM</td></tr>
+          <tr><td>LTE-FDD bands</td><td class="valc">B1 B3 B5 B7 B8 B20 B28</td><td class="valc">B1 B2 B3 B4 B5 B7 B8 B12 B13 B18 B19 B20 B25 B26 B28 B66</td></tr>
+          <tr><td>Approvals / regions</td><td class="valc">CE, RCM: Europe, Australia, New Zealand</td><td class="valc">Global</td></tr>
+          <tr><td>Package</td><td class="valc">LGA-109, 17.7 × 15.8 × 2.4 mm</td><td class="valc">LCC, 24 × 24 × 2.4 mm</td></tr>
+          <tr><td>Supply</td><td class="valc">3.4–4.3 V</td><td class="valc">3.4–4.2 V</td></tr>
+          <tr><td>Temperature</td><td class="valc">−35 to +75 °C (−40 to +85 °C extended)</td><td class="valc">−30 to +75 °C (−40 to +85 °C extended)</td></tr>
+          <tr><td>USD @100</td><td class="valc">4.83</td><td class="valc">12.30</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout">Only 151 EG800K-EU modules were in stock at LCSC (179 at JLC) on {{snapdate}}. Order prototype quantity early.</div>
+      <ul class="notes">
+        <li><b>Why the EG800K-EU (decided 2026-10-23):</b> once GSM was ruled out, the A7670G's global GSM + LTE coverage was the only thing it offered over this module, at 2.5 times the price and twice the board area. The module has no 2G, so its supply never sees GSM's 2 A bursts. Sites with only 2G coverage get no LTE session (risk R19). For the Americas, the EG800K-LA fits the same footprint.</li>
+        <li><b>Source for the sheet below:</b> Quectel's EG800K-LA Hardware Design V1.0.0 (2024-05-23, preliminary, from the FCC filing). The -LA and -EU are one series with one footprint; check the pin table against the EU manual when Quectel supplies it. The LGA pads sit under the module, so it needs JLC assembly or stencil and reflow, not hand soldering.</li>
+        <li><b>What it does in V1:</b> one session a day. Heartbeat up (≤ 1 KB), configuration down, clock sync. No audio upload (decision D5). Budget ≤ 1 MB per month and ≤ 0.05 Wh per day.</li>
+        <li><b>Supply (ADR-011, decided 2026-10-23):</b> TPS63020 buck-boost at 3.9 V from the switched rail, as on FieldMesh Hub v2: 3×22 µF plus 470 µF bulk, SMAJ5.0A clamp, enable soft-start and power-good to the MCU. Still measure LTE transmit at full power, low cell voltage and in the cold: about 1 A comes from the battery, close to the 1.1 A battery fuse's hold current when warm (risk R02).</li>
+        <li><b>Interface:</b> main UART with RTS/CTS, STATUS and PWRKEY to the ESP32 through a level shifter (the module's I/O is 1.8 V). Firmware needs a Quectel AT driver; FieldMesh has only an A7670G one. The modem domain is switched off outside the sync window.</li>
+        <li><b>RF:</b> U.FL connector to the FPC antenna. Keep the antenna feed and modem away from the microphone input and ADC. LTE transmit never overlaps a recording.</li>
+        <li><b>SIM:</b> nano-SIM holder with ESD protection, drawn below. The SIM plan and operator acceptance per country (e.g. Telstra in Australia) are still open; a solder-down MFF2 SIM would remove the holder from a damp enclosure.</li>
+        <li>GNSS is not needed: site position comes from the phone at commissioning.</li>
+      </ul>
+    </section>
+
+    <section>
+      <div class="lede">
+        <p>The LTE sheet is designed to pin level ({{nparts:lte}} parts, {{nfit:lte}} fitted, {{nnets:lte}} nets). Capture it one block at a time below. Each drawing shows how a block is wired; the table under it is generated from <code>hardware/lte/lte-netlist.csv</code>, and if the two disagree, the table is right. The power-up sequence, firmware notes and open items are in <code>hardware/lte/README.md</code>.</p>
+        <div class="legend">
+          <span><i></i>wire / fitted part</span>
+          <span><i class="dash"></i>not fitted (DNP): place the footprint, leave the part off</span>
+          <span><i class="net">NET_NAME</i> net label, use exactly as written</span>
+        </div>
+      </div>
+      <nav class="sub" aria-label="LTE blocks">
+        <ol>
+          <li><a href="#l-supply">Module supply</a></li>
+          <li><a href="#l-pins">Module pin map</a></li>
+          <li><a href="#l-ctrl">Power key and level shifter</a></li>
+          <li><a href="#l-sim">SIM and antenna</a></li>
+          <li><a href="#l-mcu">ESP32 signals</a></li>
+          <li><a href="#l-parts">Parts list</a></li>
+          <li><a href="#nets">Net finder</a></li>
+        </ol>
+      </nav>
+    </section>
+
+    <section id="l-supply">
+      <div class="sec-head"><div class="eyebrow">Block 1</div><h2>Module supply</h2></div>
+      <figure>
+        <div class="sch">{{fig:l_supply}}</div>
+        <figcaption>VMODEM comes from the 3.9 V buck-boost on the power sheet, which also carries the 470 µF bulk and the SMAJ5.0A clamp. At the module, R301 is a 0 Ω link you can lift to measure current, then C301–C306 follow Quectel's decoupling recipe: a low-ESR 100 µF polymer cap and a 100 nF to 1.8 pF array, smallest value closest to pins 42/43.</figcaption>
+      </figure>
+      {{parts:l_supply}}
+    </section>
+
+    <section id="l-pins">
+      <div class="sec-head"><div class="eyebrow">Block 2</div><h2>Module pin map (U301 EG800K-EU)</h2></div>
+      <figure>
+        <div class="sch">{{fig:l_pins}}</div>
+        <figcaption>Every pad of U301 that connects to something, with its net and where it goes. Left: power, control and service pads (USB and debug UART go to test pads only, for module firmware updates and logs). Right: the main UART and STATUS to the level shifter, and the SIM. All module I/O is 1.8 V.</figcaption>
+      </figure>
+      {{parts:l_pins}}
+    </section>
+
+    <section id="l-ctrl">
+      <div class="sec-head"><div class="eyebrow">Block 3</div><h2>Power key and UART level shifter</h2></div>
+      <figure>
+        <div class="sch">{{fig:l_ctrl}}</div>
+        <figcaption>U302 translates the main UART, RTS/CTS and STATUS between the module's 1.8 V and the ESP32's 3.3 V. Its A side runs from the module's own VDD_EXT, and R304/C307 hold OE low until VDD_EXT has been up for about 9 ms. So whenever the modem is off, every ESP32-side pin is high-impedance and cannot back-power the module. Q301 is the open-collector PWRKEY driver Quectel recommends; R303 keeps it off while the ESP32 boots.</figcaption>
+      </figure>
+      {{parts:l_ctrl}}
+    </section>
+
+    <section id="l-sim">
+      <div class="sec-head"><div class="eyebrow">Block 4</div><h2>SIM and antenna</h2></div>
+      <figure>
+        <div class="sch">{{fig:l_sim}}</div>
+        <figcaption>The SIM follows Quectel's reference: 0 Ω debug links, 33 pF RF filters and a TVS array under 15 pF (D301, 3 pF), all at the holder, plus a 15 kΩ pull-up on data. The module powers the SIM at 1.8 or 3.0 V itself. The antenna feed is a 50 Ω trace through a π match (R310 fitted as 0 Ω, C314/C315 left off until tuning) to the U.FL connector for the FPC antenna.</figcaption>
+      </figure>
+      <h3>SIM</h3>
+      {{parts:l_sim}}
+      <h3>Antenna</h3>
+      {{parts:l_ant}}
+    </section>
+
+    <section id="l-mcu">
+      <div class="sec-head"><div class="eyebrow">Sheet ports</div><h2>LTE signals to the ESP32-S3 and other sheets</h2></div>
+      <div class="prose">
+        <p>VMODEM, 3V3 and GND are shared with the power sheet. The GPIO numbers are proposals until the pin map (H0-06) is done. GPIO39–42 are the ESP32-S3's JTAG pins: they are free because debugging uses the built-in USB-JTAG on GPIO19/20.</p>
+      </div>
+      {{lteports}}
+      <details>
+        <summary>Service pads: forced download, USB and debug UART</summary>
+        {{parts:l_test}}
+      </details>
+    </section>
+
+    <section id="l-parts">
+      <div class="sec-head"><div class="eyebrow">Ordering</div><h2>LTE parts list</h2></div>
+      <div class="bomtool" data-sheet="lte">
+        <div class="tools">
+          <input class="bom-q" type="search" placeholder="Search value, part number or reference" aria-label="Search LTE parts">
+          <div class="seg" role="group" aria-label="Fitted filter">
+            <button type="button" data-fit="all" aria-pressed="true">All</button>
+            <button type="button" data-fit="Y" aria-pressed="false">Fitted</button>
+            <button type="button" data-fit="N" aria-pressed="false">Not fitted</button>
+          </div>
+          <span class="count bom-count"></span>
+        </div>
+        <div class="tw"><table><thead><tr><th>Refs</th><th>Qty</th><th>Value</th><th>Description</th><th>Package</th><th>Part number</th><th>LCSC</th><th>Notes</th></tr></thead><tbody class="bom-body"></tbody></table></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===================================================== STORAGE & USB -->
+  <div class="panel" id="tab-io" role="tabpanel" aria-labelledby="t-io">
+    <section>
+      <div class="sec-head"><div class="eyebrow">Section</div><h2>Storage and USB</h2></div>
+      {{comp:io}}
+      <ul class="notes">
+        <li><b>microSD bus (ADR-012, decided 2026-10-23):</b> SD mode, 1-bit: <span class="n">SD_CLK</span> GPIO47, <span class="n">SD_CMD</span> GPIO48, <span class="n">SD_D0</span> GPIO44, routed through the ESP32-S3 GPIO matrix. About 1–2 MB/s, 10–20 times the 96 KB/s audio needs, on fewer pins than SPI. Pull CMD, D0 and the unused D1–D3 up to the card supply with 10 kΩ; D3 high keeps the card out of SPI mode.</li>
+        <li><b>Card supply:</b> a load switch with an active-high enable on <span class="n">SD_PWR_EN</span> (GPIO45) and a 100 kΩ pull-down, so the card is off until firmware turns it on and can be power-cycled if it hangs. The same pull-down holds GPIO45's strap at the 3.3 V flash setting during reset. Set the SD pins to inputs or low before switching the card off, or the card is powered through its pins. Switch part still to choose.</li>
+        <li><b>Status LED:</b> on GPIO43 (formerly UART0 TX), wired to GND through a resistor. It flickers with the boot ROM log, which is harmless.</li>
+        <li><b>Card size:</b> 128 GB lasts about 150 days and 256 GB about 300 days at 16-bit, 48 kHz, 1 minute in 10. Cards above 32 GB come formatted exFAT; firmware decides between exFAT support and FAT32.</li>
+        <li><b>Swap in the field:</b> the card must be reachable without opening the main seal (F5-06). A power cut or card removal must lose at most the file being written (F3-02).</li>
+        <li><b>USB-C:</b> native USB for programming and service only; it does not charge the battery (decision 2026-10-23). Needs 5.1 kΩ CC pull-downs, ESD protection and a VBUS sense line into the wake logic.</li>
+        <li><b>Copying data over USB is not practical:</b> the ESP32-S3 USB is full-speed (12 Mbit/s), so 25 GB would take over 7 hours. Card swap is the way to collect audio.</li>
+      </ul>
+    </section>
+  </div>
+
+  <!-- ===================================================== NETS -->
+  <div class="panel" id="tab-nets" role="tabpanel" aria-labelledby="t-nets">
+    <section id="nets">
+      <div class="sec-head"><div class="eyebrow">Checking your capture</div><h2>Net finder</h2></div>
+      <div class="prose"><p>Every net on the audio, power and LTE sheets ({{nnets}} nets). Type a net or a reference to see everything on that net; use it to check each net in EasyEDA after you draw it. A net name used on more than one sheet is one net: {{nshared}}. Struck-through pins belong to parts that are not fitted. Pins marked NC in the netlists are left unconnected and are not listed.</p></div>
+      <div class="tools">
+        <input id="net-q" type="search" placeholder="e.g. AIN3P_C, R144 or MPPT" aria-label="Search nets">
+        <div class="seg" role="group" aria-label="Sheet filter" id="net-sheet">
+          <button type="button" data-sheet="all" aria-pressed="true">All sheets</button>
+          <button type="button" data-sheet="audio" aria-pressed="false">Audio</button>
+          <button type="button" data-sheet="power" aria-pressed="false">Power</button>
+          <button type="button" data-sheet="lte" aria-pressed="false">LTE</button>
+        </div>
+        <span class="count" id="net-count"></span>
+      </div>
+      <div class="tw"><table><thead><tr><th>Net</th><th>Sheet</th><th>Pins on this net</th></tr></thead><tbody id="net-body"></tbody></table></div>
+    </section>
+  </div>
+
+  <footer class="foot">
+    <p>Generated by <code>hardware/tools/build_guide.py</code> from <code>specs/lcsc-orderable-{{snapdate}}.csv</code> and the audio, power and LTE netlists and BOMs. Run <code>python3 hardware/tools/build_guide.py</code> after editing any of them.</p>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var NETS = {{netjson}};
+  var BOM = {{bomjson}};
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return {"&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;"}[c]; }); }
+
+  /* tabs */
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+  var names = tabs.map(function (t) { return t.getAttribute("data-tab"); });
+  function show(name, target) {
+    tabs.forEach(function (t) {
+      var on = t.getAttribute("data-tab") === name;
+      t.setAttribute("aria-selected", on ? "true" : "false");
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById("tab-" + t.getAttribute("data-tab")).hidden = !on;
+    });
+    try { history.replaceState(null, "", "#" + (target || name)); } catch (e) {}
+    if (target) {
+      var el = document.getElementById(target);
+      if (el) el.scrollIntoView();
+    }
+  }
+  function panelOf(id) {
+    var el = document.getElementById(id);
+    var p = el && el.closest && el.closest(".panel");
+    return p ? p.id.slice(4) : null;
+  }
+  function fromHash() {
+    var h = (location.hash || "").slice(1);
+    if (names.indexOf(h) !== -1) show(h);
+    else if (h && panelOf(h)) show(panelOf(h), h);
+    else show("overview");
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener("click", function () { show(t.getAttribute("data-tab")); });
+    t.addEventListener("keydown", function (e) {
+      var d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+      if (!d) return;
+      var n = tabs[(i + d + tabs.length) % tabs.length];
+      n.focus(); show(n.getAttribute("data-tab"));
+    });
+  });
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest('a[href^="#"]');
+    if (!a) return;
+    var h = a.getAttribute("href").slice(1);
+    if (names.indexOf(h) !== -1) { e.preventDefault(); show(h); window.scrollTo(0, 0); }
+    else if (h && panelOf(h)) { e.preventDefault(); show(panelOf(h), h); }
+  });
+  window.addEventListener("hashchange", fromHash);
+  fromHash();
+
+  /* parts lists, one per sheet */
+  Array.prototype.forEach.call(document.querySelectorAll(".bomtool"), function (box) {
+    var data = BOM[box.getAttribute("data-sheet")] || [];
+    var q = box.querySelector(".bom-q");
+    var segs = box.querySelectorAll(".seg button");
+    var fitMode = "all";
+    function draw() {
+      var t = q.value.trim().toLowerCase();
+      var rows = data.filter(function (r) {
+        if (fitMode !== "all" && r.fit !== fitMode) return false;
+        if (!t) return true;
+        return [r.designators, r.value, r.description, r.suggested_mpn, r.lcsc, r.notes].join(" ").toLowerCase().indexOf(t) !== -1;
+      });
+      box.querySelector(".bom-body").innerHTML = rows.map(function (r) {
+        var dn = r.fit === "N";
+        return "<tr class='" + (dn ? "dnp" : "") + "'><td class='ref'>" + esc(r.designators).replace(/ /g, "<br>") +
+          (dn ? " <span class='tag'>DNP</span>" : "") + "</td><td>" + esc(r.qty) + "</td><td class='valc'>" + esc(r.value) +
+          "</td><td>" + esc(r.description) + "</td><td>" + esc(r.package) + "</td><td class='valc'>" + esc(r.suggested_mpn) +
+          "</td><td class='lc'>" + (r.lcsc ? esc(r.lcsc) : "<span class='pm'>pick in EasyEDA</span>") + "</td><td class='nt'>" + esc(r.notes) + "</td></tr>";
+      }).join("") || "<tr><td colspan='8'>No parts match. Clear the search" + (segs.length ? " or switch the filter to All" : "") + ".</td></tr>";
+      var n = rows.reduce(function (s, r) { return s + Number(r.qty); }, 0);
+      box.querySelector(".bom-count").textContent = rows.length + " lines · " + n + " parts";
+    }
+    q.addEventListener("input", draw);
+    Array.prototype.forEach.call(segs, function (b) {
+      b.addEventListener("click", function () {
+        fitMode = b.getAttribute("data-fit");
+        Array.prototype.forEach.call(segs, function (o) { o.setAttribute("aria-pressed", o === b ? "true" : "false"); });
+        draw();
+      });
+    });
+    draw();
+  });
+
+  /* net finder */
+  var nq = document.getElementById("net-q");
+  var sheetMode = "all";
+  var nsegs = document.querySelectorAll("#net-sheet button");
+  function drawNets() {
+    var q = nq.value.trim().toLowerCase();
+    var rows = NETS.filter(function (n) {
+      if (sheetMode !== "all" && n.sheets.indexOf(sheetMode) === -1) return false;
+      if (!q) return true;
+      if (n.net.toLowerCase().indexOf(q) !== -1) return true;
+      return n.conn.some(function (c) { return c.ref.toLowerCase() === q; });
+    });
+    document.getElementById("net-body").innerHTML = rows.map(function (n) {
+      return "<tr><td class='n'>" + esc(n.net) + "</td><td class='nt'>" + esc(n.sheets.join(", ")) + "</td><td><div class='conn'>" + n.conn.map(function (c) {
+        return "<span class='" + (c.fit === "N" ? "off" : "") + "'>" + esc(c.ref) + "." + esc(c.pin) +
+          (c.name && c.name !== c.pin ? " " + esc(c.name) : "") + "</span>";
+      }).join("") + "</div></td></tr>";
+    }).join("") || "<tr><td colspan='3'>No net or reference matches that. Check the spelling, e.g. AIN3P_C, R144 or MPPT.</td></tr>";
+    document.getElementById("net-count").textContent = rows.length + " of " + NETS.length + " nets";
+  }
+  nq.addEventListener("input", drawNets);
+  Array.prototype.forEach.call(nsegs, function (b) {
+    b.addEventListener("click", function () {
+      sheetMode = b.getAttribute("data-sheet");
+      Array.prototype.forEach.call(nsegs, function (o) { o.setAttribute("aria-pressed", o === b ? "true" : "false"); });
+      drawNets();
+    });
+  });
+  drawNets();
+})();
+</script>
