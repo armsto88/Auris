@@ -49,7 +49,7 @@ Recording dominates. The ESP32-S3 capture power is the main lever on panel and b
 - **Tilt:** winter noon sun elevation at 52°N is ~15°. A near-vertical south-facing panel (enclosure front rather than lid) outperforms a flat one in winter and sheds rain and leaf litter.
 - **Shade:** deciduous canopy is leafless in December, so the winter open-sky case and a summer full-canopy case may be of similar severity. Conifer stands need the cabled panel. Measure, do not assume.
 - **Battery:** ≥ 10 days of DRM-1 with zero harvest at 0 °C → ~10 Wh usable → ~15 Wh nominal after 80 % usable depth and cold derating. **1S2P 18650** (~21.6 Wh at 3,000 mAh) meets this with margin and keeps the 1S charger architecture.
-- **Cold:** Li-ion must not charge below 0 °C, so frosty days harvest nothing. The TMP390A2 cut-out (ADR-007) trips at 0 °C and releases at +5 °C; FieldMesh Node v4's +5 °C would block most December charging here. The battery buffer and F4-03 cover cold spells.
+- **Cold:** Li-ion must not charge below 0 °C, so frosty days harvest nothing. The TMP390A2 cut-out (ADR-007) trips at **+5 °C** and releases at +10 °C (owner decision 2026-11-17: with the TMP390's ±2.5 °C accuracy a 0 °C setting could charge down to −2.5 °C). That blocks more December charging at 50–56°N than the 0 °C setting assumed earlier, so the battery buffer and F4-03 carry more of the winter; re-check F4-01 against the measured winter harvest.
 
 ## Headline requirement
 

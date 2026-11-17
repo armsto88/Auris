@@ -34,7 +34,7 @@ Measure: absolute sensitivity, self-noise, saturation and clipping at intended s
 | Function | Current part/topology | Status | Mandatory decision |
 |---|---|---|---|
 | Cell | FieldMesh Node v4 pack: protected 1S2P 18650, ≈ 5200 mAh, ≥ 600 mA charge, ≥ 1.5 A discharge, JST PH lead | SELECTED concept (2026-10-23, ADR-022) | Pack supply and protection limits; keyed connector, polarity check per batch |
-| Solar charger | `CN3791` `C154992` + `TMP390A2` `C5219772` cut-out (FieldMesh Node v4 circuit) | SELECTED concept (2026-10-23, ADR-007) | Set MPPT divider from the real panel; cold trip set to 0 °C (R209); night leakage; no USB charging |
+| Solar charger | `CN3791` `C154992` + `TMP390A2` `C5219772` cut-out (FieldMesh Node v4 circuit) | SELECTED concept (2026-10-23, ADR-007) | Set MPPT divider from the real panel (6 V-class panels only); cold trip +5 °C (R209 18.7 kΩ, owner decision 2026-11-17); L201 47 µH; night leakage; no USB charging |
 | Main regulated rail | `TPS63802DLAR` `C2845237` (3.3 V buck-boost, Node v4) | SELECTED concept (2026-10-23, ADR-008) | Efficiency, Wi-Fi load transients at low cell voltage, sleep-path backfeed |
 | Audio supply | `TPS7A2033PDBVR` `C2862740` | CANDIDATE | PSRR/noise under worst LTE/DC-DC scenarios |
 | Battery state | 220 kΩ/100 kΩ divider on `VBAT_SW` → ESP32-S3 ADC1; `MAX17048G+T10` dropped | SELECTED concept (2026-10-23, ADR-027) | ADC calibration per unit; voltage-to-charge table for the pack |
@@ -55,7 +55,7 @@ GNSS is **optional** in the figure and has no selected GNSS device/antenna path.
 ## 6. USB, storage and I/O
 
 - USB-C receptacle candidate `HC-TYPE-C-16P-01A` `C2894897` for programming and service only; it does not charge the battery (2026-10-23). Add CC network, USB ESD, VBUS sense and input protection.
-- microSD push-push holder candidate `TF PUSH` `C393941`. Bus: SD mode 1-bit on GPIO47 (CLK), 48 (CMD), 44 (D0), card power enable on GPIO45 with a pull-down (ADR-012, 2026-10-23); card detect still to decide.
+- microSD push-push holder candidate `TF PUSH` `C393941`. Bus: SD mode 1-bit on GPIO47 (CLK, 33 Ω series), 48 (CMD), 44 (D0), card power enable on GPIO45 with a pull-down (ADR-012, 2026-10-23); card detect on GPIO3 (owner decision 2026-11-17).
 - Prefer switchable/resettable microSD supply and buffered writes; validate operation when a card is absent, full, slow, removed mid-write or corrupted.
 - Provision clear test pads for power rails, PWR_HOLD, RTC INT, I²C, I²S, modem UART/status and USB.
 - Reserve debug/log/service access without forcing destructive enclosure opening in routine field recovery, subject to ingress engineering.
@@ -89,3 +89,7 @@ GNSS is **optional** in the figure and has no selected GNSS device/antenna path.
 - **Audio ADC ordering alternative:** The later discussion identified **PCM1863DBTR / LCSC C529569** as the alternate ordering/package suffix to the draft's PCM1863DBT / C1520794. The converter family remains a **candidate pending sourcing, schematic, and audio tests**; this is not a verified pin-by-pin substitution or current stock assertion.
 - **Main-board reuse and acoustic-head variants:** Retain the option of an audible-band acoustic head for V1 and a separately engineered ultrasonic front end for a later bat-oriented variant. An ESP32-S3 plus PCM1863/electret audible design cannot be presented as a proven ultrasonic solution.
 - **Fixed site position:** Prefer mobile-phone location captured at BLE setup; GNSS is not a core fixed-site requirement.
+
+## Schematic review 2026-11-17
+
+All four sheets were reviewed against manufacturer datasheets and re-captured: [`hardware/review/2026-11-17-schematic-review.md`](../hardware/review/2026-11-17-schematic-review.md). Per-part datasheet notes are in [`hardware/datasheets/`](../hardware/datasheets/README.md). Open hardware decisions from it: modem procurement, the N16R8's +65 °C rating (PSRAM ECC or another module variant), microSD ESD, extra test pads and the CR1220 cell part.
