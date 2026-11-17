@@ -1,0 +1,16 @@
+# generated device artifacts, secrets and workstation noise
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+secrets/
+__pycache__/
+.DS_Store
+*.swp
+build/
+dist/
+.vscode/
+# Recordings should be stored in designated evidence storage, not automatically committed.
+*.wav
+*.flac

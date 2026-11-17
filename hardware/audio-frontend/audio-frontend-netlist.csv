@@ -1,0 +1,275 @@
+designator,pin,pin_name,net,fit,notes
+U101,1,IN,VBAT_SW,Y,TPS7A2033PDBVR audio LDO
+U101,2,GND,GND,Y,
+U101,3,EN,AUDIO_EN,Y,Internal 500k pull-down keeps LDO off by default
+U101,4,NC,NC,Y,No internal connection
+U101,5,OUT,AVDD_A,Y,
+C101,1,1,VBAT_SW,Y,LDO input cap at U101 pin 1
+C101,2,2,GND,Y,
+C102,1,1,AVDD_A,Y,LDO output cap at U101 pin 5
+C102,2,2,GND,Y,
+FB101,1,1,AVDD_A,Y,Splits PCM digital supply from analog supply
+FB101,2,2,DVDD_A,Y,
+U102,1,VINL2/VIN1M,AIN1M,Y,PCM1863DBTR
+U102,2,VINR2/VIN2M,AIN2M,Y,Mic 2 direct cold; stub to DNP parts only
+U102,3,VINL1/VIN1P,AIN1P,Y,
+U102,4,VINR1/VIN2P,AIN2P,Y,Mic 2 direct hot; stub to DNP parts only
+U102,5,MICBIAS,PCM_MICBIAS,Y,Not used; test point only
+U102,6,VREF,PCM_VREF,Y,
+U102,7,AGND,GND,Y,
+U102,8,AVDD,AVDD_A,Y,
+U102,9,XO,PCM_XO,Y,
+U102,10,XI,PCM_XI,Y,
+U102,11,LDO,PCM_LDO,Y,Internal 1.8 V core LDO output; decoupling only
+U102,12,DGND,GND,Y,
+U102,13,DVDD,DVDD_A,Y,
+U102,14,IOVDD,DVDD_A,Y,3.3 V I/O to match ESP32-S3
+U102,15,SCKI,PCM_SCKI,Y,Grounded via R101; R102 option for MCU MCLK
+U102,16,LRCK,PCM_LRCK,Y,Output in master mode
+U102,17,BCK,PCM_BCK,Y,Output in master mode
+U102,18,DOUT,PCM_DOUT,Y,
+U102,19,GPIO3/INTC,AUD_INT,Y,
+U102,20,GPIO2/INTB/DMCLK,PCM_GPIO2,Y,
+U102,21,GPIO1/INTA/DMIN,FILT_SEL1,Y,Drives U104/U105 2C: analog HPF select bit 1
+U102,22,MISO/GPIO0/DMIN2,FILT_SEL0,Y,Drives U104/U105 1C: analog HPF select bit 0
+U102,23,MOSI/SDA,AUD_SDA,Y,
+U102,24,MC/SCL,AUD_SCL,Y,
+U102,25,MS/AD,GND,Y,I2C address 0x4A
+U102,26,MD0,GND,Y,I2C control mode
+U102,27,VINL4/VIN4M,AIN4M,Y,Mic 2 preamp cold; stub to DNP parts only
+U102,28,VINR4/VIN3M,AIN3M,Y,
+U102,29,VINL3/VIN4P,AIN4P,Y,Mic 2 preamp hot; stub to DNP parts only
+U102,30,VINR3/VIN3P,AIN3P,Y,
+C103,1,1,AVDD_A,Y,At U102 pin 8
+C103,2,2,GND,Y,
+C104,1,1,AVDD_A,Y,At U102 pin 8
+C104,2,2,GND,Y,
+C105,1,1,PCM_VREF,Y,At U102 pin 6
+C105,2,2,GND,Y,
+C106,1,1,PCM_LDO,Y,At U102 pin 11
+C106,2,2,GND,Y,
+C107,1,1,PCM_LDO,Y,At U102 pin 11
+C107,2,2,GND,Y,
+C108,1,1,DVDD_A,Y,At U102 pin 13
+C108,2,2,GND,Y,
+C109,1,1,DVDD_A,Y,At U102 pin 13
+C109,2,2,GND,Y,
+C110,1,1,DVDD_A,Y,At U102 pin 14
+C110,2,2,GND,Y,
+Y101,1,X1,PCM_XI,Y,24.576 MHz
+Y101,2,GND,GND,Y,
+Y101,3,X2,PCM_XO,Y,
+Y101,4,GND,GND,Y,
+C111,1,1,PCM_XI,Y,Crystal load cap
+C111,2,2,GND,Y,
+C112,1,1,PCM_XO,Y,Crystal load cap
+C112,2,2,GND,Y,
+R101,1,1,PCM_SCKI,Y,
+R101,2,2,GND,Y,
+R102,1,1,AUD_MCLK,N,Fallback: ESP32 drives MCLK into SCKI (remove R101)
+R102,2,2,PCM_SCKI,N,
+R103,1,1,PCM_BCK,Y,Series termination at U102
+R103,2,2,AUD_BCK,Y,
+R104,1,1,PCM_LRCK,Y,Series termination at U102
+R104,2,2,AUD_LRCK,Y,
+R105,1,1,PCM_DOUT,Y,Series termination at U102
+R105,2,2,AUD_DOUT,Y,
+R106,1,1,AUD_SDA,Y,Pull-up to audio-domain rail so the bus is unpowered with the ADC
+R106,2,2,DVDD_A,Y,
+R107,1,1,AUD_SCL,Y,Pull-up to audio-domain rail
+R107,2,2,DVDD_A,Y,
+R108,1,1,AUD_INT,Y,
+R108,2,2,GND,Y,
+R109,1,1,AUD_INT,N,Optional interrupt link to MCU
+R109,2,2,AUD_INT_MCU,N,
+R110,1,1,PCM_GPIO2,Y,Unused PCM GPIO defaults to input
+R110,2,2,GND,Y,
+R111,1,1,FILT_SEL1,Y,Holds HPF switch open until firmware configures GPIO1
+R111,2,2,GND,Y,
+R112,1,1,FILT_SEL0,Y,Holds HPF switch open until firmware configures GPIO0
+R112,2,2,GND,Y,
+J101,1,MIC_OUT,MIC1_OUT_C,Y,Mic 1 connector
+J101,2,MIC_SRC,MIC1_SRC,Y,EM273 source pin; unused by 2-wire EM272Z1
+J101,3,MIC_RET,MIC1_RET,Y,Mic ground return
+J101,4,SHIELD,MIC1_SHLD,Y,Cable shield
+FB102,1,1,MIC1_OUT_C,Y,
+FB102,2,2,MIC1_OUT,Y,
+C113,1,1,MIC1_OUT_C,Y,RF shunt at connector
+C113,2,2,GND,Y,
+D101,1,1,MIC1_OUT_C,Y,Bidirectional ESD at connector
+D101,2,2,GND,Y,
+R113,1,1,MIC1_SRC,Y,Source grounded = 2-wire common-source mode
+R113,2,2,MIC1_RET,Y,
+R114,1,1,MIC1_RET,Y,Only join between mic return and board ground; place at J101
+R114,2,2,GND,Y,
+R115,1,1,MIC1_SHLD,Y,
+R115,2,2,GND,Y,
+R116,1,1,AVDD_A,Y,Mic bias filter R
+R116,2,2,MIC1_BIASF,Y,
+C114,1,+,MIC1_BIASF,Y,Mic bias filter C (non-piezo dielectric)
+C114,2,-,GND,Y,
+R117,1,1,MIC1_BIASF,Y,Mic load resistor (thin film; carries DC)
+R117,2,2,MIC1_OUT,Y,
+R118,1,1,MIC1_OUT,N,Optional mic DC sense
+R118,2,2,MIC1_DC_SENSE,N,
+C115,1,1,MIC1_DC_SENSE,N,
+C115,2,2,GND,N,
+C116,1,1,MIC1_OUT,Y,Direct path coupling (hot)
+C116,2,2,AIN1P_C,Y,
+R119,1,1,AIN1P_C,Y,
+R119,2,2,AIN1P,Y,
+C117,1,1,MIC1_RET,Y,Direct path coupling (cold = mic return)
+C117,2,2,AIN1M_C,Y,
+R120,1,1,AIN1M_C,Y,
+R120,2,2,AIN1M,Y,
+C118,1,1,AIN1P,Y,Differential RF/anti-alias cap at U102 pins 3/1
+C118,2,2,AIN1M,Y,
+C119,1,1,MIC1_OUT,Y,Preamp input coupling
+C119,2,2,PRE1_INP,Y,
+R121,1,1,PRE1_INP,Y,Preamp input bias
+R121,2,2,VMID_PRE,Y,
+U103,1,OUTA,PRE1_OUT,Y,OPA1662AIDR
+U103,2,-INA,PRE1_INN,Y,
+U103,3,+INA,PRE1_INP,Y,
+U103,4,V-,GND,Y,
+U103,5,+INB,PRE2_INP,Y,
+U103,6,-INB,PRE2_INN,Y,
+U103,7,OUTB,PRE2_OUT,Y,
+U103,8,V+,AVDD_PRE,Y,
+R122,1,1,PRE1_OUT,Y,Rf (gain 4)
+R122,2,2,PRE1_INN,Y,
+C120,1,1,PRE1_OUT,Y,Feedback HF roll-off
+C120,2,2,PRE1_INN,Y,
+R123,1,1,PRE1_INN,Y,Rg (gain 4)
+R123,2,2,PRE1_CG,Y,
+C121,1,+,PRE1_CG,Y,Sets DC gain to 1 (non-piezo dielectric)
+C121,2,-,GND,Y,
+C122,1,1,PRE1_OUT,Y,Preamp path coupling (hot)
+C122,2,2,AIN3P_C,Y,
+R124,1,1,AIN3P_C,Y,
+R124,2,2,AIN3P,Y,
+C123,1,1,GND,Y,Preamp path coupling (cold = ground at preamp)
+C123,2,2,AIN3M_C,Y,
+R125,1,1,AIN3M_C,Y,
+R125,2,2,AIN3M,Y,
+C124,1,1,AIN3P,Y,Differential RF/anti-alias cap at U102 pins 30/28
+C124,2,2,AIN3M,Y,
+Q101,1,G,PRE_GATE,Y,AO3401A P-FET preamp supply switch; check pin order vs symbol
+Q101,2,S,AVDD_A,Y,
+Q101,3,D,AVDD_PRE_SW,Y,
+R126,1,1,PRE_GATE,Y,Holds Q101 off by default
+R126,2,2,AVDD_A,Y,
+Q102,1,G,PREAMP_EN_G,Y,AO3400A N-FET gate driver; check pin order vs symbol
+Q102,2,S,GND,Y,
+Q102,3,D,PRE_GATE,Y,
+R127,1,1,PREAMP_EN,Y,
+R127,2,2,PREAMP_EN_G,Y,
+R128,1,1,PREAMP_EN_G,Y,Preamp off unless MCU drives high
+R128,2,2,GND,Y,
+R129,1,1,AVDD_PRE_SW,Y,Inrush limit + RC filter with C125
+R129,2,2,AVDD_PRE,Y,
+C125,1,1,AVDD_PRE,Y,
+C125,2,2,GND,Y,
+C126,1,1,AVDD_PRE,Y,At U103 pin 8
+C126,2,2,GND,Y,
+R130,1,1,AVDD_PRE,Y,Mid-rail divider
+R130,2,2,VMID_PRE,Y,
+R131,1,1,VMID_PRE,Y,Mid-rail divider
+R131,2,2,GND,Y,
+C127,+,+,VMID_PRE,Y,Tantalum: + to VMID_PRE
+C127,-,-,GND,Y,
+C128,1,1,VMID_PRE,Y,
+C128,2,2,GND,Y,
+R132,1,1,PRE2_INP,Y,Keeps unused channel B at mid-rail
+R132,2,2,VMID_PRE,Y,
+R133,1,1,PRE2_OUT,Y,Channel B feedback (follower when R134/C130 DNP)
+R133,2,2,PRE2_INN,Y,
+C129,1,1,PRE2_OUT,Y,
+C129,2,2,PRE2_INN,Y,
+R134,1,1,PRE2_INN,N,Fit with mic 2 preamp
+R134,2,2,PRE2_CG,N,
+C130,1,+,PRE2_CG,N,Fit with mic 2 preamp
+C130,2,-,GND,N,
+C131,1,1,MIC2_OUT,N,Mic 2 preamp input coupling
+C131,2,2,PRE2_INP,N,
+C132,1,1,PRE2_OUT,N,Mic 2 preamp path coupling (hot)
+C132,2,2,AIN4P_C,N,
+R135,1,1,AIN4P_C,N,
+R135,2,2,AIN4P,N,
+C133,1,1,GND,N,Mic 2 preamp path coupling (cold)
+C133,2,2,AIN4M_C,N,
+R136,1,1,AIN4M_C,N,
+R136,2,2,AIN4M,N,
+C134,1,1,AIN4P,N,
+C134,2,2,AIN4M,N,
+J102,1,MIC_OUT,MIC2_OUT_C,N,Mic 2 connector (stereo / future option)
+J102,2,MIC_SRC,MIC2_SRC,N,
+J102,3,MIC_RET,MIC2_RET,N,
+J102,4,SHIELD,MIC2_SHLD,N,
+FB103,1,1,MIC2_OUT_C,N,
+FB103,2,2,MIC2_OUT,N,
+C135,1,1,MIC2_OUT_C,N,
+C135,2,2,GND,N,
+D102,1,1,MIC2_OUT_C,N,
+D102,2,2,GND,N,
+R137,1,1,MIC2_SRC,N,
+R137,2,2,MIC2_RET,N,
+R138,1,1,MIC2_RET,N,
+R138,2,2,GND,N,
+R139,1,1,MIC2_SHLD,N,
+R139,2,2,GND,N,
+R140,1,1,AVDD_A,N,
+R140,2,2,MIC2_BIASF,N,
+C136,1,+,MIC2_BIASF,N,
+C136,2,-,GND,N,
+R141,1,1,MIC2_BIASF,N,
+R141,2,2,MIC2_OUT,N,
+C137,1,1,MIC2_OUT,N,Mic 2 direct path coupling (hot)
+C137,2,2,AIN2P_C,N,
+R142,1,1,AIN2P_C,N,
+R142,2,2,AIN2P,N,
+C138,1,1,MIC2_RET,N,Mic 2 direct path coupling (cold)
+C138,2,2,AIN2M_C,N,
+R143,1,1,AIN2M_C,N,
+R143,2,2,AIN2M,N,
+C139,1,1,AIN2P,N,
+C139,2,2,AIN2M,N,
+TP101,1,TP,PCM_MICBIAS,Y,
+TP102,1,TP,AVDD_A,Y,
+TP103,1,TP,DVDD_A,Y,
+TP104,1,TP,AVDD_PRE,Y,
+TP105,1,TP,VMID_PRE,Y,
+TP106,1,TP,MIC1_OUT,Y,Small pad; keep trace stub short
+TP107,1,TP,AUD_BCK,Y,
+TP108,1,TP,AUD_LRCK,Y,
+TP109,1,TP,AUD_DOUT,Y,
+TP110,1,TP,GND,Y,
+TP111,1,TP,PRE1_OUT,Y,
+U104,1,1A,HPF1_S1,Y,SN74LVC2G66 analog HPF switch for preamp path (mic 1)
+U104,2,1B,AIN3M_C,Y,
+U104,3,2C,FILT_SEL1,Y,
+U104,4,GND,GND,Y,
+U104,5,2A,HPF1_S2,Y,
+U104,6,2B,AIN3M_C,Y,
+U104,7,1C,FILT_SEL0,Y,
+U104,8,VCC,AVDD_A,Y,
+C140,1,1,AVDD_A,Y,At U104 pin 8
+C140,2,2,GND,Y,
+R144,1,1,AIN3P_C,Y,Shunt for ~100 Hz default corner (switch 1)
+R144,2,2,HPF1_S1,Y,
+R145,1,1,AIN3P_C,Y,Shunt for ~1 kHz corner (switch 2)
+R145,2,2,HPF1_S2,Y,
+U105,1,1A,HPF2_S1,N,Same switch for mic 2 preamp path; shares FILT_SEL lines
+U105,2,1B,AIN4M_C,N,
+U105,3,2C,FILT_SEL1,N,
+U105,4,GND,GND,N,
+U105,5,2A,HPF2_S2,N,
+U105,6,2B,AIN4M_C,N,
+U105,7,1C,FILT_SEL0,N,
+U105,8,VCC,AVDD_A,N,
+C141,1,1,AVDD_A,N,
+C141,2,2,GND,N,
+R146,1,1,AIN4P_C,N,
+R146,2,2,HPF2_S1,N,
+R147,1,1,AIN4P_C,N,
+R147,2,2,HPF2_S2,N,

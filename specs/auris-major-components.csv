@@ -1,0 +1,21 @@
+subsystem,part,lcsc_code,selection_status,prototype_usd_2026_07_28,qty100_usd_2026_07_28,notes,source
+MCU,ESP32-S3-WROOM-1-N16R8,C2913202,SELECTED_CONCEPT,5.55,4.01,"16MB flash, 8MB PSRAM, native USB and BLE",Preliminary hardware concept / discussion clarifications
+RTC,DS3231MZ+TRL,C107410,SELECTED_CONCEPT,3.54,2.28,Two time-of-day alarms: dynamic one-shot + standing UTC sync window; supersedes RV-3129-C3 concept (ADR-002),ADR-002 2026-10-22; LCSC observed 2026-10-22
+Audio ADC,PCM1863DBTR,C529569,CANDIDATE,5.92,5.58,"Order the DBTR reel C529569 (879 in stock 2026-10-23); July prices in this row are for PCM1863DBT C1520794, which had 1 in stock",Preliminary hardware concept / discussion clarifications
+LTE modem,EG800K-EU (EG800KEULC-I03-SNNSA),C44008839,SELECTED_CONCEPT,,,"Chosen 2026-10-23 (ADR-006), replacing the A7670G: LTE Cat-1 bis, Europe/Australia/NZ bands, no 2G. 4.83 USD @100 on 2026-10-23; July prices were for the A7670G",Owner decision 2026-10-23; LCSC observed 2026-10-23
+Microphone,Primo EM273 or equivalent,External,CANDIDATE,25,25,External supplier cost allowance; audio tests needed,Preliminary hardware concept / discussion clarifications
+Charger / power path,CN3791 + TMP390A2,C154992,SELECTED_CONCEPT,1.63,1.07,"Replaced BQ25185 2026-10-23 (ADR-007, FieldMesh Node v4 circuit); July prices in this row are for the BQ25185",Preliminary hardware concept / discussion clarifications
+Battery,"FieldMesh Node v4 pack (protected 1S2P 18650, ~5200 mAh)",External,SELECTED_CONCEPT,,,"Owner decision 2026-10-23 (ADR-022); >=600 mA charge, >=1.5 A discharge; JST PH lead to J203",Owner decision 2026-10-23
+3.3V main regulator,TPS63802DLAR,C2845237,SELECTED_CONCEPT,1.39,0.96,Replaced TPS63070 2026-10-23 (ADR-008); July prices in this row are for the TPS63070,Preliminary hardware concept / discussion clarifications
+3.3V audio LDO,TPS7A2033PDBVR,C2862740,CANDIDATE,0.18,0.11,Check noise and PSRR on populated PCB,Preliminary hardware concept / discussion clarifications
+Fuel gauge,MAX17048G+T10,C2682616,NOT_CHOSEN,2.16,1.58,Dropped 2026-10-23 (ADR-027): battery voltage via ADC divider on VBAT_SW,Preliminary hardware concept / discussion clarifications
+microSD holder,TF PUSH,C393941,CANDIDATE,0.06,0.05,Verify durability and mechanical sealing,Preliminary hardware concept / discussion clarifications
+Nano SIM holder,SNO-1303-C,C428450,CANDIDATE,0.43,0.25,Needs ESD protection,Preliminary hardware concept / discussion clarifications
+USB-C,HC-TYPE-C-16P-01A,C2894897,CANDIDATE,0.08,0.07,Native USB programming and service only; no charging (2026-10-23),Preliminary hardware concept / discussion clarifications
+Main high-side PFET,AO3401A,C15127,SELECTED_CONCEPT,0.06,0.05,Q210 main switch and Q205 battery reverse FET; FieldMesh wake latch (ADR-003),Preliminary hardware concept / discussion clarifications
+Wake latch NFETs (3),2N7002 (JSCJ),C8545,SELECTED_CONCEPT,,,"Wired-OR wake latch: RTC alarm, PWR_HOLD, USB (ADR-003). AO3400A C20917 stays in the audio preamp switch",Preliminary hardware concept / discussion clarifications
+LTE FPC antenna,TX4G-FPC-8121 or equivalent,C454897,CANDIDATE,0.51,0.29,Regional band/layout validation,Preliminary hardware concept / discussion clarifications
+RF connectors (2),U.FL / IPEX Gen-1,TBD,CANDIDATE,0.12,0.12,Total allowance for two connectors,Preliminary hardware concept / discussion clarifications
+Always-on LDO,TPL720F33-3TR,C2842389,SELECTED_CONCEPT,,,Selected 2026-10-23 (ADR-010); plus CR1220 on DS3231 VBAT,Preliminary hardware concept / discussion clarifications
+LTE supply,TPS63020DSJR (3.9 V),C15483,SELECTED_CONCEPT,,,"Selected 2026-10-23 (ADR-011, FieldMesh Hub v2 rail); pulse test still required",Preliminary hardware concept / discussion clarifications
+Protection and passives,"ESD, bulk capacitors, filters, inductors",Mixed,TBD,,,Not priced in source BOM,Preliminary hardware concept / discussion clarifications

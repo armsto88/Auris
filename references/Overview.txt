@@ -1,0 +1,819 @@
+# Auris — Workflow and Feature Opportunity Overview
+
+## 1. Product vision
+
+Auris is a configurable environmental acoustic monitoring platform designed to bring together:
+
+* High-quality scheduled audio recording
+* Environmental-noise measurement
+* Soundscape and ecoacoustic analysis
+* Optional project-specific AI detection
+* Remote device management
+* Cloud-based review and validation
+* Long-term data visualisation
+
+The system should serve users who need reliable acoustic evidence rather than limiting itself to either wildlife recording or conventional noise monitoring.
+
+Auris could support projects involving:
+
+* Rare and cryptic species
+* Invasive species
+* Birds, frogs, bats and insects
+* Urban and rural soundscapes
+* Traffic, aircraft and construction noise
+* Industrial and machinery monitoring
+* Biosecurity and compliance-oriented surveys
+* Long-term acoustic change detection
+
+The central principle is that **raw audio remains the primary evidence**, while measurements, acoustic indices and AI detections help users locate, interpret and prioritise relevant recordings.
+
+---
+
+# 2. Core Auris workflow
+
+## Step 1: Create a project
+
+A user creates a monitoring project in the Auris dashboard and defines:
+
+* Project name and description
+* Monitoring objectives
+* Deployment locations
+* Recording schedule
+* Environmental-noise requirements
+* Acoustic indices to calculate
+* Data-retention policy
+* Synchronisation interval
+* Optional target-species detector
+
+Projects could use predefined profiles such as:
+
+* General biodiversity monitoring
+* Target frog survey
+* Rare bird detection
+* Urban noise monitoring
+* Traffic-noise assessment
+* Machinery monitoring
+* Continuous event watch
+* Custom research configuration
+
+Profiles would provide sensible defaults while allowing experienced users to modify individual settings.
+
+---
+
+## Step 2: Configure recorders
+
+Recorders are assigned to a project and configured either locally or remotely.
+
+Local setup would be used for:
+
+* Initial commissioning
+* Device naming
+* Project assignment
+* Time and location setup
+* Recording tests
+* Microphone-level checks
+* Connectivity tests
+* Storage checks
+* Starting and ending deployments
+* Fault diagnosis in the field
+
+Remote configuration would allow users to:
+
+* Change recording schedules
+* Change synchronisation intervals
+* Update analysis settings
+* Deploy new AI models
+* Adjust detection thresholds
+* Request diagnostic information
+* Update firmware
+* Review device status
+
+Configuration changes should be versioned so users can see exactly which settings were active at any point in a deployment.
+
+---
+
+## Step 3: Scheduled monitoring
+
+During normal operation, Auris wakes according to its monitoring schedule and performs the tasks that are due.
+
+A typical cycle could be:
+
+1. Wake at the scheduled time.
+2. Record the requested audio period.
+3. Calculate selected sound-level measurements.
+4. Calculate selected soundscape indices.
+5. Run an optional target detector.
+6. Store the audio and associated metadata.
+7. Upload summaries or selected recordings when synchronisation is due.
+8. Return to its low-power state.
+
+Recording and synchronisation schedules should remain independent.
+
+For example:
+
+* Record for one minute every ten minutes.
+* Upload detections and health information every six hours.
+* Upload complete audio only when requested or when a target is detected.
+
+This allows Auris to monitor frequently without requiring continuous network activity.
+
+---
+
+# 3. Audio recording features
+
+Auris should provide flexible scheduled and event-based recording.
+
+## Recording options
+
+Users could configure:
+
+* Recording duration
+* Recording interval
+* Sample rate
+* Bit depth
+* Channel configuration
+* File format
+* Gain profile
+* Day and night schedules
+* Seasonal schedules
+* Date-specific monitoring periods
+
+More advanced scheduling could include:
+
+* Different recording intervals at dawn and dusk
+* Recording only during selected hours
+* Increased effort during a defined survey window
+* Reduced recording during poor weather
+* Temporary intensive monitoring after a detection
+* Scheduled control recordings retained regardless of AI results
+
+## Audio metadata
+
+Every recording should include or reference:
+
+* Recorder identity
+* Project and deployment
+* Start and end time
+* Location
+* Recording configuration
+* Microphone and gain profile
+* Calibration information
+* Firmware version
+* Analysis profile
+* AI model version
+* Battery and storage status
+* Environmental conditions when available
+
+This ensures recordings remain interpretable and reproducible long after collection.
+
+---
+
+# 4. Environmental-noise monitoring
+
+Auris should treat environmental-noise measurements as a separate but complementary data layer.
+
+Potential measurements include:
+
+* LAeq
+* LCeq
+* LZeq
+* Fast and slow maximum levels
+* Peak sound level
+* Sound exposure level
+* L10, L50, L90 and L95
+* Octave or one-third-octave band levels
+* Clipping percentage
+* Noise floor
+* Broadband and low-frequency energy
+
+Long-term indicators could be calculated in the backend, including:
+
+* Daytime level
+* Evening level
+* Night-time level
+* Lden
+* Daily and weekly exposure trends
+
+These measurements would make Auris useful beyond ecology, including for:
+
+* Traffic and aircraft monitoring
+* Wind-turbine studies
+* Construction monitoring
+* Industrial noise
+* Urban soundscape research
+* Community noise studies
+* Equipment and infrastructure monitoring
+
+Unless the complete instrument is independently tested and certified, Auris should be described as a **calibrated environmental acoustic monitoring platform**, rather than claiming formal sound-level-meter compliance.
+
+---
+
+# 5. Calibration workflow
+
+Calibration should be integrated into the Auris workflow rather than treated as an external technical task.
+
+## Device calibration
+
+Each completed recorder should have a stored calibration profile linking digital audio values to sound pressure level.
+
+The profile should record:
+
+* Calibration date
+* Calibration level and frequency
+* Recorder serial number
+* Microphone and gain profile
+* Measured sensitivity
+* Calibration equipment
+* Firmware version
+* Environmental conditions
+* Frequency-response correction profile
+
+## Field calibration
+
+Users should be able to perform calibration checks:
+
+* Before deployment
+* After deployment
+* Following microphone replacement
+* Following enclosure or membrane changes
+* When unusual drift is detected
+
+The dashboard could compare pre- and post-deployment results and flag unexpected changes that may indicate:
+
+* Water ingress
+* Port blockage
+* Membrane contamination
+* Microphone damage
+* Gain changes
+* Condensation
+* Hardware deterioration
+
+Calibration history should remain attached to the recorder and relevant deployments.
+
+---
+
+# 6. Soundscape and acoustic-index analysis
+
+Auris could calculate acoustic indices directly after recording or later in the backend.
+
+Initial indices could include:
+
+* Acoustic Complexity Index
+* Normalised Difference Soundscape Index
+* Bioacoustic Index
+* Temporal entropy
+* Spectral entropy
+* Combined acoustic entropy
+* Acoustic Diversity Index
+* Acoustic Evenness Index
+
+These should be presented as **soundscape descriptors**, not direct biodiversity scores.
+
+The dashboard should avoid statements such as:
+
+> Biodiversity increased by 20%.
+
+Instead, it could report:
+
+> Acoustic complexity and high-frequency activity were higher than the recent baseline.
+
+Indices should always be linked to a documented analysis profile containing:
+
+* Audio sample rate
+* Segment duration
+* Frequency limits
+* FFT settings
+* Window function
+* Overlap
+* Threshold values
+* Algorithm version
+
+This is necessary because different calculation settings can produce substantially different results from the same recording.
+
+## Complementary simple metrics
+
+Auris should also calculate more easily interpretable measurements such as:
+
+* RMS level
+* Peak level
+* Acoustic activity
+* Frequency-band energy
+* Spectral centroid
+* Dominant frequency
+* Occupied bandwidth
+* Clipped-sample percentage
+* Broadband-noise indicators
+
+These may often provide clearer explanations than formal indices alone.
+
+---
+
+# 7. Optional edge AI detection
+
+AI should be an optional project feature rather than a requirement for using Auris.
+
+The strongest use case is not broad identification of every species. It is **project-specific detection of one or a small number of target sounds**.
+
+Examples include:
+
+* A rare bird
+* A cryptic frog
+* An invasive cane toad
+* A threatened insect
+* A defined bat-call group
+* A chainsaw
+* A gunshot
+* A machinery fault
+* A marine mammal call
+
+## Detection workflow
+
+A typical AI-assisted recording cycle would be:
+
+1. Record an audio sample.
+2. Divide it into short analysis windows.
+3. Run the selected detector.
+4. Log confidence scores and timestamps.
+5. Retain audio containing likely detections.
+6. Retain uncertain detections.
+7. Retain a sample of negative recordings.
+8. Upload candidates at the next synchronisation.
+9. Validate them through the backend.
+
+The edge model should act as a **candidate finder**, not the final ecological authority.
+
+## Suggested model classes
+
+Even when the user only wants a yes-or-no result, the training data should include:
+
+* Target species
+* Similar species
+* Common false-positive sounds
+* Rain, wind or insects
+* General background
+
+This improves the model’s ability to reject confusing sounds.
+
+## Audio-retention policy
+
+Auris should not automatically delete every recording without a detection.
+
+A defensible retention policy would be:
+
+* Always retain positive detections.
+* Retain uncertain detections.
+* Retain periodic control recordings.
+* Retain a random sample of negative recordings.
+* Retain additional recordings after model updates.
+* Allow projects to retain all audio when storage permits.
+
+This creates evidence for auditing the detector and discovering false negatives.
+
+---
+
+# 8. Auris Detector Builder
+
+A major future dashboard opportunity is an integrated system for training project-specific models.
+
+## User workflow
+
+The user would:
+
+1. Create a detector.
+2. Add target recordings.
+3. Add background recordings.
+4. Add similar or confusing sounds.
+5. Review and label audio clips.
+6. Start a training job.
+7. Review model performance.
+8. Choose an operating threshold.
+9. Deploy the model to selected recorders.
+10. Validate field detections.
+11. Retrain using newly validated examples.
+
+The underlying training would run on backend infrastructure rather than on the recorder or inside the browser.
+
+## Dataset tools
+
+The dashboard could provide:
+
+* Audio upload
+* Spectrogram display
+* Clip playback
+* Time-region selection
+* Target-present and target-absent labels
+* Confuser labels
+* Site and recorder metadata
+* Duplicate detection
+* Dataset balance warnings
+* Dataset versioning
+
+It should also warn users when a dataset lacks diversity, for example:
+
+> Most positive examples come from one animal, one location or one recording session.
+
+## Model evaluation
+
+The dashboard should show more than overall accuracy.
+
+Important metrics include:
+
+* Recall
+* Precision
+* False positives per recording hour
+* False negatives
+* Confusion matrix
+* Performance by site
+* Performance by recorder
+* Performance under rain or wind
+* Performance at different thresholds
+* Quantised-model performance
+* Expected recorder memory and processing requirements
+
+For rare-species monitoring, the default should generally favour high recall, with false positives removed through backend review.
+
+---
+
+# 9. Backend validation and review
+
+Candidate detections should appear in a central review queue.
+
+Each review item could include:
+
+* Audio player
+* Spectrogram
+* Detection time
+* Edge-model confidence
+* Optional backend-model confidence
+* Recorder and location
+* Environmental conditions
+* Nearby detections
+* Previous detections from the same site
+* Model version
+
+Users could label each candidate as:
+
+* Confirmed
+* Rejected
+* Uncertain
+* Needs expert review
+
+Validated results would contribute to:
+
+* Project reporting
+* Distribution maps
+* Activity plots
+* Model evaluation
+* Future training datasets
+
+Rejected high-confidence detections are especially valuable because they identify sounds the current model strongly misunderstands.
+
+---
+
+# 10. Model lifecycle and deployment
+
+Models should be treated as versioned project assets.
+
+A model record should include:
+
+* Model name and version
+* Target labels
+* Training dataset version
+* Training configuration
+* Input sample rate
+* Window length
+* Feature extraction settings
+* Detection thresholds
+* Evaluation results
+* Supported firmware versions
+* File checksum
+* Deployment history
+* Validation status
+
+Models could progress through stages such as:
+
+* Experimental
+* Field trial
+* Validated
+* Active
+* Retired
+
+Deployment should support:
+
+* One recorder
+* A selected group
+* An entire project
+* Pilot deployment
+* Staged rollout
+* Rollback to the previous model
+
+A recorder should verify a model before activation and retain a working fallback version.
+
+---
+
+# 11. Connectivity and data transfer
+
+Auris should support two complementary workflows.
+
+## Local field connection
+
+Used for:
+
+* Initial setup
+* Device discovery
+* Recording tests
+* Microphone checks
+* Device health
+* Time and location setup
+* Diagnosing failed remote connections
+* Starting and ending deployments
+* Downloading selected files
+
+Local access should work without mobile coverage or an internet connection.
+
+## Remote platform connection
+
+Used for:
+
+* Health reporting
+* Detection uploads
+* Configuration updates
+* Model deployment
+* Firmware updates
+* Remote schedule changes
+* Battery and storage monitoring
+* Project-wide management
+
+The recorder should not require continuous connectivity. It can store data locally and synchronise according to the project schedule.
+
+---
+
+# 12. Storage and upload management
+
+Auris should allow users to balance ecological value, storage capacity, bandwidth and power consumption.
+
+Possible upload levels include:
+
+* Health data only
+* Detection metadata only
+* Acoustic-index summaries
+* Environmental-noise summaries
+* Spectrogram thumbnails
+* Short detection clips
+* Complete positive recordings
+* Complete scheduled recordings
+* On-demand retrieval
+
+The dashboard should clearly distinguish:
+
+* Data stored on the recorder
+* Data waiting for upload
+* Data available in the cloud
+* Data archived externally
+* Data marked for deletion
+
+Retention rules should be configurable by project and should never delete irreplaceable raw data without an explicit policy.
+
+---
+
+# 13. Device and deployment health
+
+The dashboard should provide a clear overview of recorder status.
+
+Potential health indicators include:
+
+* Last successful communication
+* Battery status
+* Charging and solar status
+* Storage remaining
+* Recording success rate
+* Missed recording intervals
+* Microphone or input abnormalities
+* Calibration drift
+* Clock accuracy
+* Model status
+* Firmware status
+* Network quality
+* File corruption
+* Excessive clipping
+* Unexpected background-noise changes
+
+Alerts could be generated for:
+
+* Recorder offline
+* Low battery
+* Storage nearly full
+* Repeated failed recordings
+* Failed uploads
+* Calibration drift
+* Suspected microphone blockage
+* Model installation failure
+* Unusual clipping or silence
+
+---
+
+# 14. Dashboard views
+
+## Project overview
+
+A high-level summary of:
+
+* Active recorders
+* Recent detections
+* Recording effort
+* Data coverage
+* Battery and storage health
+* Environmental-noise trends
+* Soundscape changes
+* Outstanding validation tasks
+
+## Recorder view
+
+Detailed information for one unit:
+
+* Configuration
+* Deployment history
+* Health timeline
+* Calibration records
+* Recording schedule
+* Sync schedule
+* Installed model
+* Recent files
+* Recent detections
+
+## Detection review
+
+A queue for listening to and validating candidate events.
+
+## Soundscape analysis
+
+Charts for:
+
+* Acoustic indices
+* Frequency-band activity
+* Daily acoustic patterns
+* Seasonal changes
+* Comparison between locations
+
+## Environmental-noise view
+
+Charts for:
+
+* Equivalent sound level
+* Percentile levels
+* Peak events
+* Frequency-band levels
+* Day and night trends
+* Event history
+
+## Model builder
+
+Tools for:
+
+* Dataset management
+* Clip labelling
+* Training
+* Evaluation
+* Threshold selection
+* Model deployment
+* Field-performance review
+
+---
+
+# 15. Reporting and export
+
+Auris should make it easy to move from monitoring to reporting.
+
+Potential outputs include:
+
+* Detection tables
+* Validated species records
+* Recorder effort summaries
+* Environmental-noise summaries
+* Acoustic-index time series
+* Location comparisons
+* Calibration reports
+* Device-health reports
+* Deployment summaries
+* Model-performance reports
+* CSV and JSON exports
+* Audio and spectrogram exports
+* PDF project reports
+* API access
+
+Reports should clearly state:
+
+* Data collection settings
+* Analysis methods
+* Calibration status
+* Model version
+* Detection thresholds
+* Human-validation status
+* Known limitations
+
+---
+
+# 16. Key product principles
+
+## Raw audio remains available
+
+Derived measurements and AI detections must not replace the original evidence.
+
+## AI remains optional
+
+Auris should remain a capable recorder and environmental acoustic monitor when AI is disabled.
+
+## Models are project-specific
+
+A narrowly focused detector is often more useful and more realistic than a universal species classifier.
+
+## Edge AI prioritises candidates
+
+Final confirmation can involve larger backend models and human review.
+
+## Analysis must be reproducible
+
+Every measurement and detection should retain its settings, software version and calibration context.
+
+## Local access remains available
+
+Users need a way to commission and diagnose recorders even when remote connectivity fails.
+
+## Power and bandwidth are managed through scheduling
+
+Recording, inference and synchronisation should occur only as often as required by the monitoring objective.
+
+---
+
+# 17. Suggested development stages
+
+## Stage 1 — Core recorder platform
+
+* Project and recorder configuration
+* Scheduled audio recording
+* Local setup
+* Storage management
+* Basic remote health reporting
+* Remote configuration
+* Calibration records
+
+## Stage 2 — Acoustic measurements
+
+* Environmental-noise metrics
+* Soundscape indices
+* Frequency-band measurements
+* Dashboard visualisation
+* Reporting and export
+
+## Stage 3 — Fixed target detector
+
+* One internally trained target model
+* Inference after scheduled recordings
+* Detection logging
+* Candidate-audio retention
+* Backend review
+* Model updates
+
+## Stage 4 — Model management
+
+* Model registry
+* Versioned deployment
+* Staged rollout
+* Rollback
+* Per-device performance reporting
+* Detection-threshold management
+
+## Stage 5 — Detector Builder
+
+* Audio labelling
+* Dataset management
+* Automated training
+* Quantisation
+* Model evaluation
+* Compatibility testing
+* Dashboard deployment
+
+## Stage 6 — Closed learning loop
+
+* Human validation
+* Hard-negative collection
+* Dataset versioning
+* Assisted retraining
+* Performance comparisons between model versions
+* Continuous improvement from field data
+
+---
+
+# 18. Overall opportunity
+
+Auris has the potential to occupy a useful space between simple autonomous recorders and expensive specialised monitoring systems.
+
+Its strongest proposition is not merely:
+
+> A recorder with AI.
+
+It is:
+
+> A configurable environmental acoustic platform that records reliable evidence, measures sound, detects project-specific targets, manages devices remotely and turns validated field recordings into continuously improving monitoring tools.
+
+The combination of scheduled low-power recording, environmental-noise measurements, acoustic indices, optional target detection and backend validation would make Auris useful across ecology, conservation, environmental assessment and broader acoustic monitoring.

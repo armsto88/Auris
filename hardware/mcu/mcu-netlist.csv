@@ -1,0 +1,127 @@
+designator,pin,pin_name,net,fit,notes
+U401,1,GND,GND,Y,ESP32-S3-WROOM-1-N16R8. Pad numbers from the Espressif datasheet v1.8 Table 3-1; GPIOs from the guide's pin map (proposed 2026-10-23)
+U401,2,3V3,3V3,Y,
+U401,3,EN,ESP_EN,Y,
+U401,4,IO4,AUD_INT_MCU,Y,
+U401,5,IO5,MIC1_DC_SENSE,Y,
+U401,6,IO6,PREAMP_EN,Y,
+U401,7,IO7,AUDIO_EN,Y,
+U401,8,IO15,AUD_BCK,Y,
+U401,9,IO16,AUD_LRCK,Y,
+U401,10,IO17,AUD_DOUT,Y,
+U401,11,IO18,AUD_SDA,Y,
+U401,12,IO8,AUD_SCL,Y,
+U401,13,IO19,ESP_USB_DN,Y,
+U401,14,IO20,ESP_USB_DP,Y,
+U401,15,IO3,USB_VSENSE,Y,
+U401,16,IO46,NC,Y,
+U401,17,IO9,AUD_MCLK,Y,
+U401,18,IO10,PWR_HOLD,Y,
+U401,19,IO11,MODEM_EN,Y,
+U401,20,IO12,MODEM_PG,Y,
+U401,21,IO13,SYS_SDA,Y,
+U401,22,IO14,SYS_SCL,Y,
+U401,23,IO21,LTE_PWRKEY,Y,
+U401,24,IO47,SD_CLK,Y,
+U401,25,IO48,SD_CMD,Y,
+U401,26,IO45,SD_PWR_EN,Y,
+U401,27,IO0,ESP_BOOT,Y,
+U401,28,IO35,NC,Y,
+U401,29,IO36,NC,Y,
+U401,30,IO37,NC,Y,
+U401,31,IO38,LTE_STATUS,Y,
+U401,32,IO39,LTE_TX,Y,
+U401,33,IO40,LTE_RX,Y,
+U401,34,IO41,LTE_RTS,Y,
+U401,35,IO42,LTE_CTS,Y,
+U401,36,RXD0,SD_D0,Y,
+U401,37,TXD0,STATUS_LED,Y,
+U401,38,IO2,SOLAR_ADC,Y,
+U401,39,IO1,BATT_ADC,Y,
+U401,40,GND,GND,Y,
+U401,41,EPAD,GND,Y,
+C401,1,1,3V3,Y,Module bulk decoupling (datasheet C1). Place at the 3V3 pin
+C401,2,2,GND,Y,
+C402,1,1,3V3,Y,Module decoupling (datasheet C3). Place at the 3V3 pin
+C402,2,2,GND,Y,
+R401,1,1,3V3,Y,EN pull-up: datasheet RC delay R = 10 kΩ
+R401,2,2,ESP_EN,Y,
+C403,1,1,ESP_EN,Y,EN delay: datasheet RC delay C = 1 µF
+C403,2,2,GND,Y,
+R402,1,1,SD_PWR_EN,Y,"GPIO45 pull-down: holds the 3.3 V flash strap during reset, and card power off"
+R402,2,2,GND,Y,
+J401,A1,GND,GND,Y,USB-C service port. Pad numbering assumed (A1…B12); check against the EasyEDA symbol on the first run
+J401,A4,VBUS,VBUS,Y,
+J401,A5,CC1,USB_CC1,Y,
+J401,A6,DP1,USB_DP,Y,
+J401,A7,DN1,USB_DN,Y,
+J401,A8,SBU1,NC,Y,
+J401,A9,VBUS,VBUS,Y,
+J401,A12,GND,GND,Y,
+J401,B1,GND,GND,Y,
+J401,B4,VBUS,VBUS,Y,
+J401,B5,CC2,USB_CC2,Y,
+J401,B6,DP2,USB_DP,Y,
+J401,B7,DN2,USB_DN,Y,
+J401,B8,SBU2,NC,Y,
+J401,B9,VBUS,VBUS,Y,
+J401,B12,GND,GND,Y,
+R403,1,1,USB_CC1,Y,CC1 pull-down: device-only port
+R403,2,2,GND,Y,
+R404,1,1,USB_CC2,Y,CC2 pull-down: device-only port
+R404,2,2,GND,Y,
+D401,1,IO1,USB_DP,Y,"Chosen 2026-11-17: SRV05-4, the LTE sheet's SIM TVS, 3 pF. Place at J401"
+D401,2,REF1,GND,Y,
+D401,3,IO2,USB_DN,Y,
+D401,4,IO3,USB_CC1,Y,
+D401,5,REF2,VBUS,Y,
+D401,6,IO4,USB_CC2,Y,
+R405,1,1,USB_DP,Y,USB D+ series link (datasheet R4); room for a damping resistor
+R405,2,2,ESP_USB_DP,Y,
+R406,1,1,USB_DN,Y,USB D− series link (datasheet R6); room for a damping resistor
+R406,2,2,ESP_USB_DN,Y,
+R407,1,1,VBUS,N,"Optional VBUS sense on GPIO3 (guide: still open). 15k/22k reads 2.8–3.1 V at 4.75–5.25 V"
+R407,2,2,USB_VSENSE,N,
+R408,1,1,USB_VSENSE,N,Optional VBUS sense divider bottom
+R408,2,2,GND,N,
+J402,1,DAT2,SD_D2,Y,microSD push-push. Contacts 1–8 per the SD standard; card-detect and shell pads to be added from the EasyEDA symbol
+J402,2,CD/DAT3,SD_D3,Y,
+J402,3,CMD,SD_CMD,Y,
+J402,4,VDD,SD_VDD,Y,
+J402,5,CLK,SD_CLK,Y,
+J402,6,VSS,GND,Y,
+J402,7,DAT0,SD_D0,Y,
+J402,8,DAT1,SD_D1,Y,
+R409,1,1,SD_VDD,Y,CMD pull-up to the card supply
+R409,2,2,SD_CMD,Y,
+R410,1,1,SD_VDD,Y,D0 pull-up to the card supply
+R410,2,2,SD_D0,Y,
+R411,1,1,SD_VDD,Y,Unused D1 pull-up
+R411,2,2,SD_D1,Y,
+R412,1,1,SD_VDD,Y,Unused D2 pull-up
+R412,2,2,SD_D2,Y,
+R413,1,1,SD_VDD,Y,D3 pull-up: keeps the card out of SPI mode
+R413,2,2,SD_D3,Y,
+Q401,1,G,SD_PSW_G,Y,Chosen 2026-11-17: AO3401A card-supply switch. Check pin order vs symbol
+Q401,2,S,3V3,Y,
+Q401,3,D,SD_VDD,Y,
+Q402,1,G,SD_PWR_EN,Y,Chosen 2026-11-17: 2N7002 drives the card-supply switch; high = card on
+Q402,2,S,GND,Y,
+Q402,3,D,SD_PSW_DRV,Y,
+R414,1,1,3V3,Y,Chosen 2026-11-17: switch gate pull-up: card off unless SD_PWR_EN is high
+R414,2,2,SD_PSW_G,Y,
+R415,1,1,SD_PSW_G,Y,"Chosen 2026-11-17: gate series resistor; with C406, ~1 ms soft start so the card's inrush does not dip 3V3"
+R415,2,2,SD_PSW_DRV,Y,
+C406,1,1,3V3,Y,Chosen 2026-11-17: soft-start capacitor across the switch gate
+C406,2,2,SD_PSW_G,Y,
+C404,1,1,SD_VDD,Y,Card supply decoupling
+C404,2,2,GND,Y,
+C405,1,1,SD_VDD,Y,Card supply decoupling. Place at J402
+C405,2,2,GND,Y,
+R416,1,1,STATUS_LED,Y,Status LED resistor: about 0.6 mA
+R416,2,2,LED401_A,Y,
+LED401,A,A,LED401_A,Y,KT-0603G: GPIO43 high = on. Check symbol pin order
+LED401,K,K,GND,Y,
+TP401,1,TP,ESP_BOOT,Y,"GPIO0: short to GND at reset for USB download (recovery)"
+TP402,1,TP,ESP_EN,Y,EN: short to GND to reset
+TP403,1,TP,GND,Y,Ground for TP401/TP402

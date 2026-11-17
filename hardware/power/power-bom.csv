@@ -1,0 +1,63 @@
+designators,qty,value,description,package,suggested_mpn,lcsc,fit,notes
+J201,1,2-pin 3.5 mm,"Panel input, integrated panel",THT terminal,DB301V-3.5-2P-GN-S,C695629,Y,Integrated panel. Use panels of the same Vmp on J201/J202
+J202,1,2-pin 3.5 mm,"Panel input, external cabled panel",THT terminal,DB301V-3.5-2P-GN-S,C695629,Y,Cabled panel through a sealed gland; parallel with J201
+F201,1,1.1 A / 24 V,PPTC resettable fuse,1812,1812L110/24DR,C207066,Y,"Panel input fuse, at the connector"
+D201,1,SMF12CA,Bidirectional TVS 12 V,SOD-123FL,SMF12CA,C353317,Y,"Short, wide ground path"
+Q201 Q202,2,AO3407A,P-FET,SOT-23,AO3407A,C15155,Y,"Panel reverse-polarity switch: drain to panel, source to SOLAR_IN; Charger switching FET"
+R201,1,22 kΩ,"1%, thick film",0402,FRC0402F2202TS,C2909337,Y,Q201 gate pull-down
+D202,1,BZT52C8V2,Zener 8.2 V,SOD-123,BZT52C8V2,C51625763,Y,"Clamps Q201 gate-source in cold, bright conditions"
+C201,1,47 µF 25 V,"Aluminium electrolytic, low ESR",SMD 6.3x6,APXG250ARA470MF61G,C2161857,Y,+ to SOLAR_IN; charger input bulk
+C202,1,4.7 µF 25 V,X5R/X7R ceramic,0603,CL10A475KA8NQNC,C69335,Y,
+C203,1,10 µF 25 V,X5R/X7R ceramic,0805,HGC0805R5106K250NSLJ,C19103847,Y,Beside Q202/D204 switching loop
+C204 C205 C212,3,100 nF 25 V,X5R/X7R ceramic,0402,TCC0402X5R104M250AT,C359190,Y,"VG to VCC, not to GND"
+R238 R215 R219 R222 R223,5,1 MΩ,"1%, thick film",0402,0402WGF1004TCE,C26083,Y,"Panel-voltage sense, top (powered by the panel only); INT pull-up (FieldMesh 100 kΩ raised to 1 MΩ); Inverter base (FieldMesh 100 kΩ raised to 1 MΩ); Inverter collector pull-up (FieldMesh 100 kΩ raised to 1 MΩ)"
+R239,1,150 kΩ,"1%, thick film",0402,0402WGF1503TCE,C25755,Y,"Panel-voltage sense, bottom: 12 V reads 1.57 V"
+C235 C210 C213 C215 C216 C217 C221 C223 C226 C229 C234,11,100 nF,X5R/X7R ceramic,0402,CL05B104KO5NNNC,C1525,Y,At U205 pin 2; At U206 VIN; At U207 VIN
+R240 R206 R207 R218,4,2.2 kΩ,"1%, thick film",0402,0402WGF2201TCE,C25879,Y,Series to MCU ADC
+U201,1,CN3791,"MPPT buck solar charger, 1S Li-ion",SSOP-10,CN3791,C154992,Y,FieldMesh Node v4 circuit (ADR-007)
+D203 D204,2,PMEG4010CEH,"Schottky 1 A 40 V, low leakage",SOD-123FL,"PMEG4010CEH,115",C193342,Y,Series blocker: stops night back-feed through Q202. Stock 190; SL14PL-TP (C725469) fallback; Catch diode; keep the C203-Q202-D204 loop tiny
+L201,1,22 µH,"Shielded power inductor, 1.5 A sat",SMD 4.6x4.2,SMMS0420-220M,C2894720,Y,Hub v2 value (Node v4's 47 µH is low stock)
+R202,1,0.200 Ω,"1%, 1206 current sense",1206,RL1206FR-070R2L,C309630,Y,600 mA charge. Kelvin-route CN3791 pins 7/8 to the pads
+R203,1,120 Ω,"1%, thick film",0402,FRC0402F1200TS,C2909315,Y,Loop compensation
+C206,1,220 nF,X5R/X7R ceramic,0402,CL05B224KO5NNNC,C16772,Y,Loop compensation; return to U201 GND
+R204,1,402 kΩ,"1%, thick film",0402,FRC0402F4023TS,C5126256,Y,MPPT top: Vmp = 1.205 x (1 + R204/R205) = 6.05 V. Recalculate for the chosen panel
+R205 R212 R213 R214 R224 R226 R228 R229 R233 R235 R236,11,100 kΩ,"1%, thick film",0402,0402WGF1003TCE,C25741,Y,MPPT bottom; Default: clamp on (fail-safe); PWR_HOLD defaults low; Holds the main switch off; PG pull-up (test point only); Modem rail off by default; PS/SYNC high = forced PWM (low ripple for the radio)
+LED201,1,Red,Charging LED,0603,KT-0603R,C2286,Y,Powered from the panel: no night drain. Check symbol pin order
+LED202,1,Green,Charge-done LED,0603,KT-0603G,C12624,Y,Powered from the panel. Check symbol pin order
+C207,1,10 µF 16 V,Aluminium electrolytic,SMD 4x4.3,EEEFP1C100AR,C401746,Y,+ to RAW_BAT; charger output
+C208,1,4.7 µF,X5R/X7R ceramic,0603,CL10A475KP8NNNC,C1705,Y,
+C209 C211 C214 C228,4,10 µF,X5R/X7R ceramic,0603,CL10A106KP8NNNC,C19702,Y,At U207 VIN
+U202,1,HT7533-1,"LDO 3.3 V, 2.5 µA Iq",SOT-89-3,HT7533-1,C14289,Y,Panel-powered supply for the cut-out
+U203,1,TMP390A2,Dual hot/cold temperature switch,SOT-563,TMP390A2DRLR,C5219772,Y,"Place to sense the battery cells, not a hot regulator"
+R208,1,2.49 kΩ,"1%, thick film",0402,FRC0402F2491TS,C2933083,Y,"Hot trip +42 °C, reset +37 °C"
+R209,1,21.5 kΩ,"1%, thick film",0402,0402WGF2152TCE,C25872,Y,"Cold trip 0 °C, reset +5 °C (Node v4 used 18.7 kΩ = +5 °C)"
+R210 R237,2,10 kΩ,"1%, thick film",0402,0402WGF1002TCE,C25744,Y,Open-drain pull-up; Power-good pull-up to MCU
+R211 R225,2,47 kΩ,"1%, thick film",0402,FRC0402F4702TS,C2906872,Y,
+Q203 Q204 Q206,3,MMBT3904,NPN,SOT-23,MMBT3904,C20526,Y,On when temperature is OK: releases the clamp; Pulls MPPT low to stop charging when too cold/hot; Inverts RTC INT: alarm (INT low) -> RTC_WAKE high
+J203,1,JST PH 2-pin,"Battery connector, keyed",SMD right angle,S2B-PH-SM4-TB(LF)(SN),C295747,Y,"FieldMesh Node v4 pack: protected 1S2P 18650, ~5200 mAh. Check polarity on every pack batch"
+F202,1,1.1 A / 8 V,PPTC resettable fuse,1812,1812L110PR,C163516,Y,Modem peaks pass through: check drop in the ADR-011 pulse test
+Q205 Q210,2,AO3401A,P-FET,SOT-23,AO3401A,C15127,Y,Battery path FET (Node v4 Q5). Does not block a reversed pack while the panel is live; Main high-side switch
+R216,1,220 kΩ,"1%, thick film",0603,0603WAF2203T5E,C22961,Y,Battery sense on the switched rail: no sleep drain
+R217,1,100 kΩ,"1%, thick film",0603,0603WAF1003T5E,C25803,Y,4.2 V reads 1.31 V
+U204,1,TPL720F33,"LDO 3.3 V, 1.4 µA Iq",SOT-23-3,TPL720F33-3TR,C2842389,Y,Always on (ADR-010)
+U205,1,DS3231MZ+TRL,"RTC, ±5 ppm MEMS, 2 alarms",SOIC-8,DS3231MZ+TRL,C107410,Y,"ADR-002. Write INTCN=1, BBSQW=0 at every boot"
+BT201,1,CR1220 holder,Coin cell holder,SMD,CR1220-2,C70381,Y,Keeps time if the main battery runs flat. JLC part
+R220 R221,2,4.7 kΩ,"1%, thick film",0402,0402WGF4701TCE,C25900,Y,System I²C pull-up (off in sleep)
+Q207 Q208 Q209,3,2N7002,N-FET,SOT-23,2N7002,C8545,Y,JSCJ; JLC basic part. RTC alarm wakes the board; MCU holds power on; USB plugged in keeps the board on for service
+R227,1,100 Ω,"1%, thick film",0402,0402WGF1000TCE,C25076,Y,
+SW201,1,Tact switch,Service / wake button,SMD 3x6,HX-3x6x2.5-X SMD tact Switch,C49234125,Y,Hold until firmware asserts PWR_HOLD
+SW202,1,Slide switch,Ship-mode power switch,SMD,MST-12D18G2,C49023765,Y,"Open = board can never turn on (storage, shipping)"
+C218,1,47 nF,X5R/X7R ceramic,0603,CL10B473KB8NNNC,C1622,Y,Soft start with R228
+C219 C233,2,470 µF 16 V,Aluminium polymer/electrolytic,SMD 6.3x6.6,RVT1C471M0607,C2977552,Y,+ to VBAT_SW; bulk for radio peaks; + to VMODEM; place at the modem
+C220 C222 C224 C225 C230 C231 C232,7,22 µF,X5R/X7R ceramic,0603,CL10A226MP8NUNE,C86295,Y,At U206 VIN; At U206 VOUT
+U206,1,TPS63802,"Buck-boost 3.3 V, 2 A",VSON-10 3x2,TPS63802DLAR,C2845237,Y,Node v4 rail (ADR-008). MODE low = power save
+L202,1,0.47 µH,Power inductor,0806,DFE201612E-R47M=P2,C668312,Y,
+R230,1,511 kΩ,"1%, thick film",0603,0603WAF5113T5E,C23194,Y,Vout = 0.5 x (1 + 511/91) = 3.31 V
+R231,1,91 kΩ,"1%, thick film",0603,0603WAF9102T5E,C23265,Y,
+U207,1,TPS63020,"Buck-boost 3.9 V, 4 A switch",VSON-14 4x3,TPS63020DSJR,C15483,Y,Hub v2 modem rail (ADR-011)
+L203,1,1.5 µH,Power inductor,SMD 4.4x4.1,PCR0420-1R5-M,C53896855,Y,
+R232,1,680 kΩ,"1%, thick film",0402,FRC0402F6803TS,C2909377,Y,Vout = 0.5 x (1 + 680/100) = 3.9 V
+C227,1,4.7 pF,C0G ceramic,0402,CC0402BRNPO9BN4R7,C325453,Y,Feed-forward across R232
+R234,1,100 Ω,"1%, thick film",0402,FRC0402F1000TS,C2906860,Y,Firmware soft-starts EN (as FieldMesh)
+D205,1,SMAJ5.0A,Unidirectional TVS 5 V,SMA,SMAJ5.0A,C46956328,Y,Clamp on the modem rail
+TP201 TP202 TP203 TP204 TP205 TP206 TP207 TP208 TP209 TP210 TP211 TP212 TP213,13,Test pad,SMD test pad,1.0 mm pad,,,Y,

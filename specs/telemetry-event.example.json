@@ -1,0 +1,48 @@
+{
+  "$comment": "PROPOSED EXAMPLE ONLY; not a deployed endpoint nor validated schema",
+  "schema_version": "0.1.0-DRAFT",
+  "event_id": "event-example-0001",
+  "message_kind": "health_and_recording_summary",
+  "device_id": "auris-demo-0001",
+  "project_id": "project-example-001",
+  "deployment_id": "deployment-example-001",
+  "observed_at_utc": "2026-10-22T09:00:00Z",
+  "sequence_number": 42,
+  "configuration_revision": 1,
+  "firmware_version": "unreleased-prototype",
+  "hardware_revision": "pre-schematic-concept",
+  "battery": {
+    "millivolts": null,
+    "state_of_charge_percent": null,
+    "charge_source": "unknown"
+  },
+  "storage": {
+    "sd_present": null,
+    "bytes_free": null,
+    "pending_upload_items": 0
+  },
+  "recording": {
+    "recording_id": "rec-example-0001",
+    "timestamp_utc": "2026-10-22T08:59:00Z",
+    "raw_file_local_uri": "sd:/recordings/demo.wav",
+    "sha256": null,
+    "sample_rate_hz": 48000,
+    "gain_profile_id": "pending-validation"
+  },
+  "analysis": {
+    "algorithm_version": null,
+    "acoustic_indices": [],
+    "noise_metrics": [],
+    "candidate_detections": []
+  },
+  "synchronization": {
+    "acknowledgement_id": null,
+    "delivery_status": "draft-only"
+  },
+  "provenance": {
+    "microphone_id": "unassigned",
+    "calibration_profile_id": null,
+    "clock_synchronization": "unknown"
+  },
+  "notes": "All null and example fields are placeholders. Exact privacy/storage/identity contract needs review."
+}

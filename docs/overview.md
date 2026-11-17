@@ -1,5 +1,9 @@
 # Auris — Vision Plan & Focus Areas
 
+> **Note (2026-10-22):** This is an early vision draft. It has been superseded by the engineering build brief — start at [`00-SOURCE-OF-TRUTH.md`](00-SOURCE-OF-TRUTH.md), or see the documentation index in the [`README.md`](../README.md). An evolved version of this overview is retained unchanged at [`references/Overview.txt`](../references/Overview.txt).
+
+---
+
 ## 1. Vision
 
 Build **Auris**, a mid-cost, field-ready passive acoustic monitoring (PAM) recorder that bridges the gap between low-cost DIY devices (e.g. AudioMoth) and expensive professional systems.
