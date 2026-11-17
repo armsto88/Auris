@@ -98,18 +98,18 @@ BLOCKS = OrderedDict([
     ("p_charger", ["U201", "C205", "R204", "R205", "Q202", "D203", "D204", "L201", "R202", "R203", "C206",
                    "LED201", "R206", "LED202", "R207", "C207", "C208", "C209", "C210"]),
     ("p_temp", ["U202", "C211", "C212", "U203", "R208", "R209", "R210", "R211", "R212", "Q203", "R213", "Q204"]),
-    ("p_battery", ["J203", "F202", "Q205", "R214", "R215", "U204", "C214", "C215", "R216", "R217", "C213", "R218"]),
+    ("p_battery", ["J203", "F202", "Q205", "R214", "R215", "U204", "C236", "C214", "C215", "R216", "R217", "C213", "R218"]),
     ("p_rtc", ["U205", "C216", "BT201", "C217", "R219", "R220", "R221"]),
     ("p_latch", ["R222", "Q206", "R223", "Q207", "Q208", "R224", "Q209", "R225", "R226", "R227", "SW201", "SW202",
                  "Q210", "R228", "C218", "C219", "C220", "C221"]),
-    ("p_3v3", ["U206", "L202", "R230", "R231", "R229", "C222", "C223", "C224", "C225", "C226"]),
+    ("p_3v3", ["U206", "L202", "R230", "R231", "C222", "C223", "C224", "C225", "C226"]),
     ("p_modem", ["U207", "L203", "R232", "C227", "R233", "R234", "R235", "R236", "R237", "C228", "C229", "C230",
                  "C231", "C232", "C233", "C234", "D205"]),
     ("p_test", [f"TP{n}" for n in range(201, 214)]),
     # LTE sheet
     ("l_supply", ["R301", "C301", "C302", "C303", "C304", "C305", "C306"]),
-    ("l_pins", ["U301"]),
-    ("l_ctrl", ["Q301", "R302", "R303", "U302", "R304", "R305", "C307", "C308", "C309"]),
+    ("l_pins", ["U301", "C317", "C318", "C319", "C320", "C321", "C322", "C323"]),
+    ("l_ctrl", ["Q301", "R302", "R303", "C316", "U302", "R304", "R305", "C307", "C308", "C309"]),
     ("l_sim", ["J301", "R306", "R307", "R308", "R309", "C310", "C311", "C312", "C313", "D301"]),
     ("l_ant", ["R310", "C314", "C315", "J302"]),
     ("l_test", ["R311"] + [f"TP{n}" for n in range(301, 314)]),
@@ -497,7 +497,7 @@ def fig_presupply():
     s.text(190, 132, "PRE_GATE", "net", "middle")
     s.wire((250, 140), (250, 170))
     s.add('<rect class="b" x="210" y="170" width="80" height="60"/>')
-    s.text(296, 182, "Q102 AO3400A N-FET", "des")
+    s.text(296, 182, "Q102 2N7002 N-FET", "des")
     s.text(250, 184, "D", "pin", "middle"); s.text(216, 204, "G", "pin"); s.text(284, 204, "S", "pin", "end")
     s.wire((290, 200), (320, 200), (320, 215)); s.gnd(320, 215)
     s.port(85, 200, "PREAMP_EN", "l"); s.wire((85, 200), (95, 200)); s.res(120, 200, "h", "R127", "1 kΩ")
@@ -568,7 +568,7 @@ def fig_preamp():
         s.add(f'<line class="w" x1="{x}" y1="268" x2="{x-11}" y2="238"/>')
         s.wire((x, 270), (x, 300))
     s.text(548, 258, "S1", "pin"); s.text(598, 258, "S2", "pin")
-    s.text(20, 345, "U104 SN74LVC2G66: S1 = pins 1–2, closed by 1C (pin 7) ← FILT_SEL0 → 100 Hz.  S2 = pins 5–6, closed by 2C (pin 3) ← FILT_SEL1 → 1 kHz.", "note")
+    s.text(20, 345, "U104 TS5A23166: S1 = pins 1–2, closed by IN1 (pin 7) ← FILT_SEL0 → 100 Hz.  S2 = pins 5–6, closed by IN2 (pin 3) ← FILT_SEL1 → 1 kHz.", "note")
     s.text(20, 360, "U104 VCC pin 8 = AVDD_A with C140 0.1 µF; GND pin 4.  U103 V+ pin 8 = AVDD_PRE, V− pin 4 = GND.", "note")
     # ADC stub
     s.add('<rect class="b" x="800" y="120" width="160" height="210"/>')
@@ -676,11 +676,12 @@ POWER_PORTS = [
     ("VMODEM", "power out", "—", "3.9 V for the EG800K-EU VBAT pins; off unless MODEM_EN is high"),
     ("PWR_HOLD", "out", "GPIO10", "Drive high first thing at boot; low = power off. R224 holds it low while the ESP32 is unpowered"),
     ("MODEM_EN", "out", "GPIO11", "High = modem rail on. R235 holds it low"),
-    ("MODEM_PG", "in", "GPIO12", "High = VMODEM in regulation; wait for it before PWRKEY. R237 pull-up to 3V3"),
+    ("MODEM_PG", "in", "GPIO12", "High = U207 out of current limit (start-up done); read it only with MODEM_EN high, then wait 30 ms before PWRKEY. R237 1 MΩ pull-up to 3V3"),
+    ("ESP_EN", "out", "EN", "U206 power good: holds the ESP32-S3 EN low until 3V3 is above 95 %. Pull-up R401 and C403 on the MCU sheet"),
     ("SYS_SDA", "both", "GPIO13", "System I²C data: RTC at 0x68. 4.7 kΩ pull-up to 3V3 on this sheet"),
     ("SYS_SCL", "out", "GPIO14", "System I²C clock"),
-    ("BATT_ADC", "analog in", "GPIO1 (ADC1_CH0)", "VBAT_SW × 0.3125 (R216/R217): 4.2 V reads 1.31 V; use 6 dB attenuation (to about 1.75 V). Read before the modem turns on"),
-    ("SOLAR_ADC", "analog in", "GPIO2 (ADC1_CH1)", "SOLAR_IN × 0.130 (R238/R239): 7 V reads 0.91 V. 12 dB range covers up to about 24 V"),
+    ("BATT_ADC", "analog in", "GPIO1 (ADC1_CH0)", "VBAT_SW × 0.3125 (R216/R217): 4.2 V reads 1.31 V; use 6 dB attenuation (calibrated range 0–1.6 V, ESP32-S3 datasheet v2.2 Table 5-6). Read before the modem turns on"),
+    ("SOLAR_ADC", "analog in", "GPIO2 (ADC1_CH1)", "SOLAR_IN × 0.130 (R238/R239): 7 V reads 0.91 V. 12 dB range (0–2.9 V) covers up to about 22 V"),
     ("VBUS", "power in", "—", "From the USB-C connector; only wakes the board through R225 and Q209"),
 ]
 LTE_PORTS = [
@@ -941,7 +942,7 @@ def fig_p_panel():
     s.wire((205, 90), (300, 90)); s.dot(240, 90)
     s.text(208, 82, "PANEL_FUSED", "net")
     s.wire((240, 90), (240, 100)); s.tvs(240, 120, "D201", "SMF12CA"); s.gnd(240, 140)
-    tbox(s, 300, 65, 80, 50, "Q201 AO3407A", [(306, 94, "D", "start"), (374, 94, "S", "end"), (340, 111, "G", "middle")])
+    tbox(s, 300, 65, 80, 50, "Q201 AO3401A", [(306, 94, "D", "start"), (374, 94, "S", "end"), (340, 111, "G", "middle")])
     s.wire((340, 115), (340, 160)); s.dot(340, 160)
     s.res(340, 185, "v", "R201", "22 kΩ", side="l"); s.gnd(340, 210)
     s.wire((380, 90), (640, 90)); s.dot(420, 90); s.dot(480, 90); s.dot(560, 90)
@@ -975,14 +976,14 @@ def fig_p_charger():
     s.text(395, 300, "CHRG, DONE → LED201/LED202", "note")
     s.text(395, 314, "via 2.2 kΩ; anodes on SOLAR_IN", "note")
     tbox(s, 560, 10, 80, 50, "", [(566, 39, "S", "start"), (634, 39, "D", "end"), (600, 56, "G", "middle")])
-    s.text(600, 98, "Q202 AO3407A", "des", "middle")
+    s.text(600, 98, "Q202 AO3401A", "des", "middle")
     s.wire(e["10"], (520, 70), (520, 80), (600, 80), (600, 60))
     s.wire((560, 35), (536, 35)); s.text(532, 39, "SOLAR_IN", "net", "end")
     s.wire((640, 35), (665, 35)); diode_h(s, 690, 35, "D203", "PMEG4010")
     s.wire((715, 35), (775, 35)); s.dot(740, 35)
     s.text(745, 27, "CHG_SW", "net", "middle")
     s.wire((740, 35), (740, 55)); diode_v(s, 740, 80, "D204", "PMEG4010"); s.gnd(740, 105)
-    ind_h(s, 800, 35, "L201", "22 µH")
+    ind_h(s, 800, 35, "L201", "47 µH")
     s.wire((825, 35), (860, 35), (860, 165)); s.dot(860, 160)
     s.text(868, 100, "CHARGE_SENSE", "net")
     s.wire(e["8"], (860, 160))
@@ -1006,7 +1007,7 @@ def fig_p_temp():
         ("b", 20, "1", "SETA"), ("b", 70, "2", "SETB"), ("b", 130, "3", "GND")])
     s.wire((445, 30), e2["5"])
     s.res(400, 245, "v", "R208", "2.49 kΩ", side="l"); s.gnd(400, 270)
-    s.res(450, 245, "v", "R209", "21.5 kΩ"); s.gnd(450, 270)
+    s.res(450, 245, "v", "R209", "18.7 kΩ"); s.gnd(450, 270)
     s.gnd(510, 220)
     s.wire(e2["6"], (590, 110), (590, 160)); s.wire(e2["4"], (590, 160)); s.dot(590, 135)
     s.wire((590, 135), (675, 135)); s.dot(640, 135)
@@ -1023,7 +1024,7 @@ def fig_p_temp():
     tbox(s, 890, 110, 56, 50, "Q204", [(895, 139, "B", "start"), (918, 124, "C", "middle"), (918, 156, "E", "middle")], title_y=200)
     s.wire((918, 160), (918, 175)); s.gnd(918, 175)
     s.wire((918, 110), (918, 90), (965, 90)); s.text(968, 94, "MPPT", "net")
-    s.text(20, 300, "R208 sets the hot trip at +42 °C (reset +37 °C). R209 sets the cold trip at 0 °C (reset +5 °C).", "note")
+    s.text(20, 300, "R208 sets the hot trip at +42 °C (reset +37 °C). R209 sets the cold trip at +5 °C (reset +10 °C); TMP390 accuracy is ±2.5 °C.", "note")
     s.text(20, 314, "Temperature OK: TMP390 outputs open → Q203 on → TEMP_CLAMP low → Q204 off → charging allowed.", "note")
     s.text(20, 328, "Too cold or too hot, or no TEMP_3V3: Q203 off → R213 turns Q204 on → MPPT pulled low → no charging.", "note")
     return s.svg()
@@ -1035,13 +1036,12 @@ def fig_p_battery():
     s.text(52, 34, "J203", "des", "middle"); s.text(80, 59, "BAT+", "pin", "end"); s.text(80, 89, "BAT−", "pin", "end")
     s.text(52, 116, "1S2P pack", "note", "middle")
     s.wire((84, 55), (130, 55)); s.wire((84, 85), (100, 85)); s.gnd(100, 85)
-    s.res(155, 55, "h", "F202", "1.1 A PPTC")
+    s.res(155, 55, "h", "F202", "2.0 A PPTC")
     s.wire((180, 55), (260, 55)); s.text(190, 47, "BAT_FUSED", "net")
     tbox(s, 260, 30, 80, 50, "Q205 AO3401A", [(266, 59, "D", "start"), (334, 59, "S", "end"), (300, 76, "G", "middle")])
     s.wire((300, 80), (300, 110)); s.dot(300, 110)
     s.res(300, 135, "v", "R214", "100 kΩ", side="l"); s.gnd(300, 160)
-    s.wire((300, 110), (370, 110), (370, 100)); s.res(370, 75, "v", "R215", "1 MΩ")
-    s.wire((370, 50), (370, 55))
+    s.dnp(); s.wire((300, 110), (370, 110), (370, 100)); s.res(370, 75, "v", "R215", "DNP"); s.wire((370, 50), (370, 55)); s.dnp(False)
     s.wire((340, 55), (600, 55)); s.dot(370, 55); s.dot(450, 55)
     s.text(460, 47, "RAW_BAT", "net")
     s.text(605, 59, "→ main switch Q210, CN3791 BAT", "note")
@@ -1107,8 +1107,8 @@ def fig_p_latch():
     tbox(s, 840, 280, 80, 46, "Q210 AO3401A", [(846, 307, "S", "start"), (914, 307, "G", "end"), (880, 322, "D", "middle")], title_y=274)
     s.wire((840, 303), (815, 303)); s.text(811, 307, "RAW_BAT", "net", "end")
     s.wire((880, 326), (880, 345), (930, 345)); s.text(934, 349, "VBAT_SW", "net")
-    s.text(700, 330, "R228 100 kΩ + C218 47 nF from SYS_GATE to RAW_BAT:", "note", "end")
-    s.text(700, 344, "main switch off by default, soft turn-on. C219 470 µF on VBAT_SW.", "note", "end")
+    s.text(700, 330, "R228 47 kΩ + C218 47 nF from SYS_GATE to RAW_BAT:", "note", "end")
+    s.text(700, 344, "main switch off by default (turn-on is fast: no soft start). C219 470 µF on VBAT_SW.", "note", "end")
     return s.svg()
 
 
@@ -1123,9 +1123,9 @@ def fig_p_rails():
     s.wire(e["9"], (170, 25)); ind_h(s, 195, 25, "L202", "0.47 µH", above=True); s.wire((220, 25), e["7"])
     s.wire(e["6"], (370, 90)); s.dot(330, 90)
     s.port(370, 90, "3V3", "r")
-    s.wire((330, 90), (330, 115)); s.res(330, 140, "v", "R230", "511 kΩ"); s.wire((330, 165), (330, 175)); s.dot(330, 175)
+    s.wire((330, 90), (330, 115)); s.res(330, 140, "v", "R230", "510 kΩ"); s.wire((330, 165), (330, 175)); s.dot(330, 175)
     s.wire(e["4"], (330, 175))
-    s.text(240, 266, "PG_3V3", "net", "middle")
+    s.text(240, 266, "ESP_EN (MCU)", "net", "middle")
     s.res(330, 200, "v", "R231", "91 kΩ"); s.gnd(330, 225)
     e2 = ic(s, 560, 60, 170, 190, "U207", "TPS63020", [
         ("l", 25, "10/11", "VIN"), ("l", 55, "1", "VINA"), ("l", 95, "13", "PS"), ("l", 135, "12", "EN"), ("l", 165, "2", "GND"),
@@ -1145,10 +1145,10 @@ def fig_p_rails():
     s.res(820, 200, "v", "R233", "100 kΩ"); s.gnd(820, 225)
     s.wire((900, 90), (900, 115)); s.cap(900, 135, "v", "C233", "470 µF", pol=True); s.gnd(900, 155)
     s.wire(e2["14"], (765, 200), (765, 222)); s.text(765, 236, "MODEM_PG", "net", "middle")
-    s.text(20, 290, "U206: 3.31 V; EN tied to VIN, MODE low = power save; PG_3V3 only has the R229 pull-up. "
+    s.text(20, 290, "U206: 3.30 V; EN tied to VIN, MODE low = power save; PG holds the ESP32 EN low until 3V3 > 95 % (pull-up R401, MCU sheet). "
                     "In: 22 µF + 100 nF. Out: 2 × 22 µF + 100 nF.", "note")
-    s.text(20, 304, "U207: 3.9 V; R236 holds PS/SYNC high = forced PWM; R237 pulls MODEM_PG up to 3V3. "
-                    "In: 10 µF + 100 nF. Out: 3 × 22 µF + 470 µF + 100 nF, C227 4.7 pF across R232, D205 SMAJ5.0A.", "note")
+    s.text(20, 304, "U207: 3.9 V; R236 holds PS/SYNC high = forced PWM; R237 (1 MΩ) pulls MODEM_PG up to 3V3. "
+                    "In: 22 µF + 100 nF at VIN, 100 nF at VINA. Out: 3 × 22 µF + 470 µF + 100 nF, C227 4.7 pF across R232; D205 not fitted.", "note")
     return s.svg()
 
 
@@ -1250,17 +1250,18 @@ def fig_l_ctrl():
     xb, yb = e["19"]; s.wire((xb, yb), (xb, 50), (660, 50)); s.dot(620, 50)
     s.wire((620, 50), (620, 55)); s.cap(620, 75, "v", "C309", "100 nF"); s.gnd(620, 95)
     s.rail(672, 50, "3V3")
-    # OE delay
+    # OE follows VDD_EXT through R304/R305 (C307 not fitted: TI limits the OE edge to 10 ns/V)
     xo, yo = e["10"]; s.wire((xo, yo), (xo, 380))
     s.text(326, 384, "VDD_EXT", "net", "end"); s.wire((330, 380), (345, 380)); s.res(370, 380, "h", "R304", "100 kΩ")
     s.wire((395, 380), (520, 380)); s.dot(420, 380); s.dot(xo, 380); s.text(476, 374, "LS_OE", "net")
     s.res(420, 405, "v", "R305", "1 MΩ"); s.gnd(420, 430)
-    s.wire((520, 380), (520, 385)); s.cap(520, 405, "v", "C307", "100 nF"); s.gnd(520, 425)
+    s.dnp(); s.wire((520, 380), (520, 385)); s.cap(520, 405, "v", "C307", "DNP"); s.gnd(520, 425); s.dnp(False)
     xg, yg = e["11"]; s.gnd(xg, yg)
     # power key driver
     tbox(s, 740, 355, 50, 50, "", [(785, 384, "B", "end"), (765, 369, "C", "middle"), (765, 401, "E", "middle")])
     s.text(732, 384, "Q301", "des", "end"); s.text(732, 398, "MMBT3904", "val", "end")
     s.wire((765, 355), (765, 330)); s.text(765, 324, "M_PWRKEY", "net", "middle"); s.text(765, 310, "module PWRKEY (7)", "note", "middle")
+    s.wire((765, 340), (700, 340)); s.dot(765, 340); s.cap(700, 360, "v", "C316", "10 nF", side="l"); s.gnd(700, 380)
     s.wire((765, 405), (765, 420)); s.gnd(765, 420)
     s.wire((790, 380), (850, 380)); s.dot(850, 380)
     s.res(850, 405, "v", "R303", "47 kΩ", side="l"); s.gnd(850, 430)

@@ -23,9 +23,9 @@ SHEETS = OrderedDict([("audio", "audio-frontend"), ("power", "power"), ("lte", "
 # Blocks and headings for sheets the hardware guide does not draw yet (MCU, storage and USB).
 # Move them into build_guide.py's BLOCKS once the guide gets a tab for the sheet.
 EXTRA_BLOCKS = OrderedDict([
-    ("m_module", ["U401", "C401", "C402", "R401", "C403", "R402"]),
-    ("m_usb", ["J401", "D401", "R403", "R404", "R405", "R406", "R407", "R408"]),
-    ("m_sd", ["J402", "R409", "R410", "R411", "R412", "R413", "Q401", "Q402", "R414", "R415", "C406",
+    ("m_module", ["U401", "C401", "C402", "R401", "C403", "R402", "R417"]),
+    ("m_usb", ["J401", "D401", "D402", "R403", "R404", "R405", "R406"]),
+    ("m_sd", ["J402", "R418", "R419", "R409", "R410", "R411", "R412", "R413", "Q401", "Q402", "R414", "R415", "C406",
               "C404", "C405"]),
     ("m_led", ["LED401", "R416"]),
     ("m_test", ["TP401", "TP402", "TP403"]),

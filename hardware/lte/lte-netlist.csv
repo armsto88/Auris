@@ -116,7 +116,7 @@ C302,1,1,VBAT_M,Y,CL05B104KO5NNNC: At VBAT pins 42/43
 C302,2,2,GND,Y,
 C303,1,1,VBAT_M,Y,0402CG330J500NT: RF decoupling at VBAT
 C303,2,2,GND,Y,
-C304,1,1,VBAT_M,Y,0402CG100J500NT: RF decoupling at VBAT
+C304,1,1,VBAT_M,Y,CL05C100JB5NNNC: RF decoupling at VBAT
 C304,2,2,GND,Y,
 C305,1,1,VBAT_M,Y,0402CG3R9C500NT: RF decoupling at VBAT
 C305,2,2,GND,Y,
@@ -125,6 +125,22 @@ C306,2,2,GND,Y,
 Q301,1,B,Q301_B,Y,"MMBT3904: Open-collector PWRKEY driver: LTE_PWRKEY high = PWRKEY low. ≥ 700 ms turns the module on, ≥ 650 ms off"
 Q301,2,E,GND,Y,
 Q301,3,C,M_PWRKEY,Y,
+C316,1,1,M_PWRKEY,Y,"CL05B103KB5NNNC: PWRKEY filter, Quectel Fig. 9; total on PWRKEY <= 10 nF"
+C316,2,2,GND,Y,
+C317,1,1,M_NETSTAT,N,DNP: 33 pF filter footprint at the module pin (QuecOpen Ref V1.2 sheet 3 note 9)
+C317,2,2,GND,N,
+C318,1,1,M_RXD,N,DNP: 33 pF filter footprint at the module pin (QuecOpen Ref V1.2 sheet 3 note 9)
+C318,2,2,GND,N,
+C319,1,1,M_TXD,N,DNP: 33 pF filter footprint at the module pin (QuecOpen Ref V1.2 sheet 3 note 9)
+C319,2,2,GND,N,
+C320,1,1,M_CTS,N,DNP: 33 pF filter footprint at the module pin (QuecOpen Ref V1.2 sheet 3 note 9)
+C320,2,2,GND,N,
+C321,1,1,M_RTS,N,DNP: 33 pF filter footprint at the module pin (QuecOpen Ref V1.2 sheet 3 note 9)
+C321,2,2,GND,N,
+C322,1,1,M_STATUS,N,DNP: 33 pF filter footprint at the module pin (QuecOpen Ref V1.2 sheet 3 note 9)
+C322,2,2,GND,N,
+C323,1,1,M_DBG_TXD,N,DNP: 33 pF filter footprint at the module pin (QuecOpen Ref V1.2 sheet 3 note 9)
+C323,2,2,GND,N,
 R302,1,1,LTE_PWRKEY,Y,0402WGF4701TCE: Q301 base
 R302,2,2,Q301_B,Y,
 R303,1,1,Q301_B,Y,0402WGF4702TCE: Keeps PWRKEY released while the ESP32 boots or is off
@@ -149,12 +165,12 @@ U302,17,B3,LTE_RTS,Y,
 U302,18,B2,LTE_TX,Y,
 U302,19,VCCB,3V3,Y,
 U302,20,B1,LTE_RX,Y,
-R304,1,1,VDD_EXT,Y,0402WGF1003TCE: OE follows VDD_EXT after ≈ 9 ms (R304 × C307)
+R304,1,1,VDD_EXT,Y,OE pull-up to VDD_EXT; with R305 sets OE = 0.91 x VDD_EXT (TI asks OE to track VCCA; Quectel ref uses a divider)
 R304,2,2,LS_OE,Y,
-R305,1,1,LS_OE,Y,"0402WGF1004TCE: Holds OE low during power-up, as TI asks"
+R305,1,1,LS_OE,Y,Holds OE low while VDD_EXT is off; divider with R304
 R305,2,2,GND,Y,
-C307,1,1,LS_OE,Y,CL05B104KO5NNNC: OE delay
-C307,2,2,GND,Y,
+C307,1,1,LS_OE,N,"DNP (2026-11-17 review): OE follows VDD_EXT through the R304/R305 divider, no delay cap"
+C307,2,2,GND,N,
 C308,1,1,VDD_EXT,Y,CL05B104KO5NNNC: U302 VCCA (pin 2)
 C308,2,2,GND,Y,
 C309,1,1,3V3,Y,CL05B104KO5NNNC: U302 VCCB (pin 19)
@@ -166,6 +182,7 @@ J301,C5,GND,GND,Y,
 J301,C6,VPP,NC,Y,
 J301,C7,I/O,SIM_DATA,Y,
 J301,CD,DETECT,NC,Y,
+J301,8,EH,GND,Y,"4 cover-tab pads (EasyEDA pin 8, SOFNG '4-PAD-GND'); owner decision 2026-11-17"
 R306,1,1,SIM_RST_M,Y,0402WGF0000TCE: Quectel debug link
 R306,2,2,SIM_RST,Y,
 R307,1,1,SIM_CLK_M,Y,0402WGF0000TCE: Quectel debug link

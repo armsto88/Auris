@@ -9,7 +9,7 @@
 | `audio-frontend-bom.csv` | Grouped BOM with the exact part number and LCSC code on every line, checked against LCSC stock and the design rules on 2026-10-25. Test pads are bare copper and have no code |
 | `../tools/build_guide.py`, `../tools/guide_template.html` | Rebuild the guide after editing either CSV or `specs/lcsc-orderable-*.csv`: `python3 hardware/tools/build_guide.py`. The build stops with an error if the netlist and BOM disagree |
 
-Datasheets used (revision-pinned): TI PCM186x **SLAS831D** (Mar 2018), TI TPS7A20 **SBVS338H** (Jul 2024), TI OPA166x **SBOS489A** (Dec 2024), Primo EM272 technical data (Jul 2017), Espressif ESP32-S3-WROOM-1 **v1.8**.
+Datasheets used (revision-pinned): TI PCM186x **SLAS831D** (Mar 2018), TI TPS7A20 **SBVS338H** (Jul 2024), TI OPA166x **SBOS489A** (Dec 2024), Primo EM272 technical data (Jul 2017), Espressif ESP32-S3-WROOM-1 **v1.8**. Added in the 2026-11-17 review: TI TS5A23166 **SCDS196J**, TI TPD1E10B06 **SLLSEB1G**, KYOCERA AVX TAJ, KEMET T491; per-part notes in [`../datasheets/`](../datasheets/README.md).
 
 ## Block diagram
 
@@ -79,13 +79,14 @@ The two coupling caps C122/C123 (0.22 µF each, 0.11 µF in series) feed the ADC
 
 | FILT_SEL1, FILT_SEL0 | Shunt | Corner | Attenuation at 50 Hz | Write `0x14` |
 |---|---|---|---:|---|
-| 0, 1 — **default** (owner decision 2026-10-23) | R144 22.6 kΩ | ≈ 100 Hz | −7 dB | `0x10` |
+| 0, 1 — **default** (owner decision 2026-10-23) | R144 22 kΩ | ≈ 100 Hz (102 Hz) | −7 dB | `0x10` |
 | 0, 0 — wide (also the state at power-up) | none | ≈ 36 Hz (set by the ADC input impedance, tolerance not specified) | −1.8 dB | `0x00` |
 | 1, 0 — strong | R145 1.5 kΩ | ≈ 1.0 kHz | −26 dB | `0x20` |
 | 1, 1 | both | ≈ 1.06 kHz (same use as 1, 0) | −27 dB | `0x30` |
 
 - Set the GPIOs up once after reset: `0x10 = 0x00` (GPIO0/GPIO1 as plain GPIO), `0x12 = 0x44` (both outputs). Internal pull-downs plus R111/R112 hold both switches open until then, so the board powers up at the wide 36 Hz setting; firmware writes the configured corner (default `0x14 = 0x10`, 100 Hz) on every wake before recording.
-- The switch sits at the ADC's ~1.65 V input bias, inside its 0–3.3 V supply. Its ≤ 20 Ω on-resistance shifts the 1 kHz corner by ≤ ~1.5 %, and its leakage is ≤ 1 µA.
+- U104 is a **TS5A23166DCUR** (2026-11-17; the SN74LVC2G66DCUR had no stock at JLC). Same DCU pinout and active-high control (TI SCDS196J). The switch sits at the ADC's ~1.65 V input bias, inside its 0–3.3 V supply. Its ≤ 1.8 Ω on-resistance shifts the 1 kHz corner by ≈ 0.1 %, its off leakage is ≤ 50 nA, and its 6 pC charge injection is a ≈ 27 µV step into C123 (corners change only between recordings).
+- R144/R145 are 1 % thick film (JLC basic): no DC flows through them, so thick film adds no excess noise. 22 kΩ instead of 22.6 kΩ moves the default corner from 100 Hz to 102 Hz.
 - The 100 Hz default costs −1 dB at 200 Hz and −0.5 dB at 300 Hz, so low calls such as bittern booms and owls stay usable. About a third of this corner comes from the ADC's own input impedance, whose tolerance TI doesn't specify, so measure the real corner on the prototype.
 - No analog 200 Hz step any more; a sharper 200 Hz cut for a project is a firmware filter (layer 4).
 - The network settles in < 25 ms, but change the corner only between recordings.
@@ -176,7 +177,7 @@ TI's line-input filter (47 Ω + 10 nF, SLAS831D Fig. 63) must **not** be copied 
 | **Direct path total** | **≈ 27 mA → ≈ 100 mW** |
 | Preamp (OPA1662 both channels + mid-rail divider) | + 3.2 mA → **≈ 113 mW** |
 
-That is roughly a third of the F4-06 recording budget (≤ 350 mW), leaving ~240 mW for the ESP32-S3 and SD card. LDO regulation holds down to VBAT ≈ 3.32 V (145 mV max dropout at 300 mA, ≈ 15 mV at 30 mA); recording stops at 20 % SOC (F4-03), well above that.
+That is roughly a third of the F4-06 recording budget (≤ 350 mW), leaving ~240 mW for the ESP32-S3 and SD card. LDO regulation holds down to VBAT ≈ 3.32 V (145 mV max dropout at 300 mA, ≈ 15 mV at 30 mA); recording stops at 20 % SOC (F4-03), well above that. Below it AVDD_A follows VBAT_SW less ≈ 15 mV (SBVS338H §6.4.3), and the PCM1863 has no brown-out detector or reset pin (SLAS831D §7.3, §11.3). **Recording gate (2026-11-17 review):** start a recording only with VBAT_SW ≥ 3.35 V measured under load, and check the clock registers in step 10 before every recording.
 
 ### Settling after power-up
 
@@ -192,17 +193,21 @@ Mic bias RC τ = 0.1 s; preamp Cg τ = 0.1 s; mid-rail τ = 0.05 s. Allow **≥ 
 6. `0x0B = 0x44` (I²S, 24-bit; the reset default, write explicitly).
 7. Input select and PGA per the mode table; the PGA ramps to target in 0.5 dB steps at zero crossings.
 8. Filters: `0x10 = 0x00`, `0x12 = 0x44` (GPIO0/1 as outputs), then `0x14` for the analog corner and `0x71` for the ADC filter (see filtering tables).
-9. If using the preamp, `PREAMP_EN` high.
-10. Read back `0x73`/`0x74` (FS_INFO / BCK ratio) to confirm clocks; wait the settling time.
-11. ESP32-S3 I²S slave RX, Philips format, 32-bit slots, stereo; keep the top 24 bits.
-12. Power down: `PREAMP_EN` low, `AUDIO_EN` low, return pins to inputs.
+9. Mic-bias regulator off (MICBIAS pin 5 is unused; Page 3 `0x15` resets to `0x01`, which powers it up, SLAS831D Table 121): `0x00 = 0x03`, `0x15 = 0x00`, `0x00 = 0x00`.
+10. If using the preamp, `PREAMP_EN` high.
+11. Read back `0x72` (expect `0x0F`), `0x73` (`0x03`) and `0x74` (`0x34`) to confirm clocks; on a mismatch cycle `AUDIO_EN` and start again. Wait the settling time.
+12. ESP32-S3 I²S slave RX, Philips format, 32-bit slots, stereo; keep the top 24 bits.
+13. Power down: `PREAMP_EN` low, `AUDIO_EN` low, return pins to inputs. Drive `AUDIO_EN` low early in every boot: GPIO7 has no pull at reset and the TPS7A20's 500 kΩ pull-down is switched out while EN is high.
 
 ## Capture notes for EasyEDA Pro
 
 - Use the net names in the netlist exactly; they are referenced by firmware notes and test procedures.
 - One `GND` net for AGND and DGND (TI recommends a single plane, SLAS831D §12.1.1). Mic returns join `GND` **only** through R114 (R138 for mic 2), placed at the connector.
 - Mark `fit = N` parts as do-not-place so they keep footprints but leave the assembly BOM.
-- Q101/Q102: confirm the EasyEDA symbol's pin order (G/S/D) against the AO3401A/AO3400A datasheets before connecting.
+- Q101/Q102: pin 1 = G, 2 = S, 3 = D in the AOS drawings and the EasyEDA symbols (checked 2026-11-17).
+- C127 and the other tantalums: pad 1 is + on the EasyEDA footprints; the netlist uses pin numbers 1/2.
+- U103 (OPA1662): the EasyEDA symbol's part B carries V+ as pin 8 and V− as an internal pin 9. After capture, check that PCB pad 4 is GND and pad 8 is AVDD_PRE and that no pad-9 error appears.
+- D101: the library footprint's pads (0.6 × 0.6 mm, 1.0 mm apart) are larger than TI's DPY0002A land pattern (0.3 × 0.5 mm, 0.7 mm apart, SLLSEB1G pp. 19–20); use TI's pattern or inspect the first boards for skew.
 - Prefer JLC basic parts for passives where the dielectric/film requirement allows.
 
 ## Layout rules

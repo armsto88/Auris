@@ -13,7 +13,7 @@ U401,11,IO18,AUD_SDA,Y,
 U401,12,IO8,AUD_SCL,Y,
 U401,13,IO19,ESP_USB_DN,Y,
 U401,14,IO20,ESP_USB_DP,Y,
-U401,15,IO3,USB_VSENSE,Y,
+U401,15,IO3,SD_CD,Y,GPIO3: microSD card detect (strap ignored with default eFuses; never burn EFUSE_STRAP_JTAG_SEL)
 U401,16,IO46,NC,Y,
 U401,17,IO9,AUD_MCLK,Y,
 U401,18,IO10,PWR_HOLD,Y,
@@ -22,7 +22,7 @@ U401,20,IO12,MODEM_PG,Y,
 U401,21,IO13,SYS_SDA,Y,
 U401,22,IO14,SYS_SCL,Y,
 U401,23,IO21,LTE_PWRKEY,Y,
-U401,24,IO47,SD_CLK,Y,
+U401,24,IO47,SD_CLK_MCU,Y,
 U401,25,IO48,SD_CMD,Y,
 U401,26,IO45,SD_PWR_EN,Y,
 U401,27,IO0,ESP_BOOT,Y,
@@ -50,6 +50,8 @@ C403,1,1,ESP_EN,Y,EN delay: datasheet RC delay C = 1 µF
 C403,2,2,GND,Y,
 R402,1,1,SD_PWR_EN,Y,"GPIO45 pull-down: holds the 3.3 V flash strap during reset, and card power off"
 R402,2,2,GND,Y,
+R417,1,1,3V3,Y,GPIO0 strap pull-up (Espressif ESP32-S3 hardware design guidelines §1.3.9)
+R417,2,2,ESP_BOOT,Y,
 J401,A1,GND,GND,Y,USB-C service port. Pad numbering assumed (A1…B12); check against the EasyEDA symbol on the first run
 J401,A4,VBUS,VBUS,Y,
 J401,A5,CC1,USB_CC1,Y,
@@ -66,24 +68,26 @@ J401,B7,DN2,USB_DN,Y,
 J401,B8,SBU2,NC,Y,
 J401,B9,VBUS,VBUS,Y,
 J401,B12,GND,GND,Y,
+J401,1,SHELL,GND,Y,"USB-C shell to GND directly (battery-powered, no chassis earth); owner decision 2026-11-17"
+J401,2,SHELL,GND,Y,
+J401,3,SHELL,GND,Y,
+J401,4,SHELL,GND,Y,
 R403,1,1,USB_CC1,Y,CC1 pull-down: device-only port
 R403,2,2,GND,Y,
 R404,1,1,USB_CC2,Y,CC2 pull-down: device-only port
 R404,2,2,GND,Y,
-D401,1,IO1,USB_DP,Y,"Chosen 2026-11-17: SRV05-4, the LTE sheet's SIM TVS, 3 pF. Place at J401"
+D401,1,IO1,USB_DP,Y,"SRV05-4 at J401: D+, D−, CC1, CC2. REF2 (pin 5) open, see below"
 D401,2,REF1,GND,Y,
 D401,3,IO2,USB_DN,Y,
 D401,4,IO3,USB_CC1,Y,
-D401,5,REF2,VBUS,Y,
+D401,5,REF2,NC,Y,"Left open (Semtech SRV05-4 option 3, internal TVS as reference). On VBUS, the ESP32's D+ pull-up back-fed VBUS through the steering diode and Q209 kept the board on"
 D401,6,IO4,USB_CC2,Y,
+D402,1,1,VBUS,Y,TPD1E10B06: VBUS ESD at J401 (replaces the SRV05-4 REF2 clamp)
+D402,2,2,GND,Y,
 R405,1,1,USB_DP,Y,USB D+ series link (datasheet R4); room for a damping resistor
 R405,2,2,ESP_USB_DP,Y,
 R406,1,1,USB_DN,Y,USB D− series link (datasheet R6); room for a damping resistor
 R406,2,2,ESP_USB_DN,Y,
-R407,1,1,VBUS,N,"Optional VBUS sense on GPIO3 (guide: still open). 15k/22k reads 2.8–3.1 V at 4.75–5.25 V"
-R407,2,2,USB_VSENSE,N,
-R408,1,1,USB_VSENSE,N,Optional VBUS sense divider bottom
-R408,2,2,GND,N,
 J402,1,DAT2,SD_D2,Y,microSD push-push. Contacts 1–8 per the SD standard; card-detect and shell pads to be added from the EasyEDA symbol
 J402,2,CD/DAT3,SD_D3,Y,
 J402,3,CMD,SD_CMD,Y,
@@ -92,6 +96,11 @@ J402,5,CLK,SD_CLK,Y,
 J402,6,VSS,GND,Y,
 J402,7,DAT0,SD_D0,Y,
 J402,8,DAT1,SD_D1,Y,
+J402,10,SHELL,GND,Y,microSD cover pads to GND (the card-detect switch closes against the cover); owner decision 2026-11-17
+J402,11,SHELL,GND,Y,
+J402,12,SHELL,GND,Y,
+J402,13,SHELL,GND,Y,
+J402,9,CD,SD_CD,Y,Card detect: closes to the GND cover when a card is in (check NO/NC with a meter). Symbol pin 9 'CD' vs footprint pad 'CD': check the pad gets SD_CD after Update PCB
 R409,1,1,SD_VDD,Y,CMD pull-up to the card supply
 R409,2,2,SD_CMD,Y,
 R410,1,1,SD_VDD,Y,D0 pull-up to the card supply
@@ -102,6 +111,10 @@ R412,1,1,SD_VDD,Y,Unused D2 pull-up
 R412,2,2,SD_D2,Y,
 R413,1,1,SD_VDD,Y,D3 pull-up: keeps the card out of SPI mode
 R413,2,2,SD_D3,Y,
+R419,1,1,3V3,Y,Card-detect pull-up (owner decision 2026-11-17: CD on GPIO3 replaces the unfitted VBUS sense)
+R419,2,2,SD_CD,Y,
+R418,1,1,SD_CLK_MCU,Y,SD_CLK series resistor at U401 (Espressif HW design guidelines §1.3.8/§1.3.12)
+R418,2,2,SD_CLK,Y,
 Q401,1,G,SD_PSW_G,Y,Chosen 2026-11-17: AO3401A card-supply switch. Check pin order vs symbol
 Q401,2,S,3V3,Y,
 Q401,3,D,SD_VDD,Y,
@@ -118,10 +131,10 @@ C404,1,1,SD_VDD,Y,Card supply decoupling
 C404,2,2,GND,Y,
 C405,1,1,SD_VDD,Y,Card supply decoupling. Place at J402
 C405,2,2,GND,Y,
-R416,1,1,STATUS_LED,Y,Status LED resistor: about 0.6 mA
+R416,1,1,STATUS_LED,Y,"Status LED resistor: 2–7 mA for VF 2.6–3.1 V (was 2.2 kΩ, ≈ 0.25 mA: too dim for daylight, F5-05)"
 R416,2,2,LED401_A,Y,
-LED401,A,A,LED401_A,Y,KT-0603G: GPIO43 high = on. Check symbol pin order
+LED401,A,A,LED401_A,Y,"KT-0805G: GPIO43 high = on. Symbol pins 1 = A, 2 = K"
 LED401,K,K,GND,Y,
-TP401,1,TP,ESP_BOOT,Y,"GPIO0: short to GND at reset for USB download (recovery)"
+TP401,1,TP,ESP_BOOT,Y,GPIO0: short to GND at reset for USB download (recovery)
 TP402,1,TP,ESP_EN,Y,EN: short to GND to reset
 TP403,1,TP,GND,Y,Ground for TP401/TP402

@@ -13,7 +13,8 @@
 - **Pinout and circuits:** Quectel *EG800K-LA Hardware Design* V1.0.0, 2024-05-23, status preliminary, from the FCC filing ([fccid.io/XMR2024EG800KLA](https://fccid.io/XMR2024EG800KLA/User-Manual/User-Manual-7421892.pdf)). Quectel sells -CN, -EU and -LA as one series in one package; the EU-specific manual was not available. **Check the pin table against the EG800K-EU hardware design before ordering boards** (open item 1).
 - **Component values:** Quectel *EC800K & EG800K Series QuecOpen Reference Design* V1.2, 2025-02-26 ([developer.quectel.com](https://developer.quectel.com/en/wp-content/uploads/sites/2/2025/06/Quectel_EC800KEG800K_Series_QuecOpen_Reference_Design_V1.2.pdf)): VBAT capacitor array, translator, SIM network.
 - **Bands and approvals:** Quectel *EG800K Series Specification* V1.3.
-- **Parts:** TI TXS0108E **SCES642L** (Nov 2024); Semtech SRV05-4; SOFNG SNO-1303-C drawing (contact map C1–C7, card detect).
+- **Parts:** TI TXS0108E **SCES642L** (Nov 2024); Semtech SRV05-4 (rev 08/11/04); SOFNG SNO-1303-C drawing (contact map C1–C7, card detect); Quectel EG800K Series Specification V1.3 (EU bands B1/3/5/7/8/20/28, −35…+75 °C operating, −40…+85 °C extended). Per-part notes in [`../datasheets/`](../datasheets/README.md).
+- **Filter footprints:** C317–C323 (33 pF, not fitted) sit at the used UART/status pins, as the QuecOpen reference asks (sheet 3 note 9); fit them only if EMC testing needs them.
 
 Designators run from 301. Shared nets: `VMODEM` and `3V3` with the power sheet, `GND` with all sheets.
 
@@ -37,11 +38,11 @@ flowchart LR
 |---|---|---|
 | L1 | **VBAT from the switched 3.9 V rail** through a 0 Ω link, with Quectel's array: 100 µF polymer (ESR 70 mΩ) + 100 nF, 33 pF, 10 pF, 3.9 pF, 1.8 pF | Quectel asks for ≥ 100 µF with ESR ≤ 0.7 Ω and the MLCC array at the pins, and a supply able to deliver 2 A. The TPS63020 rail (power sheet) does; its 470 µF and TVS sit at the converter. A standard tantalum (1.7 Ω) does not meet the ESR limit |
 | L2 | **Level-shift UART, RTS/CTS and STATUS with a TXS0108EPWR** powered on the A side from the module's VDD_EXT | Module I/O is 1.8 V; the ESP32 is 3.3 V. Quectel recommends this part. Because its A side and OE come from VDD_EXT, the translator is Hi-Z whenever the modem is off, so ESP32 pins cannot back-power the module (a common cause of modems that will not restart) |
-| L3 | **OE delayed about 9 ms** after VDD_EXT (R304 100 kΩ, C307 100 nF), held low by R305 1 MΩ | TI asks for OE low until both supplies are stable |
+| L3 | **OE follows VDD_EXT** through the R304 100 kΩ / R305 1 MΩ divider (OE = 0.91 × VDD_EXT); C307 not fitted (2026-11-17 review) | TI limits the OE input edge to 10 ns/V (SCES642L §5.3) and wants OE low as VCCA falls (§8.3); an RC broke both. OE crosses its 0.65 × VCCA threshold as VDD_EXT reaches ≈ 1.3 V, and Quectel's reference uses a divider without a capacitor |
 | L4 | **Hardware flow control fitted** (RTS/CTS) | Quectel recommends it for stable UART. If the ESP32 runs out of pins (see below), drop RTS/CTS first: the heartbeat is ≤ 1 KB at 115200 baud |
-| L5 | **PWRKEY by open-collector NPN** (Q301), not tied low | Tying PWRKEY low turns the module on automatically but makes it restart after `AT+QPOWD`, so the rail would be cut mid-boot. A driven PWRKEY allows a clean shutdown before MODEM_EN goes low |
+| L5 | **PWRKEY by open-collector NPN** (Q301), with Quectel's 10 nF (C316) at the pin, not tied low | Tying PWRKEY low turns the module on automatically but makes it restart after `AT+QPOWD`, so the rail would be cut mid-boot. A driven PWRKEY allows a clean shutdown before MODEM_EN goes low |
 | L6 | **RESET_N not driven**, test pad only | Quectel: use RESET_N only if `AT+QPOWD` and PWRKEY both fail. The last resort here is cutting MODEM_EN, which saves a GPIO |
-| L7 | **SIM network per Quectel**: 0 Ω links, 33 pF to GND, 100 nF on USIM_VDD (< 1 µF), 15 kΩ data pull-up, TVS array < 15 pF, all at the holder; hot-plug detect unused | The SIM is only read during the daily session; the card is not swapped in the field |
+| L7 | **SIM network per Quectel** (holder SNO-1303-C is push-push; its 4 cover pads go to GND): 0 Ω links, 33 pF to GND, 100 nF on USIM_VDD (< 1 µF), 15 kΩ data pull-up, TVS array < 15 pF, all at the holder; hot-plug detect unused | The SIM is only read during the daily session; the card is not swapped in the field |
 | L8 | **USB, debug UART and USB_BOOT to test pads only** | Quectel requires test points for module firmware updates (QFlash ≥ 6.0 over USB) and logs. Updates can also go over the air (DFOTA) |
 | L9 | **π match at the U.FL**, R310 0 Ω fitted, C314/C315 DNP | Quectel reference; values come from tuning with the real antenna in the enclosure |
 
@@ -60,9 +61,9 @@ GPIO39–42 are the external JTAG pins; debugging moves to the ESP32-S3's built-
 
 ## Power-up and shutdown sequence (firmware)
 
-1. `MODEM_EN` high (power sheet). Wait for `MODEM_PG` high, then **at least 30 ms** more for VBAT to settle.
+1. `MODEM_EN` high (power sheet). Wait for `MODEM_PG` high (read it only after `MODEM_EN` is high; it flags the end of current-limited start-up), then **at least 30 ms** more for VBAT to settle. Never enable the modem rail during a recording: its start-up into ≈ 600 µF can sag VBAT_SW by 1 V or more.
 2. `LTE_PWRKEY` high for **800 ms** (PWRKEY low ≥ 700 ms), then low.
-3. Wait for `LTE_STATUS` high (module running; the translator enables about 9 ms after VDD_EXT). Then send AT commands on UART1 at 115200 baud.
+3. Wait for `LTE_STATUS` high (≥ 6 s after PWRKEY; the translator enables as VDD_EXT rises). The UART is active only ≥ 10 s after PWRKEY (EG800K-LA HD Fig. 11): wait for `RDY` or retry `AT` on UART1 at 115200 baud. Keep `AT+QSCLK=0`: with MAIN_DTR open the ESP32 cannot wake a sleeping module.
 4. Run the session: attach, heartbeat, config, clock sync.
 5. Send `AT+QPOWD`, wait for `LTE_STATUS` low (allow tens of seconds), then `MODEM_EN` low. Keep `LTE_PWRKEY` low throughout, or the module turns itself back on.
 6. If there is no response: pulse `LTE_PWRKEY` for 650 ms or more and wait again. Cut `MODEM_EN` only as the last resort; Quectel warns that cutting power while the module runs can corrupt its flash.
@@ -70,7 +71,7 @@ GPIO39–42 are the external JTAG pins; debugging moves to the ESP32-S3's built-
 ## Bring-up tests (rev A board)
 
 1. **Off state:** modem rail off, ESP32 running. No voltage on VBAT_M or VDD_EXT; LTE_RX, LTE_CTS and LTE_STATUS read as the ESP32 pulls set them (translator Hi-Z).
-2. **Power-up:** sequence above. Check VBAT_M, VDD_EXT = 1.8 V, OE delay on a scope, STATUS high, `AT` → `OK`.
+2. **Power-up:** sequence above. Check VBAT_M, VDD_EXT = 1.8 V, OE tracking VDD_EXT (0.91 ×) on a scope, STATUS high, `AT` → `OK`.
 3. **SIM:** `AT+CPIN?` → `READY` with 1.8 V and 3.0 V cards.
 4. **Attach and transmit:** register on B20/B28 (rural Europe/Australia) and B3; measure VBAT_M droop and module current through R301 (lifted, ammeter in its place) at full transmit power (weak signal or attenuator), at 3.0 V battery, room temperature and −10 °C.
 5. **Shutdown:** `AT+QPOWD` → STATUS low → rail off; repeat 100 power cycles without a failed start.
@@ -85,7 +86,7 @@ GPIO39–42 are the external JTAG pins; debugging moves to the ESP32-S3's built-
 | 2 | Transmit current | The LA manual lists full-power transmit current as TBD. The power sheet assumes about 0.65 A (A7670G figure) | Measure in test 4; recheck the battery fuse margin (power sheet open items) |
 | 3 | VBAT TVS | Quectel recommends a TVS with VRWM 4.7 V at the module supply. The power sheet has an SMAJ5.0A (VRWM 5.0 V, clamps near 9 V) from Hub v2 | Pick a lower-clamping 4.5–4.7 V TVS for rev B, or confirm the SMAJ5.0A with Quectel |
 | 4 | PCB stack-up | Quectel recommends at least four layers, a solid ground under the module, nothing on the top layer beneath it, a 50 Ω antenna feed and 90 Ω USB pairs | Decide the stack-up for the whole board before layout |
-| 5 | Stock | EG800K-EU: 151 at LCSC, 179 at JLC; FPC antenna TX4G-FPC-8121: 128 | Buy prototype quantities now; find a second antenna that covers 700–2700 MHz |
+| 5 | Stock | EG800K-EU: **4 at JLC, none on pre-sale** on 2026-11-17 (151 at LCSC and 179 at JLC on 2026-10-23); JLC lists it only through global sourcing. FPC antenna TX4G-FPC-8121: 128 | Order or consign the modules now (blocker for a JLC build); find a second antenna that covers 700–2700 MHz |
 | 6 | SIM | Push-pull nano-SIM holder in a damp enclosure; SIM plan and operator acceptance (e.g. Telstra in Australia) open | Consider a solder-down MFF2 eSIM in rev B |
 | 7 | Compliance | The module carries CE and RCM, but the finished recorder still needs its own RED (Europe) and RCM (Australia) assessment | Plan with the enclosure and antenna (ADR-020) |
 | 8 | Firmware | New Quectel AT driver; FieldMesh has only an A7670G driver | Backlog for the firmware sync module (`lte_sync`) |

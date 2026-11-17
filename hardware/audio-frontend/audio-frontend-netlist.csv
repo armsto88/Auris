@@ -92,6 +92,8 @@ J101,1,MIC_OUT,MIC1_OUT_C,Y,Mic 1 connector
 J101,2,MIC_SRC,MIC1_SRC,Y,EM273 source pin; unused by 2-wire EM272Z1
 J101,3,MIC_RET,MIC1_RET,Y,Mic ground return
 J101,4,SHIELD,MIC1_SHLD,Y,Cable shield
+J101,5,MP1,GND,Y,"Mechanical solder tab (JST GH reinforcement metal, not a contact); owner decision 2026-11-17"
+J101,6,MP2,GND,Y,
 FB102,1,1,MIC1_OUT_C,Y,
 FB102,2,2,MIC1_OUT,Y,
 C113,1,1,MIC1_OUT_C,Y,RF shunt at connector
@@ -159,7 +161,7 @@ Q101,2,S,AVDD_A,Y,
 Q101,3,D,AVDD_PRE_SW,Y,
 R126,1,1,PRE_GATE,Y,Holds Q101 off by default
 R126,2,2,AVDD_A,Y,
-Q102,1,G,PREAMP_EN_G,Y,AO3400A N-FET gate driver; check pin order vs symbol
+Q102,1,G,PREAMP_EN_G,Y,"2N7002 N-FET gate driver (pin 1 G, 2 S, 3 D); 3.3 V gate drive vs Vth ≤ 2.5 V into a 100 kΩ load"
 Q102,2,S,GND,Y,
 Q102,3,D,PRE_GATE,Y,
 R127,1,1,PREAMP_EN,Y,
@@ -176,8 +178,8 @@ R130,1,1,AVDD_PRE,Y,Mid-rail divider
 R130,2,2,VMID_PRE,Y,
 R131,1,1,VMID_PRE,Y,Mid-rail divider
 R131,2,2,GND,Y,
-C127,+,+,VMID_PRE,Y,Tantalum: + to VMID_PRE
-C127,-,-,GND,Y,
+C127,1,+,VMID_PRE,Y,"Tantalum: + (pad 1, polarity band) to VMID_PRE"
+C127,2,-,GND,Y,
 C128,1,1,VMID_PRE,Y,
 C128,2,2,GND,Y,
 R132,1,1,PRE2_INP,Y,Keeps unused channel B at mid-rail
@@ -206,6 +208,8 @@ J102,1,MIC_OUT,MIC2_OUT_C,N,Mic 2 connector (stereo / future option)
 J102,2,MIC_SRC,MIC2_SRC,N,
 J102,3,MIC_RET,MIC2_RET,N,
 J102,4,SHIELD,MIC2_SHLD,N,
+J102,5,MP1,GND,N,Mechanical solder tab
+J102,6,MP2,GND,N,
 FB103,1,1,MIC2_OUT_C,N,
 FB103,2,2,MIC2_OUT,N,
 C135,1,1,MIC2_OUT_C,N,
@@ -245,28 +249,28 @@ TP108,1,TP,AUD_LRCK,Y,
 TP109,1,TP,AUD_DOUT,Y,
 TP110,1,TP,GND,Y,
 TP111,1,TP,PRE1_OUT,Y,
-U104,1,1A,HPF1_S1,Y,SN74LVC2G66 analog HPF switch for preamp path (mic 1)
-U104,2,1B,AIN3M_C,Y,
-U104,3,2C,FILT_SEL1,Y,
+U104,1,NO1,HPF1_S1,Y,"TS5A23166DCUR analog HPF switch for preamp path (mic 1); pin-for-pin with SN74LVC2G66DCU (NO=A, COM=B, IN=C)"
+U104,2,COM1,AIN3M_C,Y,
+U104,3,IN2,FILT_SEL1,Y,
 U104,4,GND,GND,Y,
-U104,5,2A,HPF1_S2,Y,
-U104,6,2B,AIN3M_C,Y,
-U104,7,1C,FILT_SEL0,Y,
-U104,8,VCC,AVDD_A,Y,
+U104,5,NO2,HPF1_S2,Y,
+U104,6,COM2,AIN3M_C,Y,
+U104,7,IN1,FILT_SEL0,Y,
+U104,8,V+,AVDD_A,Y,
 C140,1,1,AVDD_A,Y,At U104 pin 8
 C140,2,2,GND,Y,
-R144,1,1,AIN3P_C,Y,Shunt for ~100 Hz default corner (switch 1)
+R144,1,1,AIN3P_C,Y,Shunt for ~100 Hz default corner (switch 1); thick film is fine: no DC
 R144,2,2,HPF1_S1,Y,
 R145,1,1,AIN3P_C,Y,Shunt for ~1 kHz corner (switch 2)
 R145,2,2,HPF1_S2,Y,
-U105,1,1A,HPF2_S1,N,Same switch for mic 2 preamp path; shares FILT_SEL lines
-U105,2,1B,AIN4M_C,N,
-U105,3,2C,FILT_SEL1,N,
+U105,1,NO1,HPF2_S1,N,Same switch for mic 2 preamp path; shares FILT_SEL lines
+U105,2,COM1,AIN4M_C,N,
+U105,3,IN2,FILT_SEL1,N,
 U105,4,GND,GND,N,
-U105,5,2A,HPF2_S2,N,
-U105,6,2B,AIN4M_C,N,
-U105,7,1C,FILT_SEL0,N,
-U105,8,VCC,AVDD_A,N,
+U105,5,NO2,HPF2_S2,N,
+U105,6,COM2,AIN4M_C,N,
+U105,7,IN1,FILT_SEL0,N,
+U105,8,V+,AVDD_A,N,
 C141,1,1,AVDD_A,N,
 C141,2,2,GND,N,
 R146,1,1,AIN4P_C,N,

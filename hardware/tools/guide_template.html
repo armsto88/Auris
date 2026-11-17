@@ -245,7 +245,7 @@ details .tw { border: 0; }
       </table></div>
       <ul class="notes">
         <li><b>Where this comes from:</b> the panel input, charger, temperature cut-out, battery input and keep-alive rail are FieldMesh Node v4; the modem rail is FieldMesh Hub v2 r6; the wake latch is common to both. Decisions ADR-007, 008, 010, 011 and the owner's choices of 2026-10-23; review in doc 20. Designed and reviewed there, not yet built or field-proven.</li>
-        <li><b>Changed from FieldMesh:</b> cold trip lowered from +5 °C to 0 °C (R209 21.5 kΩ), latch inverter resistors raised from 100 kΩ to 1 MΩ (about 5 µA instead of 46 µA), a USB wake input added, and no USB charging.</li>
+        <li><b>Changed from FieldMesh:</b> cold trip kept at +5 °C (R209 18.7 kΩ; owner decision 2026-11-17 after the review found the TMP390's ±2.5 °C accuracy let a 0 °C setting charge down to −2.5 °C), latch inverter resistors raised from 100 kΩ to 1 MΩ (about 5 µA instead of 46 µA), a USB wake input added, and no USB charging.</li>
         <li><b>Sizing target:</b> energy-neutral at 50–56°N in December with the 1S2P pack giving at least 10 days without sun. About 3 W of panel should do with the CN3791; confirm on the bench before choosing the panel.</li>
         <li><b>Design load:</b> at most 1.0 Wh/day; recording at most 350 mW at the battery (F4-06). Sleep current is about 140–180 µA, mostly the DS3231M itself.</li>
         <li><b>Charger:</b> the CN3791 holds the panel at its maximum-power voltage, set by R204/R205 to 6.05 V for the Node v4 panel. Recalculate them for the chosen panel. It has no power path and no safety timer, so an awake recorder delays charge termination.</li>
