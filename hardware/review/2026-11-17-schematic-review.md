@@ -113,7 +113,7 @@ Corrected in `power/README.md`: ≈ 106 µA typical at 25 °C (≈ 157 µA with 
 #### W10 · should fix · power U203 — charge temperature window
 - **Wrong:** The TMP390's trip accuracy (±1.5/±2.5 °C) let the 0 °C setting charge down to ≈ −2.5 °C, against F4-05 (no charging below 0 °C). The sensor reads the PCB, not the cells, and an open TMP390 output lets R210 pull TEMP_FAULT_N high, which enables charging.
 - **Evidence:** TMP390 SBOS904A Table 7-2 (only 5 °C steps).
-- **Fix:** cold trip +5 °C (R209 18.7 kΩ), owner decision 2026-11-17. Placement near the pack and the open-output failure mode stay open.
+- **Fix:** cold trip +5 °C (R209 18.7 kΩ), owner decision 2026-11-17; within the 0–70 °C accuracy band (±1.5 °C) it trips at +3.5…+6.5 °C. Placement near the pack and the open-output failure mode stay open.
 - **Status:** owner decision; placement open.
 
 #### W11 · note · cross-sheet nets
@@ -133,7 +133,7 @@ Every GPIO is used once; GPIO35–37 (octal PSRAM) are NC; analogue inputs are o
 #### W15 · should fix · MCU ESP_EN — reset supervision
 - **Wrong:** RC-only EN reset on a board that is power-cycled every job.
 - **Evidence:** Espressif ESP32-S3 hardware design guidelines §1.3.3; TPS63802 SLVSEU9D §9.3.10 (PG low below 90 %, sinks 1 mA).
-- **Fix:** U206 PG → ESP_EN (R401 pull-up, C403 kept); R229 removed.
+- **Fix:** U206 PG → ESP_EN (R401 pull-up, C403 kept); R229 removed. Note: when PG pulls low it also discharges C403 (1 µF), a brief peak above the datasheet's 1 mA test condition (≤ 5 µJ); acceptable, or add ≈ 1 kΩ between PG and ESP_EN.
 - **Status:** fixed.
 
 #### W16 · should fix · audio — low-battery floor

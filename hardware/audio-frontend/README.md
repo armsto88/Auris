@@ -177,7 +177,7 @@ TI's line-input filter (47 Ω + 10 nF, SLAS831D Fig. 63) must **not** be copied 
 | **Direct path total** | **≈ 27 mA → ≈ 100 mW** |
 | Preamp (OPA1662 both channels + mid-rail divider) | + 3.2 mA → **≈ 113 mW** |
 
-That is roughly a third of the F4-06 recording budget (≤ 350 mW), leaving ~240 mW for the ESP32-S3 and SD card. LDO regulation holds down to VBAT ≈ 3.32 V (145 mV max dropout at 300 mA, ≈ 15 mV at 30 mA); recording stops at 20 % SOC (F4-03), well above that. Below it AVDD_A follows VBAT_SW less ≈ 15 mV (SBVS338H §6.4.3), and the PCM1863 has no brown-out detector or reset pin (SLAS831D §7.3, §11.3). **Recording gate (2026-11-17 review):** start a recording only with VBAT_SW ≥ 3.35 V measured under load, and check the clock registers in step 10 before every recording.
+That is roughly a third of the F4-06 recording budget (≤ 350 mW), leaving ~240 mW for the ESP32-S3 and SD card. LDO regulation holds down to VBAT ≈ 3.32 V (145 mV max dropout at 300 mA, ≈ 15 mV at 30 mA); recording stops at 20 % SOC (F4-03), well above that. Below it AVDD_A follows VBAT_SW less ≈ 15 mV (SBVS338H §6.4.3), and the PCM1863 has no brown-out detector or reset pin (SLAS831D §7.3, §11.3). **Recording gate (2026-11-17 review):** start a recording only with VBAT_SW ≥ 3.35 V measured under load, and check the clock registers in step 11 before every recording.
 
 ### Settling after power-up
 

@@ -52,7 +52,7 @@ Source: JLCEDA/EasyEDA Official Library, record C221895. Symbol pins 1 and 2 on 
 
 ## Findings
 
-| Severity | Designator / pin | Issue | Evidence | Fix |
-|---|---|---|---|---|
-| note | SW201 pins 1/2 | Make current into C218 47 nF is limited only by contact resistance (peak several A for tens of ns, 0.2 µC, 0.4 µJ per press, estimate) vs the 50 mA DC rating; R227 does not sit in this path | p. B–31 ratings; power-netlist rows R227, SW201, SW202, C218 | Optional, no extra part: move SW201 pins 1/2 from LATCH_LOGIC to WAKE_N, so R227 100 Ω limits the make current to 42 mA. Otherwise accept |
-| OK | SW201 | Pinout and internal pairs, −40…+85 °C, 16 V / 50 mA vs 64–89 µA steady, insulation vs latch leakage, footprint | p. B–31, B–32; EasyEDA C221895 | — |
+| Severity | Designator / pin | Issue | Evidence | Fix | Status |
+|---|---|---|---|---|---|
+| note | SW201 pins 1/2 | Make current into C218 47 nF is limited only by contact resistance (peak several A for tens of ns, 0.2 µC, 0.4 µJ per press, estimate) vs the 50 mA DC rating; R227 does not sit in this path | p. B–31 ratings; power-netlist rows R227, SW201, SW202, C218 | Optional, no extra part: move SW201 pins 1/2 from LATCH_LOGIC to WAKE_N, so R227 100 Ω limits the make current to 42 mA. Otherwise accept | open (option in review P24, not applied: SW201 1/2 still on LATCH_LOGIC) |
+| OK | SW201 | Pinout and internal pairs, −40…+85 °C, 16 V / 50 mA vs 64–89 µA steady, insulation vs latch leakage, footprint | p. B–31, B–32; EasyEDA C221895 | — | owner decision (review P13): SW201 → PTS810SJG250SMTRLFS |

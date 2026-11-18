@@ -8,7 +8,7 @@ R239,1,150 kΩ,"1%, thick film",0402,0402WGF1503TCE,C25755,Y,"Panel-voltage sens
 C235 C210 C213 C215 C216 C221 C223 C226 C229 C234,10,100 nF,X5R/X7R ceramic,0402,CL05B104KO5NNNC,C1525,Y,At U205 pin 2; At U206 VIN; C229 at U207 VINA (pin 1)
 R240 R206 R207 R218,4,2.2 kΩ,"1%, thick film",0402,0402WGF2201TCE,C25879,Y,Series to MCU ADC
 U201,1,CN3791,"MPPT buck solar charger, 1S Li-ion",SSOP-10,CN3791,C154992,Y,FieldMesh Node v4 circuit (ADR-007)
-D203 D204,2,PMEG4010CEH,"Schottky 1 A 40 V, low leakage",SOD-123FL,"PMEG4010CEH,115",C193342,Y,"D203 series blocker (night back-feed through Q202); D204 catch diode, keep the C203-Q202-D204 loop tiny. Very-low-VF part: leakage ≈ 0.8 µA at 25 °C but ≈ 90 µA each at 85 °C (Rev 02 Fig. 2). ≈ 1 cm² cathode copper each"
+D203 D204,2,PMEG4010CEH,"Schottky 1 A 40 V, very low VF (not low leakage)",SOD-123FL,"PMEG4010CEH,115",C193342,Y,"D203 series blocker (night back-feed through Q202); D204 catch diode, keep the C203-Q202-D204 loop tiny. Very-low-VF part: leakage ≈ 0.8 µA at 25 °C but ≈ 90 µA each at 85 °C (Rev 02 Fig. 2). ≈ 1 cm² cathode copper each"
 R202,1,0.200 Ω,"1%, 1206 current sense",1206,RL1206FR-070R2L,C309630,Y,600 mA charge. Kelvin-route CN3791 pins 7/8 to the pads
 C206,1,220 nF,X5R/X7R ceramic,0402,CL05B224KO5NNNC,C16772,Y,Loop compensation; return to U201 GND
 R204,1,402 kΩ,"1%, thick film",0402,FRC0402F4023TS,C5126256,Y,MPPT top: Vmp = 1.205 x (1 + R204/R205) = 6.05 V. Recalculate for the chosen panel
@@ -25,7 +25,7 @@ Q205 Q210 Q201 Q202,4,AO3401A,P-FET,SOT-23,AO3401A,C15127,Y,"Panel reverse-polar
 R216,1,220 kΩ,"1%, thick film",0603,0603WAF2203T5E,C22961,Y,Battery sense on the switched rail: no sleep drain
 R217,1,100 kΩ,"1%, thick film",0603,0603WAF1003T5E,C25803,Y,4.2 V reads 1.31 V
 U204,1,TPL720F33,"LDO 3.3 V, 1.4 µA Iq",SOT-23-3,TPL720F33-3TR,C2842389,Y,Always on (ADR-010)
-U205,1,DS3231MZ+TRL,"RTC, ±5 ppm MEMS, 2 alarms",SOIC-8,DS3231MZ+TRL,C107410,Y,"ADR-002. Write INTCN=1, BBSQW=0 at every boot"
+U205,1,DS3231MZ+TRL,"RTC, ±5 ppm MEMS, 2 alarms",SOIC-8,DS3231MZ+TRL,C107410,Y,"ADR-002. Write INTCN=1, BBSQW=0 and EN32KHZ=0 at every boot; I²C bus clear before the first access after a wake"
 BT201,1,CR1220 holder,Coin cell holder,SMD,CR1220-2,C70381,Y,Keeps time if the main battery runs flat. JLC part
 R220 R221,2,4.7 kΩ,"1%, thick film",0402,0402WGF4701TCE,C25900,Y,System I²C pull-up (off in sleep)
 Q207 Q208 Q209,3,2N7002,N-FET,SOT-23,2N7002,C8545,Y,JSCJ; JLC basic part. RTC alarm wakes the board; MCU holds power on; USB plugged in keeps the board on for service

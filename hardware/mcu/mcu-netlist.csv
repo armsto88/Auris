@@ -123,9 +123,9 @@ Q402,2,S,GND,Y,
 Q402,3,D,SD_PSW_DRV,Y,
 R414,1,1,3V3,Y,Chosen 2026-11-17: switch gate pull-up: card off unless SD_PWR_EN is high
 R414,2,2,SD_PSW_G,Y,
-R415,1,1,SD_PSW_G,Y,"Chosen 2026-11-17: gate series resistor; with C406, ~1 ms soft start so the card's inrush does not dip 3V3"
+R415,1,1,SD_PSW_G,Y,"Chosen 2026-11-17: gate series resistor; with C406 it delays turn-on. C406 is gate–source, so the card supply still ramps in ≈ 0.1–0.3 ms: measure the 3V3 dip"
 R415,2,2,SD_PSW_DRV,Y,
-C406,1,1,3V3,Y,Chosen 2026-11-17: soft-start capacitor across the switch gate
+C406,1,1,3V3,Y,"Chosen 2026-11-17: gate–source capacitor (turn-on delay, not a true soft start)"
 C406,2,2,SD_PSW_G,Y,
 C404,1,1,SD_VDD,Y,Card supply decoupling
 C404,2,2,GND,Y,

@@ -19,9 +19,9 @@ Sources (no official free API exists; these answer an ordinary browser User-Agen
                       (for preferredComponentFlag, which the detail call does not return)
   EasyEDA product     easyeda.com/api/products/C…/components (symbol pins, footprint, part class)
 
-Hand-kept facts live in datasheets/sources.csv (lcsc, datasheet_url, datasheet_rev, pdf):
-the manufacturer's own PDF link and the revision actually read. They override the LCSC
-link JLC returns. Prices and stock move daily: re-run before ordering.
+Hand-kept facts live in datasheets/sources.csv (lcsc, datasheet_url, datasheet_rev, pdf,
+temp_min, temp_max): the manufacturer's own PDF link, the revision actually read and, where
+JLC's parameter is wrong, the datasheet's rated temperature. They override what JLC returns. Prices and stock move daily: re-run before ordering.
 """
 import argparse, csv, datetime, json, os, re, sys, time, urllib.error, urllib.request
 from collections import OrderedDict
@@ -168,7 +168,7 @@ def main():
             "usd_1": price_at(breaks, 1), "usd_10": price_at(breaks, 10), "usd_100": price_at(breaks, 100),
             "datasheet_url": s.get("datasheet_url") or d.get("dataManualUrl") or o.get("datasheet_url", ""),
             "datasheet_rev": s.get("datasheet_rev") or o.get("datasheet_rev", ""),
-            "temp_min": tmin, "temp_max": tmax,
+            "temp_min": s.get("temp_min") or tmin, "temp_max": s.get("temp_max") or tmax,
             "checked": today if det else o.get("checked", ""),
         })
         pins, pads = symbol_pins(ee)

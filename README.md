@@ -87,7 +87,7 @@ auris/
 ├── specs/           # Machine-readable contracts and component starting points
 ├── assets/          # Diagrams and images
 ├── references/      # Supplied source documents (read-only, kept for provenance)
-├── hardware/        # auris-hardware-guide.html (tab per section, LCSC codes) + audio, power and LTE sheet specs
+├── hardware/        # sheet netlists/BOMs (power, audio, LTE, MCU), hardware guide, EasyEDA capture, part data, review
 ├── firmware/        # Embedded code (planned)
 ├── enclosure/       # Mechanical designs and housing (planned)
 ├── tests/           # Validation and field testing (planned)
@@ -121,7 +121,7 @@ auris/
 ## Documentation — Engineering Build Brief
 
 **Baseline:** 22 October 2026  
-**Status:** Pre-schematic concept / engineering definition (not a released or validated product)
+**Status:** Schematic captured and reviewed against datasheets (2026-11-17); nothing built or measured yet (not a released or validated product)
 
 > **Critical:** The build brief distinguishes selected components, candidate components, proposed behaviours and future opportunities. It is **not** a completed schematic, manufacturing BOM, verified acoustics specification or claim that features have been built.
 
@@ -154,18 +154,20 @@ auris/
 - [`specs/auris-major-components.csv`](specs/auris-major-components.csv) — transcribed major-component BOM with selection status and **historical** prices.
 - [`specs/device-config.example.json`](specs/device-config.example.json) — **proposed** device configuration contract, not firmware API.
 - [`specs/telemetry-event.example.json`](specs/telemetry-event.example.json) — **proposed** telemetry/event envelope, not backend API.
-- [`specs/lcsc-orderable-2026-10-23.csv`](specs/lcsc-orderable-2026-10-23.csv) — exact LCSC codes, stock and prices for the main ICs, checked 2026-10-23.
+- [`specs/lcsc-orderable-2026-11-17.csv`](specs/lcsc-orderable-2026-11-17.csv) — exact LCSC codes, stock and JLCPCB prices for the main parts, checked 2026-11-17 (the 2026-10-23 snapshot is kept for history).
 - [`hardware/auris-hardware-guide.html`](hardware/auris-hardware-guide.html) — one page with a tab per hardware section and LCSC codes for every major component; open in a browser. Rebuild with `python3 hardware/tools/build_guide.py`.
-- [`hardware/audio-frontend/`](hardware/audio-frontend/README.md), [`hardware/power/`](hardware/power/README.md) and [`hardware/lte/`](hardware/lte/README.md) — pin-level netlists and BOMs for the three sheets designed so far, with calculations and bring-up tests.
+- [`hardware/power/`](hardware/power/README.md), [`hardware/audio-frontend/`](hardware/audio-frontend/README.md), [`hardware/lte/`](hardware/lte/README.md) and [`hardware/mcu/`](hardware/mcu/README.md) — pin-level netlists and BOMs for all four sheets, with calculations, bring-up tests and firmware rules. They are the source of truth: `hardware/tools/easyeda_capture.py` generates the EasyEDA Pro capture scripts in `hardware/easyeda/`, and the project export is in `hardware/2026-11-17/`.
+- [`hardware/review/2026-11-17-schematic-review.md`](hardware/review/2026-11-17-schematic-review.md) — datasheet review of all four sheets (findings, fixes, open decisions) and the BOM cost pass ([change log](hardware/review/2026-11-17-bom-cost-changes.csv)).
+- [`hardware/datasheets/`](hardware/datasheets/README.md) — part data for every LCSC code (stock, JLC class, prices, temperature) and a datasheet note per IC, connector, FET, diode, crystal, inductor and polarised part. Refresh with `python3 hardware/tools/fetch_part_data.py`; cost the board with `python3 hardware/tools/bom_cost.py`.
 - [`assets/auris-v1-preliminary-block-diagram.png`](assets/auris-v1-preliminary-block-diagram.png) — extracted **preliminary** architecture image from the supplied engineering draft.
 - [`references/`](references/) — supplied product overview and early hardware proposal retained unchanged for provenance.
 
-### Engineering priorities before schematic capture
+### Engineering priorities before schematic freeze
 
 1. Verify the analogue microphone + ADC chain and realistic supported frequency range.
 2. Bench-verify the selected CN3791 solar charger and TMP390A2 cut-out (from FieldMesh Node v4) with the real panel and cells.
-3. Scope LTE power pulses at low cell voltage; decide direct-battery versus dedicated regulator.
-4. Finish RTC backup supply, interrupt/power-latch and shutdown safety design.
+3. Scope LTE power pulses at low cell voltage on the TPS63020 3.9 V rail; buy or consign the EG800K-EU (JLC stock was 4 on 2026-11-17).
+4. Bench the RTC backup supply, wake latch and shutdown safety (drawn and reviewed; firmware must keep the RTC flag set until commit).
 5. Prove microSD recording integrity and ESP32-S3 resource budgets.
 6. Confirm antenna, acoustic port, enclosure and environmental constraints together.
 
@@ -205,7 +207,7 @@ It is about solving the real problems of field deployment:
 
 ## Status
 
-🚧 Early-stage development — pre-schematic engineering definition (baseline: 22 October 2026)
+🚧 Early-stage development — schematic captured and datasheet-reviewed (17 November 2026); prototype not yet built
 
 ---
 

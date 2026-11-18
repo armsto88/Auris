@@ -18,8 +18,8 @@
 | MicroSD holder | TF PUSH | C393941 | CANDIDATE | 0.06 | 0.05 |
 | Nano-SIM holder | SNO-1303-C | C428450 | CANDIDATE | 0.43 | 0.25 |
 | USB-C | HC-TYPE-C-16P-01A | C2894897 | CANDIDATE | 0.08 | 0.07 |
-| Main PFET + battery reverse FET (2) | AO3401A | C15127 | **SELECTED** | 0.19‡ | 0.16‡ |
-| Wake latch NFETs (3) | 2N7002 (JSCJ) | C8545 | **SELECTED** | 0.05‡ | 0.05‡ |
+| Main PFET + battery reverse FET (2; prices for 2. Since 2026-11-17 also the panel and charger FETs Q201/Q202) | AO3401A | C15127 | **SELECTED** | 0.19‡ | 0.16‡ |
+| Wake latch NFETs (3; also Q402 and, since 2026-11-17, Q102) | 2N7002 (JSCJ) | C8545 | **SELECTED** | 0.05‡ | 0.05‡ |
 | LTE FPC antenna | TX4G-FPC-8121 or equivalent | C454897 | CANDIDATE | 0.51 | 0.29 |
 | RF connectors (2) | U.FL / IPEX Gen-1 | TBD | CANDIDATE / allowance | 0.12 | 0.12 |
 | Always-on LDO | TPL720F33-3TR (+ CR1220 holder C70381) | C2842389 | **SELECTED** | – | 0.09‡ |

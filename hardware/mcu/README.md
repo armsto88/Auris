@@ -12,7 +12,7 @@ The hardware guide does not draw this sheet yet, and `build_guide.py` does not r
 
 **Sources.** GPIO allocation: the guide's *Reserved and allocated GPIOs* table (proposed 2026-10-23, backlog H0-06). Signals from other sheets: the sheet-port tables in `build_guide.py`. microSD and USB-C requirements: the guide's *Storage & USB* section (ADR-012). Module pad numbers and support circuit: Espressif **ESP32-S3-WROOM-1 datasheet v1.8**, Table 3-1 and Figure 9-1 (`references/`): 22 µF + 0.1 µF on 3V3, EN RC delay 10 kΩ / 1 µF, 0 Ω links on USB D−/D+.
 
-**Checked** against these sources: all 41 module pads match Table 3-1; every named GPIO in the guide's table and every sheet port with a GPIO lands on the right pad; `3V3`, `GND` and `VBUS` join the power sheet by name. Nets with a single fitted pin: `AUD_INT_MCU`, `AUD_MCLK` and `MIC1_DC_SENSE` (their parts on the audio sheet are optional) and `USB_VSENSE` (optional divider, not fitted).
+**Checked** against these sources: all 41 module pads match Table 3-1; every named GPIO in the guide's table and every sheet port with a GPIO lands on the right pad; `3V3`, `GND` and `VBUS` join the power sheet by name. Nets with a single fitted pin: `AUD_INT_MCU`, `AUD_MCLK` and `MIC1_DC_SENSE` (their parts on the audio sheet are optional). `ESP_EN` also joins the power sheet (TPS63802 power-good). The 2026-11-17 PCB check (`easyeda_check.py`) passes for every part on this sheet.
 
 Designators run from 401. Every part reuses an LCSC code already in the other BOMs, except U401, J401, J402 (from the guide's parts snapshot) and the 5.1 kΩ CC resistors (C25905, UNI-ROYAL 0402WGF5101TCE).
 
@@ -22,16 +22,16 @@ Marked `Chosen 2026-11-17` in the netlist and BOM notes.
 
 | Item | Guide says | Chosen |
 |---|---|---|
-| Card supply switch | Load switch, active-high enable on GPIO45, 100 kΩ pull-down; part still to choose | AO3401A P-FET (Q401) driven by a 2N7002 (Q402), both already on the BOM. R415 + C406 give about 1 ms soft start so the card's inrush does not dip 3V3. A load-switch IC with current limit is the alternative |
+| Card supply switch | Load switch, active-high enable on GPIO45, 100 kΩ pull-down; part still to choose | AO3401A P-FET (Q401) driven by a 2N7002 (Q402), both already on the BOM. R415 + C406 delay the turn-on; C406 sits gate–source, so the card supply still ramps in ≈ 0.1–0.3 ms (review M11): measure the 3V3 dip at card power-on. Gate–drain 47 nF, or a load-switch IC with current limit, would give a real soft start |
 | USB ESD | ESD protection needed | SRV05-4 (D401), the LTE sheet's SIM TVS: D+, D−, CC1, CC2. **Pin 5 left open** (2026-11-17 review): on VBUS it let the ESP32's D+ pull-up back-feed VBUS and keep the board on. VBUS has its own TPD1E10B06 (D402) |
-| VBUS sense | Still open (GPIO3 spare) | 15 kΩ / 22 kΩ divider to GPIO3, **not fitted**: 2.8–3.1 V at 4.75–5.25 V |
+| GPIO3 | Still open (spare) | **microSD card detect** (SD_CD, R419 100 kΩ pull-up; owner decision 2026-11-17). The unfitted VBUS-sense divider R407/R408 was removed |
 | Boot and reset | Bring GPIO0 to a pad or button | Test pads for GPIO0, EN and GND (TP401–TP403) rather than buttons |
 | Status LED | GPIO43 to GND through a resistor | Green **KT-0805G** (JLC basic, same green InGaN as the KT-0603G) with **100 Ω**: 2–7 mA for VF 2.6–3.1 V. The first choice, 2.2 kΩ, gave only ≈ 0.25 mA, too dim for daylight (F5-05) |
 
-## Check on the first capture run
+## Capture notes
 
-- **J401 USB-C** pad numbers are assumed to be A1…B12. If the EasyEDA symbol numbers them differently, the capture script matches by pin name and lists the mapping. Shell pads are not in the netlist yet.
-- **J402 microSD** uses contacts 1–8 from the SD standard. Its card-detect and shell pads are not in the netlist: the capture script lists them as unconnected symbol pins. Add the shell pads to GND; card detect is still unconnected; GPIO3 is free for it (its JTAG strap is ignored with default eFuses), instead of the unfitted VBUS sense.
+- **J401 USB-C:** the EasyEDA symbol merges pad pairs (`A1B12`, `A4B9`, `B4A9`, `B1A12`); the capture puts the netlist's A/B rows on them by name. Shell pins 1–4 go to GND (owner decision 2026-11-17).
+- **J402 microSD:** contacts 1–8 per the SD standard; card detect is symbol pin and footprint pad `CD` (netlist pin 9) on SD_CD; cover pads 10–13 go to GND (owner decision 2026-11-17).
 
 ## Changes from the 2026-11-17 review
 
@@ -50,7 +50,7 @@ Details and evidence: `hardware/review/2026-11-17-schematic-review.md`. Per-part
 - **USB:** with D401 pin 5 open, the D+ pull-up can no longer raise VBUS. Confirm in power-sheet bring-up test 4 with the ESP32 running and no cable: VBUS must stay below 0.5 V and the board must turn off when PWR_HOLD goes low.
 - **Any reset powers the board off.** GPIO10 (PWR_HOLD) returns to an input on every ESP32 reset, so a crash, watchdog or EN reset drops power. Arm the next RTC alarm before starting work, keep the RTC alarm flag set until the commit step (the asserted INT keeps the board on through a reboot), and never release PWR_HOLD during a flash write (sector erase up to 500 ms).
 - **SD card power-off:** clear GPIO44's reset pull-up (U0RXD) early in boot and never enable internal pulls on the SD pins. To cut card power, drive CLK, CMD and D0 low, then set SD_PWR_EN low and keep the pins low ≥ 100 ms so SD_VDD discharges; otherwise the card is back-powered through R409/R410 and its pin diodes.
-- **Floating inputs:** GPIO3 and GPIO9 have no external pull; enable pull-downs in firmware.
+- **Floating inputs:** GPIO9 (AUD_MCLK, R102 not fitted) has no external pull: enable its pull-down in firmware. GPIO3 is SD_CD with R419 pulling it up: never enable an internal pull on it.
 - **System I²C:** GPIO13/14 glitch low at power-up while the RTC is powered: run an I²C bus recovery before the first RTC access.
 - **ADC:** the ESP32-S3's calibrated ranges are 0–1.6 V at 6 dB and 0–2.9 V at 12 dB (chip datasheet Table 5-6). BATT_ADC (1.31 V at 4.2 V) uses 6 dB; SOLAR_ADC's 12 dB range reaches ≈ 22 V of panel.
 
@@ -60,5 +60,5 @@ VBUS only wakes the board; it does not power it. Flashing needs a battery (or a 
 
 ## Open (owner decisions)
 
-- J401 shell pins 1–4, J402 cover pads 10–13 and card detect (pin 9): recommended GND for both shells, and card detect to GPIO3 with a 100 kΩ pull-up instead of the unfitted VBUS sense. Not wired until decided.
+- microSD ESD: the slot is user-accessible but its lines have no ESD protection (review W17).
 - Module temperature: the N16R8 is rated −40…+65 °C; PSRAM ECC raises it to +85 °C at the cost of 1/16 of the PSRAM, or an N16 / N16R2 module is rated to +85 °C.

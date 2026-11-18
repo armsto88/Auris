@@ -1,6 +1,6 @@
 # 04 — Hardware V1 engineering definition
 
-**Maturity:** Pre-schematic. Selected parts are from the supplied early hardware proposal, not demonstrated in a fabricated Auris device.
+**Maturity:** Schematic captured for all four sheets and reviewed against manufacturer datasheets (2026-11-17, `hardware/review/2026-11-17-schematic-review.md`); not demonstrated in a fabricated Auris device.
 
 ## 1. Compute and radio
 
@@ -54,7 +54,7 @@ GNSS is **optional** in the figure and has no selected GNSS device/antenna path.
 
 ## 6. USB, storage and I/O
 
-- USB-C receptacle candidate `HC-TYPE-C-16P-01A` `C2894897` for programming and service only; it does not charge the battery (2026-10-23). Add CC network, USB ESD, VBUS sense and input protection.
+- USB-C receptacle candidate `HC-TYPE-C-16P-01A` `C2894897` for programming and service only; it does not charge the battery (2026-10-23). 5.1 kΩ CC pull-downs; USB ESD on D+/D−/CC (SRV05-4 with its VBUS reference left open, 2026-11-17 review) and a separate VBUS ESD diode; VBUS wakes the board through the latch but does not power it; shell to GND.
 - microSD push-push holder candidate `TF PUSH` `C393941`. Bus: SD mode 1-bit on GPIO47 (CLK, 33 Ω series), 48 (CMD), 44 (D0), card power enable on GPIO45 with a pull-down (ADR-012, 2026-10-23); card detect on GPIO3 (owner decision 2026-11-17).
 - Prefer switchable/resettable microSD supply and buffered writes; validate operation when a card is absent, full, slow, removed mid-write or corrupted.
 - Provision clear test pads for power rails, PWR_HOLD, RTC INT, I²C, I²S, modem UART/status and USB.
