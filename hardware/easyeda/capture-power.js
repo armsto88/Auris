@@ -254,18 +254,19 @@
   // name (preferring the given footprint). The source is a template part on the page if there is
   // one (its getState_Component() names its copy in the project, not the library device, and
   // sch.create() never returns for it), otherwise the default in CFG.templateDefaults.
-  // EasyEDA Pro 4.1 cannot place a system-library device whose copy in the project library is out
-  // of date ("Create project component failed"; sch.create() never returns, and the next few
-  // creates fail too). So a device the project already holds is placed from the project's copy,
-  // which is also the version the parts on the other pages use; only new devices come from the
-  // system library.
+  // EasyEDA Pro 4.1 (checked 2026-11-18) cannot always place a system-library device that the
+  // project library already holds ("Create project component failed"; sch.create() never returns
+  // and the next few creates fail too). A device the project already holds is therefore placed from
+  // the project's copy, taking only a copy that has a footprint (some 4.1 copies have none, and
+  // Update PCB then stops with "lacks of property Footprint"). New devices come from the system
+  // library. Every placed part is checked for a footprint afterwards.
   let projectLib;
   async function projectCopy(dev) {
     if (!dev || !dev.name) return null;
     if (projectLib === undefined) projectLib = (await tryCall(() => eda.lib_LibrariesList.getProjectLibraryUuid())) || null;
     if (!projectLib) return null;
     const found = (await tryCall(() => eda.lib_Device.search(dev.name, projectLib))) || [];
-    return (Array.isArray(found) ? found : [found]).find((d) => d && d.name === dev.name) || null;
+    return (Array.isArray(found) ? found : [found]).find((d) => d && d.name === dev.name && d.footprint && d.footprint.name) || null;
   }
   async function sourceDevice(label, { lcsc = "", name = "", footprint = "" }) {
     if (sourceDevices.has(label)) return sourceDevices.get(label);
@@ -424,6 +425,10 @@
     if (!dev) return undefined;
     const first = await call(`${part.d}: place`, () => sch.create(dev, spot[0], spot[1], undefined, 0, false, part.fit, true));
     if (!first) return undefined;
+    try {
+      const fp = first.getState_Footprint && first.getState_Footprint();
+      if (!fp || !fp.name) errors.push(`${part.d}: placed without a footprint (Update PCB will refuse it): replace its device`);
+    } catch (_) { /* no footprint getter in this version */ }
     const cells = [{ comp: first, pins: await pinsOf(first) }];
     let res = match(part, cells);
     // Multi-part symbols (e.g. a dual op-amp) are named NAME.1, NAME.2, ...: add parts until every pin
