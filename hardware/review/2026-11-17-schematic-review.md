@@ -28,7 +28,7 @@ Cross-references (P14 = W10, P15 = W3, A4 = W16, L1 = W1, L6 = P10, M1 = W2, M3 
 - Quectel and Espressif guidance added: PWRKEY 10 nF, OE without an RC, UART filter footprints, GPIO0 pull-up, SD_CLK series resistor, input cap for the keep-alive LDO.
 - Owner decisions: shells/tabs to GND, card detect on GPIO3, D205 not fitted, −40…+85 °C switches, cold cut-out +5 °C, JST-compatible battery connector for rev A.
 - BOM cost pass: 15 extended parts moved to JLC basic/preferred equivalents.
-- 2026-11-18 owner decisions (section 8): EG810M-EU modem, ESP32-S3-WROOM-1-N16R2 module, microSD ESD array D403, test pads TP404–TP415, Panasonic BR1220 cell. LTE and MCU pages re-captured.
+- 2026-11-18 owner decisions (section 8): EG810M-EU modem, ESP32-S3-WROOM-1-N16R2 module, microSD ESD array D403, test pads TP404–TP415, Panasonic BR1220 cell. Applied in EasyEDA project `AURIS_2026-11-18`; the PCB net check passes again; export in `hardware/2026-11-18/`.
 
 **BOM cost** (JLCPCB parts plus Economic PCBA feeder fee of $3.07 per unique extended part; PCB, setup, stencil and joints excluded):
 
@@ -467,6 +467,12 @@ The owner decided the five open items. The sheet CSVs carry the changes (notes m
 
 Still 102 unique codes, 53 extended: the modem and module replace extended parts one for one, and D403 reuses C13612. The modem adds $2.18/board at 10 and $1.58 at 100 ($8.04 and $6.39 against $5.86 and $4.80); the N16R2 −$0.02 at 10 and +$0.36 at 100; D403 +$0.16 and +$0.12. The test pads and the coin cell cost nothing on the JLC BOM.
 
-**Capture:** the LTE and MCU EasyEDA pages are re-captured from the updated CSVs. The PCB net check (`easyeda_check.py`) is **pending**: it is re-run after the owner runs Design > Update PCB and exports.
+**Capture:** EasyEDA Pro updated itself from 3.2.209 to 4.1.105 overnight. In 4.1, clearing and re-capturing a page failed in the AURIS project. Some devices could not be placed from the system library ("Create project component failed"; the script call never returns and the next placements fail too). Placing from the project library's copies gave some parts no footprint, and Update PCB then stopped with "lacks of property Footprint". So the 2026-11-17 export (`hardware/2026-11-17/AURIS_2026-11-17.epro2`, the version that passed the PCB check) was imported as a new project, **`AURIS_2026-11-18`**, and the changes were made there in place, without clearing pages:
+
+- LTE: U301 removed with its 46 net stubs, then the EG810M-EU placed and wired (46 wires, 63 no-connect flags).
+- MCU: U401 removed with its 37 stubs, then the N16R2, D403 and TP404–TP415 placed and wired (55 wires, 4 no-connect flags).
+- The new parts sit in boxes below the existing blocks ("continued" headings); move them into place at layout.
+
+The capture template now places a device the project already holds from the project's copy (only one that has a footprint) and flags any part placed without a footprint. After Design > Update PCB (337 PCB parts) and an export, **`easyeda_check.py` passes for all four sheets**: audio 114, power 123, LTE 53, MCU 47 parts, each with its BOM's LCSC code and every pad on its CSV net. The project and EasyEDA's BOM are in `hardware/2026-11-18/`. The old `AURIS` project in EasyEDA has half-captured LTE and MCU pages and should not be used.
 
 **Docs updated the same day:** the LTE, MCU, power and audio READMEs, docs 00, 03–06, 08, 11, 13–15 and 19, the major-components CSV, the 2026-11-18 LCSC snapshot and the hardware guide.
