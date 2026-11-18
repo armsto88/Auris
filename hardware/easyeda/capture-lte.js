@@ -1,5 +1,5 @@
 // Auris schematic capture: lte sheet (53 parts, 230 pin connections).
-// Generated 2026-11-17 by hardware/tools/easyeda_capture.py from lte/lte-netlist.csv and lte-bom.csv.
+// Generated 2026-11-18 by hardware/tools/easyeda_capture.py from lte/lte-netlist.csv and lte-bom.csv.
 // Don't edit this file: change the CSVs, then run the generator again.
 //
 // What it does: places every part of the sheet on the open schematic page by its
@@ -35,7 +35,7 @@
     {"d": "C304", "lcsc": "C32949", "fit": true, "pins": [["1", "1", "VBAT_M"], ["2", "2", "GND"]], "block": "l_supply"},
     {"d": "C305", "lcsc": "C1566", "fit": true, "pins": [["1", "1", "VBAT_M"], ["2", "2", "GND"]], "block": "l_supply"},
     {"d": "C306", "lcsc": "C1553", "fit": true, "pins": [["1", "1", "VBAT_M"], ["2", "2", "GND"]], "block": "l_supply"},
-    {"d": "U301", "lcsc": "C44008839", "fit": true, "pins": [["1", "GND", "GND"], ["2", "RESERVED", "NC"], ["3", "RESERVED", "NC"], ["4", "RESERVED", "NC"], ["5", "RESERVED", "NC"], ["6", "RESERVED", "NC"], ["7", "PWRKEY", "M_PWRKEY"], ["8", "RESERVED", "NC"], ["9", "ADC0", "NC"], ["10", "GND", "GND"], ["11", "USIM_DATA", "SIM_DATA_M"], ["12", "USIM_RST", "SIM_RST_M"], ["13", "USIM_CLK", "SIM_CLK_M"], ["14", "USIM_VDD", "USIM_VDD"], ["15", "RESET_N", "M_RESET_N"], ["16", "NET_STATUS", "M_NETSTAT"], ["17", "MAIN_RXD", "M_RXD"], ["18", "MAIN_TXD", "M_TXD"], ["19", "MAIN_DTR", "NC"], ["20", "MAIN_RI", "NC"], ["21", "MAIN_DCD", "NC"], ["22", "MAIN_CTS", "M_CTS"], ["23", "MAIN_RTS", "M_RTS"], ["24", "VDD_EXT", "VDD_EXT"], ["25", "STATUS", "M_STATUS"], ["26", "RESERVED", "NC"], ["27", "GND", "GND"], ["28", "AUX_RXD", "NC"], ["29", "AUX_TXD", "NC"], ["30", "RESERVED", "NC"], ["31", "RESERVED", "NC"], ["32", "RESERVED", "NC"], ["33", "RESERVED", "NC"], ["34", "GND", "GND"], ["35", "ANT_MAIN", "ANT_MAIN"], ["36", "GND", "GND"], ["37", "GND", "GND"], ["38", "DBG_RXD", "M_DBG_RXD"], ["39", "DBG_TXD", "M_DBG_TXD"], ["40", "GND", "GND"], ["41", "GND", "GND"], ["42", "VBAT", "VBAT_M"], ["43", "VBAT", "VBAT_M"], ["44", "RESERVED", "NC"], ["45", "GND", "GND"], ["46", "GND", "GND"], ["47", "GND", "GND"], ["48", "GND", "GND"], ["49", "RESERVED", "NC"], ["50", "RESERVED", "NC"], ["51", "RESERVED", "NC"], ["52", "RESERVED", "NC"], ["53", "RESERVED", "NC"], ["54", "RESERVED", "NC"], ["55", "RESERVED", "NC"], ["56", "RESERVED", "NC"], ["57", "RESERVED", "NC"], ["58", "RESERVED", "NC"], ["59", "USB_DP", "M_USB_DP"], ["60", "USB_DM", "M_USB_DM"], ["61", "USB_VBUS", "M_USB_VBUS"], ["62", "RESERVED", "NC"], ["63", "RESERVED", "NC"], ["64", "RESERVED", "NC"], ["65", "RESERVED", "NC"], ["66", "I2C_SDA", "NC"], ["67", "I2C_SCL", "NC"], ["68", "RESERVED", "NC"], ["69", "RESERVED", "NC"], ["70", "GND", "GND"], ["71", "GND", "GND"], ["72", "GND", "GND"], ["73", "GND", "GND"], ["74", "RESERVED", "NC"], ["75", "RESERVED", "NC"], ["76", "RESERVED", "NC"], ["77", "RESERVED", "NC"], ["78", "RESERVED", "NC"], ["79", "USIM_DET", "NC"], ["80", "RESERVED", "NC"], ["81", "RESERVED", "NC"], ["82", "USB_BOOT", "M_USB_BOOT"], ["83", "RESERVED", "NC"], ["84", "RESERVED", "NC"], ["85", "RESERVED", "NC"], ["86", "RESERVED", "NC"], ["87", "RESERVED", "NC"], ["88", "GND", "GND"], ["89", "GND", "GND"], ["90", "GND", "GND"], ["91", "GND", "GND"], ["92", "GND", "GND"], ["93", "GND", "GND"], ["94", "GND", "GND"], ["95", "GND", "GND"], ["96", "ADC1", "NC"], ["97", "RESERVED", "NC"], ["98", "RESERVED", "NC"], ["99", "RESERVED", "NC"], ["100", "RESERVED", "NC"], ["101", "RESERVED", "NC"], ["102", "RESERVED", "NC"], ["103", "RESERVED", "NC"], ["104", "RESERVED", "NC"], ["105", "RESERVED", "NC"], ["106", "RESERVED", "NC"], ["107", "RESERVED", "NC"], ["108", "RESERVED", "NC"], ["109", "RESERVED", "NC"]], "block": "l_pins"},
+    {"d": "U301", "lcsc": "C20421924", "fit": true, "pins": [["1", "GND", "GND"], ["2", "RESERVED", "NC"], ["3", "RESERVED", "NC"], ["4", "RESERVED", "NC"], ["5", "RESERVED", "NC"], ["6", "RESERVED", "NC"], ["7", "PWRKEY", "M_PWRKEY"], ["8", "RESERVED", "NC"], ["9", "ADC0", "NC"], ["10", "GND", "GND"], ["11", "USIM_DATA", "SIM_DATA_M"], ["12", "USIM_RST", "SIM_RST_M"], ["13", "USIM_CLK", "SIM_CLK_M"], ["14", "USIM_VDD", "USIM_VDD"], ["15", "RESET_N", "M_RESET_N"], ["16", "NET_STATUS", "M_NETSTAT"], ["17", "MAIN_RXD", "M_RXD"], ["18", "MAIN_TXD", "M_TXD"], ["19", "MAIN_DTR", "NC"], ["20", "MAIN_RI", "NC"], ["21", "MAIN_DCD", "NC"], ["22", "MAIN_CTS", "M_CTS"], ["23", "MAIN_RTS", "M_RTS"], ["24", "VDD_EXT", "VDD_EXT"], ["25", "STATUS", "M_STATUS"], ["26", "RESERVED", "NC"], ["27", "GND", "GND"], ["28", "AUX_RXD", "NC"], ["29", "AUX_TXD", "NC"], ["30", "RESERVED", "NC"], ["31", "RESERVED", "NC"], ["32", "RESERVED", "NC"], ["33", "RESERVED", "NC"], ["34", "GND", "GND"], ["35", "ANT_MAIN", "ANT_MAIN"], ["36", "GND", "GND"], ["37", "GND", "GND"], ["38", "DBG_RXD", "M_DBG_RXD"], ["39", "DBG_TXD", "M_DBG_TXD"], ["40", "GND", "GND"], ["41", "GND", "GND"], ["42", "VBAT", "VBAT_M"], ["43", "VBAT", "VBAT_M"], ["44", "RESERVED", "NC"], ["45", "GND", "GND"], ["46", "GND", "GND"], ["47", "GND", "GND"], ["48", "GND", "GND"], ["49", "RESERVED", "NC"], ["50", "RESERVED", "NC"], ["51", "RESERVED", "NC"], ["52", "RESERVED", "NC"], ["53", "RESERVED", "NC"], ["54", "RESERVED", "NC"], ["55", "RESERVED", "NC"], ["56", "RESERVED", "NC"], ["57", "RESERVED", "NC"], ["58", "RESERVED", "NC"], ["59", "USB_DP", "M_USB_DP"], ["60", "USB_DM", "M_USB_DM"], ["61", "USB_VBUS", "M_USB_VBUS"], ["62", "RESERVED", "NC"], ["63", "RESERVED", "NC"], ["64", "RESERVED", "NC"], ["65", "RESERVED", "NC"], ["66", "I2C_SDA", "NC"], ["67", "I2C_SCL", "NC"], ["68", "RESERVED", "NC"], ["69", "RESERVED", "NC"], ["70", "GND", "GND"], ["71", "GND", "GND"], ["72", "GND", "GND"], ["73", "GND", "GND"], ["74", "RESERVED", "NC"], ["75", "RESERVED", "NC"], ["76", "RESERVED", "NC"], ["77", "RESERVED", "NC"], ["78", "RESERVED", "NC"], ["79", "USIM_DET", "NC"], ["80", "RESERVED", "NC"], ["81", "RESERVED", "NC"], ["82", "USB_BOOT", "M_USB_BOOT"], ["83", "RESERVED", "NC"], ["84", "RESERVED", "NC"], ["85", "RESERVED", "NC"], ["86", "RESERVED", "NC"], ["87", "RESERVED", "NC"], ["88", "GND", "GND"], ["89", "GND", "GND"], ["90", "GND", "GND"], ["91", "GND", "GND"], ["92", "GND", "GND"], ["93", "GND", "GND"], ["94", "GND", "GND"], ["95", "GND", "GND"], ["96", "ADC1", "NC"], ["97", "RESERVED", "NC"], ["98", "RESERVED", "NC"], ["99", "RESERVED", "NC"], ["100", "RESERVED", "NC"], ["101", "RESERVED", "NC"], ["102", "RESERVED", "NC"], ["103", "RESERVED", "NC"], ["104", "RESERVED", "NC"], ["105", "RESERVED", "NC"], ["106", "RESERVED", "NC"], ["107", "RESERVED", "NC"], ["108", "RESERVED", "NC"], ["109", "RESERVED", "NC"]], "block": "l_pins"},
     {"d": "C317", "lcsc": "C1562", "fit": false, "pins": [["1", "1", "M_NETSTAT"], ["2", "2", "GND"]], "block": "l_pins"},
     {"d": "C318", "lcsc": "C1562", "fit": false, "pins": [["1", "1", "M_RXD"], ["2", "2", "GND"]], "block": "l_pins"},
     {"d": "C319", "lcsc": "C1562", "fit": false, "pins": [["1", "1", "M_TXD"], ["2", "2", "GND"]], "block": "l_pins"},
@@ -82,7 +82,7 @@
     {"d": "TP312", "lcsc": "", "fit": true, "pins": [["1", "TP", "GND"]], "block": "l_test", "prefix": "TP"},
     {"d": "TP313", "lcsc": "", "fit": true, "pins": [["1", "TP", "GND"]], "block": "l_test", "prefix": "TP"},
   ];
-  const BLOCKS = [["l_supply", "Block 1 \u00b7 Module supply"], ["l_pins", "Block 2 \u00b7 Module pin map (U301 EG800K-EU)"], ["l_ctrl", "Block 3 \u00b7 Power key and UART level shifter"], ["l_sim", "Block 4 \u00b7 SIM"], ["l_ant", "Block 4 \u00b7 Antenna"], ["l_test", "Service pads: forced download, USB and debug UART"]];
+  const BLOCKS = [["l_supply", "Block 1 \u00b7 Module supply"], ["l_pins", "Block 2 \u00b7 Module pin map (U301 EG810M-EU)"], ["l_ctrl", "Block 3 \u00b7 Power key and UART level shifter"], ["l_sim", "Block 4 \u00b7 SIM"], ["l_ant", "Block 4 \u00b7 Antenna"], ["l_test", "Service pads: forced download, USB and debug UART"]];
   const TEMPLATE_PREFIXES = ["C", "TP"];
   const NC = "NC";
 
@@ -184,6 +184,19 @@
   // name (preferring the given footprint). The source is a template part on the page if there is
   // one (its getState_Component() names its copy in the project, not the library device, and
   // sch.create() never returns for it), otherwise the default in CFG.templateDefaults.
+  // EasyEDA Pro 4.1 cannot place a system-library device whose copy in the project library is out
+  // of date ("Create project component failed"; sch.create() never returns, and the next few
+  // creates fail too). So a device the project already holds is placed from the project's copy,
+  // which is also the version the parts on the other pages use; only new devices come from the
+  // system library.
+  let projectLib;
+  async function projectCopy(dev) {
+    if (!dev || !dev.name) return null;
+    if (projectLib === undefined) projectLib = (await tryCall(() => eda.lib_LibrariesList.getProjectLibraryUuid())) || null;
+    if (!projectLib) return null;
+    const found = (await tryCall(() => eda.lib_Device.search(dev.name, projectLib))) || [];
+    return (Array.isArray(found) ? found : [found]).find((d) => d && d.name === dev.name) || null;
+  }
   async function sourceDevice(label, { lcsc = "", name = "", footprint = "" }) {
     if (sourceDevices.has(label)) return sourceDevices.get(label);
     let dev = null, why = "";
@@ -195,6 +208,7 @@
       dev = sameFp.length === 1 ? sameFp[0] : named.length === 1 ? named[0] : null;
       if (!dev) why = `its library device was not found (${lcsc ? `LCSC ${lcsc}, ` : ""}${named.length} library devices named "${name}")`;
     }
+    if (dev) dev = (await projectCopy(dev)) || dev;
     sourceDevices.set(label, dev);
     if (!dev) templateLost.set(label, [why, []]);
     return dev;
@@ -216,7 +230,10 @@
       fromTemplate.set(label, [...(fromTemplate.get(label) || []), part.d]);
       return dev;
     }
-    if (!devices.has(part.lcsc)) devices.set(part.lcsc, await tryCall(() => eda.lib_Device.getByLcscIds(part.lcsc)));
+    if (!devices.has(part.lcsc)) {
+      const lib = await tryCall(() => eda.lib_Device.getByLcscIds(part.lcsc));
+      devices.set(part.lcsc, (await projectCopy(lib)) || lib);
+    }
     const dev = devices.get(part.lcsc);
     if (!dev) notFound.set(part.lcsc, [...(notFound.get(part.lcsc) || []), part.d]);
     return dev;

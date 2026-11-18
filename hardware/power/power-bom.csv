@@ -26,7 +26,7 @@ R216,1,220 kΩ,"1%, thick film",0603,0603WAF2203T5E,C22961,Y,Battery sense on th
 R217,1,100 kΩ,"1%, thick film",0603,0603WAF1003T5E,C25803,Y,4.2 V reads 1.31 V
 U204,1,TPL720F33,"LDO 3.3 V, 1.4 µA Iq",SOT-23-3,TPL720F33-3TR,C2842389,Y,Always on (ADR-010)
 U205,1,DS3231MZ+TRL,"RTC, ±5 ppm MEMS, 2 alarms",SOIC-8,DS3231MZ+TRL,C107410,Y,"ADR-002. Write INTCN=1, BBSQW=0 and EN32KHZ=0 at every boot; I²C bus clear before the first access after a wake"
-BT201,1,CR1220 holder,Coin cell holder,SMD,CR1220-2,C70381,Y,Keeps time if the main battery runs flat. JLC part
+BT201,1,CR1220 holder,Coin cell holder,SMD,CR1220-2,C70381,Y,"Keeps time if the main battery runs flat. JLC part, rated −40 to +80 °C. The cell is not on the BOM (fitted by hand): Panasonic BR1220 (BR-1220/BN), −30 to +80 °C. No CR1220-size cell is rated to −40 °C; owner decision 2026-11-18, bench-test at −40 °C"
 R220 R221,2,4.7 kΩ,"1%, thick film",0402,0402WGF4701TCE,C25900,Y,System I²C pull-up (off in sleep)
 Q207 Q208 Q209,3,2N7002,N-FET,SOT-23,2N7002,C8545,Y,JSCJ; JLC basic part. RTC alarm wakes the board; MCU holds power on; USB plugged in keeps the board on for service
 R227 R234,2,100 Ω,"1%, thick film",0402,0402WGF1000TCE,C25076,Y,Latch series resistor (R227); TPS63020 EN series resistor (R234)
