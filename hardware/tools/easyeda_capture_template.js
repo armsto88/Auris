@@ -124,6 +124,19 @@
   // name (preferring the given footprint). The source is a template part on the page if there is
   // one (its getState_Component() names its copy in the project, not the library device, and
   // sch.create() never returns for it), otherwise the default in CFG.templateDefaults.
+  // EasyEDA Pro 4.1 cannot place a system-library device whose copy in the project library is out
+  // of date ("Create project component failed"; sch.create() never returns, and the next few
+  // creates fail too). So a device the project already holds is placed from the project's copy,
+  // which is also the version the parts on the other pages use; only new devices come from the
+  // system library.
+  let projectLib;
+  async function projectCopy(dev) {
+    if (!dev || !dev.name) return null;
+    if (projectLib === undefined) projectLib = (await tryCall(() => eda.lib_LibrariesList.getProjectLibraryUuid())) || null;
+    if (!projectLib) return null;
+    const found = (await tryCall(() => eda.lib_Device.search(dev.name, projectLib))) || [];
+    return (Array.isArray(found) ? found : [found]).find((d) => d && d.name === dev.name) || null;
+  }
   async function sourceDevice(label, { lcsc = "", name = "", footprint = "" }) {
     if (sourceDevices.has(label)) return sourceDevices.get(label);
     let dev = null, why = "";
@@ -135,6 +148,7 @@
       dev = sameFp.length === 1 ? sameFp[0] : named.length === 1 ? named[0] : null;
       if (!dev) why = `its library device was not found (${lcsc ? `LCSC ${lcsc}, ` : ""}${named.length} library devices named "${name}")`;
     }
+    if (dev) dev = (await projectCopy(dev)) || dev;
     sourceDevices.set(label, dev);
     if (!dev) templateLost.set(label, [why, []]);
     return dev;
@@ -156,7 +170,10 @@
       fromTemplate.set(label, [...(fromTemplate.get(label) || []), part.d]);
       return dev;
     }
-    if (!devices.has(part.lcsc)) devices.set(part.lcsc, await tryCall(() => eda.lib_Device.getByLcscIds(part.lcsc)));
+    if (!devices.has(part.lcsc)) {
+      const lib = await tryCall(() => eda.lib_Device.getByLcscIds(part.lcsc));
+      devices.set(part.lcsc, (await projectCopy(lib)) || lib);
+    }
     const dev = devices.get(part.lcsc);
     if (!dev) notFound.set(part.lcsc, [...(notFound.get(part.lcsc) || []), part.d]);
     return dev;

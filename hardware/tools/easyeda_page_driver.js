@@ -18,6 +18,12 @@
 // Read results in slices under ~1000 characters, and replace = & ? first: the tool blocks output
 // that looks like query strings.
 //
+// Checked on EasyEDA Pro 4.1.105 (2026-11-18): works unchanged. The driver file can also be loaded
+// through the file input and started with new Function(window.__aurisFiles[name])(). EasyEDA's
+// warnings and errors appear as "messager-panel" toasts; a MutationObserver on document.body
+// catches them while a script runs (that is how the 4.1 "Create project component failed"
+// problem, fixed in easyeda_capture_template.js, was found).
+//
 // Not possible this way (EasyEDA Pro 3.2.209, 2026-11-17): the page Size dropdown ignores
 // synthetic events, so page sizes are set by hand; scripts cannot open network connections
 // ("external interaction permission" is off), and a page fetch from localhost hits Chrome's
