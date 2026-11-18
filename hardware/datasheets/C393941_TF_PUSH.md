@@ -5,7 +5,7 @@
 | LCSC | C393941 · JLC extended · see `parts.csv` for stock and price |
 | Manufacturer | SHOU HAN (Shenzhen Shouhan Technology) |
 | Package | SMD holder 14.75 × 14.50 mm, 1.80–2.00 mm high; 8 card contacts at 1.10 mm pitch + card-detect pad "Cd" + 4 cover hold-down pads + 2 Ø0.80 mm pegs (drawing, sheet 1) · EasyEDA footprint `TF-SMD_TF-PUSH` |
-| Used by | mcu: J402 (with Q401/Q402/R414/R415/C406 card-supply switch, C404/C405, R409–R413 pull-ups, R418 33 Ω SD_CLK series resistor, R419 card-detect pull-up) |
+| Used by | mcu: J402 (with Q401/Q402/R414/R415/C406 card-supply switch, C404/C405, R409–R413 pull-ups, R418 33 Ω SD_CLK series resistor, R419 card-detect pull-up, D403 SRV05-4 ESD array on SD_CLK/SD_CMD/SD_D0/SD_CD since 2026-11-18) |
 | Datasheet | SHOU HAN drawing "TF PUSH", Rev A, first release 2020-07-07, and "Specification for Approval" TF PUSH Rev A/0 (8 pp.), in one PDF: `pdf/C393941_TF_PUSH.pdf` (LCSC copy: https://www.lcsc.com/datasheet/lcsc_datasheet_1912111437_SHOU-HAN-TF-PUSH_C393941.pdf) |
 | Rated temperature | **No operating range stated.** Storage −25…+85 °C (spec §3.8); qualified by thermal shock −55 ↔ +85 °C, 5 cycles (spec Table I item 9) and 85 °C for 96 h (Table I item 14). JLC lists −25…+85 °C |
 
@@ -17,13 +17,13 @@ Contact table and pad row from the drawing (pin table lower middle; "Recommended
 |---|---|---|---|---|
 | 1 | DAT2 | Data bit 2 (I/O, push-pull) | SD_D2: R412 10 kΩ to SD_VDD | OK (unused in 1-bit mode, held high) |
 | 2 | CD/DAT3 | Card detect / data bit 3 | SD_D3: R413 10 kΩ to SD_VDD | OK: high at CMD0 keeps the card in SD mode |
-| 3 | CMD | Command/response | SD_CMD → GPIO48; R409 10 kΩ to SD_VDD | OK |
+| 3 | CMD | Command/response | SD_CMD → GPIO48; R409 10 kΩ to SD_VDD; D403 pin 3 | OK; ESD by D403 (T7) |
 | 4 | VDD | Card supply | SD_VDD: Q401 drain, C404 10 µF, C405 100 nF | OK |
-| 5 | CLK | Clock (input) | SD_CLK → R418 33 Ω → SD_CLK_MCU → GPIO47 | OK (EasyEDA name "CLX", matched by number) |
+| 5 | CLK | Clock (input) | SD_CLK → R418 33 Ω → SD_CLK_MCU → GPIO47; D403 pin 1 (card side of R418) | OK (EasyEDA name "CLX", matched by number); ESD by D403 (T7) |
 | 6 | VSS | Supply ground | GND | OK |
-| 7 | DAT0 | Data bit 0 | SD_D0 → GPIO44 (U0RXD); R410 10 kΩ to SD_VDD | OK; see back-feed (T2) |
+| 7 | DAT0 | Data bit 0 | SD_D0 → GPIO44 (U0RXD); R410 10 kΩ to SD_VDD; D403 pin 4; TP414 | OK; see back-feed (T2); ESD by D403 (T7) |
 | 8 | DAT1 | Data bit 1 | SD_D1: R411 10 kΩ to SD_VDD | OK (unused, held high) |
-| Cd (EasyEDA symbol pin 9 `CD`, footprint pad `CD`) | Cd | Card-detect contact | SD_CD → GPIO3 (U401 pin 15); R419 100 kΩ to 3V3 | OK since 2026-11-17 (T3, owner decision); the PCB check confirms pad `CD` gets SD_CD (T4) |
+| Cd (EasyEDA symbol pin 9 `CD`, footprint pad `CD`) | Cd | Card-detect contact | SD_CD → GPIO3 (U401 pin 15); R419 100 kΩ to 3V3; D403 pin 6 | OK since 2026-11-17 (T3, owner decision); the PCB check confirms pad `CD` gets SD_CD (T4); ESD by D403 (T7) |
 | Cover pads ×4 (EasyEDA 10–13) | — | Metal cover hold-downs | GND (rows `J402,10`–`13` SHELL) | OK since 2026-11-17 (T3, owner decision) |
 | Pegs ×2 | — | Ø0.80 ± 0.10 mm plastic pegs into Ø1.00 mm holes | — | EasyEDA holes Ø1.20 mm: looser, fine |
 
@@ -48,6 +48,7 @@ The holder itself needs nothing; the circuit around it was checked here.
 - **Soft start** (R415 10 kΩ, C406 100 nF gate-to-source). Gate time constant ≈ (10 kΩ ∥ 100 kΩ) × (100 nF + 645 pF Ciss) ≈ 0.92 ms; Q401 reaches its −0.5 … −1.3 V threshold (AO3401A p. 2) 0.17–0.52 ms after GPIO45 rises. Because the capacitor is gate-to-source and not gate-to-drain, it slows the gate but does not regulate the output slew: once past threshold the FET goes from off to fully on over a few hundred mV of gate swing, so SD_VDD probably rises in ≈ 0.1–0.3 ms, not ≈ 1 ms, and the inrush into C404 + C405 (≈ 5–10 µF effective) is ≈ 0.1–0.3 A (estimate). The 3V3 rail has ≈ 66 µF nominal (C224, C225, C401) and the TPS63802 behind it, so the dip should stay small; worth measuring (T5). The gate-to-source placement has one real advantage: when 3V3 itself ramps at wake, the gate follows the source and Q401 stays off. Turn-off: R414 × C406 ≈ 10 ms.
 - **Pull-ups** R409–R413 10 kΩ to SD_VDD. Espressif asks for pull-ups on the SD lines (ESP32-S3 HWDG §1.3.12); tying them to the switched SD_VDD rather than 3V3 is right, because a pull-up to 3V3 would feed the unpowered card through each line (≈ 0.3 mA per line through the card's input diodes). The reverse path remains: whatever the ESP32 drives high on CMD/D0/CLK, or GPIO44's own reset pull-up, flows into SD_VDD while the card is off (T2). CLK needs no pull-up (the host always drives it when the card is powered); the recommended series resistor near the ESP32 is R418 33 Ω since 2026-11-17 (ESP32 file F9).
 - **Decoupling**: C404 10 µF (X5R 10 V 0603, C19702) + C405 100 nF at J402. OK.
+- **ESD** (T7, since 2026-11-18): D403 SRV05-4 (C13612, same part as D301/D401) at J402 clamps the four lines that reach ESP32 pins — SD_CLK (on the card side of R418), SD_CMD, SD_D0 and SD_CD — with pin 2 to GND and pin 5 to 3V3. 3 pF typ / 5 pF max per line (Semtech p. 2), negligible for the SD bus. DAT1–DAT3 (pins 8, 1, 2) reach only R411–R413 to SD_VDD in 1-bit mode and are not clamped. Details in `C13612_SRV05-4.TCT.md`.
 - **Card detect** (T3): the footprint has a single Cd pad; with only one pin, the switch can only close against the metal cover, so the cover must be on GND for CD to read anything (inference from the drawing; normally-open or normally-closed is not stated, check with a meter on a sample). With R419 100 kΩ to 3V3: 33 µA while awake in whichever state is closed, nothing while asleep. Wired this way since 2026-11-17: J402 pin 9 on SD_CD (GPIO3), pads 10–13 on GND.
 
 ## Layout notes and gotchas
@@ -56,6 +57,7 @@ The holder itself needs nothing; the circuit around it was checked here.
 - Card opening must face the service hatch so the card can be swapped without opening the main seal (F5-06); push-push operation (drawing: push in, push out) needs finger room in front of the slot.
 - Keep CMD and D0 within ±50 mil of CLK (ESP32-S3 HWDG §1.4.9). C405 at pin 4.
 - The cover pads carry the card-detect return and the ESD path from a hand inserting a card: short, wide connection to the ground plane.
+- D403 next to J402, between the holder and R418/the pull-ups, with its own ground via beside the holder; route CLK, CMD, D0 and CD through its pads without stubs.
 
 ## EasyEDA symbol and footprint
 
@@ -75,4 +77,5 @@ Source: JLCEDA/EasyEDA Official Library ([lceda.cn](https://lceda.cn/), [easyeda
 | Should fix (T3) | J402 Cd, cover pads 10–13 | Card-detect and cover pads have no netlist rows | Drawing layout; EasyEDA pins 9–13 | Add `J402,10,SHELL,GND,Y` … `J402,13,SHELL,GND,Y` (cover to GND: needed for CD and as the ESD path). Add `J402,9,CD,SD_CD,Y`, `R419,1,1,3V3,Y` / `R419,2,2,SD_CD,Y` 100 kΩ (C25741), and move U401 pin 15 (GPIO3) from USB_VSENSE to SD_CD, dropping the DNP R407/R408. GPIO3's strap is ignored with default eFuses. Do not use GPIO46 (download-mode strap). If no GPIO is wanted, leave `J402,9,CD,NC,Y` explicitly | owner decision (review M6): applied as proposed |
 | Should fix (T4) | J402 symbol pin 9 / pad `CD` | Symbol pin number 9 does not match footprint pad number `CD` | EasyEDA record C393941 | Once CD is wired, check after "Update PCB" that pad CD carries SD_CD; if not, renumber the footprint pad to 9 (or the symbol pin to CD) in a project copy of the part | fixed (PCB net check: pad CD carries SD_CD, review M6) |
 | Note (T5) | Q401/C406 | Soft start is shorter than the README's ≈ 1 ms; inrush ≈ 0.1–0.3 A (estimate) | AO3401A Rev 3.1; calculation above | Measure 3V3 and SD_VDD at SD power-on. If the dip is too large, use a load switch with controlled slew, as the README already suggests | fixed in docs (mcu README now says ≈ 0.1–0.3 ms, review M11); measurement open (bench) |
+| Should fix (T7) | J402 pins 3, 5, 7, Cd | The slot is user-accessible (card swaps outdoors, F5-06) and the card lines that reach ESP32 pins had no ESD protection | Review W17; SRV05-4 Rev 08/11/04 pp. 1–2 (IEC 61000-4-2 ±8 kV contact) | Add an SRV05-4 at J402 on SD_CLK, SD_CMD, SD_D0, SD_CD (D3 is not wired to the ESP32 in 1-bit mode, so not D3 as the review first said) | fixed (owner decision 2026-11-18): D403, pin 5 to 3V3 |
 | Note (T6) | J402 | Drawing, spec and JLC disagree on details (JLC description says "No Push-Push", attribute says push-push; drawing shows push-in/push-out travel) | Drawing sheet 1; JLC record | Drawing governs: push-push | no action |

@@ -1,15 +1,15 @@
 # 05 — Rough BOM and economics
 
-**Cost basis:** User-supplied early engineering BOM; LCSC listed US-dollar unit prices reportedly checked **28 July 2026**; microphone cost is a **working external allowance**. Exception: the RTC row (DS3231MZ+TRL) was re-quoted at LCSC on **22 October 2026** when the selection changed (ADR-002). These are NOT supplier confirmations, production costs or recommended retail prices.
+**Cost basis:** User-supplied early engineering BOM; LCSC listed US-dollar unit prices reportedly checked **28 July 2026**; microphone cost is a **working external allowance**. Exception: the RTC row (DS3231MZ+TRL) was re-quoted at LCSC on **22 October 2026** when the selection changed (ADR-002), rows marked ‡ show LCSC prices from 23 October 2026, and the MCU and LTE rows (marked §) show JLCPCB prices from **18 November 2026**, when the owner changed both parts. These are NOT supplier confirmations, production costs or recommended retail prices.
 
 ## Major parts
 
 | Block | Proposed part | LCSC | Status | Prototype USD | ~100 units USD |
 |---|---|---|---|---:|---:|
-| MCU | ESP32-S3-WROOM-1-N16R8 | C2913202 | **SELECTED** | 5.55 | 4.01 |
+| MCU | ESP32-S3-WROOM-1-N16R2 (N16R8 until 2026-11-18) | C2913205 | **SELECTED** | 5.24§ | 4.11§ |
 | RTC | DS3231MZ+TRL | C107410 | **SELECTED** | 3.54 | 2.28 |
 | Audio ADC | PCM1863DBTR (reel) | C529569 | CANDIDATE | 5.92\* | 5.58\* |
-| LTE | EG800K-EU (Quectel) | C44008839 | **SELECTED** | 6.85‡ | 4.83‡ |
+| LTE | EG810M-EU (Quectel; EG800K-EU until 2026-11-18) | C20421924 | **SELECTED** | 9.51§ | 6.39§ |
 | Microphone | Primo EM273 or equivalent | External | CANDIDATE | 25.00 | 25.00 |
 | Charger | CN3791 + TMP390A2 (Node v4 circuit) | C154992 / C5219772 | **SELECTED** | 0.96‡ | 0.55‡ |
 | Main 3.3 V | TPS63802DLAR | C2845237 | **SELECTED** | 0.91‡ | 0.58‡ |
@@ -72,10 +72,10 @@ Exact orderable codes, LCSC stock, JLCPCB assembly stock and LCSC USD prices for
 
 - **Audio ADC:** order the reel version **PCM1863DBTR, C529569** (879 in stock, 2.44 USD at 100). The tube version PCM1863DBT (C1520794) had 1 unit in stock and costs 5.58 USD at 100. \*The July prices above are for the tube version. PCM1862DBTR (C544647) is the same-footprint fallback.
 - **N-FETs:** the wake latch and, since 2026-11-17, the audio preamp gate driver (Q102) use the JSCJ **2N7002, C8545** (JLCPCB basic). Avoid the CBI 2N7002 C51315010 (400 in stock).
-- **LTE modem: EG800K-EU (C44008839) chosen** (owner decision 2026-10-23, ADR-006), replacing the global A7670G (C5846957, 12.30 USD) once GSM was ruled out: 7.47 USD less per unit at 100. 151 in stock at LCSC and 179 at JLC on 2026-10-23, but **4 at JLC on 2026-11-17**: order or consign the prototype quantity now. The LGA package needs JLC assembly or stencil and reflow. Avoid the EG800K-CN (China bands).
-- **Footprint traps:** DS3231M+TRL (SOIC-16) and ESP32-S3-WROOM-1U (external antenna) are listed under similar names but need different footprints from the selected parts.
+- **LTE modem: EG800K-EU (C44008839) chosen** (owner decision 2026-10-23, ADR-006), replacing the global A7670G (C5846957, 12.30 USD) once GSM was ruled out: 7.47 USD less per unit at 100. 151 in stock at LCSC and 179 at JLC on 2026-10-23, but **4 at JLC on 2026-11-17** and 0 on 2026-11-18, when the owner replaced it with the EG810M-EU (C20421924, same package; see the 2026-11-18 section below). The LGA package needs JLC assembly or stencil and reflow. Avoid the EG800K-CN (China bands).
+- **Footprint traps:** DS3231M+TRL (SOIC-16) and ESP32-S3-WROOM-1U (external antenna) are listed under similar names but need different footprints from the selected parts. The WROOM-1 N16R8 and N16R2 share one footprint.
 
-Stock and prices move daily; re-check before ordering. A refreshed snapshot with the review's part changes is [`../specs/lcsc-orderable-2026-11-17.csv`](../specs/lcsc-orderable-2026-11-17.csv); its price columns are **JLCPCB** assembly-part prices (the 2026-10-23 file has LCSC prices).
+Stock and prices move daily; re-check before ordering. A refreshed snapshot with the review's part changes is [`../specs/lcsc-orderable-2026-11-17.csv`](../specs/lcsc-orderable-2026-11-17.csv), and [`../specs/lcsc-orderable-2026-11-18.csv`](../specs/lcsc-orderable-2026-11-18.csv) adds the owner decisions of 2026-11-18; their price columns are **JLCPCB** assembly-part prices (the 2026-10-23 file has LCSC prices). §Rows marked § in the table above show JLCPCB prices from 2026-11-18 (at 1 and at 100).
 - **Power stage (2026-10-23, doc 20):** charger, main 3.3 V, keep-alive LDO, wake latch and modem supply now come from FieldMesh Hub v2 / Node v4 (ADR-003/007/008/010/011); the MAX17048 is dropped for an ADC divider (ADR-027). The full power-sheet BOM is `hardware/power/power-bom.csv`. ‡Rows marked ‡ in the table above show LCSC prices from 2026-10-23, not the July quote. The charger price covers the CN3791 and TMP390A2 only; its FETs, diodes and inductor add about 0.5 USD.
 
 
@@ -95,6 +95,23 @@ The whole-board BOM (all four sheets, JLCPCB prices checked 2026-11-17) was cost
 
 Every change, with old and new MPN and LCSC code, unit prices at 10 and 100, JLC class, spec comparison and reason, is in [`../hardware/review/2026-11-17-bom-cost-changes.csv`](../hardware/review/2026-11-17-bom-cost-changes.csv); the findings are in [`../hardware/review/2026-11-17-schematic-review.md`](../hardware/review/2026-11-17-schematic-review.md). Current prices and stock for every part are in [`../hardware/datasheets/parts.csv`](../hardware/datasheets/parts.csv) (refresh with `hardware/tools/fetch_part_data.py`).
 
-**Supply warning (2026-11-17):** JLC had **4 EG800K-EU and none on pre-sale**; order or consign the modules before the board order. The genuine JST battery connector (C295747) and every SN74LVC2G66 DCU variant were also out of stock at JLC; both are replaced on the BOM.
+**Supply warning (2026-11-17):** JLC had **4 EG800K-EU and none on pre-sale**; order or consign the modules before the board order. The genuine JST battery connector (C295747) and every SN74LVC2G66 DCU variant were also out of stock at JLC; both are replaced on the BOM. **Update 2026-11-18:** EG800K-EU stock at JLC reached 0; the EG810M-EU that replaces it had 206 and the ESP32-S3-WROOM-1-N16R2 7,379. Buy the modem quantity early.
 
-The modem, ESP32 module, PCM1863 and DS3231M are about 55 % of the part cost and are owner-selected; they were not changed.
+The modem, ESP32 module, PCM1863 and DS3231M are about 55 % of the part cost and are owner-selected; they were not changed in the review.
+
+## Owner decisions, 2026-11-18
+
+Five decisions closed the review's open items; each is a row in [`../hardware/review/2026-11-17-bom-cost-changes.csv`](../hardware/review/2026-11-17-bom-cost-changes.csv). Same costing as above (`python3 hardware/tools/bom_cost.py`, JLCPCB prices, $3.07 Economic feeder fee per unique extended part).
+
+| | 10 boards | 100 boards |
+|---|---:|---:|
+| 2026-11-17, after the cost pass: parts + fees = **total per board** | $29.74 + $16.27 = **$46.01** | $23.77 + $1.63 = **$25.40** |
+| 2026-11-18, owner decisions: parts + fees = **total per board** | $32.05 + $16.27 = **$48.32** | $25.82 + $1.63 = **$27.44** |
+| Unique part codes (extended) | 102 (53), unchanged | |
+
+- **LTE modem U301:** EG800K-EU → Quectel **EG810M-EU** (EG810MEULA-I05-SNNSA, C20421924): $9.51 / $8.04 / $6.39 at 1 / 10 / 100 against $6.81 / $5.86 / $4.80. +$2.18/board at 10, +$1.58 at 100: most of the increase. Same LGA-109 package and pin functions; reason: no EG800K-EU stock at JLC.
+- **MCU U401:** ESP32-S3-WROOM-1-N16R8 → **N16R2** (C2913205): $5.24 / $4.69 / $4.11 against $5.36 / $4.71 / $3.75; −$0.02/board at 10, +$0.36 at 100. Rated −40…+85 °C instead of +65 °C.
+- **microSD ESD D403:** a third SRV05-4.TCT (C13612): +$0.16/board at 10, +$0.12 at 100, no new feeder fee (the part is already on the BOM as D301 and D401).
+- **Test pads TP404–TP415** are bare copper, and the **BR1220 coin cell** is fitted by hand: neither is on the JLC BOM.
+
+The modem, ESP32 module, PCM1863 and DS3231M are now about 57–59 % of the part cost.

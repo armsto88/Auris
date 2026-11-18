@@ -10,9 +10,9 @@
 
 The hardware guide does not draw this sheet yet, and `build_guide.py` does not read these files. Its blocks and headings are in `EXTRA_BLOCKS` in `hardware/tools/easyeda_capture.py` until the guide gets an MCU tab.
 
-**Sources.** GPIO allocation: the guide's *Reserved and allocated GPIOs* table (proposed 2026-10-23, backlog H0-06). Signals from other sheets: the sheet-port tables in `build_guide.py`. microSD and USB-C requirements: the guide's *Storage & USB* section (ADR-012). Module pad numbers and support circuit: Espressif **ESP32-S3-WROOM-1 datasheet v1.8**, Table 3-1 and Figure 9-1 (`references/`): 22 µF + 0.1 µF on 3V3, EN RC delay 10 kΩ / 1 µF, 0 Ω links on USB D−/D+.
+**Sources.** GPIO allocation: the guide's *Reserved and allocated GPIOs* table (proposed 2026-10-23, backlog H0-06). Signals from other sheets: the sheet-port tables in `build_guide.py`. microSD and USB-C requirements: the guide's *Storage & USB* section (ADR-012). Module pad numbers and support circuit: Espressif **ESP32-S3-WROOM-1 datasheet v1.8**, Table 3-1 and Figure 9-1 (`references/`): 22 µF + 0.1 µF on 3V3, EN RC delay 10 kΩ / 1 µF, 0 Ω links on USB D−/D+. Module variant: §1.2 and Table 1-1 (U401 is the **N16R2** since 2026-11-18, see below).
 
-**Checked** against these sources: all 41 module pads match Table 3-1; every named GPIO in the guide's table and every sheet port with a GPIO lands on the right pad; `3V3`, `GND` and `VBUS` join the power sheet by name. Nets with a single fitted pin: `AUD_INT_MCU`, `AUD_MCLK` and `MIC1_DC_SENSE` (their parts on the audio sheet are optional). `ESP_EN` also joins the power sheet (TPS63802 power-good). The 2026-11-17 PCB check (`easyeda_check.py`) passes for every part on this sheet.
+**Checked** against these sources: all 41 module pads match Table 3-1; every named GPIO in the guide's table and every sheet port with a GPIO lands on the right pad; `3V3`, `GND` and `VBUS` join the power sheet by name. Nets with a single fitted pin: `AUD_INT_MCU`, `AUD_MCLK` and `MIC1_DC_SENSE` (their parts on the audio sheet are optional). `ESP_EN` also joins the power sheet (TPS63802 power-good). The 2026-11-17 PCB check (`easyeda_check.py`) passes for every part on this sheet. D403 and TP404–TP415 (2026-11-18) are in the re-captured MCU page; the PCB check is re-run after the next Update PCB (pending).
 
 Designators run from 401. Every part reuses an LCSC code already in the other BOMs, except U401, J401, J402 (from the guide's parts snapshot) and the 5.1 kΩ CC resistors (C25905, UNI-ROYAL 0402WGF5101TCE).
 
@@ -28,10 +28,20 @@ Marked `Chosen 2026-11-17` in the netlist and BOM notes.
 | Boot and reset | Bring GPIO0 to a pad or button | Test pads for GPIO0, EN and GND (TP401–TP403) rather than buttons |
 | Status LED | GPIO43 to GND through a resistor | Green **KT-0805G** (JLC basic, same green InGaN as the KT-0603G) with **100 Ω**: 2–7 mA for VF 2.6–3.1 V. The first choice, 2.2 kΩ, gave only ≈ 0.25 mA, too dim for daylight (F5-05) |
 
+## Owner decisions 2026-11-18
+
+Marked `owner decision 2026-11-18` in the netlist and BOM notes; prices and reasons in `hardware/review/2026-11-17-bom-cost-changes.csv`.
+
+| Item | Decision |
+|---|---|
+| Module (U401) | **ESP32-S3-WROOM-1-N16R2** (C2913205) instead of the N16R8 (C2913202): 16 MB quad flash and 2 MB quad PSRAM, rated −40…+85 °C (datasheet v1.8 §1.2, Table 1-1). The R8 variants (octal PSRAM) are rated −40…+65 °C, +85 °C only with PSRAM ECC, so ECC is no longer needed. Same footprint, pads and symbol. GPIO35–37, the octal PSRAM lines on the N16R8, are free and stay unconnected (spare). The ≥ 5 s audio buffer (F3-05, 480 KB) fits in 2 MB |
+| microSD ESD (D403) | **SRV05-4.TCT** (C13612, same part as D301 and D401) at J402 on SD_CLK (card side of R418), SD_CMD, SD_D0 and SD_CD: the four card lines that reach ESP32 pins. 3 pF typical, 5 pF maximum per line. Pin 2 to GND through its own via beside J402; pin 5 (REF2) to 3V3, which is never below SD_VDD, so nothing back-feeds; 3V3 is off in sleep. D1–D3 reach only 10 kΩ pull-ups to SD_VDD (D3 is not wired to the ESP32 in 1-bit mode) |
+| Test pads TP404–TP415 | PWR_HOLD (TP404, GPIO10), SYS_SDA/SYS_SCL (TP405/TP406, GPIO13/14), AUD_SDA/AUD_SCL (TP407/TP408, GPIO18/8), SD_VDD (TP409), LTE_STATUS (TP410, GPIO38), LTE_TX/LTE_RX (TP411/TP412, GPIO39/40, ESP32 side), STATUS_LED = U0TXD (TP413, GPIO43), SD_D0 = U0RXD (TP414, GPIO44) and 3V3 (TP415). TP413/TP414 give UART0 to Espressif's RF test firmware. TP401–TP403 (BOOT, EN, GND) and TP413–TP415 go in one 2.54 mm row for a pogo-pin jig. Copper only; the 1.0 mm pad footprint is assigned at layout (the library test point is 0.5 mm) |
+
 ## Capture notes
 
 - **J401 USB-C:** the EasyEDA symbol merges pad pairs (`A1B12`, `A4B9`, `B4A9`, `B1A12`); the capture puts the netlist's A/B rows on them by name. Shell pins 1–4 go to GND (owner decision 2026-11-17).
-- **J402 microSD:** contacts 1–8 per the SD standard; card detect is symbol pin and footprint pad `CD` (netlist pin 9) on SD_CD; cover pads 10–13 go to GND (owner decision 2026-11-17).
+- **J402 microSD:** contacts 1–8 per the SD standard; card detect is symbol pin and footprint pad `CD` (netlist pin 9) on SD_CD; cover pads 10–13 go to GND (owner decision 2026-11-17). Place D403 beside J402; it sits on the card side of R418.
 
 ## Changes from the 2026-11-17 review
 
@@ -53,12 +63,14 @@ Details and evidence: `hardware/review/2026-11-17-schematic-review.md`. Per-part
 - **Floating inputs:** GPIO9 (AUD_MCLK, R102 not fitted) has no external pull: enable its pull-down in firmware. GPIO3 is SD_CD with R419 pulling it up: never enable an internal pull on it.
 - **System I²C:** GPIO13/14 glitch low at power-up while the RTC is powered: run an I²C bus recovery before the first RTC access.
 - **ADC:** the ESP32-S3's calibrated ranges are 0–1.6 V at 6 dB and 0–2.9 V at 12 dB (chip datasheet Table 5-6). BATT_ADC (1.31 V at 4.2 V) uses 6 dB; SOLAR_ADC's 12 dB range reaches ≈ 22 V of panel.
+- **Flash and PSRAM clock (2026-11-18):** keep both at 80 MHz. ESP-IDF's *flash_psram_config* guide marks 120 MHz as experimental: it can crash after a temperature swing of about 20 °C. The N16R2's 2 MB quad PSRAM has about a quarter of the N16R8's octal-DDR bandwidth at 80 MHz; keep large read-only data such as model weights in the 16 MB memory-mapped flash.
 
 ## Programming and recovery
 
-VBUS only wakes the board; it does not power it. Flashing needs a battery (or a bench supply) on J203 with SW202 on. With the cable in, Q209 keeps the board on. To force download mode, short TP401 to TP403 and pulse TP402 (EN) with the cable in, then flash over USB-Serial-JTAG. Without the cable, an EN reset drops PWR_HOLD and the board turns off.
+VBUS only wakes the board; it does not power it. Flashing needs a battery (or a bench supply) on J203 with SW202 on. With the cable in, Q209 keeps the board on. To force download mode, short TP401 to TP403 and pulse TP402 (EN) with the cable in, then flash over USB-Serial-JTAG. Without the cable, an EN reset drops PWR_HOLD and the board turns off. TP401–TP403 and TP413–TP415 sit in one 2.54 mm row (BOOT, EN, GND, U0TXD, U0RXD, 3V3) so a pogo-pin jig can reach programming, reset and UART0 together.
 
-## Open (owner decisions)
+## Open
 
-- microSD ESD: the slot is user-accessible but its lines have no ESD protection (review W17).
-- Module temperature: the N16R8 is rated −40…+65 °C; PSRAM ECC raises it to +85 °C at the cost of 1/16 of the PSRAM, or an N16 / N16R2 module is rated to +85 °C.
+- microSD ESD and the module temperature rating were decided on 2026-11-18 (above; review W17 and M2).
+- Test-pad footprint: assign the 1.0 mm pad at layout (review W12, capture item 4).
+- J402 holder: SHOU HAN rates storage −25…+85 °C only; qualify at −40 °C (review W8).

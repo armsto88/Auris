@@ -60,7 +60,7 @@ stateDiagram-v2
 | `storage` | WAV writer, manifest/checksum, index, recovery; 1-bit SD mode on GPIO47/48/44, card power on GPIO45 (power-cycle a hung card; pins to input before power-off) | unclean reset, SD absent/full/removal, card write-latency spikes |
 | `metrics` | RMS, spectra, indices and/or calibrated levels | deterministic reference vectors |
 | `detector` | optional model load/quantisation/inference/score logging | model OOM, invalid package, slow inference |
-| `lte_sync` | sessions, retry/backoff, chunk transfer, receipt bookkeeping; Quectel AT driver for the EG800K-EU (LTE-only hardware, no 2G) | poor signal, dropped session, duplicate upload |
+| `lte_sync` | sessions, retry/backoff, chunk transfer, receipt bookkeeping; Quectel AT driver for the EG810M-EU (EG800K-EU until 2026-11-18; LTE-only hardware, no 2G) | poor signal, dropped session, duplicate upload |
 | `ble_service` | field onboarding, diagnostics, auth/pairing | no internet, unauthorised pairing |
 | `config` | schema validation, revisions, rollback, active config hash | invalid schedule, older schema |
 | `ota` | signature/compatibility, staged install and rollback | brownout mid-update, interrupted download |

@@ -88,7 +88,7 @@ All rows are priority **V1** and status **OPEN** (no verification evidence yet).
 | F3-02 | A power cut or card removal at any instant loses at most the in-progress file; closed files and the manifest stay valid | R04 | ≥ 1,000 randomized cuts and removals |
 | F3-03 | SHA-256 of every closed file recorded in the manifest | Doc 09 | Manifest audit |
 | F3-04 | Support cards up to 256 GB; report days-to-full daily | DRM-1 | Card matrix test |
-| F3-05 | Buffer ≥ 5 s of audio (480 KB) in PSRAM to ride out SD write stalls | F1-01 (10 × 500 ms) | Stall injection |
+| F3-05 | Buffer ≥ 5 s of audio (480 KB) in PSRAM to ride out SD write stalls (fits in the N16R2's 2 MB, 2026-11-18) | F1-01 (10 × 500 ms) | Stall injection |
 
 ### F4 — Energy
 
@@ -129,7 +129,7 @@ All rows are priority **V1** and status **OPEN** (no verification evidence yet).
 
 | ID | Requirement | Derived from | Verification |
 |---|---|---|---|
-| F7-01 | Operate at −20 to +35 °C ambient; internal air ≤ 65 °C in full sun (N16R8 module rating, doc 04), e.g. with the panel as a sun shade | DRM-1 | Climate chamber + sun-exposure log |
+| F7-01 | Operate at −20 to +35 °C ambient; internal air ≤ 65 °C in full sun (set by the N16R8 module rating, doc 04; the N16R2 fitted since 2026-11-18 is rated to +85 °C, and the next limits are the modem and SIM holder at +75 °C, so this limit can be revisited), e.g. with the panel as a sun shade | DRM-1 | Climate chamber + sun-exposure log |
 | F7-02 | Mic fingerprint shift after a wet/dry cycle ≤ X dB per band (X from G2/G6 data) | R08 | Spray and recovery test |
 | F7-03 | Survive driving rain and condensation cycling for a full 300-day service interval. IP66 is a test target, not a claim (ADR-020) | D2 | G6 environmental tests |
 
