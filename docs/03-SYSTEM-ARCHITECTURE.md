@@ -9,12 +9,12 @@
 ```mermaid
 flowchart LR
   R[RTC + service wake] --> P[Power latch / rails]
-  P --> M[ESP32-S3 N16R8]
+  P --> M[ESP32-S3 N16R2]
   A[Electret microphone + analogue front end] --> C[PCM1863 candidate ADC]
   C -- I2S --> M
   M <--> D[(microSD: raw audio + manifest)]
   M <-- BLE --> F[Local field setup]
-  M -- UART + controls --> L[EG800K-EU LTE modem]
+  M -- UART + controls --> L[EG810M-EU LTE modem]
   L <--> B[Remote backend]
   B <--> W[Web workspace / reviewers]
   B <--> T[Model training service (future)]
@@ -65,7 +65,7 @@ Avoid treating project/location and physical recorder as the same entity: a reco
 ## Architectural constraints requiring early experiments
 
 - Expected maximum recording sample rate and whether simultaneous spectral processing is feasible.
-- Model memory: 8 MB PSRAM does **not** imply every TFLite model can run; benchmark activation buffers and latency.
+- Model memory: the N16R2 has 2 MB quad PSRAM (8 MB on the N16R8 it replaced on 2026-11-18), and that does **not** imply every TFLite model can run; model weights can stay in the 16 MB memory-mapped flash. Benchmark activation buffers and latency.
 - LTE supply pulse behaviour at low SOC and cold/high temperature.
 - Analogue immunity to switching, SD writes and LTE TX; plan RF-separated enclosure compartment if test results demand.
 - Solar power architecture and charge constraints, including irradiance collapse and USB coexistence.

@@ -176,9 +176,9 @@ details .tw { border: 0; }
     <div class="titleblock">
       <div><span>Board</span><b>Auris recorder V1</b></div>
       <div><span>Revision</span><b>A (prototype)</b></div>
-      <div><span>Date</span><b>2026-11-16</b></div>
+      <div><span>Date</span><b>2026-11-18</b></div>
       <div><span>Part codes</span><b>LCSC {{snapdate}}</b></div>
-      <div><span>Status</span><b class="status">Concept · not built</b></div>
+      <div><span>Status</span><b class="status">Schematic captured · not built</b></div>
     </div>
     <p>One tab per hardware section. Each tab lists that section's major components with exact LCSC codes, stock and price, followed by the design facts that matter when drawing it. Three sheets are designed down to pin level so far: the audio front end, the power sheet (charger, battery, rails, RTC and wake latch) and the LTE modem. Their tabs have the drawings and wire lists for schematic capture, and the Nets tab checks a capture against all three.</p>
   </header>
@@ -210,7 +210,7 @@ details .tw { border: 0; }
         <div><span>Still to choose</span><b>{{ntbd}}</b></div>
         <div><span>Lowest stock</span><b>{{lowstock}}</b></div>
       </div>
-      <p class="pm">The total adds one of each listed part at the LCSC 100-unit price, including the 25 USD microphone allowance. It leaves out passives, PCB, assembly, battery, solar panel, enclosure and anything still to choose. Fallback, alternate and not-chosen parts are not counted.</p>
+      <p class="pm">The total adds one of each listed part at the snapshot's 100-unit price (JLCPCB parts prices since the 2026-11-17 snapshot), including the 25 USD microphone allowance. It leaves out passives, PCB, assembly, battery, solar panel, enclosure and anything still to choose. Fallback, alternate and not-chosen parts are not counted.</p>
     </section>
     <section>
       <div class="sec-head"><div class="eyebrow">All sections</div><h2>Major components and LCSC codes</h2></div>
@@ -236,11 +236,11 @@ details .tw { border: 0; }
         <tbody>
           <tr><td class="n">SOLAR_IN</td><td>Panel, after the fuse and reverse-polarity switch Q201</td><td>CN3791, temperature cut-out, charge LEDs, panel sense</td><td>While the panel gives power</td><td><span class="st sel">Selected (concept)</span></td></tr>
           <tr><td class="n">RAW_BAT</td><td>FieldMesh Node v4 pack: protected 1S2P 18650, about 5200 mAh, charged by the CN3791</td><td>Main switch Q210, keep-alive LDO</td><td>Always</td><td><span class="st sel">Selected (concept)</span></td></tr>
-          <tr><td class="n">KEEP_ALIVE</td><td>TPL720F33, 3.3 V</td><td>DS3231 VCC, RTC INT pull-up, wake latch (CR1220 on RTC VBAT)</td><td>Always</td><td><span class="st sel">Selected (concept)</span></td></tr>
+          <tr><td class="n">KEEP_ALIVE</td><td>TPL720F33, 3.3 V</td><td>DS3231 VCC, RTC INT pull-up, wake latch (BR1220 cell in a CR1220 holder on RTC VBAT)</td><td>Always</td><td><span class="st sel">Selected (concept)</span></td></tr>
           <tr><td class="n">VBAT_SW</td><td>AO3401A main switch Q210, turned on by the wake latch</td><td>TPS63802, audio LDO, TPS63020, battery sense</td><td>While awake</td><td><span class="st sel">Selected (concept)</span></td></tr>
           <tr><td class="n">3V3</td><td>TPS63802 buck-boost, 3.31 V</td><td>ESP32-S3, microSD (switched), system I²C pull-ups</td><td>While awake</td><td><span class="st sel">Selected (concept)</span></td></tr>
           <tr><td class="n">AVDD_A / DVDD_A</td><td>TPS7A2033, EN = AUDIO_EN (audio sheet)</td><td>Audio front end</td><td>While recording</td><td><span class="st">Candidate</span></td></tr>
-          <tr><td class="n">VMODEM</td><td>TPS63020 buck-boost, 3.9 V, EN = MODEM_EN</td><td>EG800K-EU</td><td>During the daily sync</td><td><span class="st sel">Selected (concept)</span></td></tr>
+          <tr><td class="n">VMODEM</td><td>TPS63020 buck-boost, 3.9 V, EN = MODEM_EN</td><td>EG810M-EU</td><td>During the daily sync</td><td><span class="st sel">Selected (concept)</span></td></tr>
         </tbody>
       </table></div>
       <ul class="notes">
@@ -356,9 +356,10 @@ details .tw { border: 0; }
       <div class="sec-head"><div class="eyebrow">Section</div><h2>MCU</h2></div>
       {{comp:mcu}}
       <ul class="notes">
-        <li><b>Module:</b> 16 MB quad flash, 8 MB octal PSRAM, Wi-Fi and BLE on a PCB antenna. Supply 3.0–3.6 V.</li>
-        <li><b>Temperature:</b> the R8 variants are rated −40 to +65 °C ambient, lower than other variants (+85 °C if firmware enables PSRAM ECC, at the cost of 1/16 of the PSRAM). The enclosure must keep its inside air at or below 65 °C in full sun (F7-01); a decision is open for Australian heat.</li>
+        <li><b>Module:</b> ESP32-S3-WROOM-1-N16R2 (owner decision 2026-11-18, ADR-001): 16 MB quad flash, 2 MB quad PSRAM, Wi-Fi and BLE on a PCB antenna. Supply 3.0–3.6 V. Same footprint, pads and symbol as the N16R8 it replaced. Keep flash and PSRAM at 80 MHz: ESP-IDF's experimental 120 MHz mode can crash after a temperature swing of about 20 °C.</li>
+        <li><b>Temperature:</b> the N16R2 is rated −40 to +85 °C ambient (datasheet v1.8 Table 1-1). The N16R8, with octal PSRAM, is rated only to +65 °C (+85 °C with PSRAM ECC), too low for Australian heat; that is why it was replaced. F7-01 still asks for inside air at or below 65 °C in full sun; the modem and SIM holder are rated to +75 °C.</li>
         <li><b>Antenna keep-out:</b> keep copper and the LTE antenna away from the module's antenna end; it is used for the Wi-Fi setup hotspot.</li>
+        <li><b>Test pads (owner decision 2026-11-18):</b> TP401–TP415 on BOOT, EN, GND, PWR_HOLD, both I²C buses, SD_VDD, LTE_STATUS, LTE_TX/RX, UART0 (U0TXD = GPIO43, U0RXD = GPIO44, for Espressif's RF test firmware) and 3V3. BOOT, EN, GND, U0TXD, U0RXD and 3V3 sit in one 2.54 mm row for a pogo-pin jig.</li>
         <li><b>Pin map:</b> the full allocation is backlog item H0-06. The table below shows every GPIO the audio, power, LTE and storage sections use (proposed 2026-10-23). To fit the microSD bus, the UART0 console was given up: programming, console and debug all run over the built-in USB-Serial-JTAG on GPIO19/20.</li>
       </ul>
     </section>
@@ -385,14 +386,14 @@ details .tw { border: 0; }
           <tr><td class="ref">18</td><td><span class="n">AUD_SDA</span></td><td>Audio</td></tr>
           <tr class="dnp"><td class="ref">19, 20</td><td>USB D−, D+: programming, console and debug (built-in USB-Serial-JTAG)</td><td>Storage &amp; USB</td></tr>
           <tr><td class="ref">21</td><td><span class="n">LTE_PWRKEY</span></td><td>LTE</td></tr>
-          <tr class="dnp"><td class="ref">35, 36, 37</td><td>Octal PSRAM: not available on N16R8</td><td>—</td></tr>
+          <tr class="dnp"><td class="ref">35, 36, 37</td><td>Spare, unconnected. Free on the N16R2; they were the octal PSRAM lines on the N16R8</td><td>—</td></tr>
           <tr><td class="ref">38</td><td><span class="n">LTE_STATUS</span> (pull-down)</td><td>LTE</td></tr>
           <tr><td class="ref">39, 40</td><td><span class="n">LTE_TX</span>, <span class="n">LTE_RX</span> (UART1; pull-up on RX). These are the external JTAG pins; debug runs over USB instead</td><td>LTE</td></tr>
           <tr><td class="ref">41, 42</td><td><span class="n">LTE_RTS</span>, <span class="n">LTE_CTS</span></td><td>LTE</td></tr>
           <tr><td class="ref">43</td><td><span class="n">STATUS_LED</span>. Was UART0 TX: flickers with the boot ROM log, which is harmless for an LED</td><td>Storage &amp; USB</td></tr>
           <tr><td class="ref">44</td><td><span class="n">SD_D0</span>. Was UART0 RX: an input at boot, so the card cannot be driven before firmware runs</td><td>Storage &amp; USB</td></tr>
           <tr><td class="ref">45</td><td><span class="n">SD_PWR_EN</span>, external 100 kΩ pull-down. Strapping pin: low at boot selects the 3.3 V flash supply, and low also means card power off</td><td>Storage &amp; USB</td></tr>
-          <tr><td class="ref">47, 48</td><td><span class="n">SD_CLK</span> (through R418 33 Ω), <span class="n">SD_CMD</span> (3.3 V on N16R8)</td><td>Storage &amp; USB</td></tr>
+          <tr><td class="ref">47, 48</td><td><span class="n">SD_CLK</span> (through R418 33 Ω), <span class="n">SD_CMD</span> (3.3 V on this module)</td><td>Storage &amp; USB</td></tr>
           <tr><td class="ref">EN</td><td><span class="n">ESP_EN</span>: held low by the TPS63802 power-good until 3V3 is up</td><td>Power</td></tr>
         </tbody>
       </table></div>
@@ -418,7 +419,7 @@ details .tw { border: 0; }
         <li><b>INT/SQW:</b> active-low, open-drain, pulled up to the always-on rail and fed to the wake latch. Write <code>INTCN = 1</code>, <code>BBSQW = 0</code> and <code>EN32KHZ = 0</code> at every boot so it never outputs a square wave. Clear the I²C bus before the first access after each wake.</li>
         <li><b>Order of events at wake:</b> the MCU asserts PWR_HOLD first, reads A1F/A2F, arms the next alarm early, and clears the flags only at the commit step. Clearing a flag before PWR_HOLD would drop the INT line and cut its own power; any ESP32 reset releases PWR_HOLD, and a still-set flag then keeps the board on through the reboot.</li>
         <li><b>Accuracy:</b> ±5 ppm, about 0.43 s/day. The daily LTE sync corrects it (F2-02).</li>
-        <li><b>Supply current:</b> up to 130 µA from VCC in standby, most of the board's sleep current. The VBAT pin runs only the 1 Hz square wave, not alarms, so VCC stays on the keep-alive rail. The CR1220 on VBAT keeps the time if the main battery runs flat.</li>
+        <li><b>Supply current:</b> up to 130 µA from VCC in standby, most of the board's sleep current. The VBAT pin runs only the 1 Hz square wave, not alarms, so VCC stays on the keep-alive rail. The coin cell on VBAT keeps the time if the main battery runs flat: a Panasonic BR1220 (−30 to +80 °C) in the CR1220 holder, fitted by hand (owner decision 2026-11-18). No CR1220-size cell is rated to −40 °C; bench-test it there.</li>
         <li><b>Bench checks before schematic freeze</b> (gate G1): alarm INT with the main rail off, A1 and A2 firing together, late or missing PWR_HOLD, brownout near VPF, and leakage into unpowered rails.</li>
         <li>Full decision: <code>docs/adrs/ADR-002-rtc-selection.md</code>.</li>
       </ul>
@@ -589,21 +590,22 @@ details .tw { border: 0; }
       <div class="sec-head"><div class="eyebrow">Section</div><h2>LTE</h2></div>
       {{comp:lte}}
       <div class="tw"><table>
-        <thead><tr><th>Modem</th><th>EG800K-EU (selected)</th><th>A7670G (global alternate)</th></tr></thead>
+        <thead><tr><th>Modem</th><th>EG810M-EU (selected)</th><th>A7670G (global alternate)</th></tr></thead>
         <tbody>
-          <tr><td>Network</td><td class="valc">LTE Cat-1 bis only, no 2G</td><td class="valc">LTE Cat-1 + GSM</td></tr>
+          <tr><td>Network</td><td class="valc">LTE Cat 1 only (10 Mbps down, 5 Mbps up), no 2G</td><td class="valc">LTE Cat-1 + GSM</td></tr>
           <tr><td>LTE-FDD bands</td><td class="valc">B1 B3 B5 B7 B8 B20 B28</td><td class="valc">B1 B2 B3 B4 B5 B7 B8 B12 B13 B18 B19 B20 B25 B26 B28 B66</td></tr>
           <tr><td>Approvals / regions</td><td class="valc">CE, RCM: Europe, Australia, New Zealand</td><td class="valc">Global</td></tr>
-          <tr><td>Package</td><td class="valc">LGA-109, 17.7 × 15.8 × 2.4 mm</td><td class="valc">LCC, 24 × 24 × 2.4 mm</td></tr>
-          <tr><td>Supply</td><td class="valc">3.4–4.3 V</td><td class="valc">3.4–4.2 V</td></tr>
+          <tr><td>Package</td><td class="valc">LGA-109, 17.7 × 15.8 × 1.7 mm</td><td class="valc">LCC, 24 × 24 × 2.4 mm</td></tr>
+          <tr><td>Supply</td><td class="valc">3.4–4.3 V, ≥ 2 A</td><td class="valc">3.4–4.2 V</td></tr>
           <tr><td>Temperature</td><td class="valc">−35 to +75 °C (−40 to +85 °C extended)</td><td class="valc">−30 to +75 °C (−40 to +85 °C extended)</td></tr>
-          <tr><td>USD @100</td><td class="valc">4.83</td><td class="valc">12.30</td></tr>
+          <tr><td>USD @100 (JLC, 2026-11-18)</td><td class="valc">6.39</td><td class="valc">12.21</td></tr>
         </tbody>
       </table></div>
-      <div class="callout">Only 4 EG800K-EU modules were in stock at JLC on 2026-11-17, with none on pre-sale (151 at LCSC and 179 at JLC on 2026-10-23). Buy or consign the prototype quantity before ordering boards.</div>
+      <div class="callout">The EG800K-EU chosen on 2026-10-23 fell to 4 at JLC on 2026-11-17 and 0 on 2026-11-18, so the owner replaced it with the EG810M-EU (206 at JLC on 2026-11-18). Same package: the footprint still takes an EG800K-EU. Buy the prototype quantity before ordering boards.</div>
       <ul class="notes">
-        <li><b>Why the EG800K-EU (decided 2026-10-23):</b> once GSM was ruled out, the A7670G's global GSM + LTE coverage was the only thing it offered over this module, at 2.5 times the price and twice the board area. The module has no 2G, so its supply never sees GSM's 2 A bursts. Sites with only 2G coverage get no LTE session (risk R19). For the Americas, the EG800K-LA fits the same footprint.</li>
-        <li><b>Source for the sheet below:</b> Quectel's EG800K-LA Hardware Design V1.0.0 (2024-05-23, preliminary, from the FCC filing). The -LA and -EU are one series with one footprint; check the pin table against the EU manual when Quectel supplies it. The LGA pads sit under the module, so it needs JLC assembly or stencil and reflow, not hand soldering.</li>
+        <li><b>Why the EG810M-EU (owner decision 2026-11-18):</b> the EG800K-EU had no JLC stock. Quectel states the EG810M-EU is compatible with the EG800K series in package, and every pin Auris connects has the same function. It is Cat 1 rather than Cat 1 bis, which makes no difference to a 1 KB daily heartbeat, and costs 6.39 USD at 100 against 4.80 for the EG800K-EU (JLC). Firmware needs a Quectel AT driver either way.</li>
+        <li><b>Why the EG800K-EU (decided 2026-10-23):</b> once GSM was ruled out, the A7670G's global GSM + LTE coverage was the only thing it offered over the EG800K-EU, at 2.5 times the price and twice the board area. The module has no 2G, so its supply never sees GSM's 2 A bursts. Sites with only 2G coverage get no LTE session (risk R19). For the Americas, the EG800K-LA fits the same footprint.</li>
+        <li><b>Source for the sheet below:</b> Quectel's EG800K-LA Hardware Design V1.0.0 (2024-05-23, preliminary, from the FCC filing), checked on 2026-11-18 against the released EG810M-EU QuecOpen&amp;QuecPython Hardware Design V1.0 (2024-06-25): same function on every pin Auris connects and the same GND pins. Pins Auris leaves open carry QuecOpen-only functions on the EG810M (e.g. pin 8 = CAM_VDD, a 2.8 V output) and stay open. The standard-firmware hardware design is still to read, and the EG810M footprint's pad geometry to compare at layout. The LGA pads sit under the module, so it needs JLC assembly or stencil and reflow, not hand soldering.</li>
         <li><b>What it does in V1:</b> one session a day. Heartbeat up (≤ 1 KB), configuration down, clock sync. No audio upload (decision D5). Budget ≤ 1 MB per month and ≤ 0.05 Wh per day.</li>
         <li><b>Supply (ADR-011, decided 2026-10-23):</b> TPS63020 buck-boost at 3.9 V from the switched rail, as on FieldMesh Hub v2: 3×22 µF plus 470 µF bulk, enable and power-good (1 MΩ pull-up) to the MCU. D205 (SMAJ5.0A) is not fitted since 2026-11-17: it clamped above the module's 6 V absolute maximum. Still measure LTE transmit at full power, low cell voltage and in the cold: about 1 A comes from the battery; the battery fuse is now rated 1.5 A hold at 60 °C (risk R02).</li>
         <li><b>Interface:</b> main UART with RTS/CTS, STATUS and PWRKEY to the ESP32 through a level shifter (the module's I/O is 1.8 V). Firmware needs a Quectel AT driver; FieldMesh has only an A7670G one. The modem domain is switched off outside the sync window.</li>
@@ -645,7 +647,7 @@ details .tw { border: 0; }
     </section>
 
     <section id="l-pins">
-      <div class="sec-head"><div class="eyebrow">Block 2</div><h2>Module pin map (U301 EG800K-EU)</h2></div>
+      <div class="sec-head"><div class="eyebrow">Block 2</div><h2>Module pin map (U301 EG810M-EU)</h2></div>
       <figure>
         <div class="sch">{{fig:l_pins}}</div>
         <figcaption>Every pad of U301 that connects to something, with its net and where it goes. Left: power, control and service pads (USB and debug UART go to test pads only, for module firmware updates and logs). Right: the main UART and STATUS to the level shifter, and the SIM. All module I/O is 1.8 V.</figcaption>
@@ -711,6 +713,7 @@ details .tw { border: 0; }
       <ul class="notes">
         <li><b>microSD bus (ADR-012, decided 2026-10-23):</b> SD mode, 1-bit: <span class="n">SD_CLK</span> GPIO47, <span class="n">SD_CMD</span> GPIO48, <span class="n">SD_D0</span> GPIO44, routed through the ESP32-S3 GPIO matrix. About 1–2 MB/s, 10–20 times the 96 KB/s audio needs, on fewer pins than SPI. Pull CMD, D0 and the unused D1–D3 up to the card supply with 10 kΩ; D3 high keeps the card out of SPI mode.</li>
         <li><b>Card supply:</b> a load switch with an active-high enable on <span class="n">SD_PWR_EN</span> (GPIO45) and a 100 kΩ pull-down, so the card is off until firmware turns it on and can be power-cycled if it hangs. The same pull-down holds GPIO45's strap at the 3.3 V flash setting during reset. The switch is an AO3401A driven by a 2N7002 (Q401/Q402). Clear GPIO44's reset pull-up and drive CLK, CMD and D0 low before switching the card off, or the card is powered through its pins. Card detect goes to GPIO3 (100 kΩ pull-up); the cover pads go to GND; SD_CLK has a 33 Ω series resistor at the module.</li>
+        <li><b>Card ESD (owner decision 2026-11-18):</b> the slot is user-accessible, so an SRV05-4 (D403, 3 pF per line) sits at the holder on SD_CLK (card side of the 33 Ω), SD_CMD, SD_D0 and SD_CD, the four card lines that reach ESP32 pins. Its reference pin goes to 3V3, which is never below the card supply, so nothing back-feeds. D1–D3 reach only pull-ups.</li>
         <li><b>Status LED:</b> on GPIO43 (formerly UART0 TX): green KT-0805G through 100 Ω, 2–7 mA, readable in daylight. It flickers with the boot ROM log, which is harmless.</li>
         <li><b>Card size:</b> 128 GB lasts about 150 days and 256 GB about 300 days at 16-bit, 48 kHz, 1 minute in 10. Cards above 32 GB come formatted exFAT; firmware decides between exFAT support and FAT32.</li>
         <li><b>Swap in the field:</b> the card must be reachable without opening the main seal (F5-06). A power cut or card removal must lose at most the file being written (F3-02).</li>

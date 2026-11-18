@@ -124,6 +124,20 @@
   // name (preferring the given footprint). The source is a template part on the page if there is
   // one (its getState_Component() names its copy in the project, not the library device, and
   // sch.create() never returns for it), otherwise the default in CFG.templateDefaults.
+  // EasyEDA Pro 4.1 (checked 2026-11-18) cannot always place a system-library device that the
+  // project library already holds ("Create project component failed"; sch.create() never returns
+  // and the next few creates fail too). A device the project already holds is therefore placed from
+  // the project's copy, taking only a copy that has a footprint (some 4.1 copies have none, and
+  // Update PCB then stops with "lacks of property Footprint"). New devices come from the system
+  // library. Every placed part is checked for a footprint afterwards.
+  let projectLib;
+  async function projectCopy(dev) {
+    if (!dev || !dev.name) return null;
+    if (projectLib === undefined) projectLib = (await tryCall(() => eda.lib_LibrariesList.getProjectLibraryUuid())) || null;
+    if (!projectLib) return null;
+    const found = (await tryCall(() => eda.lib_Device.search(dev.name, projectLib))) || [];
+    return (Array.isArray(found) ? found : [found]).find((d) => d && d.name === dev.name && d.footprint && d.footprint.name) || null;
+  }
   async function sourceDevice(label, { lcsc = "", name = "", footprint = "" }) {
     if (sourceDevices.has(label)) return sourceDevices.get(label);
     let dev = null, why = "";
@@ -135,6 +149,7 @@
       dev = sameFp.length === 1 ? sameFp[0] : named.length === 1 ? named[0] : null;
       if (!dev) why = `its library device was not found (${lcsc ? `LCSC ${lcsc}, ` : ""}${named.length} library devices named "${name}")`;
     }
+    if (dev) dev = (await projectCopy(dev)) || dev;
     sourceDevices.set(label, dev);
     if (!dev) templateLost.set(label, [why, []]);
     return dev;
@@ -156,7 +171,10 @@
       fromTemplate.set(label, [...(fromTemplate.get(label) || []), part.d]);
       return dev;
     }
-    if (!devices.has(part.lcsc)) devices.set(part.lcsc, await tryCall(() => eda.lib_Device.getByLcscIds(part.lcsc)));
+    if (!devices.has(part.lcsc)) {
+      const lib = await tryCall(() => eda.lib_Device.getByLcscIds(part.lcsc));
+      devices.set(part.lcsc, (await projectCopy(lib)) || lib);
+    }
     const dev = devices.get(part.lcsc);
     if (!dev) notFound.set(part.lcsc, [...(notFound.get(part.lcsc) || []), part.d]);
     return dev;
@@ -277,6 +295,10 @@
     if (!dev) return undefined;
     const first = await call(`${part.d}: place`, () => sch.create(dev, spot[0], spot[1], undefined, 0, false, part.fit, true));
     if (!first) return undefined;
+    try {
+      const fp = first.getState_Footprint && first.getState_Footprint();
+      if (!fp || !fp.name) errors.push(`${part.d}: placed without a footprint (Update PCB will refuse it): replace its device`);
+    } catch (_) { /* no footprint getter in this version */ }
     const cells = [{ comp: first, pins: await pinsOf(first) }];
     let res = match(part, cells);
     // Multi-part symbols (e.g. a dual op-amp) are named NAME.1, NAME.2, ...: add parts until every pin

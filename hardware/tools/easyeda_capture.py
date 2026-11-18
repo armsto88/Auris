@@ -25,10 +25,11 @@ SHEETS = OrderedDict([("audio", "audio-frontend"), ("power", "power"), ("lte", "
 EXTRA_BLOCKS = OrderedDict([
     ("m_module", ["U401", "C401", "C402", "R401", "C403", "R402", "R417"]),
     ("m_usb", ["J401", "D401", "D402", "R403", "R404", "R405", "R406"]),
-    ("m_sd", ["J402", "R418", "R419", "R409", "R410", "R411", "R412", "R413", "Q401", "Q402", "R414", "R415", "C406",
+    ("m_sd", ["J402", "D403", "R418", "R419", "R409", "R410", "R411", "R412", "R413", "Q401", "Q402", "R414", "R415", "C406",
               "C404", "C405"]),
     ("m_led", ["LED401", "R416"]),
-    ("m_test", ["TP401", "TP402", "TP403"]),
+    ("m_test", ["TP401", "TP402", "TP403", "TP413", "TP414", "TP415", "TP404", "TP405", "TP406", "TP407", "TP408",
+                "TP409", "TP410", "TP411", "TP412"]),
 ])
 EXTRA_TITLES = {"m_module": "ESP32-S3 module", "m_usb": "USB-C service port",
                 "m_sd": "microSD card and card supply", "m_led": "Status LED", "m_test": "Test points"}

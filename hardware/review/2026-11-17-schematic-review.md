@@ -5,18 +5,20 @@
 **Sources.** Per-part notes with pin tables, limits and citations are in [`../datasheets/`](../datasheets/README.md) (one file per IC, module, connector, FET, diode, crystal, inductor and polarised part). Datasheet revisions read are in `../datasheets/sources.csv` and in each part file. BOM changes and prices are in [`2026-11-17-bom-cost-changes.csv`](2026-11-17-bom-cost-changes.csv).
 
 **Severity:** **blocker** = the board cannot work or be built as drawn · **must fix** = wrong against a datasheet or requirement · **should fix** = works, but outside guidance or with no margin · **note** = check on the bench or at layout.
-**Status:** **fixed** = changed in the CSVs and re-captured · **owner decision** = decided by the owner on 2026-11-17 and applied · **needs owner decision** · **open** = for layout, bench or firmware.
+**Status:** **fixed** = changed in the CSVs and re-captured · **owner decision** = decided by the owner on 2026-11-17 (or on 2026-11-18 where dated) and applied · **needs owner decision** · **open** = for layout, bench or firmware.
 
 ## Summary
 
 | | Count | |
 |---|---:|---|
-| Blockers | 2 | W1 modem not orderable (needs owner action) · W2 USB D+ back-feed kept the board on (fixed) |
-| Must fix | 9 | 8 fixed or applied (W3 stock, P1 L201, P2 F202, P3 R237, P4 BT201, A1 C127, A2 U104, L2 J301 tabs) · M2 module temperature needs an owner decision |
-| Should fix | 33 | 21 fixed, 5 applied as owner decisions, 7 open or needing a decision (W6, W7, W8, W12, W17, A5, L7) |
+| Blockers | 2 | W1 modem not orderable (owner decision 2026-11-18: EG810M-EU) · W2 USB D+ back-feed kept the board on (fixed) |
+| Must fix | 9 | all fixed or applied (W3 stock, P1 L201, P2 F202, P3 R237, P4 BT201, A1 C127, A2 U104, L2 J301 tabs; M2 module temperature by owner decision 2026-11-18: N16R2) |
+| Should fix | 33 | 21 fixed, 7 applied as owner decisions (W12 and W17 on 2026-11-18), 5 open (W6, W7, W8 for the microSD and SIM holders, A5, L7) |
 | Notes | 18 | Bench, layout and firmware items |
 
 Cross-references (P14 = W10, P15 = W3, A4 = W16, L1 = W1, L6 = P10, M1 = W2, M3 = W15, M9 = W8) are counted once.
+
+**Update 2026-11-18:** the owner decided the five open items (W1, M2, W17, W12 and the CR1220 cell in W8). The findings below are kept as written on 2026-11-17, with their status updated. Details, cost and capture state are in [section 8](#8-follow-up-2026-11-18-owner-decisions).
 
 **What changed on the schematic** (all four pages re-captured and saved; export in `hardware/2026-11-17/`):
 
@@ -26,6 +28,7 @@ Cross-references (P14 = W10, P15 = W3, A4 = W16, L1 = W1, L6 = P10, M1 = W2, M3 
 - Quectel and Espressif guidance added: PWRKEY 10 nF, OE without an RC, UART filter footprints, GPIO0 pull-up, SD_CLK series resistor, input cap for the keep-alive LDO.
 - Owner decisions: shells/tabs to GND, card detect on GPIO3, D205 not fitted, −40…+85 °C switches, cold cut-out +5 °C, JST-compatible battery connector for rev A.
 - BOM cost pass: 15 extended parts moved to JLC basic/preferred equivalents.
+- 2026-11-18 owner decisions (section 8): EG810M-EU modem, ESP32-S3-WROOM-1-N16R2 module, microSD ESD array D403, test pads TP404–TP415, Panasonic BR1220 cell. Applied in EasyEDA project `AURIS_2026-11-18`; the PCB net check passes again; export in `hardware/2026-11-18/`.
 
 **BOM cost** (JLCPCB parts plus Economic PCBA feeder fee of $3.07 per unique extended part; PCB, setup, stencil and joints excluded):
 
@@ -33,9 +36,10 @@ Cross-references (P14 = W10, P15 = W3, A4 = W16, L1 = W1, L6 = P10, M1 = W2, M3 
 |---|---:|---:|
 | Before: parts / fees / **total per board** | $29.14 / $21.18 / **$50.32** | $23.33 / $2.12 / **$25.45** |
 | After: parts / fees / **total per board** | $29.74 / $16.27 / **$46.01** | $23.77 / $1.63 / **$25.40** |
-| Unique codes, extended | 107 → 102, 69 → 53 | |
+| 2026-11-18 owner decisions: parts / fees / **total per board** | $32.05 / $16.27 / **$48.32** | $25.82 / $1.63 / **$27.44** |
+| Unique codes, extended | 107 → 102, 69 → 53 (unchanged on 2026-11-18) | |
 
-The cost pass alone saves $4.72/board at 10 and $0.54 at 100 (15 fewer extended parts, $0.08–0.11 cheaper parts). The fixes add $0.45–0.59/board (mostly the TS5A23166 that replaces the out-of-stock switch) and the owner's climate decisions $0.18–0.23/board. The modem ($4.80–5.86), ESP32 module ($3.75–4.71), PCM1863 ($2.43–2.88) and DS3231M ($2.24–2.73) are about 55 % of the part cost and were not changed.
+The cost pass alone saves $4.72/board at 10 and $0.54 at 100 (15 fewer extended parts, $0.08–0.11 cheaper parts). The fixes add $0.45–0.59/board (mostly the TS5A23166 that replaces the out-of-stock switch) and the owner's climate decisions $0.18–0.23/board. The modem ($4.80–5.86), ESP32 module ($3.75–4.71), PCM1863 ($2.43–2.88) and DS3231M ($2.24–2.73) are about 55 % of the part cost and were not changed. On 2026-11-18 the owner changed the modem and the module variant: +$2.31/board at 10 and +$2.04 at 100, mostly the modem (section 8).
 
 ---
 
@@ -55,7 +59,7 @@ Corrected in `power/README.md`: ≈ 106 µA typical at 25 °C (≈ 157 µA with 
 - **Wrong:** JLC shows 4 in stock and none on pre-sale (2026-11-17); the module appears only as zero-stock "global sourcing" placeholders (e.g. C9900199191). The README's 151/179 figures are from 2026-10-23.
 - **Evidence:** JLCPCB part record C44008839, 2026-11-17 (`../datasheets/parts.csv`).
 - **Fix:** buy the prototype quantity now from LCSC or another distributor and consign it, or order it through JLC global sourcing. The A7670G remains the global alternate (different footprint).
-- **Status:** needs owner decision (procurement).
+- **Status:** owner decision 2026-11-18. JLC stock of the EG800K-EU was 0 that day, so U301 is now the Quectel **EG810M-EU** (EG810MEULA-I05-SNNSA, C20421924, 206 at JLC): same LGA-109 package and the same function on every pin Auris connects (section 8).
 
 #### W2 · blocker · MCU D401 pin 5, power Q209 — the board could never turn off
 - **Wrong:** D401's positive reference (pin 5) was on VBUS. The ESP32-S3 enables its USB D+ pull-up at reset, so with no cable D+ (≈ 3.3 V) fed VBUS through D401's steering diode: VBUS ≈ 2.7 V, USB_WAKE ≈ 1.8 V, above the 2N7002's typical threshold. Q209 then held the wake latch on and releasing PWR_HOLD did nothing.
@@ -66,7 +70,7 @@ Corrected in `power/README.md`: ≈ 106 µA typical at 25 °C (≈ 157 µA with 
 #### W3 · must fix · supply — three fitted parts had no stock at JLC
 - **Wrong:** EG800K-EU (W1), SN74LVC2G66DCUR (U104, every DCU variant at 0) and JST S2B-PH-SM4-TB (J203, 0).
 - **Fix:** U104 → TS5A23166DCUR (A2); J203 → XYECONN XY-S2B-PH-SM4-TB for rev A (owner decision, P15).
-- **Status:** fixed / owner decision.
+- **Status:** fixed / owner decision; the modem by owner decision on 2026-11-18 (W1).
 
 #### W4 · should fix · power — sleep budget missed the charger and diodes
 - **Wrong:** The README table omitted the CN3791 BAT+CSP current (≈ 9 µA typ, 15 µA max) and D203/D204 leakage (≈ 2 µA at 25 °C, ≈ 25 µA at 60 °C, ≈ 180 µA at 85 °C), and counted the Q205 gate divider (3.8 µA) that does nothing.
@@ -94,14 +98,14 @@ Corrected in `power/README.md`: ≈ 106 µA typical at 25 °C (≈ 157 µA with 
 #### W8 · should fix · climate — parts rated below the −40 °C / hot-enclosure envelope
 | Part | Rated | Status |
 |---|---|---|
-| U401 ESP32-S3-WROOM-1-N16R8 | −40…+65 °C (+85 °C with PSRAM ECC, at 1/16 of the PSRAM) | **needs owner decision** (ECC in firmware or an N16/N16R2 module, ADR-001) |
+| U401 ESP32-S3-WROOM-1-N16R8 | −40…+65 °C (+85 °C with PSRAM ECC, at 1/16 of the PSRAM) | owner decision 2026-11-18: **N16R2** (C2913205), −40…+85 °C, same footprint (ADR-001, M2) |
 | SW201, SW202 | −25…+70 °C | owner decision: replaced by −40…+85 °C parts |
 | J203 XYECONN (rev A) | −25…+85 °C (JLC); genuine JST PH −40…+105 °C | owner decision: clone for rev A, genuine for deployment |
 | J402 microSD holder | storage −25…+85 °C, no operating range (passed −55↔+85 °C shock) | open: qualify at −40 °C or pick a −40 °C holder |
 | J401 USB-C | −25…+85 °C | note: service port only |
 | J301 nano-SIM holder | −35…+75 °C, consumer | open: MFF2 eSIM in rev B (LTE open item 6) |
-| U301 EG800K-EU | −35…+75 °C operating, −40…+85 °C extended | note: gate LTE sessions on board temperature |
-| CR1220 cell (not on BOM) | typically −30…+60/70 °C | open: specify a wide-temperature cell |
+| U301 EG800K-EU | −35…+75 °C operating, −40…+85 °C extended | note: gate LTE sessions on board temperature. The EG810M-EU fitted since 2026-11-18 has the same ratings |
+| CR1220 cell (not on BOM) | typically −30…+60/70 °C | owner decision 2026-11-18: Panasonic **BR1220** (BR-1220/BN), −30…+80 °C, hand-fitted. No CR1220-size cell is rated to −40 °C; bench-test at −40 °C (section 8) |
 | U207 TPS63020, OPA1662, TS5A23166, crystal, X5R MLCCs, CN3791, DS3231M, LDOs | +85 °C ambient | note |
 
 #### W9 · should fix · power — panel input accepts 6 V-class panels only
@@ -122,13 +126,13 @@ Every cross-sheet signal has one name on every sheet (3V3, VBAT_SW, VMODEM, VBUS
 #### W12 · should fix · bring-up and test access
 - **Wrong:** Doc 04 §6 asks for test pads on PWR_HOLD, RTC INT, I²C, I²S, modem UART/status and USB. Missing: PWR_HOLD, SYS_SDA/SCL, AUD_SDA/SCL, SD_VDD, LTE_STATUS, and UART0 (SD_D0/STATUS_LED) for Espressif's UART-only RF test firmware. Current measurement: only R301 (modem); sleep current is measured at J203 with a bench supply.
 - **Fix:** add the pads at layout (copper only). The library test point has a 0.5 mm pad; the BOM asks for 1.0 mm (capture item 4).
-- **Status:** needs owner decision (which pads).
+- **Status:** owner decision 2026-11-18: TP404 PWR_HOLD, TP405/TP406 SYS_SDA/SCL, TP407/TP408 AUD_SDA/SCL, TP409 SD_VDD, TP410 LTE_STATUS, TP411/TP412 LTE_TX/RX, TP413 STATUS_LED = U0TXD, TP414 SD_D0 = U0RXD, TP415 3V3 on the MCU sheet. TP401–TP403 (BOOT, EN, GND) and TP413–TP415 in one 2.54 mm row for a pogo-pin jig. The 1.0 mm pad footprint remains a layout item.
 
 #### W13 · note · LTE bands and regions
-The EG800K Series Specification V1.3 confirms the EU variant's LTE-FDD B1/3/5/7/8/20/28, no GNSS, CE and RCM: it covers the main European and Australian LTE bands. Operator acceptance (e.g. Telstra) is still open (doc 15 R11).
+The EG800K Series Specification V1.3 confirms the EU variant's LTE-FDD B1/3/5/7/8/20/28, no GNSS, CE and RCM: it covers the main European and Australian LTE bands. Operator acceptance (e.g. Telstra) is still open (doc 15 R11). The EG810M-EU Specification V1.1 gives the same bands, no TDD, CE and RCM for the module fitted since 2026-11-18.
 
 #### W14 · note · MCU pin budget
-Every GPIO is used once; GPIO35–37 (octal PSRAM) are NC; analogue inputs are on ADC1; USB is on GPIO19/20; GPIO47/48 run at 3.3 V on this module. Straps are safe: GPIO0 pulled up (now also externally), GPIO45 held low by R402 (high would select 1.8 V flash and stop the boot), GPIO46 NC, GPIO3 ignored with default eFuses. Full table in `../datasheets/C2913202_ESP32-S3-WROOM-1-N16R8.md`.
+Every GPIO is used once; GPIO35–37 (octal PSRAM) are NC (free on the N16R2 fitted since 2026-11-18, still NC as spares); analogue inputs are on ADC1; USB is on GPIO19/20; GPIO47/48 run at 3.3 V on this module. Straps are safe: GPIO0 pulled up (now also externally), GPIO45 held low by R402 (high would select 1.8 V flash and stop the boot), GPIO46 NC, GPIO3 ignored with default eFuses. Full table in `../datasheets/C2913202_ESP32-S3-WROOM-1-N16R8.md`.
 
 #### W15 · should fix · MCU ESP_EN — reset supervision
 - **Wrong:** RC-only EN reset on a board that is power-cycled every job.
@@ -145,7 +149,8 @@ Every GPIO is used once; GPIO35–37 (octal PSRAM) are NC; analogue inputs are o
 #### W17 · note · storage
 1-bit SD on GPIO47/48/44 with a switched card supply; pull-ups to the switched SD_VDD are right. GPIO44 (U0RXD) has a pull-up at reset that back-feeds SD_VDD; firmware rule added (`mcu/README.md`). The card detect now goes to GPIO3. The slot is user-accessible but its signals have no ESD protection.
 - **Fix:** an SRV05-4 on CLK/CMD/D0/D3 (part already on the BOM; reference to 3V3, not SD_VDD).
-- **Status:** needs owner decision.
+- **Correction (2026-11-18):** D3 is not wired to the ESP32 in 1-bit mode (only the R413 pull-up), so the four lines that reach ESP32 pins are CLK, CMD, D0 and card detect (CD). D1–D3 reach only 10 kΩ pull-ups to SD_VDD.
+- **Status:** owner decision 2026-11-18: D403 SRV05-4.TCT (C13612, same part as D301 and D401, no new feeder fee) at J402 on SD_CLK (card side of R418), SD_CMD, SD_D0 and SD_CD; pin 2 to GND by its own via beside J402, pin 5 (REF2) to 3V3, which is never below SD_VDD, so nothing back-feeds; 3V3 is off in sleep. 3 pF typical, 5 pF maximum per line.
 
 ---
 
@@ -355,7 +360,7 @@ TPS7A20 pinout, EN thresholds 0.9/0.3 V, ≈ 15 mV dropout at 31 mA, ≈ 7 µVrm
 STATUS goes high ≥ 6 s after PWRKEY but the UART is ready only ≥ 10 s after it (LA Fig. 11): wait for `RDY`. Keep `AT+QSCLK=0` (MAIN_DTR is open). Documented in the LTE README. **Status:** open (firmware).
 
 #### L9 · note · smaller items
-U302 logic levels: module VOL up to 0.2 V vs the A-port VIL 0.15 V; ESP32 levels vs B-port 0.15/2.9 V — not specified at the TXS's light load: scope at bring-up. Module footprint LGA-109 (AIR780E-named) has 1.3 mm outer pads vs 1.0 mm in LA Fig. 35: overlay before layout. R301 (0805 0 Ω): confirm ≥ 2 A. J302 U.FL: 30 mating cycles. Quectel wants ≥ 4 layers (open item 4).
+U302 logic levels: module VOL up to 0.2 V vs the A-port VIL 0.15 V; ESP32 levels vs B-port 0.15/2.9 V — not specified at the TXS's light load: scope at bring-up. Module footprint LGA-109 (AIR780E-named) has 1.3 mm outer pads vs 1.0 mm in LA Fig. 35: overlay before layout. Since 2026-11-18 the footprint is `LGA-109_L17.7-W15.8-P1.10_EG810M-CN`: compare it with EG810M-EU HD Fig. 40. R301 (0805 0 Ω): confirm ≥ 2 A. J302 U.FL: 30 mating cycles. Quectel wants ≥ 4 layers (open item 4).
 
 #### Verified OK (LTE)
 All 109 module pads match LA Table 6 by number and name, and QuecOpen V1.2 (which covers the EU variant) for every pin used; unused pins left open as Table 6 allows. VBAT 3.9 V within 3.4–4.3 V; Quectel's capacitor array and 0 Ω link; C301 ESR 70 mΩ ≤ 0.7 Ω, 62 % voltage use. RTS/CTS straight-through as LA §4.4 requires. USB_BOOT pulled low through 4.7 kΩ forces download (§4.2); USB_VBUS on a test pad is enough. Every Quectel-required test pad present. SIM network (0 Ω, 33 pF, 100 nF, 15 kΩ, TVS 3 pF) matches LA Figs. 19–20. D301 pin map matches Semtech Fig. 6. TXS0108E supplies, pin numbering, Hi-Z when the modem is off (≤ 1 µA into VDD_EXT). J302 pinout and pattern.
@@ -369,7 +374,7 @@ All 109 module pads match LA Table 6 by number and name, and QuecOpen V1.2 (whic
 #### M2 · must fix · U401 — module rated to +65 °C
 - **Evidence:** ESP32-S3-WROOM-1 datasheet v1.8 §1.2, Table 1-1 (R8 variants −40…+65 °C; +85 °C with PSRAM ECC).
 - **Fix:** enable PSRAM ECC in firmware (loses 1/16 of the PSRAM), or an N16 / N16R2 module (−40…+85 °C), ADR-001.
-- **Status:** needs owner decision.
+- **Status:** owner decision 2026-11-18: ESP32-S3-WROOM-1-**N16R2** (C2913205): 16 MB quad flash, 2 MB quad PSRAM, −40…+85 °C; same footprint, pads and symbol. PSRAM ECC no longer needed; GPIO35–37 free (spare).
 
 #### M3 · should fix · ESP_EN supervision (see W15) — fixed
 
@@ -400,10 +405,10 @@ All 109 module pads match LA Table 6 by number and name, and QuecOpen V1.2 (whic
 - **Status:** fixed.
 
 #### M9 · should fix · J402 — holder temperature (see W8)
-- **Status:** open.
+- **Status:** open. The card lines now have ESD protection (D403, W17).
 
 #### M10 · note · programming needs a battery
-VBUS only wakes the board. Flash with a battery or bench supply on J203 and SW202 on; to force download, short TP401–TP403 and pulse TP402 with the cable in. Documented in `mcu/README.md`.
+VBUS only wakes the board. Flash with a battery or bench supply on J203 and SW202 on; to force download, short TP401–TP403 and pulse TP402 with the cable in. Documented in `mcu/README.md`. Since 2026-11-18 TP401–TP403 and TP413–TP415 (U0TXD, U0RXD, 3V3) share one 2.54 mm row for a pogo-pin jig (W12).
 
 #### M11 · note · smaller items
 C406 sits gate–source, so the card supply ramps in ≈ 0.1–0.3 ms rather than ≈ 1 ms: measure the 3V3 dip at card power-on (gate–drain 47 nF would give a real soft start). GPIO9 floats: enable a pull-down in firmware. GPIO13/14 glitch low at power-up with the RTC powered: I²C bus recovery. The ROM boot log on GPIO43 flashes the LED briefly. A low-VF LED401 at +85 °C may draw ≈ 7–8 mA, at the LED's derating limit: blink it rather than hold it on when hot, or use 150 Ω. The USB-C footprint is drawn for a 0.8 mm board; on 1.6 mm use pin-in-paste. ADC ranges in the port tables corrected to the datasheet's calibrated 0–1.6 V (6 dB) and 0–2.9 V (12 dB).
@@ -420,9 +425,9 @@ All 41 module pads match Table 3-1, and the EasyEDA symbol/footprint match modul
 | 1 | BT201, C127 unwired | Fixed: pad 1 = + on both footprints; netlists use pin numbers; re-captured and wired (P4, A1) |
 | 2 | Pins with no netlist row (J301 8, J401 shell, J402 CD and 10–13, J101/J102 5–6) | Owner decision: shells, covers and tabs to GND; card detect to GPIO3 (L2, M6, A7) |
 | 3 | Page sizes | POWER A2, AUDIO A2, LTE A2 (its layout grew with C316–C323) and MCU A3, all set by the owner |
-| 4 | Test-pad footprint 0.5 mm vs 1.0 mm | Open: EasyEDA's library has only "Test-Point" with a 0.5 mm footprint; assign a 1.0 mm pad at PCB layout (W12) |
+| 4 | Test-pad footprint 0.5 mm vs 1.0 mm | Open: EasyEDA's library has only "Test-Point" with a 0.5 mm footprint; assign a 1.0 mm pad at PCB layout (W12). Applies to TP404–TP415 too (2026-11-18) |
 | 5 | LTE template parts C1/TP1 | Removed by the re-capture |
-| 6 | Supply risk | Modem: W1 (blocker). Second antenna covering 700–2700 MHz: still open (LTE open item 5) |
+| 6 | Supply risk | Modem: W1 (blocker; EG810M-EU by owner decision 2026-11-18). Second antenna covering 700–2700 MHz: still open (LTE open item 5) |
 | 7 | Australian heat | W8 |
 
 Re-capture results (2026-11-17, all pages saved): LTE 53 parts, 158 net wires, 72 no-connect flags; POWER 123 parts, 290 wires, 3 NC; AUDIO 114 parts, 277 wires, 1 NC; MCU 34 parts, 128 wires, 7 NC. Every netlist row is either a wire or an NC flag; the only warnings are expected name matches (diodes, LEDs, mounting pads, merged USB-C pads) and the library test points. AUDIO was re-captured once more after the DRC found U103's repeated supply pins unwired (A6).
@@ -431,9 +436,43 @@ Re-capture results (2026-11-17, all pages saved): LTE 53 parts, 158 net wires, 7
 
 ## 7. Decisions still needed
 
-1. **Modem procurement** (W1): buy/consign EG800K-EU modules now, or JLC global sourcing.
-2. **ESP32 temperature** (M2): PSRAM ECC in firmware, or an N16 / N16R2 module (ADR-001).
-3. **microSD ESD** (W17): add an SRV05-4 on the SD lines.
-4. **Test pads** (W12): PWR_HOLD, SYS and AUD I²C, SD_VDD, LTE_STATUS, UART0.
-5. **CR1220 cell** (W8): name a wide-temperature cell.
+Items 1–5 were decided by the owner on 2026-11-18 (section 8).
+
+1. ~~**Modem procurement** (W1): buy/consign EG800K-EU modules now, or JLC global sourcing.~~ Decided: EG810M-EU.
+2. ~~**ESP32 temperature** (M2): PSRAM ECC in firmware, or an N16 / N16R2 module (ADR-001).~~ Decided: N16R2.
+3. ~~**microSD ESD** (W17): add an SRV05-4 on the SD lines.~~ Decided: D403 on CLK, CMD, D0 and CD.
+4. ~~**Test pads** (W12): PWR_HOLD, SYS and AUD I²C, SD_VDD, LTE_STATUS, UART0.~~ Decided: TP404–TP415.
+5. ~~**CR1220 cell** (W8): name a wide-temperature cell.~~ Decided: Panasonic BR1220.
 6. After the bench: Q210 soft start (W6), C233 fitted or not (W7), wake-latch simplification (P22).
+7. Still open from W8: the J402 microSD holder at −40 °C and the J301 SIM holder (MFF2 eSIM in rev B).
+
+## 8. Follow-up 2026-11-18: owner decisions
+
+The owner decided the five open items. The sheet CSVs carry the changes (notes marked `owner decision 2026-11-18`); prices and reasons are the last five rows of [`2026-11-17-bom-cost-changes.csv`](2026-11-17-bom-cost-changes.csv).
+
+| # | Finding | Decision |
+|---|---|---|
+| 1 | W1, L1 modem stock | U301 **EG800K-EU → Quectel EG810M-EU** (EG810MEULA-I05-SNNSA, C20421924). JLC stock of the EG800K-EU was 0 on 2026-11-18 (4 on 2026-11-17); the EG810M-EU had 206. LTE Cat 1 (10/5 Mbps; the EG800K is Cat 1 bis, which makes no difference to Auris), LTE-FDD B1/3/5/7/8/20/28, no TDD, no 2G, CE and RCM, −35…+75 °C (−40…+85 °C extended), LGA 17.7 × 15.8 × 1.7 mm (EG800K 2.4 mm). Quectel states it is compatible with the EG800K series in package. Checked against the released *EG810M-EU QuecOpen&QuecPython Hardware Design* V1.0 (2024-06-25): every pin Auris connects (1, 7, 10–18, 22–25, 27, 34–43, 45–48, 59–61, 70–73, 82, 88–95) has the same function, the GND pin list is identical, and the VBAT (3.4–4.3 V, ≥ 2 A, ≈ 100 µF low-ESR plus MLCC array), PWRKEY (low ≥ 700 ms, 10 nF), RESET_N (≥ 300 ms), USB_BOOT (pin 82, 4.7 kΩ to a GND test point), SIM and translator circuits agree with the sheet. Pins Auris leaves open carry QuecOpen-only functions (e.g. pin 8 = CAM_VDD, 2.8 V output) and stay open. The EasyEDA symbol's pin names match the netlist; the footprint is `LGA-109_L17.7-W15.8-P1.10_EG810M-CN` (was `LGA-109_L17.7-W15.8-AIR780E`): compare pad geometry at layout. The standard-firmware *EC800M & EG810M Series Hardware Design* was not read. The PCB footprint still accepts an EG800K-EU; firmware needs a Quectel AT driver either way. Part note: [`C20421924_EG810MEULA-I05-SNNSA.md`](../datasheets/C20421924_EG810MEULA-I05-SNNSA.md) |
+| 2 | M2, W8 module temperature | U401 **ESP32-S3-WROOM-1-N16R8 → N16R2** (C2913205): 16 MB quad flash + 2 MB quad PSRAM, −40…+85 °C (Espressif WROOM-1 datasheet v1.8 §1.2, Table 1-1; the R8 variants are −40…+65 °C, +85 °C only with PSRAM ECC). Same footprint, pads and symbol. GPIO35–37 are free and stay unconnected (spare); PSRAM ECC is no longer needed. F3-05 (≥ 5 s audio buffer, 480 KB) fits in 2 MB. Edge AI (phase 2) gets 2 MB PSRAM instead of 8 MB, and quad PSRAM has about a quarter of the octal-DDR bandwidth at 80 MHz; model weights can stay in the 16 MB memory-mapped flash. New firmware rule: keep flash and PSRAM at 80 MHz (ESP-IDF *flash_psram_config*: the experimental 120 MHz mode can crash after a ≈ 20 °C temperature swing). Part note: [`C2913205_ESP32-S3-WROOM-1-N16R2.md`](../datasheets/C2913205_ESP32-S3-WROOM-1-N16R2.md) |
+| 3 | W17 microSD ESD | New **D403 SRV05-4.TCT** (C13612) at J402 on SD_CLK (card side of R418), SD_CMD, SD_D0 and SD_CD; pin 2 to GND (own via beside J402); pin 5 (REF2) to 3V3, which is never below SD_VDD, so nothing back-feeds; 3V3 is off in sleep. 3 pF typical, 5 pF maximum per line. Correction to W17: D3 is not wired to the ESP32 in 1-bit mode, so CD takes its place |
+| 4 | W12 test access | **TP404–TP415** on the MCU sheet: PWR_HOLD (GPIO10), SYS_SDA (GPIO13), SYS_SCL (GPIO14), AUD_SDA (GPIO18), AUD_SCL (GPIO8), SD_VDD, LTE_STATUS (GPIO38), LTE_TX (GPIO39), LTE_RX (GPIO40), STATUS_LED = U0TXD (GPIO43, UART0 for Espressif's RF test firmware), SD_D0 = U0RXD (GPIO44), 3V3. TP401–TP403 and TP413–TP415 in one 2.54 mm row for a pogo-pin jig. The 1.0 mm pad footprint remains a layout item |
+| 5 | W8 coin cell | Holder unchanged (C70381 CR1220-2, −40…+80 °C per JLC). Cell, hand-fitted and not on the BOM: **Panasonic BR1220** (BR-1220/BN), −30…+80 °C. No CR1220-size cell is rated to −40 °C (Renata CR1220 MFR −30/+70 °C per Renata's coin-cell designer's guide; Maxell CR1220 −20…+85 °C). The −40 °C-rated 12.5 mm cells (Renata CR1225 −40/+85 °C, Panasonic BR1225A −40…+125 °C) need a CR1225 holder, and neither JLC option checked out: Antenk BT-S-G0-A-CR1225B (C52748081) has no datasheet and unknown polarity; TE BAT-HLD-012-SMT is rated −30…+70 °C. Bench-test the BR1220 at −40 °C; revisit if a documented −40 °C CR1225 holder turns up. DS3231M VBAT draw ≤ 3 µA maximum |
+
+**BOM cost** (same basis as above, `python3 hardware/tools/bom_cost.py`):
+
+| | 10 boards | 100 boards |
+|---|---:|---:|
+| 2026-11-17: parts / fees / **total per board** | $29.74 / $16.27 / **$46.01** | $23.77 / $1.63 / **$25.40** |
+| 2026-11-18: parts / fees / **total per board** | $32.05 / $16.27 / **$48.32** | $25.82 / $1.63 / **$27.44** |
+
+Still 102 unique codes, 53 extended: the modem and module replace extended parts one for one, and D403 reuses C13612. The modem adds $2.18/board at 10 and $1.58 at 100 ($8.04 and $6.39 against $5.86 and $4.80); the N16R2 −$0.02 at 10 and +$0.36 at 100; D403 +$0.16 and +$0.12. The test pads and the coin cell cost nothing on the JLC BOM.
+
+**Capture:** EasyEDA Pro updated itself from 3.2.209 to 4.1.105 overnight. In 4.1, clearing and re-capturing a page failed in the AURIS project. Some devices could not be placed from the system library ("Create project component failed"; the script call never returns and the next placements fail too). Placing from the project library's copies gave some parts no footprint, and Update PCB then stopped with "lacks of property Footprint". So the 2026-11-17 export (`hardware/2026-11-17/AURIS_2026-11-17.epro2`, the version that passed the PCB check) was imported as a new project, **`AURIS_2026-11-18`**, and the changes were made there in place, without clearing pages:
+
+- LTE: U301 removed with its 46 net stubs, then the EG810M-EU placed and wired (46 wires, 63 no-connect flags).
+- MCU: U401 removed with its 37 stubs, then the N16R2, D403 and TP404–TP415 placed and wired (55 wires, 4 no-connect flags).
+- The new parts sit in boxes below the existing blocks ("continued" headings); move them into place at layout.
+
+The capture template now places a device the project already holds from the project's copy (only one that has a footprint) and flags any part placed without a footprint. After Design > Update PCB (337 PCB parts) and an export, **`easyeda_check.py` passes for all four sheets**: audio 114, power 123, LTE 53, MCU 47 parts, each with its BOM's LCSC code and every pad on its CSV net. The project and EasyEDA's BOM are in `hardware/2026-11-18/`. The old `AURIS` project in EasyEDA has half-captured LTE and MCU pages and should not be used.
+
+**Docs updated the same day:** the LTE, MCU, power and audio READMEs, docs 00, 03–06, 08, 11, 13–15 and 19, the major-components CSV, the 2026-11-18 LCSC snapshot and the hardware guide.

@@ -673,7 +673,7 @@ PORTS = [
 POWER_PORTS = [
     ("VBAT_SW", "power out", "—", "Switched battery rail: audio LDO and the two rails below. 2.8–4.2 V"),
     ("3V3", "power out", "—", "Main 3.3 V: ESP32-S3, microSD supply switch, system I²C pull-ups"),
-    ("VMODEM", "power out", "—", "3.9 V for the EG800K-EU VBAT pins; off unless MODEM_EN is high"),
+    ("VMODEM", "power out", "—", "3.9 V for the EG810M-EU VBAT pins; off unless MODEM_EN is high"),
     ("PWR_HOLD", "out", "GPIO10", "Drive high first thing at boot; low = power off. R224 holds it low while the ESP32 is unpowered"),
     ("MODEM_EN", "out", "GPIO11", "High = modem rail on. R235 holds it low"),
     ("MODEM_PG", "in", "GPIO12", "High = U207 out of current limit (start-up done); read it only with MODEM_EN high, then wait 30 ms before PWRKEY. R237 1 MΩ pull-up to 3V3"),
@@ -802,13 +802,13 @@ def arrow(s, pts, mid, cls="w", label=None, lx=None, ly=None, anchor="middle"):
 
 def fig_sys():
     s = Sch(1000, 390, "Board overview: the ESP32-S3 connects to the RTC, power sheet, microSD, audio front end, LTE modem and USB")
-    blk(s, 400, 140, 200, 90, "ESP32-S3-WROOM-1", "N16R8 · MCU + Wi-Fi setup", "C2913202")
+    blk(s, 400, 140, 200, 90, "ESP32-S3-WROOM-1", "N16R2 · MCU + Wi-Fi setup", "C2913205")
     for (y, t, n, c) in [(40, "RTC DS3231MZ+TRL", "always powered", "C107410"),
                          (157, "Power sheet", "battery + panel sense · PWR_HOLD", None),
                          (274, "microSD holder", "raw WAV + manifest", "C393941")]:
         blk(s, 60, y, 220, 56, t, n, c)
     for (y, t, n, c) in [(40, "Audio front end", "PCM1863DBTR + EM272", "C529569"),
-                         (157, "LTE modem EG800K-EU", "daily sync · Europe, AU, NZ", "C44008839"),
+                         (157, "LTE modem EG810M-EU", "daily sync · Europe, AU, NZ", "C20421924"),
                          (274, "USB-C", "programming + service", "C2894897")]:
         blk(s, 720, y, 220, 56, t, n, c)
     s.wire((400, 165), (330, 165), (330, 68), (280, 68)); s.text(365, 158, "I²C · INT", "al", "middle")
@@ -832,10 +832,10 @@ def fig_powertree():
     blk(s, 590, 70, 150, 50, "Main switch", "AO3401A", "C15127")
     blk(s, 800, 20, 190, 44, "TPS63802 3.3 V", "MCU, microSD", "C2845237")
     blk(s, 800, 80, 190, 44, "TPS7A2033 audio 3.3 V", "EN = AUDIO_EN", "C2862740")
-    blk(s, 800, 140, 190, 44, "TPS63020 modem 3.9 V", "EG800K-EU · EN from MCU", "C15483")
+    blk(s, 800, 140, 190, 44, "TPS63020 modem 3.9 V", "EG810M-EU · EN from MCU", "C15483")
     blk(s, 190, 175, 150, 50, "Battery sense", "divider → BATT_ADC")
     blk(s, 390, 175, 150, 50, "Keep-alive LDO 3.3 V", "TPL720F33", "C2842389")
-    blk(s, 610, 175, 150, 50, "RTC + wake logic", "DS3231MZ · CR1220 backup", "C107410")
+    blk(s, 610, 175, 150, 50, "RTC + wake logic", "DS3231MZ · BR1220 backup", "C107410")
     m = "pt-arrow"
     arrow(s, [(150, 85), (186, 85)], m)
     arrow(s, [(150, 175), (170, 175), (170, 113), (186, 113)], m, cls="wd", label="clamps", lx=172, ly=150, anchor="start")
@@ -1203,10 +1203,10 @@ def fig_l_supply():
 def fig_l_pins():
     top, pitch, x0, x1 = 60, 34, 380, 620
     h = 30 + (len(U301_RIGHT) - 1) * pitch + 30
-    s = Sch(1000, top + h + 70, "EG800K-EU pin map: every used pad with its net and where it goes")
+    s = Sch(1000, top + h + 70, "EG810M-EU pin map: every used pad with its net and where it goes")
     s.add(f'<rect class="b" x="{x0}" y="{top}" width="{x1-x0}" height="{h}"/>')
     s.text((x0 + x1) / 2, top + h / 2 - 8, "U301", "des", "middle")
-    s.text((x0 + x1) / 2, top + h / 2 + 8, "EG800K-EU", "val", "middle")
+    s.text((x0 + x1) / 2, top + h / 2 + 8, "EG810M-EU", "val", "middle")
     s.text((x0 + x1) / 2, top + h / 2 + 22, "LGA-109", "val", "middle")
     for i, (pn, name, net, note) in enumerate(U301_LEFT):
         y = top + 30 + i * pitch

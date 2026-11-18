@@ -1,6 +1,6 @@
 # 11 — BLE, LTE, storage security, privacy and updates
 
-**Status:** Requirements/proposed controls, not audited implementation. **EG800K-EU is selected in concept** (ADR-006): LTE only, Europe/Australia/NZ bands; backend and identity stack undecided.
+**Status:** Requirements/proposed controls, not audited implementation. **EG810M-EU is selected in concept** (ADR-006, since 2026-11-18; it replaced the EG800K-EU): LTE only, Europe/Australia/NZ bands; backend and identity stack undecided.
 
 ## Distinct channels
 

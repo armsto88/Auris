@@ -26,9 +26,9 @@
 
 ## Presently selected in the supplied hardware proposal
 
-1. **ESP32-S3-WROOM-1-N16R8**, 16 MB flash, 8 MB PSRAM, native USB, BLE and optional Wi-Fi, selected as MCU/radio/processing platform.
+1. **ESP32-S3-WROOM-1-N16R2** (LCSC `C2913205`; owner decision 2026-11-18, ADR-001), 16 MB flash, 2 MB quad PSRAM, native USB, BLE and optional Wi-Fi, rated −40…+85 °C, selected as MCU/radio/processing platform. It replaced the N16R8 (8 MB octal PSRAM, rated −40…+65 °C) from the supplied proposal; same footprint.
 2. **DS3231MZ+TRL** (revised 2026-10-22, supersedes RV-3129-C3 concept), I²C RTC with two time-of-day alarms, selected as always-on calendar wake source; see ADR-002.
-3. **EG800K-EU** (Quectel LTE Cat-1 bis, LCSC `C44008839`; owner decision 2026-10-23, ADR-006) as the LTE modem, for Europe, Australia and New Zealand. The A7670G is the global alternate; the EG800K-LA fits the same footprint for the Americas.
+3. **EG810M-EU** (Quectel LTE Cat 1, LCSC `C20421924`; owner decision 2026-11-18, ADR-006) as the LTE modem, for Europe, Australia and New Zealand. It replaced the EG800K-EU (`C44008839`, chosen 2026-10-23), which had no JLC stock; same package, and the footprint still takes an EG800K. The A7670G is the global alternate; the EG800K-LA fits the same footprint for the Americas.
 4. **System operating intent:** normally fully off between recording/sync tasks; RTC/wake rail alive; local BLE service; event-driven, intermittent LTE; raw audio retained as primary evidence; independent recording and sync schedules.
 
 **Note:** `selected` means chosen for the **preliminary concept**, not validated or purchase-frozen.
@@ -36,10 +36,10 @@
 ## Not selected / not validated
 
 - **Audio:** Primo EM273 or equivalent electret microphone; PCM1863DBT I²S ADC; preamp/bias, clocking, gain and calibration details.
-- **Modem:** EG800K-EU supply (ADR-011), Quectel AT driver, antenna, SIM/operator and RF validation; GNSS optional only.
+- **Modem:** EG810M-EU supply (ADR-011), Quectel AT driver, antenna, SIM/operator and RF validation; GNSS optional only.
 - **Power:** charger, main 3.3 V, keep-alive and modem supply now **selected in concept** from FieldMesh Hub v2 / Node v4 (CN3791 + TMP390A2, TPS63802, TPL720F33 + CR1220, TPS63020; ADR-007/008/010/011, 2026-10-23), but **none measured on Auris**; solar harvest **not** established; TPS7A2033 audio LDO candidate; battery capacity **TBD**.
 - **Mechanical:** enclosure/IP target, acoustic vent/membrane, windscreen, mounting system, thermal layout, manufacturing approach.
-- **SD:** 1-bit SD mode chosen (ADR-012); card power switch (AO3401A + 2N7002) and card detect on GPIO3 drawn (2026-11-17), not measured; file-integrity behaviour still open.
+- **SD:** 1-bit SD mode chosen (ADR-012); card power switch (AO3401A + 2N7002) and card detect on GPIO3 drawn (2026-11-17) and an ESD array on the card lines (D403, 2026-11-18), not measured; file-integrity behaviour still open.
 - **Cloud/UI:** technology stack, hosting, product pricing, subscription model, API paths, deployments, production security and regulatory assessments.
 - **AI:** models, supported rates/features, detection thresholds, real-world inference latency, false-negative rates, end-user training UX.
 

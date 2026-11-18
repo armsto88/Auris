@@ -1,5 +1,5 @@
 designator,pin,pin_name,net,fit,notes
-U401,1,GND,GND,Y,ESP32-S3-WROOM-1-N16R8. Pad numbers from the Espressif datasheet v1.8 Table 3-1; GPIOs from the guide's pin map (proposed 2026-10-23)
+U401,1,GND,GND,Y,"ESP32-S3-WROOM-1-N16R2 (ADR-001, since 2026-11-18; same footprint and pads as the N16R8). Pad numbers from the Espressif datasheet v1.8 Table 3-1; GPIOs from the guide's pin map (proposed 2026-10-23)"
 U401,2,3V3,3V3,Y,
 U401,3,EN,ESP_EN,Y,
 U401,4,IO4,AUD_INT_MCU,Y,
@@ -26,7 +26,7 @@ U401,24,IO47,SD_CLK_MCU,Y,
 U401,25,IO48,SD_CMD,Y,
 U401,26,IO45,SD_PWR_EN,Y,
 U401,27,IO0,ESP_BOOT,Y,
-U401,28,IO35,NC,Y,
+U401,28,IO35,NC,Y,"GPIO35–37: free on the N16R2 (quad PSRAM); were the octal PSRAM lines on the N16R8. Spare, left open"
 U401,29,IO36,NC,Y,
 U401,30,IO37,NC,Y,
 U401,31,IO38,LTE_STATUS,Y,
@@ -84,6 +84,12 @@ D401,5,REF2,NC,Y,"Left open (Semtech SRV05-4 option 3, internal TVS as reference
 D401,6,IO4,USB_CC2,Y,
 D402,1,1,VBUS,Y,TPD1E10B06: VBUS ESD at J401 (replaces the SRV05-4 REF2 clamp)
 D402,2,2,GND,Y,
+D403,1,IO1,SD_CLK,Y,"SRV05-4 at J402 on the four card lines that reach ESP32 pins (SD_CLK on the card side of R418, SD_CMD, SD_D0, SD_CD); owner decision 2026-11-18. D1–D3 reach only pull-ups"
+D403,2,REF1,GND,Y,Own via to the ground plane beside J402
+D403,3,IO2,SD_CMD,Y,
+D403,4,IO3,SD_D0,Y,
+D403,5,REF2,3V3,Y,"3V3 is never below SD_VDD, so nothing back-feeds; clamp ≈ 3V3 + VF. 3V3 is off in sleep, so the array's leakage costs nothing then"
+D403,6,IO4,SD_CD,Y,
 R405,1,1,USB_DP,Y,USB D+ series link (datasheet R4); room for a damping resistor
 R405,2,2,ESP_USB_DP,Y,
 R406,1,1,USB_DN,Y,USB D− series link (datasheet R6); room for a damping resistor
@@ -138,3 +144,15 @@ LED401,K,K,GND,Y,
 TP401,1,TP,ESP_BOOT,Y,GPIO0: short to GND at reset for USB download (recovery)
 TP402,1,TP,ESP_EN,Y,EN: short to GND to reset
 TP403,1,TP,GND,Y,Ground for TP401/TP402
+TP404,1,TP,PWR_HOLD,Y,Power latch hold (GPIO10); owner decision 2026-11-18 (review W12)
+TP405,1,TP,SYS_SDA,Y,RTC I²C data (GPIO13)
+TP406,1,TP,SYS_SCL,Y,RTC I²C clock (GPIO14)
+TP407,1,TP,AUD_SDA,Y,Audio ADC I²C data (GPIO18)
+TP408,1,TP,AUD_SCL,Y,Audio ADC I²C clock (GPIO8)
+TP409,1,TP,SD_VDD,Y,Switched card supply
+TP410,1,TP,LTE_STATUS,Y,"Modem STATUS, 3.3 V side (GPIO38)"
+TP411,1,TP,LTE_TX,Y,"Modem UART, ESP32 side (GPIO39)"
+TP412,1,TP,LTE_RX,Y,"Modem UART, ESP32 side (GPIO40)"
+TP413,1,TP,STATUS_LED,Y,"U0TXD (GPIO43): UART0 transmit for Espressif's RF test firmware. Row with TP401–TP403, TP414, TP415 at 2.54 mm"
+TP414,1,TP,SD_D0,Y,U0RXD (GPIO44): UART0 receive
+TP415,1,TP,3V3,Y,3.3 V for the programming row

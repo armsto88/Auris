@@ -1,12 +1,12 @@
 designator,pin,pin_name,net,fit,notes
-U301,1,GND,GND,Y,"EG800KEULC-I03-SNNSA: ADR-006. Keep RESERVED and unused pads open; solid ground under the module, no traces on layer 1 beneath it"
+U301,1,GND,GND,Y,"EG810MEULA-I05-SNNSA (ADR-006, since 2026-11-18; package-compatible with the EG800K-EU). Keep RESERVED and unused pads open; solid ground under the module, no traces on layer 1 beneath it"
 U301,2,RESERVED,NC,Y,
 U301,3,RESERVED,NC,Y,
 U301,4,RESERVED,NC,Y,
 U301,5,RESERVED,NC,Y,
 U301,6,RESERVED,NC,Y,
 U301,7,PWRKEY,M_PWRKEY,Y,
-U301,8,RESERVED,NC,Y,
+U301,8,RESERVED,NC,Y,EG810M-EU: CAM_VDD 2.8 V output in QuecOpen firmware only; leave open
 U301,9,ADC0,NC,Y,
 U301,10,GND,GND,Y,
 U301,11,USIM_DATA,SIM_DATA_M,Y,
@@ -125,7 +125,7 @@ C306,2,2,GND,Y,
 Q301,1,B,Q301_B,Y,"MMBT3904: Open-collector PWRKEY driver: LTE_PWRKEY high = PWRKEY low. ≥ 700 ms turns the module on, ≥ 650 ms off"
 Q301,2,E,GND,Y,
 Q301,3,C,M_PWRKEY,Y,
-C316,1,1,M_PWRKEY,Y,"CL05B103KB5NNNC: PWRKEY filter, Quectel Fig. 9; total on PWRKEY <= 10 nF"
+C316,1,1,M_PWRKEY,Y,"CL05B103KB5NNNC: PWRKEY filter, Quectel EG810M-EU HD Fig. 7 (EG800K-LA HD Fig. 9); total on PWRKEY <= 10 nF"
 C316,2,2,GND,Y,
 C317,1,1,M_NETSTAT,N,DNP: 33 pF filter footprint at the module pin (QuecOpen Ref V1.2 sheet 3 note 9)
 C317,2,2,GND,N,

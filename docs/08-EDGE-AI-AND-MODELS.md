@@ -42,7 +42,7 @@ Include positives, target lookalikes, overlapping calls, common confusers, wind/
 
 ## Edge requirements (benchmarks not yet confirmed)
 
-- Choose a feature pipeline (spectrogram, log-mel or band features) that fits RAM, flash and PSRAM.
+- Choose a feature pipeline (spectrogram, log-mel or band features) that fits RAM, flash and PSRAM. Since 2026-11-18 the module is the ESP32-S3-WROOM-1-N16R2 (ADR-001): 2 MB quad PSRAM instead of the N16R8's 8 MB octal PSRAM, with about a quarter of the octal-DDR bandwidth at 80 MHz, and 16 MB of memory-mapped flash where model weights can stay. The ≥ 5 s audio buffer (F3-05, 480 KB) also lives in PSRAM. Keep flash and PSRAM at 80 MHz (the experimental 120 MHz mode can crash after a temperature swing of about 20 °C, ESP-IDF *flash_psram_config* guide).
 - Quantised TFLite Micro is a **current concept**, not an implementation commitment; check supported operators, conversion and ESP-IDF integration.
 - Measure working-set and activation memory at runtime, inference milliseconds per audio window, battery joules per detection job, flash/PSRAM consumption and effects on SD capture.
 - Package must include target labels, sample rate, window/hop, feature version, thresholds, compatible firmware, size/hash/signature and fallback link.
@@ -62,7 +62,7 @@ Include positives, target lookalikes, overlapping calls, common confusers, wind/
 ### Auris-relevant cautions
 
 1. **Operator support is the gating constraint.** Converting a model to `.tflite` does not guarantee it runs: microcontroller runtimes support a **subset of operators**; "compiles but will not run" usually means unsupported operator. The `08` requirement to reject incompatible model packages stands.
-2. **Do not judge feasibility by model file size.** Runtime needs input buffers, intermediate tensors, audio buffers, stacks, heap and drivers on top of the model blob. 8 MB PSRAM ≠ 8 MB model budget — matches the existing rule to measure working-set at runtime.
+2. **Do not judge feasibility by model file size.** Runtime needs input buffers, intermediate tensors, audio buffers, stacks, heap and drivers on top of the model blob. 8 MB PSRAM ≠ 8 MB model budget — matches the existing rule to measure working-set at runtime. Auris now has 2 MB PSRAM (N16R2, 2026-11-18), shared with the audio buffer.
 3. **Memory placement matters:** PSRAM is slower than internal SRAM; high-frequency audio/feature buffers and the Tensor Arena should be measured, with critical regions kept in internal RAM where possible.
 4. **Dataset discipline echoes the Auris training-data section:** collect target + background + unknown + silence classes across distances/rooms/noise; a classifier trained only on clean desk recordings collapses near fans/motors/echo. **Never split frames/windows of one continuous recording across train and test sets** — inflated accuracy from leakage.
 5. **Toolchain should be chosen before the model architecture** (supported operators, memory plan, deployment target), not after. Candidates compared in the source: **Edge Impulse** (rapid prototyping, integrated collection→export), **LiteRT Micro** (formerly TFLite Micro — more conversion control, more manual work), **ESP-DL accelerated by ESP-NN kernels** (ESP-IDF-native, most platform-specific), SenseCraft AI (low-code).
@@ -77,7 +77,7 @@ Include positives, target lookalikes, overlapping calls, common confusers, wind/
 
 ### Follow-up actions captured
 
-- First internal benchmark (roadmap phase 2) should still target **one narrow target vs background/confusers** on the actual ESP32-S3-WROOM-1-N16R8 module, as planned in `13-ROADMAP-AND-BACKLOG.md`.
+- First internal benchmark (roadmap phase 2) should still target **one narrow target vs background/confusers** on the actual ESP32-S3-WROOM-1-N16R2 module (the N16R8 until 2026-11-18), as planned in `13-ROADMAP-AND-BACKLOG.md`.
 - Model packages must record the operator set supported by the chosen runtime (Edge Impulse export vs LiteRT Micro vs ESP-DL) to enforce compatibility rejection rules.
 
 ## Evaluation / validation

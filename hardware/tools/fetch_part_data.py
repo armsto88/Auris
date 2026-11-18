@@ -85,6 +85,12 @@ def cached(kind, code, fetch, offline):
     return d
 
 
+def fetched_on(kind, code):
+    """Date the cached JSON was fetched (its file date), so an --offline rebuild keeps the true check date."""
+    path = os.path.join(CACHE, kind, f"{code}.json")
+    return datetime.date.fromtimestamp(os.path.getmtime(path)).isoformat() if os.path.exists(path) else ""
+
+
 def price_at(breaks, n):
     """Unit price for quantity n from [{startNumber, endNumber, productPrice}]."""
     best = None
@@ -169,7 +175,7 @@ def main():
             "datasheet_url": s.get("datasheet_url") or d.get("dataManualUrl") or o.get("datasheet_url", ""),
             "datasheet_rev": s.get("datasheet_rev") or o.get("datasheet_rev", ""),
             "temp_min": s.get("temp_min") or tmin, "temp_max": s.get("temp_max") or tmax,
-            "checked": today if det else o.get("checked", ""),
+            "checked": fetched_on("jlc", code) if det else o.get("checked", ""),
         })
         pins, pads = symbol_pins(ee)
         pin_rows.append({"lcsc": code, "mpn": rows[-1]["mpn"],

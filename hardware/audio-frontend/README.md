@@ -115,7 +115,7 @@ FIR: stopband from 0.583 fs at −65 dB, 30-sample delay. IIR: stopband from 0.5
 
 ## Sheet ports and proposed ESP32-S3 pins
 
-GPIO numbers are **proposed** and avoid strapping pins (0, 3, 45, 46), USB (19, 20) and octal-PSRAM pins (35–37, unavailable on N16R8). Final allocation belongs to the whole-board pin map (backlog H0-06); the MCU tab of the hardware guide has every section's pins.
+GPIO numbers are **proposed** and avoid strapping pins (0, 3, 45, 46), USB (19, 20) and GPIO35–37 (the octal PSRAM lines on the N16R8; free on the N16R2 fitted since 2026-11-18, but kept spare). Final allocation belongs to the whole-board pin map (backlog H0-06); the MCU tab of the hardware guide has every section's pins.
 
 | Port | Direction (MCU view) | Proposed GPIO | Notes |
 |---|---|---|---|

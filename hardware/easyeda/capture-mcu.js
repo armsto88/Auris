@@ -1,5 +1,5 @@
-// Auris schematic capture: mcu sheet (34 parts, 139 pin connections).
-// Generated 2026-11-17 by hardware/tools/easyeda_capture.py from mcu/mcu-netlist.csv and mcu-bom.csv.
+// Auris schematic capture: mcu sheet (47 parts, 157 pin connections).
+// Generated 2026-11-18 by hardware/tools/easyeda_capture.py from mcu/mcu-netlist.csv and mcu-bom.csv.
 // Don't edit this file: change the CSVs, then run the generator again.
 //
 // What it does: places every part of the sheet on the open schematic page by its
@@ -12,11 +12,12 @@
 // To run it in EasyEDA Pro:
 //  1. Open the Auris project and an empty schematic page for this sheet.
 //  2. Optional: place one template part per kind on the page, keeping its
-//     default designator: a test pad for TP401, TP402, TP403. These parts
-//     have no LCSC code, so the script places more of the template's library
-//     part (found by its LCSC code or else by its name), or, with no template
-//     on the page, the default in CFG.templateDefaults. Delete any template
-//     afterwards.
+//     default designator: a test pad for TP401, TP402, TP403, TP413, TP414,
+//     TP415, TP404, TP405, TP406, TP407, TP408, TP409, TP410, TP411, TP412.
+//     These parts have no LCSC code, so the script places more of the
+//     template's library part (found by its LCSC code or else by its name),
+//     or, with no template on the page, the default in CFG.templateDefaults.
+//     Delete any template afterwards.
 //  3. Advanced > Run Script (EasyEDA Pro v2: Settings > Extensions > Standalone
 //     Script). Paste this whole file and run it. A dialog reports the result.
 // Running it again skips designators already on the page, so after fixing an
@@ -27,7 +28,7 @@
   // d: designator, lcsc: LCSC code ("" = copy a template part), fit: false = not fitted,
   // block: block in build_guide.py, pins: [pin number, pin name, net] from the netlist
   const PARTS = [
-    {"d": "U401", "lcsc": "C2913202", "fit": true, "pins": [["1", "GND", "GND"], ["2", "3V3", "3V3"], ["3", "EN", "ESP_EN"], ["4", "IO4", "AUD_INT_MCU"], ["5", "IO5", "MIC1_DC_SENSE"], ["6", "IO6", "PREAMP_EN"], ["7", "IO7", "AUDIO_EN"], ["8", "IO15", "AUD_BCK"], ["9", "IO16", "AUD_LRCK"], ["10", "IO17", "AUD_DOUT"], ["11", "IO18", "AUD_SDA"], ["12", "IO8", "AUD_SCL"], ["13", "IO19", "ESP_USB_DN"], ["14", "IO20", "ESP_USB_DP"], ["15", "IO3", "SD_CD"], ["16", "IO46", "NC"], ["17", "IO9", "AUD_MCLK"], ["18", "IO10", "PWR_HOLD"], ["19", "IO11", "MODEM_EN"], ["20", "IO12", "MODEM_PG"], ["21", "IO13", "SYS_SDA"], ["22", "IO14", "SYS_SCL"], ["23", "IO21", "LTE_PWRKEY"], ["24", "IO47", "SD_CLK_MCU"], ["25", "IO48", "SD_CMD"], ["26", "IO45", "SD_PWR_EN"], ["27", "IO0", "ESP_BOOT"], ["28", "IO35", "NC"], ["29", "IO36", "NC"], ["30", "IO37", "NC"], ["31", "IO38", "LTE_STATUS"], ["32", "IO39", "LTE_TX"], ["33", "IO40", "LTE_RX"], ["34", "IO41", "LTE_RTS"], ["35", "IO42", "LTE_CTS"], ["36", "RXD0", "SD_D0"], ["37", "TXD0", "STATUS_LED"], ["38", "IO2", "SOLAR_ADC"], ["39", "IO1", "BATT_ADC"], ["40", "GND", "GND"], ["41", "EPAD", "GND"]], "block": "m_module"},
+    {"d": "U401", "lcsc": "C2913205", "fit": true, "pins": [["1", "GND", "GND"], ["2", "3V3", "3V3"], ["3", "EN", "ESP_EN"], ["4", "IO4", "AUD_INT_MCU"], ["5", "IO5", "MIC1_DC_SENSE"], ["6", "IO6", "PREAMP_EN"], ["7", "IO7", "AUDIO_EN"], ["8", "IO15", "AUD_BCK"], ["9", "IO16", "AUD_LRCK"], ["10", "IO17", "AUD_DOUT"], ["11", "IO18", "AUD_SDA"], ["12", "IO8", "AUD_SCL"], ["13", "IO19", "ESP_USB_DN"], ["14", "IO20", "ESP_USB_DP"], ["15", "IO3", "SD_CD"], ["16", "IO46", "NC"], ["17", "IO9", "AUD_MCLK"], ["18", "IO10", "PWR_HOLD"], ["19", "IO11", "MODEM_EN"], ["20", "IO12", "MODEM_PG"], ["21", "IO13", "SYS_SDA"], ["22", "IO14", "SYS_SCL"], ["23", "IO21", "LTE_PWRKEY"], ["24", "IO47", "SD_CLK_MCU"], ["25", "IO48", "SD_CMD"], ["26", "IO45", "SD_PWR_EN"], ["27", "IO0", "ESP_BOOT"], ["28", "IO35", "NC"], ["29", "IO36", "NC"], ["30", "IO37", "NC"], ["31", "IO38", "LTE_STATUS"], ["32", "IO39", "LTE_TX"], ["33", "IO40", "LTE_RX"], ["34", "IO41", "LTE_RTS"], ["35", "IO42", "LTE_CTS"], ["36", "RXD0", "SD_D0"], ["37", "TXD0", "STATUS_LED"], ["38", "IO2", "SOLAR_ADC"], ["39", "IO1", "BATT_ADC"], ["40", "GND", "GND"], ["41", "EPAD", "GND"]], "block": "m_module"},
     {"d": "C401", "lcsc": "C45783", "fit": true, "pins": [["1", "1", "3V3"], ["2", "2", "GND"]], "block": "m_module"},
     {"d": "C402", "lcsc": "C1525", "fit": true, "pins": [["1", "1", "3V3"], ["2", "2", "GND"]], "block": "m_module"},
     {"d": "R401", "lcsc": "C25744", "fit": true, "pins": [["1", "1", "3V3"], ["2", "2", "ESP_EN"]], "block": "m_module"},
@@ -42,6 +43,7 @@
     {"d": "R405", "lcsc": "C17168", "fit": true, "pins": [["1", "1", "USB_DP"], ["2", "2", "ESP_USB_DP"]], "block": "m_usb"},
     {"d": "R406", "lcsc": "C17168", "fit": true, "pins": [["1", "1", "USB_DN"], ["2", "2", "ESP_USB_DN"]], "block": "m_usb"},
     {"d": "J402", "lcsc": "C393941", "fit": true, "pins": [["1", "DAT2", "SD_D2"], ["2", "CD/DAT3", "SD_D3"], ["3", "CMD", "SD_CMD"], ["4", "VDD", "SD_VDD"], ["5", "CLK", "SD_CLK"], ["6", "VSS", "GND"], ["7", "DAT0", "SD_D0"], ["8", "DAT1", "SD_D1"], ["10", "SHELL", "GND"], ["11", "SHELL", "GND"], ["12", "SHELL", "GND"], ["13", "SHELL", "GND"], ["9", "CD", "SD_CD"]], "block": "m_sd"},
+    {"d": "D403", "lcsc": "C13612", "fit": true, "pins": [["1", "IO1", "SD_CLK"], ["2", "REF1", "GND"], ["3", "IO2", "SD_CMD"], ["4", "IO3", "SD_D0"], ["5", "REF2", "3V3"], ["6", "IO4", "SD_CD"]], "block": "m_sd"},
     {"d": "R418", "lcsc": "C25105", "fit": true, "pins": [["1", "1", "SD_CLK_MCU"], ["2", "2", "SD_CLK"]], "block": "m_sd"},
     {"d": "R419", "lcsc": "C25741", "fit": true, "pins": [["1", "1", "3V3"], ["2", "2", "SD_CD"]], "block": "m_sd"},
     {"d": "R409", "lcsc": "C25744", "fit": true, "pins": [["1", "1", "SD_VDD"], ["2", "2", "SD_CMD"]], "block": "m_sd"},
@@ -61,6 +63,18 @@
     {"d": "TP401", "lcsc": "", "fit": true, "pins": [["1", "TP", "ESP_BOOT"]], "block": "m_test", "prefix": "TP"},
     {"d": "TP402", "lcsc": "", "fit": true, "pins": [["1", "TP", "ESP_EN"]], "block": "m_test", "prefix": "TP"},
     {"d": "TP403", "lcsc": "", "fit": true, "pins": [["1", "TP", "GND"]], "block": "m_test", "prefix": "TP"},
+    {"d": "TP413", "lcsc": "", "fit": true, "pins": [["1", "TP", "STATUS_LED"]], "block": "m_test", "prefix": "TP"},
+    {"d": "TP414", "lcsc": "", "fit": true, "pins": [["1", "TP", "SD_D0"]], "block": "m_test", "prefix": "TP"},
+    {"d": "TP415", "lcsc": "", "fit": true, "pins": [["1", "TP", "3V3"]], "block": "m_test", "prefix": "TP"},
+    {"d": "TP404", "lcsc": "", "fit": true, "pins": [["1", "TP", "PWR_HOLD"]], "block": "m_test", "prefix": "TP"},
+    {"d": "TP405", "lcsc": "", "fit": true, "pins": [["1", "TP", "SYS_SDA"]], "block": "m_test", "prefix": "TP"},
+    {"d": "TP406", "lcsc": "", "fit": true, "pins": [["1", "TP", "SYS_SCL"]], "block": "m_test", "prefix": "TP"},
+    {"d": "TP407", "lcsc": "", "fit": true, "pins": [["1", "TP", "AUD_SDA"]], "block": "m_test", "prefix": "TP"},
+    {"d": "TP408", "lcsc": "", "fit": true, "pins": [["1", "TP", "AUD_SCL"]], "block": "m_test", "prefix": "TP"},
+    {"d": "TP409", "lcsc": "", "fit": true, "pins": [["1", "TP", "SD_VDD"]], "block": "m_test", "prefix": "TP"},
+    {"d": "TP410", "lcsc": "", "fit": true, "pins": [["1", "TP", "LTE_STATUS"]], "block": "m_test", "prefix": "TP"},
+    {"d": "TP411", "lcsc": "", "fit": true, "pins": [["1", "TP", "LTE_TX"]], "block": "m_test", "prefix": "TP"},
+    {"d": "TP412", "lcsc": "", "fit": true, "pins": [["1", "TP", "LTE_RX"]], "block": "m_test", "prefix": "TP"},
   ];
   const BLOCKS = [["m_module", "ESP32-S3 module"], ["m_usb", "USB-C service port"], ["m_sd", "microSD card and card supply"], ["m_led", "Status LED"], ["m_test", "Test points"]];
   const TEMPLATE_PREFIXES = ["TP"];
@@ -164,6 +178,20 @@
   // name (preferring the given footprint). The source is a template part on the page if there is
   // one (its getState_Component() names its copy in the project, not the library device, and
   // sch.create() never returns for it), otherwise the default in CFG.templateDefaults.
+  // EasyEDA Pro 4.1 (checked 2026-11-18) cannot always place a system-library device that the
+  // project library already holds ("Create project component failed"; sch.create() never returns
+  // and the next few creates fail too). A device the project already holds is therefore placed from
+  // the project's copy, taking only a copy that has a footprint (some 4.1 copies have none, and
+  // Update PCB then stops with "lacks of property Footprint"). New devices come from the system
+  // library. Every placed part is checked for a footprint afterwards.
+  let projectLib;
+  async function projectCopy(dev) {
+    if (!dev || !dev.name) return null;
+    if (projectLib === undefined) projectLib = (await tryCall(() => eda.lib_LibrariesList.getProjectLibraryUuid())) || null;
+    if (!projectLib) return null;
+    const found = (await tryCall(() => eda.lib_Device.search(dev.name, projectLib))) || [];
+    return (Array.isArray(found) ? found : [found]).find((d) => d && d.name === dev.name && d.footprint && d.footprint.name) || null;
+  }
   async function sourceDevice(label, { lcsc = "", name = "", footprint = "" }) {
     if (sourceDevices.has(label)) return sourceDevices.get(label);
     let dev = null, why = "";
@@ -175,6 +203,7 @@
       dev = sameFp.length === 1 ? sameFp[0] : named.length === 1 ? named[0] : null;
       if (!dev) why = `its library device was not found (${lcsc ? `LCSC ${lcsc}, ` : ""}${named.length} library devices named "${name}")`;
     }
+    if (dev) dev = (await projectCopy(dev)) || dev;
     sourceDevices.set(label, dev);
     if (!dev) templateLost.set(label, [why, []]);
     return dev;
@@ -196,7 +225,10 @@
       fromTemplate.set(label, [...(fromTemplate.get(label) || []), part.d]);
       return dev;
     }
-    if (!devices.has(part.lcsc)) devices.set(part.lcsc, await tryCall(() => eda.lib_Device.getByLcscIds(part.lcsc)));
+    if (!devices.has(part.lcsc)) {
+      const lib = await tryCall(() => eda.lib_Device.getByLcscIds(part.lcsc));
+      devices.set(part.lcsc, (await projectCopy(lib)) || lib);
+    }
     const dev = devices.get(part.lcsc);
     if (!dev) notFound.set(part.lcsc, [...(notFound.get(part.lcsc) || []), part.d]);
     return dev;
@@ -317,6 +349,10 @@
     if (!dev) return undefined;
     const first = await call(`${part.d}: place`, () => sch.create(dev, spot[0], spot[1], undefined, 0, false, part.fit, true));
     if (!first) return undefined;
+    try {
+      const fp = first.getState_Footprint && first.getState_Footprint();
+      if (!fp || !fp.name) errors.push(`${part.d}: placed without a footprint (Update PCB will refuse it): replace its device`);
+    } catch (_) { /* no footprint getter in this version */ }
     const cells = [{ comp: first, pins: await pinsOf(first) }];
     let res = match(part, cells);
     // Multi-part symbols (e.g. a dual op-amp) are named NAME.1, NAME.2, ...: add parts until every pin

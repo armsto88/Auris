@@ -8,15 +8,17 @@
 
 - [ ] H0-01 Obtain samples for microphone and PCM1863DBT/DBTR; validate availability and whether analog noise floor is suitable.
 - [ ] H0-02 Bench the CN3791 solar charger and TMP390A2 cut-out (drawn in `hardware/power/`, 2026-10-23) with the real panel and the Node v4 pack: MPPT divider, harvest, night leakage, cold trip (+5 °C since 2026-11-17), 47 µH L201 efficiency. USB charging dropped.
-- [ ] H0-03 Measure EG800K-EU transmit current across cell voltage/temp (sheet drawn in `hardware/lte/`, 2026-10-23); choose safe supply and bulk/trace plan.
+- [ ] H0-03 Measure EG810M-EU transmit current across cell voltage/temp (sheet drawn in `hardware/lte/`, 2026-10-23; module changed from the EG800K-EU on 2026-11-18); choose safe supply and bulk/trace plan.
 - [ ] H0-04 Bench the wake latch (drawn in `hardware/power/`, 2026-10-23): RTC VCC/VBAT/INT handling, button/USB wake, ship-mode switch, latch current and emergency shutdown.
 - [ ] H0-05 Card bus chosen (1-bit SD mode, ADR-012); card power switch drawn (AO3401A + 2N7002), card detect on GPIO3 (2026-11-17); prove sustained audio writes, write-latency buffering and recoverable file format.
-- [ ] H0-06 Pin-map ESP32-S3 peripherals, boot/USB/radio restrictions and thermal constraints. All sections have proposed pins (MCU tab of the hardware guide and `hardware/mcu/`); UART0 given up for the SD bus, console over USB; GPIO3 = microSD card detect (2026-11-17). Pin budget, straps and boot glitches checked in the 2026-11-17 review; N16R8 +65 °C rating still open.
+- [ ] H0-06 Pin-map ESP32-S3 peripherals, boot/USB/radio restrictions and thermal constraints. All sections have proposed pins (MCU tab of the hardware guide and `hardware/mcu/`); UART0 given up for the SD bus, console over USB; GPIO3 = microSD card detect (2026-11-17). Pin budget, straps and boot glitches checked in the 2026-11-17 review. Module changed to the N16R2 (−40…+85 °C) on 2026-11-18; GPIO35–37 are now free and kept spare.
 - [ ] H0-07 Draft enclosure/audio-port/RF placement with water, wind and condensation design constraints.
 
 **Exit:** signed pin map/power tree and measured high-risk breadboard results; only then schematic freeze.
 
 **Status 2026-11-17:** all four sheets are drawn, reviewed against datasheets and captured in EasyEDA with a passing PCB net check (`hardware/review/2026-11-17-schematic-review.md`). Open before freeze: modem procurement, the module temperature rating, microSD ESD, test pads, the CR1220 cell part, and the bench items above.
+
+**Status 2026-11-18:** the owner decided the five open items: EG810M-EU modem (the EG800K-EU had no JLC stock), ESP32-S3-WROOM-1-N16R2 (+85 °C), microSD ESD array D403, test pads TP404–TP415, and a Panasonic BR1220 cell (bench-test at −40 °C). They are in the EasyEDA project and on the PCB, and the PCB net check passes for all four sheets (export `hardware/2026-11-18/`). Still open: the bench items above and the 1.0 mm test-pad footprint at layout.
 
 ## Phase 1 — Local recorder proof of function (engineering MVP)
 

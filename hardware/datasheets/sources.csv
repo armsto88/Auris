@@ -50,3 +50,5 @@ C221895,https://www.lcsc.com/datasheet/C221895.pdf,C&K PTS810 series,C221895_PTS
 C54582899,,XYECONN: no datasheet (JLC parameters only),,,
 C36414,,Sunlord SWPA6045S: not read (JLC parameters only),,,
 C22395557,,MMSZ5237B (hongjiache): not read (JLC parameters only),,,
+C20421924,https://developer.quectel.com/en/wp-content/uploads/sites/2/2024/11/Quectel_EG810M-EU_QuecOpenQuecPython_Hardware_Design_V1.0.pdf,Quectel EG810M-EU QuecOpen&QuecPython Hardware Design V1.0 (2024-06-25) + EG810M-EU Specification V1.1,Quectel_EG810M-EU_QuecOpen_QuecPython_HD_V1.0.pdf,-35,75
+C2913205,https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf,Espressif ESP32-S3-WROOM-1 v1.8 (+ ESP32-S3 chip datasheet v2.2),esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf,-40,85
