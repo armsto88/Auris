@@ -157,6 +157,7 @@ def main():
         parts, block_list, n_rows = load_sheet(stem, blocks)
         step, prefixes = template_step(parts)
         js = (template
+              .replace("__TIDY__", "false")
               .replace("__SHEET_JSON__", json.dumps(sheet))
               .replace("__PARTS_JSON__", "[\n" + ",\n".join("    " + json.dumps(p, ensure_ascii=False) for p in parts) + ",\n  ]")
               .replace("__BLOCKS_JSON__", json.dumps(block_list))
@@ -169,6 +170,11 @@ def main():
               .replace("__SOURCES__", f"{stem}/{stem}-netlist.csv and {stem}-bom.csv"))
         path = os.path.join(args.out, f"capture-{sheet}.js")
         open(path, "w").write(js)
+        # The same script with TIDY on: re-lays out the parts already on the page (see the template header).
+        tidy = js.replace("const TIDY = false;", "const TIDY = true;", 1).replace(
+            "// Auris schematic capture:", "// Auris schematic tidy (TIDY = true; see below):", 1)
+        assert "const TIDY = true;" in tidy
+        open(os.path.join(args.out, f"tidy-{sheet}.js"), "w").write(tidy)
         print(f"wrote {os.path.relpath(path, os.path.dirname(HW))}: {len(parts)} parts, {n_rows} pin rows,"
               f" {len(block_list)} blocks" + (f", templates needed: {prefixes}" if prefixes else ""))
 

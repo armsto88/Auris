@@ -1,5 +1,5 @@
 // Auris schematic capture: lte sheet (53 parts, 230 pin connections).
-// Generated 2026-11-18 by hardware/tools/easyeda_capture.py from lte/lte-netlist.csv and lte-bom.csv.
+// Generated 2026-11-19 by hardware/tools/easyeda_capture.py from lte/lte-netlist.csv and lte-bom.csv.
 // Don't edit this file: change the CSVs, then run the generator again.
 //
 // What it does: places every part of the sheet on the open schematic page by its
@@ -22,6 +22,13 @@
 //     Script). Paste this whole file and run it. A dialog reports the result.
 // Running it again skips designators already on the page, so after fixing an
 // error you can run it again without getting duplicates.
+//
+// tidy-<sheet>.js is the same script with TIDY = true: it places nothing. It lays
+// out the parts already on the page again, block by block as a fresh capture
+// would: it deletes every wire, box and heading on the page, moves each part,
+// then draws the net stubs from the netlist (as a capture does) and the boxes
+// and headings. Use it after parts were added below the existing
+// blocks (e.g. with easyeda_remove_part.js and a second capture run).
 
 (async () => {
   const SHEET = "lte";
@@ -85,6 +92,7 @@
   const BLOCKS = [["l_supply", "Block 1 \u00b7 Module supply"], ["l_pins", "Block 2 \u00b7 Module pin map (U301 EG810M-EU)"], ["l_ctrl", "Block 3 \u00b7 Power key and UART level shifter"], ["l_sim", "Block 4 \u00b7 SIM"], ["l_ant", "Block 4 \u00b7 Antenna"], ["l_test", "Service pads: forced download, USB and debug UART"]];
   const TEMPLATE_PREFIXES = ["C", "TP"];
   const NC = "NC";
+  const TIDY = false;   // true: re-lay out the parts already on the page instead of placing new ones
 
   const CFG = {
     grid: 5,          // schematic coordinates are in 10 mil units
@@ -154,6 +162,7 @@
   // the page size; its "Page Size" property and symbol name do not (they stay "A4").
   const SHEETS = [["A4", 297, 210], ["A3", 420, 297], ["A2", 594, 420], ["A1", 841, 594], ["A0", 1189, 841]];
   let page = null;   // {w, h, titleBlock}
+  const existing = new Map();   // designator -> its symbol parts on the page (for TIDY)
   for (const c of (await tryCall(() => sch.getAll())) || []) {
     if (c.getState_ComponentType && c.getState_ComponentType() === "sheet") {
       const o = (c.getState_OtherProperty && c.getState_OtherProperty()) || {};
@@ -165,6 +174,7 @@
     if (!des) continue;
     if (wanted.has(des)) {
       present.add(des);
+      existing.set(des, [...(existing.get(des) || []), c]);
       const y = c.getState_Y();
       if (farthest === null || (y - farthest) * CFG.down > 0) farthest = y;
       continue;
@@ -173,6 +183,8 @@
       if (!templates[pre] && new RegExp(`^${pre}\\d*\\??$`).test(des)) templates[pre] = c;
     }
   }
+
+  if (TIDY) farthest = null;   // lay out from the top of the frame, not below the existing parts
 
   // ---- library parts --------------------------------------------------------
   const devices = new Map();
@@ -389,11 +401,17 @@
 
   // ---- move a staged symbol into place and wire its pins -------------------
   async function finishCell(part, cell, i, links, ox, oy) {
+    if (await placeCell(part, cell, ox, oy)) await wireCell(part, cell, i, links);
+  }
+  async function placeCell(part, cell, ox, oy) {
     const id = cell.comp.getState_PrimitiveId();
     const moved = await call(`${part.d}: move and set designator`, () =>
       sch.modify(id, { x: ox, y: oy, designator: part.d, addIntoBom: part.fit, addIntoPcb: true }));
-    if (!moved) return;
-    nCells++;
+    if (moved) nCells++;
+    return !!moved;
+  }
+  // Wire stubs leave each pin outwards (directions from cellBox) and carry the pin's net name.
+  async function wireCell(part, cell, i, links) {
     const pins = await pinsOf(cell.comp);
     for (const l of links.filter((l) => l.cell === i)) {
       const p = pins.find((q) => q.num === l.num && q.name === l.name);
@@ -505,6 +523,23 @@
   const plan = [];   // {heading, items: [{part, cell, i, links, box, w, h}]}
   let nStaged = 0;
   for (const [block, title] of BLOCKS) {
+    if (TIDY) {
+      const items = [];
+      for (const part of PARTS.filter((p) => p.block === block)) {
+        if (!present.has(part.d)) { errors.push(`${part.d}: not on the page, so not laid out (run capture-${SHEET}.js first)`); continue; }
+        nParts++;
+        const cells = [];
+        for (const comp of existing.get(part.d)) cells.push({ comp, pins: await pinsOf(comp) });
+        const res = match(part, cells);
+        if (res.missing.length) errors.push(`${part.d}: netlist pins not on the symbol: ${res.missing.join(", ")}`);
+        for (const [i, cell] of cells.entries()) {
+          const box = cellBox(cell, res.links.filter((l) => l.cell === i));
+          items.push({ part, cell, i, links: res.links, box, w: box.r - box.l, h: box.hi - box.lo });
+        }
+      }
+      if (items.length) plan.push({ heading: title, items });
+      continue;
+    }
     const parts = PARTS.filter((p) => p.block === block && !present.has(p.d));
     if (!parts.length) continue;
     const heading = PARTS.some((p) => p.block === block && present.has(p.d)) ? `${title} (continued)` : title;
@@ -544,18 +579,36 @@
   const ex = (x) => left + x, ey = (y) => top + CFG.down * y;
 
   // ---- move everything into place ------------------------------------------
+  let oldWires = 0;
+  if (TIDY && plan.length) {
+    // Every wire on a captured page is a net stub, so all of them go, with the boxes and headings.
+    // The parts are then moved first and wired afterwards: a stub drawn while other parts still sit
+    // at their old places can land on one of their pins, and EasyEDA then drags or merges it when
+    // that part moves.
+    for (const api of [eda.sch_PrimitiveWire, eda.sch_PrimitiveRectangle, eda.sch_PrimitiveText]) {
+      const old = ((await tryCall(() => api.getAll())) || []).map((x) => x.getState_PrimitiveId());
+      if (api === eda.sch_PrimitiveWire) oldWires = old.length;
+      if (old.length && !(await tryCall(() => api.delete(old)))) errors.push(`could not delete the old ${old.length} primitives`);
+    }
+  }
+  const toWire = [];
   for (const [n, b] of plan.entries()) {
     const bx = sheet.pos[n].x, by = sheet.pos[n].y;
     toast(`Auris ${SHEET}: placing ${b.heading} (${b.items.length} symbols)`);
     for (const [k, it] of b.items.entries()) {
       const cx = bx + b.pack.pos[k].x, cy = by + CFG.titleH + b.pack.pos[k].y;   // cell box top left, page coordinates
       const edge = CFG.down < 0 ? it.box.hi : it.box.lo;   // the box edge that is on top on the screen
-      await finishCell(it.part, it.cell, it.i, it.links, snap(ex(cx) - it.box.l), snap(ey(cy) - edge));
+      if (!TIDY) await finishCell(it.part, it.cell, it.i, it.links, snap(ex(cx) - it.box.l), snap(ey(cy) - edge));
+      else if (await placeCell(it.part, it.cell, snap(ex(cx) - it.box.l), snap(ey(cy) - edge))) toWire.push(it);
     }
     // Box the block with its heading inside the top edge, as the hardware guide shows it.
     // The box's top left corner is (bx, by) and it extends right and down the screen.
     await decor(() => eda.sch_PrimitiveRectangle.create(ex(bx), ey(by), b.w, b.h, 0, 0, null, "none", CFG.boxLine));
     await decor(() => eda.sch_PrimitiveText.create(ex(bx + CFG.padX), ey(by + CFG.headingY), b.heading, 0, null, null, CFG.headingSize, true));
+  }
+  if (TIDY) {
+    toast(`Auris ${SHEET}: drawing the net stubs`);
+    for (const it of toWire) await wireCell(it.part, it.cell, it.i, it.links);
   }
   const layoutW = mm(Math.max(0, sheet.w - g)), layoutH = mm(Math.max(0, sheet.h - g));
   const named = (w, h) => (SHEETS.find(([, W, H]) => Math.abs(mm(w) - W) <= 2 && Math.abs(mm(h) - H) <= 2) || [])[0];
@@ -576,14 +629,16 @@
     const td = label.startsWith("template ") ? label.slice(9) : null;
     warnings.push(`${ds.join(", ")}: placed as ${label}, so check value and footprint.${td ? ` Delete ${td} when done.` : ""}`);
   }
-  const head = [`${SHEET} sheet: placed ${nParts} parts (${nCells} symbols), ${nWires} net wires, ${nNC} no-connect flags.`];
-  if (present.size) head.push(`Skipped ${present.size} parts already on the page.`);
+  const head = TIDY
+    ? [`${SHEET} sheet tidied: moved ${nCells} symbols of ${nParts} parts; replaced ${oldWires} wires with ${nWires} net stubs and ${nNC} no-connect flags from the netlist.`]
+    : [`${SHEET} sheet: placed ${nParts} parts (${nCells} symbols), ${nWires} net wires, ${nNC} no-connect flags.`];
+  if (present.size && !TIDY) head.push(`Skipped ${present.size} parts already on the page.`);
   if (sheetNote) head.push(sheetNote);
   const show = (title, list, max) =>
     list.length ? ["", `${title} (${list.length}):`, ...list.slice(0, max), ...(list.length > max ? [`...and ${list.length - max} more in the browser console`] : [])] : [];
   const report = [...head, ...show("Errors", errors, 25), ...show("Warnings", warnings, 10)].join("\n");
   log([...head, ...show("Errors", errors, 1e9), ...show("Warnings", warnings, 1e9)].join("\n"));
-  showDialog(report, `Auris capture: ${SHEET}`) || toast(head[0]);
+  showDialog(report, `Auris ${TIDY ? "tidy" : "capture"}: ${SHEET}`) || toast(head[0]);
 })().catch((e) => {
   const m = `Auris capture stopped: ${(e && e.stack) || e}`;
   console.error(m);
