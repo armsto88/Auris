@@ -4,7 +4,7 @@
 
 **Baseline:** commit `e961891` (merge of PR #4) on `main`. Export `hardware/2026-11-19/AURIS_2026-11-19.epro2`, SHA-256 `0c3d5120c6e0349351924550476266dd6c95ae8c2e7429ac9dc985f170307350` (re-hashed here). `easyeda_check.py` on that export passes: audio 114, power 123, LTE 53, MCU 47 parts. Nothing in the sheet CSVs, the EasyEDA project or the generated files was changed for this review.
 
-**Status of every finding:** proposed. Fixes are applied only after the owner approves them, in one batch, as part of the freeze (phase 3 of the handover).
+**Status of every finding:** written as proposed. **Update 2026-11-19:** the owner approved the batch in section 9 (with the recommended option wherever one was offered); it is applied, re-captured and checked, and the schematic is frozen for rev A layout: see `hardware/review/2026-11-19-schematic-freeze.md`.
 
 ## 0. Summary
 

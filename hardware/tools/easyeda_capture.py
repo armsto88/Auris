@@ -83,7 +83,7 @@ def read_sheet(stem, hw=HW):
         for d in r["designators"].split():
             if d in part:
                 sys.exit(f"{stem}: {d} is on two BOM lines")
-            part[d] = {"d": d, "lcsc": r["lcsc"].strip(), "fit": r["fit"].strip() == "Y", "pins": []}
+            part[d] = {"d": d, "lcsc": r["lcsc"].strip(), "mpn": r["suggested_mpn"].strip(), "fit": r["fit"].strip() == "Y", "pins": []}
     for r in net:
         d = r["designator"]
         if d not in part:

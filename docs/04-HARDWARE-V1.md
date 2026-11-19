@@ -1,6 +1,6 @@
 # 04 — Hardware V1 engineering definition
 
-**Maturity:** Schematic captured for all four sheets and reviewed against manufacturer datasheets (2026-11-17, `hardware/review/2026-11-17-schematic-review.md`; owner decisions applied 2026-11-18); not demonstrated in a fabricated Auris device.
+**Maturity:** Schematic frozen for rev A layout (2026-11-19, `hardware/review/2026-11-19-schematic-freeze.md`): all four sheets captured, reviewed twice against manufacturer datasheets (2026-11-17 and an independent second review on 2026-11-19, `hardware/review/2026-11-19-second-review.md`), owner decisions applied (2026-11-18, 2026-11-19); not demonstrated in a fabricated Auris device. Later sheet changes follow the change-control rule in the freeze record.
 
 ## 1. Compute and radio
 

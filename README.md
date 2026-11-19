@@ -121,7 +121,7 @@ auris/
 ## Documentation — Engineering Build Brief
 
 **Baseline:** 22 October 2026  
-**Status:** Schematic captured and reviewed against datasheets (2026-11-17), owner decisions applied (2026-11-18); nothing built or measured yet (not a released or validated product)
+**Status:** Schematic frozen for rev A layout (2026-11-19) after two datasheet reviews (2026-11-17, 2026-11-19) and owner decisions; nothing built or measured yet (not a released or validated product)
 
 > **Critical:** The build brief distinguishes selected components, candidate components, proposed behaviours and future opportunities. It is **not** a completed schematic, manufacturing BOM, verified acoustics specification or claim that features have been built.
 
@@ -207,7 +207,7 @@ It is about solving the real problems of field deployment:
 
 ## Status
 
-🚧 Early-stage development — schematic captured and datasheet-reviewed (17 November 2026), owner decisions applied (18 November 2026); prototype not yet built
+🚧 Early-stage development — schematic frozen for rev A layout (19 November 2026) after two datasheet reviews; prototype not yet built
 
 ---
 
