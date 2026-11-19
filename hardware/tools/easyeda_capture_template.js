@@ -142,13 +142,26 @@
   // the project's copy, taking only a copy that has a footprint (some 4.1 copies have none, and
   // Update PCB then stops with "lacks of property Footprint"). New devices come from the system
   // library. Every placed part is checked for a footprint afterwards.
+  // 2026-11-19: getByLcscIds can return a stray device without a footprint (C9965 came back as
+  // "EasyEDA_W5500_MAX809STRG"; the project held a footprint-less "100nF" copy of C1525 beside
+  // two good "CL05B104KO5NNNC" copies). So copies are looked up by the device name and by the
+  // BOM's MPN, must carry the same LCSC code when they name one, and must have a footprint.
   let projectLib;
-  async function projectCopy(dev) {
-    if (!dev || !dev.name) return null;
+  const fpOf = (d) => (d && ((d.footprint && d.footprint.name) || d.footprintName)) || "";
+  const sameCode = (d, lcsc) => !lcsc || !d.supplierId || d.supplierId === lcsc;
+  async function findWithFootprint(names, lcsc, lib) {
+    for (const n of names.filter(Boolean)) {
+      const found = (await tryCall(() => (lib ? eda.lib_Device.search(n, lib) : eda.lib_Device.search(n)))) || [];
+      const hit = (Array.isArray(found) ? found : [found]).find((d) => d && d.name === n && sameCode(d, lcsc) && fpOf(d));
+      if (hit) return hit;
+    }
+    return null;
+  }
+  async function projectCopy(dev, mpn = "", lcsc = "") {
+    if (!dev && !mpn) return null;
     if (projectLib === undefined) projectLib = (await tryCall(() => eda.lib_LibrariesList.getProjectLibraryUuid())) || null;
     if (!projectLib) return null;
-    const found = (await tryCall(() => eda.lib_Device.search(dev.name, projectLib))) || [];
-    return (Array.isArray(found) ? found : [found]).find((d) => d && d.name === dev.name && d.footprint && d.footprint.name) || null;
+    return findWithFootprint([dev && dev.name, mpn], lcsc, projectLib);
   }
   async function sourceDevice(label, { lcsc = "", name = "", footprint = "" }) {
     if (sourceDevices.has(label)) return sourceDevices.get(label);
@@ -184,8 +197,11 @@
       return dev;
     }
     if (!devices.has(part.lcsc)) {
-      const lib = await tryCall(() => eda.lib_Device.getByLcscIds(part.lcsc));
-      devices.set(part.lcsc, (await projectCopy(lib)) || lib);
+      let lib = await tryCall(() => eda.lib_Device.getByLcscIds(part.lcsc));
+      if (Array.isArray(lib)) lib = lib[0];
+      const copy = await projectCopy(lib, part.mpn, part.lcsc);
+      if (!copy && !fpOf(lib)) lib = (await findWithFootprint([part.mpn], part.lcsc, null)) || lib;
+      devices.set(part.lcsc, copy || lib);
     }
     const dev = devices.get(part.lcsc);
     if (!dev) notFound.set(part.lcsc, [...(notFound.get(part.lcsc) || []), part.d]);
@@ -365,6 +381,14 @@
         catch (e) { warnings.push(`${part.d} pin ${l.num}: could not set the no-connect flag (${msg(e)})`); }
         continue;
       }
+      // A pin that was NC before keeps its no-connect flag through a tidy, and EasyEDA then refuses
+      // the wire (2026-11-19, U401 pins 28/29): clear the flag first.
+      try {
+        if (p.obj.getState_NoConnected && p.obj.getState_NoConnected()) {
+          p.obj.setState_NoConnected(false);
+          if ((await within(p.obj.done())) === TIMEOUT) throw new Error(noAnswer);
+        }
+      } catch (e) { warnings.push(`${part.d} pin ${l.num}: could not clear its old no-connect flag (${msg(e)})`); }
       const len = stubLen(l.net);
       const ex = p.x + l.ux * len, ey = p.y + l.uy * len;
       // Start the wire at its left (or lower) end, where EasyEDA anchors the net name.

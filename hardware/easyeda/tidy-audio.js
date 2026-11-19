@@ -1,4 +1,4 @@
-// Auris schematic tidy (TIDY = true; see below): audio sheet (114 parts, 278 pin connections).
+// Auris schematic tidy (TIDY = true; see below): audio sheet (115 parts, 280 pin connections).
 // Generated 2026-11-19 by hardware/tools/easyeda_capture.py from audio-frontend/audio-frontend-netlist.csv and audio-frontend-bom.csv.
 // Don't edit this file: change the CSVs, then run the generator again.
 //
@@ -35,120 +35,121 @@
   // d: designator, lcsc: LCSC code ("" = copy a template part), fit: false = not fitted,
   // block: block in build_guide.py, pins: [pin number, pin name, net] from the netlist
   const PARTS = [
-    {"d": "U101", "lcsc": "C2862740", "fit": true, "pins": [["1", "IN", "VBAT_SW"], ["2", "GND", "GND"], ["3", "EN", "AUDIO_EN"], ["4", "NC", "NC"], ["5", "OUT", "AVDD_A"]], "block": "power"},
-    {"d": "C101", "lcsc": "C15850", "fit": true, "pins": [["1", "1", "VBAT_SW"], ["2", "2", "GND"]], "block": "power"},
-    {"d": "C102", "lcsc": "C15850", "fit": true, "pins": [["1", "1", "AVDD_A"], ["2", "2", "GND"]], "block": "power"},
-    {"d": "FB101", "lcsc": "C1002", "fit": true, "pins": [["1", "1", "AVDD_A"], ["2", "2", "DVDD_A"]], "block": "power"},
-    {"d": "U102", "lcsc": "C529569", "fit": true, "pins": [["1", "VINL2/VIN1M", "AIN1M"], ["2", "VINR2/VIN2M", "AIN2M"], ["3", "VINL1/VIN1P", "AIN1P"], ["4", "VINR1/VIN2P", "AIN2P"], ["5", "MICBIAS", "PCM_MICBIAS"], ["6", "VREF", "PCM_VREF"], ["7", "AGND", "GND"], ["8", "AVDD", "AVDD_A"], ["9", "XO", "PCM_XO"], ["10", "XI", "PCM_XI"], ["11", "LDO", "PCM_LDO"], ["12", "DGND", "GND"], ["13", "DVDD", "DVDD_A"], ["14", "IOVDD", "DVDD_A"], ["15", "SCKI", "PCM_SCKI"], ["16", "LRCK", "PCM_LRCK"], ["17", "BCK", "PCM_BCK"], ["18", "DOUT", "PCM_DOUT"], ["19", "GPIO3/INTC", "AUD_INT"], ["20", "GPIO2/INTB/DMCLK", "PCM_GPIO2"], ["21", "GPIO1/INTA/DMIN", "FILT_SEL1"], ["22", "MISO/GPIO0/DMIN2", "FILT_SEL0"], ["23", "MOSI/SDA", "AUD_SDA"], ["24", "MC/SCL", "AUD_SCL"], ["25", "MS/AD", "GND"], ["26", "MD0", "GND"], ["27", "VINL4/VIN4M", "AIN4M"], ["28", "VINR4/VIN3M", "AIN3M"], ["29", "VINL3/VIN4P", "AIN4P"], ["30", "VINR3/VIN3P", "AIN3P"]], "block": "adc"},
-    {"d": "C103", "lcsc": "C1525", "fit": true, "pins": [["1", "1", "AVDD_A"], ["2", "2", "GND"]], "block": "adc"},
-    {"d": "C104", "lcsc": "C15850", "fit": true, "pins": [["1", "1", "AVDD_A"], ["2", "2", "GND"]], "block": "adc"},
-    {"d": "C105", "lcsc": "C15849", "fit": true, "pins": [["1", "1", "PCM_VREF"], ["2", "2", "GND"]], "block": "adc"},
-    {"d": "C106", "lcsc": "C1525", "fit": true, "pins": [["1", "1", "PCM_LDO"], ["2", "2", "GND"]], "block": "adc"},
-    {"d": "C107", "lcsc": "C15850", "fit": true, "pins": [["1", "1", "PCM_LDO"], ["2", "2", "GND"]], "block": "adc"},
-    {"d": "C108", "lcsc": "C1525", "fit": true, "pins": [["1", "1", "DVDD_A"], ["2", "2", "GND"]], "block": "adc"},
-    {"d": "C109", "lcsc": "C15850", "fit": true, "pins": [["1", "1", "DVDD_A"], ["2", "2", "GND"]], "block": "adc"},
-    {"d": "C110", "lcsc": "C1525", "fit": true, "pins": [["1", "1", "DVDD_A"], ["2", "2", "GND"]], "block": "adc"},
-    {"d": "R108", "lcsc": "C25741", "fit": true, "pins": [["1", "1", "AUD_INT"], ["2", "2", "GND"]], "block": "adc"},
-    {"d": "R109", "lcsc": "C17168", "fit": false, "pins": [["1", "1", "AUD_INT"], ["2", "2", "AUD_INT_MCU"]], "block": "adc"},
-    {"d": "R110", "lcsc": "C25741", "fit": true, "pins": [["1", "1", "PCM_GPIO2"], ["2", "2", "GND"]], "block": "adc"},
-    {"d": "R111", "lcsc": "C25741", "fit": true, "pins": [["1", "1", "FILT_SEL1"], ["2", "2", "GND"]], "block": "adc"},
-    {"d": "R112", "lcsc": "C25741", "fit": true, "pins": [["1", "1", "FILT_SEL0"], ["2", "2", "GND"]], "block": "adc"},
-    {"d": "Y101", "lcsc": "C70568", "fit": true, "pins": [["1", "X1", "PCM_XI"], ["2", "GND", "GND"], ["3", "X2", "PCM_XO"], ["4", "GND", "GND"]], "block": "clockio"},
-    {"d": "C111", "lcsc": "C1548", "fit": true, "pins": [["1", "1", "PCM_XI"], ["2", "2", "GND"]], "block": "clockio"},
-    {"d": "C112", "lcsc": "C1548", "fit": true, "pins": [["1", "1", "PCM_XO"], ["2", "2", "GND"]], "block": "clockio"},
-    {"d": "R101", "lcsc": "C17168", "fit": true, "pins": [["1", "1", "PCM_SCKI"], ["2", "2", "GND"]], "block": "clockio"},
-    {"d": "R102", "lcsc": "C17168", "fit": false, "pins": [["1", "1", "AUD_MCLK"], ["2", "2", "PCM_SCKI"]], "block": "clockio"},
-    {"d": "R103", "lcsc": "C25105", "fit": true, "pins": [["1", "1", "PCM_BCK"], ["2", "2", "AUD_BCK"]], "block": "clockio"},
-    {"d": "R104", "lcsc": "C25105", "fit": true, "pins": [["1", "1", "PCM_LRCK"], ["2", "2", "AUD_LRCK"]], "block": "clockio"},
-    {"d": "R105", "lcsc": "C25105", "fit": true, "pins": [["1", "1", "PCM_DOUT"], ["2", "2", "AUD_DOUT"]], "block": "clockio"},
-    {"d": "R106", "lcsc": "C25900", "fit": true, "pins": [["1", "1", "AUD_SDA"], ["2", "2", "DVDD_A"]], "block": "clockio"},
-    {"d": "R107", "lcsc": "C25900", "fit": true, "pins": [["1", "1", "AUD_SCL"], ["2", "2", "DVDD_A"]], "block": "clockio"},
-    {"d": "J101", "lcsc": "C189895", "fit": true, "pins": [["1", "MIC_OUT", "MIC1_OUT_C"], ["2", "MIC_SRC", "MIC1_SRC"], ["3", "MIC_RET", "MIC1_RET"], ["4", "SHIELD", "MIC1_SHLD"], ["5", "MP1", "GND"], ["6", "MP2", "GND"]], "block": "mic"},
-    {"d": "FB102", "lcsc": "C1002", "fit": true, "pins": [["1", "1", "MIC1_OUT_C"], ["2", "2", "MIC1_OUT"]], "block": "mic"},
-    {"d": "C113", "lcsc": "C1546", "fit": true, "pins": [["1", "1", "MIC1_OUT_C"], ["2", "2", "GND"]], "block": "mic"},
-    {"d": "D101", "lcsc": "C48260", "fit": true, "pins": [["1", "1", "MIC1_OUT_C"], ["2", "2", "GND"]], "block": "mic"},
-    {"d": "R113", "lcsc": "C17168", "fit": true, "pins": [["1", "1", "MIC1_SRC"], ["2", "2", "MIC1_RET"]], "block": "mic"},
-    {"d": "R114", "lcsc": "C17168", "fit": true, "pins": [["1", "1", "MIC1_RET"], ["2", "2", "GND"]], "block": "mic"},
-    {"d": "R115", "lcsc": "C17168", "fit": true, "pins": [["1", "1", "MIC1_SHLD"], ["2", "2", "GND"]], "block": "mic"},
-    {"d": "R116", "lcsc": "C705779", "fit": true, "pins": [["1", "1", "AVDD_A"], ["2", "2", "MIC1_BIASF"]], "block": "mic"},
-    {"d": "C114", "lcsc": "C122293", "fit": true, "pins": [["1", "+", "MIC1_BIASF"], ["2", "-", "GND"]], "block": "mic"},
-    {"d": "R117", "lcsc": "C705760", "fit": true, "pins": [["1", "1", "MIC1_BIASF"], ["2", "2", "MIC1_OUT"]], "block": "mic"},
-    {"d": "R118", "lcsc": "C26083", "fit": false, "pins": [["1", "1", "MIC1_OUT"], ["2", "2", "MIC1_DC_SENSE"]], "block": "mic"},
-    {"d": "C115", "lcsc": "C1525", "fit": false, "pins": [["1", "1", "MIC1_DC_SENSE"], ["2", "2", "GND"]], "block": "mic"},
-    {"d": "C116", "lcsc": "C464977", "fit": true, "pins": [["1", "1", "MIC1_OUT"], ["2", "2", "AIN1P_C"]], "block": "direct"},
-    {"d": "R119", "lcsc": "C25118", "fit": true, "pins": [["1", "1", "AIN1P_C"], ["2", "2", "AIN1P"]], "block": "direct"},
-    {"d": "C117", "lcsc": "C464977", "fit": true, "pins": [["1", "1", "MIC1_RET"], ["2", "2", "AIN1M_C"]], "block": "direct"},
-    {"d": "R120", "lcsc": "C25118", "fit": true, "pins": [["1", "1", "AIN1M_C"], ["2", "2", "AIN1M"]], "block": "direct"},
-    {"d": "C118", "lcsc": "C75274", "fit": true, "pins": [["1", "1", "AIN1P"], ["2", "2", "AIN1M"]], "block": "direct"},
-    {"d": "Q101", "lcsc": "C15127", "fit": true, "pins": [["1", "G", "PRE_GATE"], ["2", "S", "AVDD_A"], ["3", "D", "AVDD_PRE_SW"]], "block": "presupply"},
-    {"d": "Q102", "lcsc": "C8545", "fit": true, "pins": [["1", "G", "PREAMP_EN_G"], ["2", "S", "GND"], ["3", "D", "PRE_GATE"]], "block": "presupply"},
-    {"d": "R126", "lcsc": "C25741", "fit": true, "pins": [["1", "1", "PRE_GATE"], ["2", "2", "AVDD_A"]], "block": "presupply"},
-    {"d": "R127", "lcsc": "C11702", "fit": true, "pins": [["1", "1", "PREAMP_EN"], ["2", "2", "PREAMP_EN_G"]], "block": "presupply"},
-    {"d": "R128", "lcsc": "C25741", "fit": true, "pins": [["1", "1", "PREAMP_EN_G"], ["2", "2", "GND"]], "block": "presupply"},
-    {"d": "R129", "lcsc": "C25077", "fit": true, "pins": [["1", "1", "AVDD_PRE_SW"], ["2", "2", "AVDD_PRE"]], "block": "presupply"},
-    {"d": "C125", "lcsc": "C45783", "fit": true, "pins": [["1", "1", "AVDD_PRE"], ["2", "2", "GND"]], "block": "presupply"},
-    {"d": "C126", "lcsc": "C1525", "fit": true, "pins": [["1", "1", "AVDD_PRE"], ["2", "2", "GND"]], "block": "presupply"},
-    {"d": "R130", "lcsc": "C25744", "fit": true, "pins": [["1", "1", "AVDD_PRE"], ["2", "2", "VMID_PRE"]], "block": "presupply"},
-    {"d": "R131", "lcsc": "C25744", "fit": true, "pins": [["1", "1", "VMID_PRE"], ["2", "2", "GND"]], "block": "presupply"},
-    {"d": "C127", "lcsc": "C7171", "fit": true, "pins": [["1", "+", "VMID_PRE"], ["2", "-", "GND"]], "block": "presupply"},
-    {"d": "C128", "lcsc": "C1525", "fit": true, "pins": [["1", "1", "VMID_PRE"], ["2", "2", "GND"]], "block": "presupply"},
-    {"d": "C119", "lcsc": "C464977", "fit": true, "pins": [["1", "1", "MIC1_OUT"], ["2", "2", "PRE1_INP"]], "block": "preamp"},
-    {"d": "R121", "lcsc": "C25741", "fit": true, "pins": [["1", "1", "PRE1_INP"], ["2", "2", "VMID_PRE"]], "block": "preamp"},
-    {"d": "U103", "lcsc": "C882794", "fit": true, "pins": [["1", "OUTA", "PRE1_OUT"], ["2", "-INA", "PRE1_INN"], ["3", "+INA", "PRE1_INP"], ["4", "V-", "GND"], ["5", "+INB", "PRE2_INP"], ["6", "-INB", "PRE2_INN"], ["7", "OUTB", "PRE2_OUT"], ["8", "V+", "AVDD_PRE"]], "block": "preamp"},
-    {"d": "R122", "lcsc": "C281777", "fit": true, "pins": [["1", "1", "PRE1_OUT"], ["2", "2", "PRE1_INN"]], "block": "preamp"},
-    {"d": "C120", "lcsc": "C1546", "fit": true, "pins": [["1", "1", "PRE1_OUT"], ["2", "2", "PRE1_INN"]], "block": "preamp"},
-    {"d": "R123", "lcsc": "C852624", "fit": true, "pins": [["1", "1", "PRE1_INN"], ["2", "2", "PRE1_CG"]], "block": "preamp"},
-    {"d": "C121", "lcsc": "C16133", "fit": true, "pins": [["1", "+", "PRE1_CG"], ["2", "-", "GND"]], "block": "preamp"},
-    {"d": "C122", "lcsc": "C464977", "fit": true, "pins": [["1", "1", "PRE1_OUT"], ["2", "2", "AIN3P_C"]], "block": "preamp"},
-    {"d": "R124", "lcsc": "C25118", "fit": true, "pins": [["1", "1", "AIN3P_C"], ["2", "2", "AIN3P"]], "block": "preamp"},
-    {"d": "C123", "lcsc": "C464977", "fit": true, "pins": [["1", "1", "GND"], ["2", "2", "AIN3M_C"]], "block": "preamp"},
-    {"d": "R125", "lcsc": "C25118", "fit": true, "pins": [["1", "1", "AIN3M_C"], ["2", "2", "AIN3M"]], "block": "preamp"},
-    {"d": "C124", "lcsc": "C75274", "fit": true, "pins": [["1", "1", "AIN3P"], ["2", "2", "AIN3M"]], "block": "preamp"},
-    {"d": "U104", "lcsc": "C49148", "fit": true, "pins": [["1", "NO1", "HPF1_S1"], ["2", "COM1", "AIN3M_C"], ["3", "IN2", "FILT_SEL1"], ["4", "GND", "GND"], ["5", "NO2", "HPF1_S2"], ["6", "COM2", "AIN3M_C"], ["7", "IN1", "FILT_SEL0"], ["8", "V+", "AVDD_A"]], "block": "preamp"},
-    {"d": "C140", "lcsc": "C1525", "fit": true, "pins": [["1", "1", "AVDD_A"], ["2", "2", "GND"]], "block": "preamp"},
-    {"d": "R144", "lcsc": "C25768", "fit": true, "pins": [["1", "1", "AIN3P_C"], ["2", "2", "HPF1_S1"]], "block": "preamp"},
-    {"d": "R145", "lcsc": "C25867", "fit": true, "pins": [["1", "1", "AIN3P_C"], ["2", "2", "HPF1_S2"]], "block": "preamp"},
-    {"d": "R132", "lcsc": "C25741", "fit": true, "pins": [["1", "1", "PRE2_INP"], ["2", "2", "VMID_PRE"]], "block": "preamp"},
-    {"d": "R133", "lcsc": "C281777", "fit": true, "pins": [["1", "1", "PRE2_OUT"], ["2", "2", "PRE2_INN"]], "block": "preamp"},
-    {"d": "C129", "lcsc": "C1546", "fit": true, "pins": [["1", "1", "PRE2_OUT"], ["2", "2", "PRE2_INN"]], "block": "preamp"},
-    {"d": "J102", "lcsc": "C189895", "fit": false, "pins": [["1", "MIC_OUT", "MIC2_OUT_C"], ["2", "MIC_SRC", "MIC2_SRC"], ["3", "MIC_RET", "MIC2_RET"], ["4", "SHIELD", "MIC2_SHLD"], ["5", "MP1", "GND"], ["6", "MP2", "GND"]], "block": "mic2"},
-    {"d": "FB103", "lcsc": "C1002", "fit": false, "pins": [["1", "1", "MIC2_OUT_C"], ["2", "2", "MIC2_OUT"]], "block": "mic2"},
-    {"d": "C135", "lcsc": "C1546", "fit": false, "pins": [["1", "1", "MIC2_OUT_C"], ["2", "2", "GND"]], "block": "mic2"},
-    {"d": "D102", "lcsc": "C48260", "fit": false, "pins": [["1", "1", "MIC2_OUT_C"], ["2", "2", "GND"]], "block": "mic2"},
-    {"d": "R137", "lcsc": "C17168", "fit": false, "pins": [["1", "1", "MIC2_SRC"], ["2", "2", "MIC2_RET"]], "block": "mic2"},
-    {"d": "R138", "lcsc": "C17168", "fit": false, "pins": [["1", "1", "MIC2_RET"], ["2", "2", "GND"]], "block": "mic2"},
-    {"d": "R139", "lcsc": "C17168", "fit": false, "pins": [["1", "1", "MIC2_SHLD"], ["2", "2", "GND"]], "block": "mic2"},
-    {"d": "R140", "lcsc": "C705779", "fit": false, "pins": [["1", "1", "AVDD_A"], ["2", "2", "MIC2_BIASF"]], "block": "mic2"},
-    {"d": "C136", "lcsc": "C122293", "fit": false, "pins": [["1", "+", "MIC2_BIASF"], ["2", "-", "GND"]], "block": "mic2"},
-    {"d": "R141", "lcsc": "C705760", "fit": false, "pins": [["1", "1", "MIC2_BIASF"], ["2", "2", "MIC2_OUT"]], "block": "mic2"},
-    {"d": "C137", "lcsc": "C464977", "fit": false, "pins": [["1", "1", "MIC2_OUT"], ["2", "2", "AIN2P_C"]], "block": "mic2"},
-    {"d": "R142", "lcsc": "C25118", "fit": false, "pins": [["1", "1", "AIN2P_C"], ["2", "2", "AIN2P"]], "block": "mic2"},
-    {"d": "C138", "lcsc": "C464977", "fit": false, "pins": [["1", "1", "MIC2_RET"], ["2", "2", "AIN2M_C"]], "block": "mic2"},
-    {"d": "R143", "lcsc": "C25118", "fit": false, "pins": [["1", "1", "AIN2M_C"], ["2", "2", "AIN2M"]], "block": "mic2"},
-    {"d": "C139", "lcsc": "C75274", "fit": false, "pins": [["1", "1", "AIN2P"], ["2", "2", "AIN2M"]], "block": "mic2"},
-    {"d": "C131", "lcsc": "C464977", "fit": false, "pins": [["1", "1", "MIC2_OUT"], ["2", "2", "PRE2_INP"]], "block": "mic2"},
-    {"d": "R134", "lcsc": "C852624", "fit": false, "pins": [["1", "1", "PRE2_INN"], ["2", "2", "PRE2_CG"]], "block": "mic2"},
-    {"d": "C130", "lcsc": "C16133", "fit": false, "pins": [["1", "+", "PRE2_CG"], ["2", "-", "GND"]], "block": "mic2"},
-    {"d": "C132", "lcsc": "C464977", "fit": false, "pins": [["1", "1", "PRE2_OUT"], ["2", "2", "AIN4P_C"]], "block": "mic2"},
-    {"d": "R135", "lcsc": "C25118", "fit": false, "pins": [["1", "1", "AIN4P_C"], ["2", "2", "AIN4P"]], "block": "mic2"},
-    {"d": "C133", "lcsc": "C464977", "fit": false, "pins": [["1", "1", "GND"], ["2", "2", "AIN4M_C"]], "block": "mic2"},
-    {"d": "R136", "lcsc": "C25118", "fit": false, "pins": [["1", "1", "AIN4M_C"], ["2", "2", "AIN4M"]], "block": "mic2"},
-    {"d": "C134", "lcsc": "C75274", "fit": false, "pins": [["1", "1", "AIN4P"], ["2", "2", "AIN4M"]], "block": "mic2"},
-    {"d": "U105", "lcsc": "C49148", "fit": false, "pins": [["1", "NO1", "HPF2_S1"], ["2", "COM1", "AIN4M_C"], ["3", "IN2", "FILT_SEL1"], ["4", "GND", "GND"], ["5", "NO2", "HPF2_S2"], ["6", "COM2", "AIN4M_C"], ["7", "IN1", "FILT_SEL0"], ["8", "V+", "AVDD_A"]], "block": "mic2"},
-    {"d": "C141", "lcsc": "C1525", "fit": false, "pins": [["1", "1", "AVDD_A"], ["2", "2", "GND"]], "block": "mic2"},
-    {"d": "R146", "lcsc": "C25768", "fit": false, "pins": [["1", "1", "AIN4P_C"], ["2", "2", "HPF2_S1"]], "block": "mic2"},
-    {"d": "R147", "lcsc": "C25867", "fit": false, "pins": [["1", "1", "AIN4P_C"], ["2", "2", "HPF2_S2"]], "block": "mic2"},
-    {"d": "TP101", "lcsc": "", "fit": true, "pins": [["1", "TP", "PCM_MICBIAS"]], "block": "test", "prefix": "TP"},
-    {"d": "TP102", "lcsc": "", "fit": true, "pins": [["1", "TP", "AVDD_A"]], "block": "test", "prefix": "TP"},
-    {"d": "TP103", "lcsc": "", "fit": true, "pins": [["1", "TP", "DVDD_A"]], "block": "test", "prefix": "TP"},
-    {"d": "TP104", "lcsc": "", "fit": true, "pins": [["1", "TP", "AVDD_PRE"]], "block": "test", "prefix": "TP"},
-    {"d": "TP105", "lcsc": "", "fit": true, "pins": [["1", "TP", "VMID_PRE"]], "block": "test", "prefix": "TP"},
-    {"d": "TP106", "lcsc": "", "fit": true, "pins": [["1", "TP", "MIC1_OUT"]], "block": "test", "prefix": "TP"},
-    {"d": "TP107", "lcsc": "", "fit": true, "pins": [["1", "TP", "AUD_BCK"]], "block": "test", "prefix": "TP"},
-    {"d": "TP108", "lcsc": "", "fit": true, "pins": [["1", "TP", "AUD_LRCK"]], "block": "test", "prefix": "TP"},
-    {"d": "TP109", "lcsc": "", "fit": true, "pins": [["1", "TP", "AUD_DOUT"]], "block": "test", "prefix": "TP"},
-    {"d": "TP110", "lcsc": "", "fit": true, "pins": [["1", "TP", "GND"]], "block": "test", "prefix": "TP"},
-    {"d": "TP111", "lcsc": "", "fit": true, "pins": [["1", "TP", "PRE1_OUT"]], "block": "test", "prefix": "TP"},
+    {"d": "U101", "lcsc": "C2862740", "mpn": "TPS7A2033PDBVR", "fit": true, "pins": [["1", "IN", "VBAT_SW"], ["2", "GND", "GND"], ["3", "EN", "AUDIO_EN"], ["4", "NC", "NC"], ["5", "OUT", "AVDD_A"]], "block": "power"},
+    {"d": "C101", "lcsc": "C15850", "mpn": "CL21A106KAYNNNE", "fit": true, "pins": [["1", "1", "VBAT_SW"], ["2", "2", "GND"]], "block": "power"},
+    {"d": "C102", "lcsc": "C15850", "mpn": "CL21A106KAYNNNE", "fit": true, "pins": [["1", "1", "AVDD_A"], ["2", "2", "GND"]], "block": "power"},
+    {"d": "FB101", "lcsc": "C1002", "mpn": "GZ1608D601TF", "fit": true, "pins": [["1", "1", "AVDD_A"], ["2", "2", "DVDD_A"]], "block": "power"},
+    {"d": "R148", "lcsc": "C25741", "mpn": "0402WGF1003TCE", "fit": true, "pins": [["1", "1", "AUDIO_EN"], ["2", "2", "GND"]], "block": "power"},
+    {"d": "U102", "lcsc": "C529569", "mpn": "PCM1863DBTR", "fit": true, "pins": [["1", "VINL2/VIN1M", "AIN1M"], ["2", "VINR2/VIN2M", "AIN2M"], ["3", "VINL1/VIN1P", "AIN1P"], ["4", "VINR1/VIN2P", "AIN2P"], ["5", "MICBIAS", "PCM_MICBIAS"], ["6", "VREF", "PCM_VREF"], ["7", "AGND", "GND"], ["8", "AVDD", "AVDD_A"], ["9", "XO", "PCM_XO"], ["10", "XI", "PCM_XI"], ["11", "LDO", "PCM_LDO"], ["12", "DGND", "GND"], ["13", "DVDD", "DVDD_A"], ["14", "IOVDD", "DVDD_A"], ["15", "SCKI", "PCM_SCKI"], ["16", "LRCK", "PCM_LRCK"], ["17", "BCK", "PCM_BCK"], ["18", "DOUT", "PCM_DOUT"], ["19", "GPIO3/INTC", "AUD_INT"], ["20", "GPIO2/INTB/DMCLK", "PCM_GPIO2"], ["21", "GPIO1/INTA/DMIN", "FILT_SEL1"], ["22", "MISO/GPIO0/DMIN2", "FILT_SEL0"], ["23", "MOSI/SDA", "AUD_SDA"], ["24", "MC/SCL", "AUD_SCL"], ["25", "MS/AD", "GND"], ["26", "MD0", "GND"], ["27", "VINL4/VIN4M", "AIN4M"], ["28", "VINR4/VIN3M", "AIN3M"], ["29", "VINL3/VIN4P", "AIN4P"], ["30", "VINR3/VIN3P", "AIN3P"]], "block": "adc"},
+    {"d": "C103", "lcsc": "C1525", "mpn": "CL05B104KO5NNNC", "fit": true, "pins": [["1", "1", "AVDD_A"], ["2", "2", "GND"]], "block": "adc"},
+    {"d": "C104", "lcsc": "C15850", "mpn": "CL21A106KAYNNNE", "fit": true, "pins": [["1", "1", "AVDD_A"], ["2", "2", "GND"]], "block": "adc"},
+    {"d": "C105", "lcsc": "C15849", "mpn": "CL10A105KB8NNNC", "fit": true, "pins": [["1", "1", "PCM_VREF"], ["2", "2", "GND"]], "block": "adc"},
+    {"d": "C106", "lcsc": "C1525", "mpn": "CL05B104KO5NNNC", "fit": true, "pins": [["1", "1", "PCM_LDO"], ["2", "2", "GND"]], "block": "adc"},
+    {"d": "C107", "lcsc": "C15850", "mpn": "CL21A106KAYNNNE", "fit": true, "pins": [["1", "1", "PCM_LDO"], ["2", "2", "GND"]], "block": "adc"},
+    {"d": "C108", "lcsc": "C1525", "mpn": "CL05B104KO5NNNC", "fit": true, "pins": [["1", "1", "DVDD_A"], ["2", "2", "GND"]], "block": "adc"},
+    {"d": "C109", "lcsc": "C15850", "mpn": "CL21A106KAYNNNE", "fit": true, "pins": [["1", "1", "DVDD_A"], ["2", "2", "GND"]], "block": "adc"},
+    {"d": "C110", "lcsc": "C1525", "mpn": "CL05B104KO5NNNC", "fit": true, "pins": [["1", "1", "DVDD_A"], ["2", "2", "GND"]], "block": "adc"},
+    {"d": "R108", "lcsc": "C25741", "mpn": "0402WGF1003TCE", "fit": true, "pins": [["1", "1", "AUD_INT"], ["2", "2", "GND"]], "block": "adc"},
+    {"d": "R109", "lcsc": "C17168", "mpn": "0402WGF0000TCE", "fit": false, "pins": [["1", "1", "AUD_INT"], ["2", "2", "AUD_INT_MCU"]], "block": "adc"},
+    {"d": "R110", "lcsc": "C25741", "mpn": "0402WGF1003TCE", "fit": true, "pins": [["1", "1", "PCM_GPIO2"], ["2", "2", "GND"]], "block": "adc"},
+    {"d": "R111", "lcsc": "C25741", "mpn": "0402WGF1003TCE", "fit": true, "pins": [["1", "1", "FILT_SEL1"], ["2", "2", "GND"]], "block": "adc"},
+    {"d": "R112", "lcsc": "C25741", "mpn": "0402WGF1003TCE", "fit": true, "pins": [["1", "1", "FILT_SEL0"], ["2", "2", "GND"]], "block": "adc"},
+    {"d": "Y101", "lcsc": "C70568", "mpn": "X322524576MOB4SI", "fit": true, "pins": [["1", "X1", "PCM_XI"], ["2", "GND", "GND"], ["3", "X2", "PCM_XO"], ["4", "GND", "GND"]], "block": "clockio"},
+    {"d": "C111", "lcsc": "C1548", "mpn": "0402CG150J500NT", "fit": true, "pins": [["1", "1", "PCM_XI"], ["2", "2", "GND"]], "block": "clockio"},
+    {"d": "C112", "lcsc": "C1548", "mpn": "0402CG150J500NT", "fit": true, "pins": [["1", "1", "PCM_XO"], ["2", "2", "GND"]], "block": "clockio"},
+    {"d": "R101", "lcsc": "C17168", "mpn": "0402WGF0000TCE", "fit": true, "pins": [["1", "1", "PCM_SCKI"], ["2", "2", "GND"]], "block": "clockio"},
+    {"d": "R102", "lcsc": "C17168", "mpn": "0402WGF0000TCE", "fit": false, "pins": [["1", "1", "AUD_MCLK"], ["2", "2", "PCM_SCKI"]], "block": "clockio"},
+    {"d": "R103", "lcsc": "C25105", "mpn": "0402WGF330JTCE", "fit": true, "pins": [["1", "1", "PCM_BCK"], ["2", "2", "AUD_BCK"]], "block": "clockio"},
+    {"d": "R104", "lcsc": "C25105", "mpn": "0402WGF330JTCE", "fit": true, "pins": [["1", "1", "PCM_LRCK"], ["2", "2", "AUD_LRCK"]], "block": "clockio"},
+    {"d": "R105", "lcsc": "C25105", "mpn": "0402WGF330JTCE", "fit": true, "pins": [["1", "1", "PCM_DOUT"], ["2", "2", "AUD_DOUT"]], "block": "clockio"},
+    {"d": "R106", "lcsc": "C25900", "mpn": "0402WGF4701TCE", "fit": true, "pins": [["1", "1", "AUD_SDA"], ["2", "2", "DVDD_A"]], "block": "clockio"},
+    {"d": "R107", "lcsc": "C25900", "mpn": "0402WGF4701TCE", "fit": true, "pins": [["1", "1", "AUD_SCL"], ["2", "2", "DVDD_A"]], "block": "clockio"},
+    {"d": "J101", "lcsc": "C189895", "mpn": "SM04B-GHS-TB(LF)(SN)", "fit": true, "pins": [["1", "MIC_OUT", "MIC1_OUT_C"], ["2", "MIC_SRC", "MIC1_SRC"], ["3", "MIC_RET", "MIC1_RET"], ["4", "SHIELD", "MIC1_SHLD"], ["5", "MP1", "GND"], ["6", "MP2", "GND"]], "block": "mic"},
+    {"d": "FB102", "lcsc": "C1002", "mpn": "GZ1608D601TF", "fit": true, "pins": [["1", "1", "MIC1_OUT_C"], ["2", "2", "MIC1_OUT"]], "block": "mic"},
+    {"d": "C113", "lcsc": "C1546", "mpn": "0402CG101J500NT", "fit": true, "pins": [["1", "1", "MIC1_OUT_C"], ["2", "2", "GND"]], "block": "mic"},
+    {"d": "D101", "lcsc": "C48260", "mpn": "TPD1E10B06DPYR", "fit": true, "pins": [["1", "1", "MIC1_OUT_C"], ["2", "2", "GND"]], "block": "mic"},
+    {"d": "R113", "lcsc": "C17168", "mpn": "0402WGF0000TCE", "fit": true, "pins": [["1", "1", "MIC1_SRC"], ["2", "2", "MIC1_RET"]], "block": "mic"},
+    {"d": "R114", "lcsc": "C17168", "mpn": "0402WGF0000TCE", "fit": true, "pins": [["1", "1", "MIC1_RET"], ["2", "2", "GND"]], "block": "mic"},
+    {"d": "R115", "lcsc": "C17168", "mpn": "0402WGF0000TCE", "fit": true, "pins": [["1", "1", "MIC1_SHLD"], ["2", "2", "GND"]], "block": "mic"},
+    {"d": "R116", "lcsc": "C705779", "mpn": "RT0603BRD07470RL", "fit": true, "pins": [["1", "1", "AVDD_A"], ["2", "2", "MIC1_BIASF"]], "block": "mic"},
+    {"d": "C114", "lcsc": "C122293", "mpn": "T491C227K010AT", "fit": true, "pins": [["1", "+", "MIC1_BIASF"], ["2", "-", "GND"]], "block": "mic"},
+    {"d": "R117", "lcsc": "C705760", "mpn": "RT0603BRD072K7L", "fit": true, "pins": [["1", "1", "MIC1_BIASF"], ["2", "2", "MIC1_OUT"]], "block": "mic"},
+    {"d": "R118", "lcsc": "C26083", "mpn": "0402WGF1004TCE", "fit": false, "pins": [["1", "1", "MIC1_OUT"], ["2", "2", "MIC1_DC_SENSE"]], "block": "mic"},
+    {"d": "C115", "lcsc": "C1525", "mpn": "CL05B104KO5NNNC", "fit": false, "pins": [["1", "1", "MIC1_DC_SENSE"], ["2", "2", "GND"]], "block": "mic"},
+    {"d": "C116", "lcsc": "C464977", "mpn": "GRM31C5C1H224JE02L", "fit": true, "pins": [["1", "1", "MIC1_OUT"], ["2", "2", "AIN1P_C"]], "block": "direct"},
+    {"d": "R119", "lcsc": "C25118", "mpn": "0402WGF470JTCE", "fit": true, "pins": [["1", "1", "AIN1P_C"], ["2", "2", "AIN1P"]], "block": "direct"},
+    {"d": "C117", "lcsc": "C464977", "mpn": "GRM31C5C1H224JE02L", "fit": true, "pins": [["1", "1", "MIC1_RET"], ["2", "2", "AIN1M_C"]], "block": "direct"},
+    {"d": "R120", "lcsc": "C25118", "mpn": "0402WGF470JTCE", "fit": true, "pins": [["1", "1", "AIN1M_C"], ["2", "2", "AIN1M"]], "block": "direct"},
+    {"d": "C118", "lcsc": "C75274", "mpn": "0402CG471J500NT", "fit": true, "pins": [["1", "1", "AIN1P"], ["2", "2", "AIN1M"]], "block": "direct"},
+    {"d": "Q101", "lcsc": "C15127", "mpn": "AO3401A", "fit": true, "pins": [["1", "G", "PRE_GATE"], ["2", "S", "AVDD_A"], ["3", "D", "AVDD_PRE_SW"]], "block": "presupply"},
+    {"d": "Q102", "lcsc": "C8545", "mpn": "2N7002", "fit": true, "pins": [["1", "G", "PREAMP_EN_G"], ["2", "S", "GND"], ["3", "D", "PRE_GATE"]], "block": "presupply"},
+    {"d": "R126", "lcsc": "C25741", "mpn": "0402WGF1003TCE", "fit": true, "pins": [["1", "1", "PRE_GATE"], ["2", "2", "AVDD_A"]], "block": "presupply"},
+    {"d": "R127", "lcsc": "C11702", "mpn": "0402WGF1001TCE", "fit": true, "pins": [["1", "1", "PREAMP_EN"], ["2", "2", "PREAMP_EN_G"]], "block": "presupply"},
+    {"d": "R128", "lcsc": "C25741", "mpn": "0402WGF1003TCE", "fit": true, "pins": [["1", "1", "PREAMP_EN_G"], ["2", "2", "GND"]], "block": "presupply"},
+    {"d": "R129", "lcsc": "C25077", "mpn": "0402WGF100JTCE", "fit": true, "pins": [["1", "1", "AVDD_PRE_SW"], ["2", "2", "AVDD_PRE"]], "block": "presupply"},
+    {"d": "C125", "lcsc": "C45783", "mpn": "CL21A226MAQNNNE", "fit": true, "pins": [["1", "1", "AVDD_PRE"], ["2", "2", "GND"]], "block": "presupply"},
+    {"d": "C126", "lcsc": "C1525", "mpn": "CL05B104KO5NNNC", "fit": true, "pins": [["1", "1", "AVDD_PRE"], ["2", "2", "GND"]], "block": "presupply"},
+    {"d": "R130", "lcsc": "C25744", "mpn": "0402WGF1002TCE", "fit": true, "pins": [["1", "1", "AVDD_PRE"], ["2", "2", "VMID_PRE"]], "block": "presupply"},
+    {"d": "R131", "lcsc": "C25744", "mpn": "0402WGF1002TCE", "fit": true, "pins": [["1", "1", "VMID_PRE"], ["2", "2", "GND"]], "block": "presupply"},
+    {"d": "C127", "lcsc": "C7171", "mpn": "TAJA106K016RNJ", "fit": true, "pins": [["1", "+", "VMID_PRE"], ["2", "-", "GND"]], "block": "presupply"},
+    {"d": "C128", "lcsc": "C1525", "mpn": "CL05B104KO5NNNC", "fit": true, "pins": [["1", "1", "VMID_PRE"], ["2", "2", "GND"]], "block": "presupply"},
+    {"d": "C119", "lcsc": "C464977", "mpn": "GRM31C5C1H224JE02L", "fit": true, "pins": [["1", "1", "MIC1_OUT"], ["2", "2", "PRE1_INP"]], "block": "preamp"},
+    {"d": "R121", "lcsc": "C25741", "mpn": "0402WGF1003TCE", "fit": true, "pins": [["1", "1", "PRE1_INP"], ["2", "2", "VMID_PRE"]], "block": "preamp"},
+    {"d": "U103", "lcsc": "C882794", "mpn": "OPA1662AIDR", "fit": true, "pins": [["1", "OUTA", "PRE1_OUT"], ["2", "-INA", "PRE1_INN"], ["3", "+INA", "PRE1_INP"], ["4", "V-", "GND"], ["5", "+INB", "PRE2_INP"], ["6", "-INB", "PRE2_INN"], ["7", "OUTB", "PRE2_OUT"], ["8", "V+", "AVDD_PRE"]], "block": "preamp"},
+    {"d": "R122", "lcsc": "C281777", "mpn": "RT0402BRD073KL", "fit": true, "pins": [["1", "1", "PRE1_OUT"], ["2", "2", "PRE1_INN"]], "block": "preamp"},
+    {"d": "C120", "lcsc": "C1546", "mpn": "0402CG101J500NT", "fit": true, "pins": [["1", "1", "PRE1_OUT"], ["2", "2", "PRE1_INN"]], "block": "preamp"},
+    {"d": "R123", "lcsc": "C852624", "mpn": "RT0402BRD071KL", "fit": true, "pins": [["1", "1", "PRE1_INN"], ["2", "2", "PRE1_CG"]], "block": "preamp"},
+    {"d": "C121", "lcsc": "C16133", "mpn": "TAJB107K006RNJ", "fit": true, "pins": [["1", "+", "PRE1_CG"], ["2", "-", "GND"]], "block": "preamp"},
+    {"d": "C122", "lcsc": "C464977", "mpn": "GRM31C5C1H224JE02L", "fit": true, "pins": [["1", "1", "PRE1_OUT"], ["2", "2", "AIN3P_C"]], "block": "preamp"},
+    {"d": "R124", "lcsc": "C25118", "mpn": "0402WGF470JTCE", "fit": true, "pins": [["1", "1", "AIN3P_C"], ["2", "2", "AIN3P"]], "block": "preamp"},
+    {"d": "C123", "lcsc": "C464977", "mpn": "GRM31C5C1H224JE02L", "fit": true, "pins": [["1", "1", "GND"], ["2", "2", "AIN3M_C"]], "block": "preamp"},
+    {"d": "R125", "lcsc": "C25118", "mpn": "0402WGF470JTCE", "fit": true, "pins": [["1", "1", "AIN3M_C"], ["2", "2", "AIN3M"]], "block": "preamp"},
+    {"d": "C124", "lcsc": "C75274", "mpn": "0402CG471J500NT", "fit": true, "pins": [["1", "1", "AIN3P"], ["2", "2", "AIN3M"]], "block": "preamp"},
+    {"d": "U104", "lcsc": "C49148", "mpn": "TS5A23166DCUR", "fit": true, "pins": [["1", "NO1", "HPF1_S1"], ["2", "COM1", "AIN3M_C"], ["3", "IN2", "FILT_SEL1"], ["4", "GND", "GND"], ["5", "NO2", "HPF1_S2"], ["6", "COM2", "AIN3M_C"], ["7", "IN1", "FILT_SEL0"], ["8", "V+", "AVDD_A"]], "block": "preamp"},
+    {"d": "C140", "lcsc": "C1525", "mpn": "CL05B104KO5NNNC", "fit": true, "pins": [["1", "1", "AVDD_A"], ["2", "2", "GND"]], "block": "preamp"},
+    {"d": "R144", "lcsc": "C25768", "mpn": "0402WGF2202TCE", "fit": true, "pins": [["1", "1", "AIN3P_C"], ["2", "2", "HPF1_S1"]], "block": "preamp"},
+    {"d": "R145", "lcsc": "C25867", "mpn": "0402WGF1501TCE", "fit": true, "pins": [["1", "1", "AIN3P_C"], ["2", "2", "HPF1_S2"]], "block": "preamp"},
+    {"d": "R132", "lcsc": "C25741", "mpn": "0402WGF1003TCE", "fit": true, "pins": [["1", "1", "PRE2_INP"], ["2", "2", "VMID_PRE"]], "block": "preamp"},
+    {"d": "R133", "lcsc": "C281777", "mpn": "RT0402BRD073KL", "fit": true, "pins": [["1", "1", "PRE2_OUT"], ["2", "2", "PRE2_INN"]], "block": "preamp"},
+    {"d": "C129", "lcsc": "C1546", "mpn": "0402CG101J500NT", "fit": true, "pins": [["1", "1", "PRE2_OUT"], ["2", "2", "PRE2_INN"]], "block": "preamp"},
+    {"d": "J102", "lcsc": "C189895", "mpn": "SM04B-GHS-TB(LF)(SN)", "fit": false, "pins": [["1", "MIC_OUT", "MIC2_OUT_C"], ["2", "MIC_SRC", "MIC2_SRC"], ["3", "MIC_RET", "MIC2_RET"], ["4", "SHIELD", "MIC2_SHLD"], ["5", "MP1", "GND"], ["6", "MP2", "GND"]], "block": "mic2"},
+    {"d": "FB103", "lcsc": "C1002", "mpn": "GZ1608D601TF", "fit": false, "pins": [["1", "1", "MIC2_OUT_C"], ["2", "2", "MIC2_OUT"]], "block": "mic2"},
+    {"d": "C135", "lcsc": "C1546", "mpn": "0402CG101J500NT", "fit": false, "pins": [["1", "1", "MIC2_OUT_C"], ["2", "2", "GND"]], "block": "mic2"},
+    {"d": "D102", "lcsc": "C48260", "mpn": "TPD1E10B06DPYR", "fit": false, "pins": [["1", "1", "MIC2_OUT_C"], ["2", "2", "GND"]], "block": "mic2"},
+    {"d": "R137", "lcsc": "C17168", "mpn": "0402WGF0000TCE", "fit": false, "pins": [["1", "1", "MIC2_SRC"], ["2", "2", "MIC2_RET"]], "block": "mic2"},
+    {"d": "R138", "lcsc": "C17168", "mpn": "0402WGF0000TCE", "fit": false, "pins": [["1", "1", "MIC2_RET"], ["2", "2", "GND"]], "block": "mic2"},
+    {"d": "R139", "lcsc": "C17168", "mpn": "0402WGF0000TCE", "fit": false, "pins": [["1", "1", "MIC2_SHLD"], ["2", "2", "GND"]], "block": "mic2"},
+    {"d": "R140", "lcsc": "C705779", "mpn": "RT0603BRD07470RL", "fit": false, "pins": [["1", "1", "AVDD_A"], ["2", "2", "MIC2_BIASF"]], "block": "mic2"},
+    {"d": "C136", "lcsc": "C122293", "mpn": "T491C227K010AT", "fit": false, "pins": [["1", "+", "MIC2_BIASF"], ["2", "-", "GND"]], "block": "mic2"},
+    {"d": "R141", "lcsc": "C705760", "mpn": "RT0603BRD072K7L", "fit": false, "pins": [["1", "1", "MIC2_BIASF"], ["2", "2", "MIC2_OUT"]], "block": "mic2"},
+    {"d": "C137", "lcsc": "C464977", "mpn": "GRM31C5C1H224JE02L", "fit": false, "pins": [["1", "1", "MIC2_OUT"], ["2", "2", "AIN2P_C"]], "block": "mic2"},
+    {"d": "R142", "lcsc": "C25118", "mpn": "0402WGF470JTCE", "fit": false, "pins": [["1", "1", "AIN2P_C"], ["2", "2", "AIN2P"]], "block": "mic2"},
+    {"d": "C138", "lcsc": "C464977", "mpn": "GRM31C5C1H224JE02L", "fit": false, "pins": [["1", "1", "MIC2_RET"], ["2", "2", "AIN2M_C"]], "block": "mic2"},
+    {"d": "R143", "lcsc": "C25118", "mpn": "0402WGF470JTCE", "fit": false, "pins": [["1", "1", "AIN2M_C"], ["2", "2", "AIN2M"]], "block": "mic2"},
+    {"d": "C139", "lcsc": "C75274", "mpn": "0402CG471J500NT", "fit": false, "pins": [["1", "1", "AIN2P"], ["2", "2", "AIN2M"]], "block": "mic2"},
+    {"d": "C131", "lcsc": "C464977", "mpn": "GRM31C5C1H224JE02L", "fit": false, "pins": [["1", "1", "MIC2_OUT"], ["2", "2", "PRE2_INP"]], "block": "mic2"},
+    {"d": "R134", "lcsc": "C852624", "mpn": "RT0402BRD071KL", "fit": false, "pins": [["1", "1", "PRE2_INN"], ["2", "2", "PRE2_CG"]], "block": "mic2"},
+    {"d": "C130", "lcsc": "C16133", "mpn": "TAJB107K006RNJ", "fit": false, "pins": [["1", "+", "PRE2_CG"], ["2", "-", "GND"]], "block": "mic2"},
+    {"d": "C132", "lcsc": "C464977", "mpn": "GRM31C5C1H224JE02L", "fit": false, "pins": [["1", "1", "PRE2_OUT"], ["2", "2", "AIN4P_C"]], "block": "mic2"},
+    {"d": "R135", "lcsc": "C25118", "mpn": "0402WGF470JTCE", "fit": false, "pins": [["1", "1", "AIN4P_C"], ["2", "2", "AIN4P"]], "block": "mic2"},
+    {"d": "C133", "lcsc": "C464977", "mpn": "GRM31C5C1H224JE02L", "fit": false, "pins": [["1", "1", "GND"], ["2", "2", "AIN4M_C"]], "block": "mic2"},
+    {"d": "R136", "lcsc": "C25118", "mpn": "0402WGF470JTCE", "fit": false, "pins": [["1", "1", "AIN4M_C"], ["2", "2", "AIN4M"]], "block": "mic2"},
+    {"d": "C134", "lcsc": "C75274", "mpn": "0402CG471J500NT", "fit": false, "pins": [["1", "1", "AIN4P"], ["2", "2", "AIN4M"]], "block": "mic2"},
+    {"d": "U105", "lcsc": "C49148", "mpn": "TS5A23166DCUR", "fit": false, "pins": [["1", "NO1", "HPF2_S1"], ["2", "COM1", "AIN4M_C"], ["3", "IN2", "FILT_SEL1"], ["4", "GND", "GND"], ["5", "NO2", "HPF2_S2"], ["6", "COM2", "AIN4M_C"], ["7", "IN1", "FILT_SEL0"], ["8", "V+", "AVDD_A"]], "block": "mic2"},
+    {"d": "C141", "lcsc": "C1525", "mpn": "CL05B104KO5NNNC", "fit": false, "pins": [["1", "1", "AVDD_A"], ["2", "2", "GND"]], "block": "mic2"},
+    {"d": "R146", "lcsc": "C25768", "mpn": "0402WGF2202TCE", "fit": false, "pins": [["1", "1", "AIN4P_C"], ["2", "2", "HPF2_S1"]], "block": "mic2"},
+    {"d": "R147", "lcsc": "C25867", "mpn": "0402WGF1501TCE", "fit": false, "pins": [["1", "1", "AIN4P_C"], ["2", "2", "HPF2_S2"]], "block": "mic2"},
+    {"d": "TP101", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "PCM_MICBIAS"]], "block": "test", "prefix": "TP"},
+    {"d": "TP102", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "AVDD_A"]], "block": "test", "prefix": "TP"},
+    {"d": "TP103", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "DVDD_A"]], "block": "test", "prefix": "TP"},
+    {"d": "TP104", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "AVDD_PRE"]], "block": "test", "prefix": "TP"},
+    {"d": "TP105", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "VMID_PRE"]], "block": "test", "prefix": "TP"},
+    {"d": "TP106", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "MIC1_OUT"]], "block": "test", "prefix": "TP"},
+    {"d": "TP107", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "AUD_BCK"]], "block": "test", "prefix": "TP"},
+    {"d": "TP108", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "AUD_LRCK"]], "block": "test", "prefix": "TP"},
+    {"d": "TP109", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "AUD_DOUT"]], "block": "test", "prefix": "TP"},
+    {"d": "TP110", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "GND"]], "block": "test", "prefix": "TP"},
+    {"d": "TP111", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "PRE1_OUT"]], "block": "test", "prefix": "TP"},
   ];
   const BLOCKS = [["power", "Block 1 \u00b7 Audio supply"], ["adc", "Block 2 \u00b7 ADC pin map (U102 PCM1863)"], ["clockio", "Block 3 \u00b7 Clock and MCU link"], ["mic", "Block 4 \u00b7 Mic 1 input and bias"], ["direct", "Block 5 \u00b7 Direct path"], ["presupply", "Block 6 \u00b7 Preamp supply and mid-rail"], ["preamp", "Block 7 \u00b7 Preamp and switched high-pass"], ["mic2", "Block 8 \u00b7 Mic 2 option (not fitted)"], ["test", "Test points"]];
   const TEMPLATE_PREFIXES = ["TP"];
@@ -263,13 +264,26 @@
   // the project's copy, taking only a copy that has a footprint (some 4.1 copies have none, and
   // Update PCB then stops with "lacks of property Footprint"). New devices come from the system
   // library. Every placed part is checked for a footprint afterwards.
+  // 2026-11-19: getByLcscIds can return a stray device without a footprint (C9965 came back as
+  // "EasyEDA_W5500_MAX809STRG"; the project held a footprint-less "100nF" copy of C1525 beside
+  // two good "CL05B104KO5NNNC" copies). So copies are looked up by the device name and by the
+  // BOM's MPN, must carry the same LCSC code when they name one, and must have a footprint.
   let projectLib;
-  async function projectCopy(dev) {
-    if (!dev || !dev.name) return null;
+  const fpOf = (d) => (d && ((d.footprint && d.footprint.name) || d.footprintName)) || "";
+  const sameCode = (d, lcsc) => !lcsc || !d.supplierId || d.supplierId === lcsc;
+  async function findWithFootprint(names, lcsc, lib) {
+    for (const n of names.filter(Boolean)) {
+      const found = (await tryCall(() => (lib ? eda.lib_Device.search(n, lib) : eda.lib_Device.search(n)))) || [];
+      const hit = (Array.isArray(found) ? found : [found]).find((d) => d && d.name === n && sameCode(d, lcsc) && fpOf(d));
+      if (hit) return hit;
+    }
+    return null;
+  }
+  async function projectCopy(dev, mpn = "", lcsc = "") {
+    if (!dev && !mpn) return null;
     if (projectLib === undefined) projectLib = (await tryCall(() => eda.lib_LibrariesList.getProjectLibraryUuid())) || null;
     if (!projectLib) return null;
-    const found = (await tryCall(() => eda.lib_Device.search(dev.name, projectLib))) || [];
-    return (Array.isArray(found) ? found : [found]).find((d) => d && d.name === dev.name && d.footprint && d.footprint.name) || null;
+    return findWithFootprint([dev && dev.name, mpn], lcsc, projectLib);
   }
   async function sourceDevice(label, { lcsc = "", name = "", footprint = "" }) {
     if (sourceDevices.has(label)) return sourceDevices.get(label);
@@ -305,8 +319,11 @@
       return dev;
     }
     if (!devices.has(part.lcsc)) {
-      const lib = await tryCall(() => eda.lib_Device.getByLcscIds(part.lcsc));
-      devices.set(part.lcsc, (await projectCopy(lib)) || lib);
+      let lib = await tryCall(() => eda.lib_Device.getByLcscIds(part.lcsc));
+      if (Array.isArray(lib)) lib = lib[0];
+      const copy = await projectCopy(lib, part.mpn, part.lcsc);
+      if (!copy && !fpOf(lib)) lib = (await findWithFootprint([part.mpn], part.lcsc, null)) || lib;
+      devices.set(part.lcsc, copy || lib);
     }
     const dev = devices.get(part.lcsc);
     if (!dev) notFound.set(part.lcsc, [...(notFound.get(part.lcsc) || []), part.d]);
@@ -486,6 +503,14 @@
         catch (e) { warnings.push(`${part.d} pin ${l.num}: could not set the no-connect flag (${msg(e)})`); }
         continue;
       }
+      // A pin that was NC before keeps its no-connect flag through a tidy, and EasyEDA then refuses
+      // the wire (2026-11-19, U401 pins 28/29): clear the flag first.
+      try {
+        if (p.obj.getState_NoConnected && p.obj.getState_NoConnected()) {
+          p.obj.setState_NoConnected(false);
+          if ((await within(p.obj.done())) === TIMEOUT) throw new Error(noAnswer);
+        }
+      } catch (e) { warnings.push(`${part.d} pin ${l.num}: could not clear its old no-connect flag (${msg(e)})`); }
       const len = stubLen(l.net);
       const ex = p.x + l.ux * len, ey = p.y + l.uy * len;
       // Start the wire at its left (or lower) end, where EasyEDA anchors the net name.

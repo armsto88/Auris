@@ -1,6 +1,6 @@
 # 00 — Source of truth, version policy and current decisions
 
-**Document baseline:** 2026-10-22. **Design maturity:** Schematic captured and reviewed against datasheets (2026-11-17, `hardware/review/`); nothing built or measured.
+**Document baseline:** 2026-10-22. **Design maturity:** Schematic frozen for rev A layout (2026-11-19, `hardware/review/2026-11-19-schematic-freeze.md`), after two independent datasheet reviews (2026-11-17, 2026-11-19); nothing built or measured.
 
 ## Evidence and precedence
 

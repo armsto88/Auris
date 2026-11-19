@@ -1,5 +1,7 @@
 # Handover: Auris schematic deep-dive review and BOM cost pass
 
+> **Done and superseded.** This handover was carried out on 2026-11-17 (`2026-11-17-schematic-review.md`). Several facts below are out of date (EasyEDA 3.2, the EG800K-EU and N16R8 parts). The next step is [`handover-second-review-and-freeze.md`](handover-second-review-and-freeze.md).
+
 Written 2026-11-17 for the next Claude Code session. Repo `/home/tom/Auris`, branch `hardware-specs-and-easyeda`, last commit `ea00321`.
 
 Auris is a solar-powered acoustic recorder for long-term biodiversity surveys. It has an ESP32-S3, a PCM186x audio ADC, a Quectel EG800K-EU LTE modem, microSD storage and a DS3231M RTC wake, and it is deployed in **Europe and Australia**. Nothing has been built or measured yet.

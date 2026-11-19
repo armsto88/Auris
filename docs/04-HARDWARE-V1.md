@@ -1,6 +1,6 @@
 # 04 — Hardware V1 engineering definition
 
-**Maturity:** Schematic captured for all four sheets and reviewed against manufacturer datasheets (2026-11-17, `hardware/review/2026-11-17-schematic-review.md`; owner decisions applied 2026-11-18); not demonstrated in a fabricated Auris device.
+**Maturity:** Schematic frozen for rev A layout (2026-11-19, `hardware/review/2026-11-19-schematic-freeze.md`): all four sheets captured, reviewed twice against manufacturer datasheets (2026-11-17 and an independent second review on 2026-11-19, `hardware/review/2026-11-19-second-review.md`), owner decisions applied (2026-11-18, 2026-11-19); not demonstrated in a fabricated Auris device. Later sheet changes follow the change-control rule in the freeze record.
 
 ## 1. Compute and radio
 
@@ -34,11 +34,11 @@ Measure: absolute sensitivity, self-noise, saturation and clipping at intended s
 | Function | Current part/topology | Status | Mandatory decision |
 |---|---|---|---|
 | Cell | FieldMesh Node v4 pack: protected 1S2P 18650, ≈ 5200 mAh, ≥ 600 mA charge, ≥ 1.5 A discharge, JST PH lead | SELECTED concept (2026-10-23, ADR-022) | Pack supply and protection limits; keyed connector, polarity check per batch |
-| Solar charger | `CN3791` `C154992` + `TMP390A2` `C5219772` cut-out (FieldMesh Node v4 circuit) | SELECTED concept (2026-10-23, ADR-007) | Set MPPT divider from the real panel (6 V-class panels only); cold trip +5 °C (R209 18.7 kΩ, owner decision 2026-11-17); L201 47 µH; night leakage; no USB charging |
+| Solar charger | `CN3791` `C154992` + `TMP390A2` `C5219772` cut-out (FieldMesh Node v4 circuit), TMP390 supply switched by `MAX809STRG` `C9965` (2026-11-19) | SELECTED concept (2026-10-23, ADR-007) | Set MPPT divider from the real panel (6 V-class panels only); cold trip +5 °C (R209 18.7 kΩ, owner decision 2026-11-17); L201 47 µH; night leakage; no USB charging |
 | Main regulated rail | `TPS63802DLAR` `C2845237` (3.3 V buck-boost, Node v4) | SELECTED concept (2026-10-23, ADR-008) | Efficiency, Wi-Fi load transients at low cell voltage, sleep-path backfeed |
 | Audio supply | `TPS7A2033PDBVR` `C2862740` | CANDIDATE | PSRR/noise under worst LTE/DC-DC scenarios |
 | Battery state | 220 kΩ/100 kΩ divider on `VBAT_SW` → ESP32-S3 ADC1; `MAX17048G+T10` dropped | SELECTED concept (2026-10-23, ADR-027) | ADC calibration per unit; voltage-to-charge table for the pack |
-| Main load switch | `AO3401A` `C15127` high-side PFET + FieldMesh wake latch: `MMBT3904` inverter, 3 × `2N7002` (`C8545`) wired-OR, 1 MΩ resistors | SELECTED concept (2026-10-23, ADR-003) | Startup and hold transient, gate protection, safe off-state, latch current ≈ 5 µA |
+| Main load switch | `AO3401A` `C15127` high-side PFET + FieldMesh wake latch: RTC INT direct on the wake line (inverter removed 2026-11-19), 2 × `2N7002` (`C8545`) wired-OR, button through `1N4148WS` with MCU sense (GPIO35) | SELECTED concept (2026-10-23, ADR-003) | Startup and hold transient (soft-start footprints R245/C237), gate protection, safe off-state, latch draws nothing idle |
 | Always-on RTC supply | `TPL720F33-3TR` `C2842389` 3.3 V + CR1220 on RTC VBAT | SELECTED concept (2026-10-23, ADR-010) | Reverse current; total sleep current |
 | Modem supply | `TPS63020DSJR` `C15483`, 3.9 V from the switched rail (Hub v2) | SELECTED concept (2026-10-23, ADR-011) | Pulse testing across full cell voltage/temp/radio load, including the battery fuse drop |
 

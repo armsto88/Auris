@@ -1,0 +1,20 @@
+designators,sheet,type,old_mpn,old_lcsc,old_fit,new_mpn,new_lcsc,new_fit,old_usd_10,old_usd_100,new_usd_10,new_usd_100,old_jlc_class,new_jlc_class,spec_comparison,reason
+U208,power,owner decision,,,,MAX809STRG,C9965,Y,0,0,0.3523,0.2878,,extended,"New: 2.93 V push-pull supervisor (onsemi MAX809S/D Rev 30), output = VCC above 2.85–3.00 V","Second review R2-P1 (must fix): powers the TMP390 so it reads its trip resistors on a clean power-on, not on a slow dawn ramp below its 1.62 V minimum. Owner decision 2026-11-19"
+R210,power,owner decision,0402WGF1002TCE,C25744,Y,0402WGF4702TCE,C25792,Y,0.0015,0.0015,0.0019,0.0019,basic,basic,"10 kΩ → 47 kΩ, pull-up now to TEMP_VDD",R2-P1: keeps U208 inside its 500 µA output rating; an unpowered U203 reads as a fault
+TP214 TP215,power,owner decision,,,,Test pad,,Y,0,0,0,0,,,"2 copper pads on TMP_SETA, TMP_SETB",R2-P2: TMP390 trip test (SBOS904A §7.3.2) on every board
+R241,power,owner decision,,,,0402WGF1503TCE,C25755,Y,0,0,0.0011,0.0011,,preferred,New: U206 EN divider top 150 kΩ,"R2-G1: 3.3 V lockout, on 2.75 V / off 2.50 V"
+R242 R243,power,owner decision,,,,0402WGF1003TCE,C25741,Y,0,0,0.0009,0.0009,,basic,New: U206 EN divider bottom; MODE pull-down (MODE was tied to GND),"R2-G1, R2-G6"
+R244,power,owner decision,,,,0402WGF0000TCE,C17168,N,0,0,0,0,,basic,"New, DNP: MODE to GPIO36",R2-G6: forced-PWM option for G2
+R245,power,owner decision,,,,0402WGF0000TCE,C17168,Y,0,0,0.0012,0.0012,,basic,New: 0 Ω Q210 gate link,R2-G3: soft-start option (fit 10 kΩ with C237 and C218 2.2 µF if bench test 2 shows a trip)
+C237,power,owner decision,,,,CC0603KRX7R9BB104,C14663,N,0,0,0,0,,basic,"New, DNP: Q210 gate–drain 100 nF",R2-G3: soft-start option
+D206,power,owner decision,,,,1N4148WS,C2128,Y,0,0,0.0111,0.0111,,basic,"New: switching diode, ≤ 1 µA leakage (JLC basic)",R2-G2: button into the latch through a diode so the MCU can read it
+R246,power,owner decision,,,,0402WGF1004TCE,C26083,Y,0,0,0.0011,0.0011,,basic,New: BTN_N pull-up 1 MΩ to RAW_BAT,R2-G2
+Q211,power,owner decision,,,,2N7002,C8545,Y,0,0,0.0159,0.0159,,basic,New: button sense driver to GPIO35,R2-G2
+Q206,power,owner decision,MMBT3904(RANGE:100-300),C20526,Y,,,,0.0104,0.0104,0,0,basic,,Removed: RTC INT inverter,"First review P22, owner decision 2026-11-19: INT/SQW drives WAKE_N directly; removes three 1 MΩ nodes and ≈ 5 µA sleep current"
+Q207,power,owner decision,2N7002,C8545,Y,,,,0.0159,0.0159,0,0,basic,,Removed,P22
+R219 R222 R223,power,owner decision,0402WGF1004TCE,C26083,Y,,,,0.0011,0.0011,0,0,basic,,Removed: inverter 1 MΩ resistors,P22
+R148,audio,owner decision,,,,0402WGF1003TCE,C25741,Y,0,0,0.0009,0.0009,,basic,New: AUDIO_EN pull-down 100 kΩ,R2-A1: the TPS7A20 EN pull-down is switched out while EN is high
+C407,mcu,owner decision,,,,CL05B103KB5NNNC,C15195,Y,0,0,0.0038,0.0038,,basic,New: Q401 gate–drain 10 nF,R2-M1 (must fix): card-supply soft start so the 3V3 step stays above the PG threshold that drives ESP_EN
+R414,mcu,owner decision,0402WGF1003TCE,C25741,Y,0402WGF1004TCE,C26083,Y,0.0009,0.0009,0.0011,0.0011,basic,basic,100 kΩ → 1 MΩ,R2-M1
+R415,mcu,owner decision,0402WGF1002TCE,C25744,Y,0402WGF1003TCE,C25741,Y,0.0015,0.0015,0.0009,0.0009,basic,basic,10 kΩ → 100 kΩ,R2-M1
+C403,mcu,owner decision,CL10A105KB8NNNC,C15849,Y,CL05B104KO5NNNC,C1525,Y,0.0145,0.0145,0.0024,0.0024,basic,basic,1 µF 0603 → 100 nF 0402,R2-M2: PG now supervises EN and is rated to sink 1 mA

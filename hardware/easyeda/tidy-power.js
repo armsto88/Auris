@@ -1,4 +1,4 @@
-// Auris schematic tidy (TIDY = true; see below): power sheet (123 parts, 293 pin connections).
+// Auris schematic tidy (TIDY = true; see below): power sheet (130 parts, 305 pin connections).
 // Generated 2026-11-19 by hardware/tools/easyeda_capture.py from power/power-netlist.csv and power-bom.csv.
 // Don't edit this file: change the CSVs, then run the generator again.
 //
@@ -13,11 +13,11 @@
 //  1. Open the Auris project and an empty schematic page for this sheet.
 //  2. Optional: place one template part per kind on the page, keeping its
 //     default designator: a test pad for TP201, TP202, TP203, TP204, TP205,
-//     TP206, TP207, TP208, TP209, TP210, TP211, TP212, TP213. These parts
-//     have no LCSC code, so the script places more of the template's library
-//     part (found by its LCSC code or else by its name), or, with no template
-//     on the page, the default in CFG.templateDefaults. Delete any template
-//     afterwards.
+//     TP206, TP207, TP208, TP209, TP210, TP211, TP212, TP213, TP214, TP215.
+//     These parts have no LCSC code, so the script places more of the
+//     template's library part (found by its LCSC code or else by its name),
+//     or, with no template on the page, the default in CFG.templateDefaults.
+//     Delete any template afterwards.
 //  3. Advanced > Run Script (EasyEDA Pro v2: Settings > Extensions > Standalone
 //     Script). Paste this whole file and run it. A dialog reports the result.
 // Running it again skips designators already on the page, so after fixing an
@@ -35,129 +35,136 @@
   // d: designator, lcsc: LCSC code ("" = copy a template part), fit: false = not fitted,
   // block: block in build_guide.py, pins: [pin number, pin name, net] from the netlist
   const PARTS = [
-    {"d": "J201", "lcsc": "C695629", "fit": true, "pins": [["1", "+", "PANEL_IN"], ["2", "-", "GND"]], "block": "p_solar"},
-    {"d": "J202", "lcsc": "C695629", "fit": true, "pins": [["1", "+", "PANEL_IN"], ["2", "-", "GND"]], "block": "p_solar"},
-    {"d": "F201", "lcsc": "C207066", "fit": true, "pins": [["1", "1", "PANEL_IN"], ["2", "2", "PANEL_FUSED"]], "block": "p_solar"},
-    {"d": "D201", "lcsc": "C353317", "fit": true, "pins": [["1", "1", "PANEL_FUSED"], ["2", "2", "GND"]], "block": "p_solar"},
-    {"d": "Q201", "lcsc": "C15127", "fit": true, "pins": [["1", "G", "Q201_G"], ["2", "S", "SOLAR_IN"], ["3", "D", "PANEL_FUSED"]], "block": "p_solar"},
-    {"d": "R201", "lcsc": "C25768", "fit": true, "pins": [["1", "1", "GND"], ["2", "2", "Q201_G"]], "block": "p_solar"},
-    {"d": "D202", "lcsc": "C22395557", "fit": true, "pins": [["K", "K", "SOLAR_IN"], ["A", "A", "Q201_G"]], "block": "p_solar"},
-    {"d": "C201", "lcsc": "C2161857", "fit": true, "pins": [["1", "1", "SOLAR_IN"], ["2", "2", "GND"]], "block": "p_solar"},
-    {"d": "C202", "lcsc": "C1779", "fit": true, "pins": [["1", "1", "SOLAR_IN"], ["2", "2", "GND"]], "block": "p_solar"},
-    {"d": "C203", "lcsc": "C15850", "fit": true, "pins": [["1", "1", "SOLAR_IN"], ["2", "2", "GND"]], "block": "p_solar"},
-    {"d": "C204", "lcsc": "C307331", "fit": true, "pins": [["1", "1", "SOLAR_IN"], ["2", "2", "GND"]], "block": "p_solar"},
-    {"d": "R238", "lcsc": "C26083", "fit": true, "pins": [["1", "1", "SOLAR_IN"], ["2", "2", "SOLAR_SENSE"]], "block": "p_solar"},
-    {"d": "R239", "lcsc": "C25755", "fit": true, "pins": [["1", "1", "SOLAR_SENSE"], ["2", "2", "GND"]], "block": "p_solar"},
-    {"d": "C235", "lcsc": "C1525", "fit": true, "pins": [["1", "1", "SOLAR_SENSE"], ["2", "2", "GND"]], "block": "p_solar"},
-    {"d": "R240", "lcsc": "C25879", "fit": true, "pins": [["1", "1", "SOLAR_SENSE"], ["2", "2", "SOLAR_ADC"]], "block": "p_solar"},
-    {"d": "U201", "lcsc": "C154992", "fit": true, "pins": [["1", "VG", "CN_VG"], ["2", "GND", "GND"], ["3", "CHRG", "CN_CHRG"], ["4", "DONE", "CN_DONE"], ["5", "COM", "CN_COM"], ["6", "MPPT", "MPPT"], ["7", "BAT", "RAW_BAT"], ["8", "CSP", "CHARGE_SENSE"], ["9", "VCC", "SOLAR_IN"], ["10", "DRV", "CN_DRV"]], "block": "p_charger"},
-    {"d": "C205", "lcsc": "C307331", "fit": true, "pins": [["1", "1", "SOLAR_IN"], ["2", "2", "CN_VG"]], "block": "p_charger"},
-    {"d": "R204", "lcsc": "C5126256", "fit": true, "pins": [["1", "1", "SOLAR_IN"], ["2", "2", "MPPT"]], "block": "p_charger"},
-    {"d": "R205", "lcsc": "C25741", "fit": true, "pins": [["1", "1", "MPPT"], ["2", "2", "GND"]], "block": "p_charger"},
-    {"d": "Q202", "lcsc": "C15127", "fit": true, "pins": [["1", "G", "CN_DRV"], ["2", "S", "SOLAR_IN"], ["3", "D", "CHG_SW_RAW"]], "block": "p_charger"},
-    {"d": "D203", "lcsc": "C193342", "fit": true, "pins": [["K", "K", "CHG_SW"], ["A", "A", "CHG_SW_RAW"]], "block": "p_charger"},
-    {"d": "D204", "lcsc": "C193342", "fit": true, "pins": [["K", "K", "CHG_SW"], ["A", "A", "GND"]], "block": "p_charger"},
-    {"d": "L201", "lcsc": "C36414", "fit": true, "pins": [["1", "1", "CHARGE_SENSE"], ["2", "2", "CHG_SW"]], "block": "p_charger"},
-    {"d": "R202", "lcsc": "C309630", "fit": true, "pins": [["1", "1", "RAW_BAT"], ["2", "2", "CHARGE_SENSE"]], "block": "p_charger"},
-    {"d": "R203", "lcsc": "C25079", "fit": true, "pins": [["1", "1", "CN_COMRC"], ["2", "2", "CN_COM"]], "block": "p_charger"},
-    {"d": "C206", "lcsc": "C16772", "fit": true, "pins": [["1", "1", "GND"], ["2", "2", "CN_COMRC"]], "block": "p_charger"},
-    {"d": "LED201", "lcsc": "C2286", "fit": true, "pins": [["A", "A", "SOLAR_IN"], ["K", "K", "LED201_K"]], "block": "p_charger"},
-    {"d": "R206", "lcsc": "C25879", "fit": true, "pins": [["1", "1", "CN_CHRG"], ["2", "2", "LED201_K"]], "block": "p_charger"},
-    {"d": "LED202", "lcsc": "C2297", "fit": true, "pins": [["A", "A", "SOLAR_IN"], ["K", "K", "LED202_K"]], "block": "p_charger"},
-    {"d": "R207", "lcsc": "C25879", "fit": true, "pins": [["1", "1", "CN_DONE"], ["2", "2", "LED202_K"]], "block": "p_charger"},
-    {"d": "C207", "lcsc": "C401746", "fit": true, "pins": [["1", "1", "RAW_BAT"], ["2", "2", "GND"]], "block": "p_charger"},
-    {"d": "C208", "lcsc": "C19666", "fit": true, "pins": [["1", "1", "RAW_BAT"], ["2", "2", "GND"]], "block": "p_charger"},
-    {"d": "C209", "lcsc": "C19702", "fit": true, "pins": [["1", "1", "RAW_BAT"], ["2", "2", "GND"]], "block": "p_charger"},
-    {"d": "C210", "lcsc": "C1525", "fit": true, "pins": [["1", "1", "RAW_BAT"], ["2", "2", "GND"]], "block": "p_charger"},
-    {"d": "U202", "lcsc": "C14289", "fit": true, "pins": [["1", "GND", "GND"], ["2", "IN", "SOLAR_IN"], ["3", "OUT", "TEMP_3V3"]], "block": "p_temp"},
-    {"d": "C211", "lcsc": "C19702", "fit": true, "pins": [["1", "1", "TEMP_3V3"], ["2", "2", "GND"]], "block": "p_temp"},
-    {"d": "C212", "lcsc": "C307331", "fit": true, "pins": [["1", "1", "TEMP_3V3"], ["2", "2", "GND"]], "block": "p_temp"},
-    {"d": "U203", "lcsc": "C5219772", "fit": true, "pins": [["1", "SETA", "TMP_SETA"], ["2", "SETB", "TMP_SETB"], ["3", "GND", "GND"], ["4", "OUTB", "TEMP_FAULT_N"], ["5", "VDD", "TEMP_3V3"], ["6", "OUTA", "TEMP_FAULT_N"]], "block": "p_temp"},
-    {"d": "R208", "lcsc": "C2933083", "fit": true, "pins": [["1", "1", "GND"], ["2", "2", "TMP_SETA"]], "block": "p_temp"},
-    {"d": "R209", "lcsc": "C11476", "fit": true, "pins": [["1", "1", "GND"], ["2", "2", "TMP_SETB"]], "block": "p_temp"},
-    {"d": "R210", "lcsc": "C25744", "fit": true, "pins": [["1", "1", "TEMP_3V3"], ["2", "2", "TEMP_FAULT_N"]], "block": "p_temp"},
-    {"d": "R211", "lcsc": "C25792", "fit": true, "pins": [["1", "1", "TEMP_FAULT_N"], ["2", "2", "TEMP_EN_DRV"]], "block": "p_temp"},
-    {"d": "R212", "lcsc": "C25741", "fit": true, "pins": [["1", "1", "TEMP_EN_DRV"], ["2", "2", "GND"]], "block": "p_temp"},
-    {"d": "Q203", "lcsc": "C20526", "fit": true, "pins": [["1", "B", "TEMP_EN_DRV"], ["2", "E", "GND"], ["3", "C", "TEMP_CLAMP"]], "block": "p_temp"},
-    {"d": "R213", "lcsc": "C25741", "fit": true, "pins": [["1", "1", "SOLAR_IN"], ["2", "2", "TEMP_CLAMP"]], "block": "p_temp"},
-    {"d": "Q204", "lcsc": "C20526", "fit": true, "pins": [["1", "B", "TEMP_CLAMP"], ["2", "E", "GND"], ["3", "C", "MPPT"]], "block": "p_temp"},
-    {"d": "J203", "lcsc": "C54582899", "fit": true, "pins": [["1", "BAT+", "BAT_CONN"], ["2", "BAT-", "GND"], ["3", "MP1", "GND"], ["4", "MP2", "GND"]], "block": "p_battery"},
-    {"d": "F202", "lcsc": "C207074", "fit": true, "pins": [["1", "1", "BAT_CONN"], ["2", "2", "BAT_FUSED"]], "block": "p_battery"},
-    {"d": "Q205", "lcsc": "C15127", "fit": true, "pins": [["1", "G", "Q205_G"], ["2", "S", "RAW_BAT"], ["3", "D", "BAT_FUSED"]], "block": "p_battery"},
-    {"d": "R214", "lcsc": "C25741", "fit": true, "pins": [["1", "1", "GND"], ["2", "2", "Q205_G"]], "block": "p_battery"},
-    {"d": "R215", "lcsc": "C26083", "fit": false, "pins": [["1", "1", "Q205_G"], ["2", "2", "RAW_BAT"]], "block": "p_battery"},
-    {"d": "U204", "lcsc": "C2842389", "fit": true, "pins": [["1", "GND", "GND"], ["2", "OUT", "KEEP_ALIVE"], ["3", "IN", "RAW_BAT"]], "block": "p_battery"},
-    {"d": "C236", "lcsc": "C19702", "fit": true, "pins": [["1", "1", "RAW_BAT"], ["2", "2", "GND"]], "block": "p_battery"},
-    {"d": "C214", "lcsc": "C19702", "fit": true, "pins": [["1", "1", "KEEP_ALIVE"], ["2", "2", "GND"]], "block": "p_battery"},
-    {"d": "C215", "lcsc": "C1525", "fit": true, "pins": [["1", "1", "KEEP_ALIVE"], ["2", "2", "GND"]], "block": "p_battery"},
-    {"d": "R216", "lcsc": "C22961", "fit": true, "pins": [["1", "1", "VBAT_SW"], ["2", "2", "BATT_SENSE"]], "block": "p_battery"},
-    {"d": "R217", "lcsc": "C25803", "fit": true, "pins": [["1", "1", "BATT_SENSE"], ["2", "2", "GND"]], "block": "p_battery"},
-    {"d": "C213", "lcsc": "C1525", "fit": true, "pins": [["1", "1", "BATT_SENSE"], ["2", "2", "GND"]], "block": "p_battery"},
-    {"d": "R218", "lcsc": "C25879", "fit": true, "pins": [["1", "1", "BATT_SENSE"], ["2", "2", "BATT_ADC"]], "block": "p_battery"},
-    {"d": "U205", "lcsc": "C107410", "fit": true, "pins": [["1", "32KHZ", "NC"], ["2", "VCC", "KEEP_ALIVE"], ["3", "INT/SQW", "RTC_INT_N"], ["4", "RST", "NC"], ["5", "GND", "GND"], ["6", "VBAT", "RTC_VBAT"], ["7", "SDA", "SYS_SDA"], ["8", "SCL", "SYS_SCL"]], "block": "p_rtc"},
-    {"d": "C216", "lcsc": "C1525", "fit": true, "pins": [["1", "1", "KEEP_ALIVE"], ["2", "2", "GND"]], "block": "p_rtc"},
-    {"d": "BT201", "lcsc": "C70381", "fit": true, "pins": [["1", "+", "RTC_VBAT"], ["2", "-", "GND"]], "block": "p_rtc"},
-    {"d": "C217", "lcsc": "C1523", "fit": true, "pins": [["1", "1", "RTC_VBAT"], ["2", "2", "GND"]], "block": "p_rtc"},
-    {"d": "R219", "lcsc": "C26083", "fit": true, "pins": [["1", "1", "RTC_INT_N"], ["2", "2", "KEEP_ALIVE"]], "block": "p_rtc"},
-    {"d": "R220", "lcsc": "C25900", "fit": true, "pins": [["1", "1", "SYS_SDA"], ["2", "2", "3V3"]], "block": "p_rtc"},
-    {"d": "R221", "lcsc": "C25900", "fit": true, "pins": [["1", "1", "SYS_SCL"], ["2", "2", "3V3"]], "block": "p_rtc"},
-    {"d": "R222", "lcsc": "C26083", "fit": true, "pins": [["1", "1", "RTC_INT_N"], ["2", "2", "Q206_B"]], "block": "p_latch"},
-    {"d": "Q206", "lcsc": "C20526", "fit": true, "pins": [["1", "B", "Q206_B"], ["2", "E", "GND"], ["3", "C", "RTC_WAKE"]], "block": "p_latch"},
-    {"d": "R223", "lcsc": "C26083", "fit": true, "pins": [["1", "1", "RTC_WAKE"], ["2", "2", "KEEP_ALIVE"]], "block": "p_latch"},
-    {"d": "Q207", "lcsc": "C8545", "fit": true, "pins": [["1", "G", "RTC_WAKE"], ["2", "S", "GND"], ["3", "D", "WAKE_N"]], "block": "p_latch"},
-    {"d": "Q208", "lcsc": "C8545", "fit": true, "pins": [["1", "G", "PWR_HOLD"], ["2", "S", "GND"], ["3", "D", "WAKE_N"]], "block": "p_latch"},
-    {"d": "R224", "lcsc": "C25741", "fit": true, "pins": [["1", "1", "PWR_HOLD"], ["2", "2", "GND"]], "block": "p_latch"},
-    {"d": "Q209", "lcsc": "C8545", "fit": true, "pins": [["1", "G", "USB_WAKE"], ["2", "S", "GND"], ["3", "D", "WAKE_N"]], "block": "p_latch"},
-    {"d": "R225", "lcsc": "C25744", "fit": true, "pins": [["1", "1", "VBUS"], ["2", "2", "USB_WAKE"]], "block": "p_latch"},
-    {"d": "R226", "lcsc": "C25741", "fit": true, "pins": [["1", "1", "USB_WAKE"], ["2", "2", "GND"]], "block": "p_latch"},
-    {"d": "R227", "lcsc": "C25076", "fit": true, "pins": [["1", "1", "WAKE_N"], ["2", "2", "LATCH_LOGIC"]], "block": "p_latch"},
-    {"d": "SW201", "lcsc": "C221895", "fit": true, "pins": [["1", "1", "LATCH_LOGIC"], ["2", "2", "LATCH_LOGIC"], ["3", "3", "GND"], ["4", "4", "GND"]], "block": "p_latch"},
-    {"d": "SW202", "lcsc": "C109335", "fit": true, "pins": [["1", "1", "LATCH_LOGIC"], ["2", "2", "SYS_GATE"], ["3", "3", "NC"], ["4", "GND", "GND"], ["5", "GND", "GND"], ["6", "GND", "GND"], ["7", "GND", "GND"]], "block": "p_latch"},
-    {"d": "Q210", "lcsc": "C15127", "fit": true, "pins": [["1", "G", "SYS_GATE"], ["2", "S", "RAW_BAT"], ["3", "D", "VBAT_SW"]], "block": "p_latch"},
-    {"d": "R228", "lcsc": "C25792", "fit": true, "pins": [["1", "1", "SYS_GATE"], ["2", "2", "RAW_BAT"]], "block": "p_latch"},
-    {"d": "C218", "lcsc": "C1622", "fit": true, "pins": [["1", "1", "SYS_GATE"], ["2", "2", "RAW_BAT"]], "block": "p_latch"},
-    {"d": "C219", "lcsc": "C2977552", "fit": true, "pins": [["1", "1", "VBAT_SW"], ["2", "2", "GND"]], "block": "p_latch"},
-    {"d": "C220", "lcsc": "C86295", "fit": true, "pins": [["1", "1", "VBAT_SW"], ["2", "2", "GND"]], "block": "p_latch"},
-    {"d": "C221", "lcsc": "C1525", "fit": true, "pins": [["1", "1", "VBAT_SW"], ["2", "2", "GND"]], "block": "p_latch"},
-    {"d": "U206", "lcsc": "C2845237", "fit": true, "pins": [["1", "EN", "VBAT_SW"], ["2", "MODE", "GND"], ["3", "AGND", "GND"], ["4", "FB", "FB_3V3"], ["5", "PG", "ESP_EN"], ["6", "VOUT", "3V3"], ["7", "L2", "BB_L2"], ["8", "GND", "GND"], ["9", "L1", "BB_L1"], ["10", "VIN", "VBAT_SW"]], "block": "p_3v3"},
-    {"d": "L202", "lcsc": "C668312", "fit": true, "pins": [["1", "1", "BB_L1"], ["2", "2", "BB_L2"]], "block": "p_3v3"},
-    {"d": "R230", "lcsc": "C23192", "fit": true, "pins": [["1", "1", "3V3"], ["2", "2", "FB_3V3"]], "block": "p_3v3"},
-    {"d": "R231", "lcsc": "C23265", "fit": true, "pins": [["1", "1", "FB_3V3"], ["2", "2", "GND"]], "block": "p_3v3"},
-    {"d": "C222", "lcsc": "C86295", "fit": true, "pins": [["1", "1", "VBAT_SW"], ["2", "2", "GND"]], "block": "p_3v3"},
-    {"d": "C223", "lcsc": "C1525", "fit": true, "pins": [["1", "1", "VBAT_SW"], ["2", "2", "GND"]], "block": "p_3v3"},
-    {"d": "C224", "lcsc": "C86295", "fit": true, "pins": [["1", "1", "3V3"], ["2", "2", "GND"]], "block": "p_3v3"},
-    {"d": "C225", "lcsc": "C86295", "fit": true, "pins": [["1", "1", "3V3"], ["2", "2", "GND"]], "block": "p_3v3"},
-    {"d": "C226", "lcsc": "C1525", "fit": true, "pins": [["1", "1", "3V3"], ["2", "2", "GND"]], "block": "p_3v3"},
-    {"d": "U207", "lcsc": "C15483", "fit": true, "pins": [["1", "VINA", "VBAT_SW"], ["2", "GND", "GND"], ["3", "FB", "FB_M"], ["4", "VOUT", "VMODEM"], ["5", "VOUT", "VMODEM"], ["6", "L2", "M_L2"], ["7", "L2", "M_L2"], ["8", "L1", "M_L1"], ["9", "L1", "M_L1"], ["10", "VIN", "VBAT_SW"], ["11", "VIN", "VBAT_SW"], ["12", "EN", "MODEM_EN_F"], ["13", "PS/SYNC", "M_PS"], ["14", "PG", "MODEM_PG"], ["EP", "PGND", "GND"]], "block": "p_modem"},
-    {"d": "L203", "lcsc": "C53896855", "fit": true, "pins": [["1", "1", "M_L1"], ["2", "2", "M_L2"]], "block": "p_modem"},
-    {"d": "R232", "lcsc": "C2909377", "fit": true, "pins": [["1", "1", "VMODEM"], ["2", "2", "FB_M"]], "block": "p_modem"},
-    {"d": "C227", "lcsc": "C325453", "fit": true, "pins": [["1", "1", "VMODEM"], ["2", "2", "FB_M"]], "block": "p_modem"},
-    {"d": "R233", "lcsc": "C25741", "fit": true, "pins": [["1", "1", "FB_M"], ["2", "2", "GND"]], "block": "p_modem"},
-    {"d": "R234", "lcsc": "C25076", "fit": true, "pins": [["1", "1", "MODEM_EN"], ["2", "2", "MODEM_EN_F"]], "block": "p_modem"},
-    {"d": "R235", "lcsc": "C25741", "fit": true, "pins": [["1", "1", "MODEM_EN"], ["2", "2", "GND"]], "block": "p_modem"},
-    {"d": "R236", "lcsc": "C25741", "fit": true, "pins": [["1", "1", "M_PS"], ["2", "2", "VBAT_SW"]], "block": "p_modem"},
-    {"d": "R237", "lcsc": "C26083", "fit": true, "pins": [["1", "1", "MODEM_PG"], ["2", "2", "3V3"]], "block": "p_modem"},
-    {"d": "C228", "lcsc": "C86295", "fit": true, "pins": [["1", "1", "VBAT_SW"], ["2", "2", "GND"]], "block": "p_modem"},
-    {"d": "C229", "lcsc": "C1525", "fit": true, "pins": [["1", "1", "VBAT_SW"], ["2", "2", "GND"]], "block": "p_modem"},
-    {"d": "C230", "lcsc": "C86295", "fit": true, "pins": [["1", "1", "VMODEM"], ["2", "2", "GND"]], "block": "p_modem"},
-    {"d": "C231", "lcsc": "C86295", "fit": true, "pins": [["1", "1", "VMODEM"], ["2", "2", "GND"]], "block": "p_modem"},
-    {"d": "C232", "lcsc": "C86295", "fit": true, "pins": [["1", "1", "VMODEM"], ["2", "2", "GND"]], "block": "p_modem"},
-    {"d": "C233", "lcsc": "C2977552", "fit": true, "pins": [["1", "1", "VMODEM"], ["2", "2", "GND"]], "block": "p_modem"},
-    {"d": "C234", "lcsc": "C1525", "fit": true, "pins": [["1", "1", "VMODEM"], ["2", "2", "GND"]], "block": "p_modem"},
-    {"d": "D205", "lcsc": "C46956328", "fit": false, "pins": [["K", "K", "VMODEM"], ["A", "A", "GND"]], "block": "p_modem"},
-    {"d": "TP201", "lcsc": "", "fit": true, "pins": [["1", "TP", "SOLAR_IN"]], "block": "p_test", "prefix": "TP"},
-    {"d": "TP202", "lcsc": "", "fit": true, "pins": [["1", "TP", "MPPT"]], "block": "p_test", "prefix": "TP"},
-    {"d": "TP203", "lcsc": "", "fit": true, "pins": [["1", "TP", "CHG_SW"]], "block": "p_test", "prefix": "TP"},
-    {"d": "TP204", "lcsc": "", "fit": true, "pins": [["1", "TP", "CHARGE_SENSE"]], "block": "p_test", "prefix": "TP"},
-    {"d": "TP205", "lcsc": "", "fit": true, "pins": [["1", "TP", "TEMP_FAULT_N"]], "block": "p_test", "prefix": "TP"},
-    {"d": "TP206", "lcsc": "", "fit": true, "pins": [["1", "TP", "RAW_BAT"]], "block": "p_test", "prefix": "TP"},
-    {"d": "TP207", "lcsc": "", "fit": true, "pins": [["1", "TP", "KEEP_ALIVE"]], "block": "p_test", "prefix": "TP"},
-    {"d": "TP208", "lcsc": "", "fit": true, "pins": [["1", "TP", "RTC_INT_N"]], "block": "p_test", "prefix": "TP"},
-    {"d": "TP209", "lcsc": "", "fit": true, "pins": [["1", "TP", "SYS_GATE"]], "block": "p_test", "prefix": "TP"},
-    {"d": "TP210", "lcsc": "", "fit": true, "pins": [["1", "TP", "VBAT_SW"]], "block": "p_test", "prefix": "TP"},
-    {"d": "TP211", "lcsc": "", "fit": true, "pins": [["1", "TP", "3V3"]], "block": "p_test", "prefix": "TP"},
-    {"d": "TP212", "lcsc": "", "fit": true, "pins": [["1", "TP", "VMODEM"]], "block": "p_test", "prefix": "TP"},
-    {"d": "TP213", "lcsc": "", "fit": true, "pins": [["1", "TP", "GND"]], "block": "p_test", "prefix": "TP"},
+    {"d": "J201", "lcsc": "C695629", "mpn": "DB301V-3.5-2P-GN-S", "fit": true, "pins": [["1", "+", "PANEL_IN"], ["2", "-", "GND"]], "block": "p_solar"},
+    {"d": "J202", "lcsc": "C695629", "mpn": "DB301V-3.5-2P-GN-S", "fit": true, "pins": [["1", "+", "PANEL_IN"], ["2", "-", "GND"]], "block": "p_solar"},
+    {"d": "F201", "lcsc": "C207066", "mpn": "1812L110/24DR", "fit": true, "pins": [["1", "1", "PANEL_IN"], ["2", "2", "PANEL_FUSED"]], "block": "p_solar"},
+    {"d": "D201", "lcsc": "C353317", "mpn": "SMF12CA", "fit": true, "pins": [["1", "1", "PANEL_FUSED"], ["2", "2", "GND"]], "block": "p_solar"},
+    {"d": "Q201", "lcsc": "C15127", "mpn": "AO3401A", "fit": true, "pins": [["1", "G", "Q201_G"], ["2", "S", "SOLAR_IN"], ["3", "D", "PANEL_FUSED"]], "block": "p_solar"},
+    {"d": "R201", "lcsc": "C25768", "mpn": "0402WGF2202TCE", "fit": true, "pins": [["1", "1", "GND"], ["2", "2", "Q201_G"]], "block": "p_solar"},
+    {"d": "D202", "lcsc": "C22395557", "mpn": "MMSZ5237B", "fit": true, "pins": [["K", "K", "SOLAR_IN"], ["A", "A", "Q201_G"]], "block": "p_solar"},
+    {"d": "C201", "lcsc": "C2161857", "mpn": "APXG250ARA470MF61G", "fit": true, "pins": [["1", "1", "SOLAR_IN"], ["2", "2", "GND"]], "block": "p_solar"},
+    {"d": "C202", "lcsc": "C1779", "mpn": "CL21A475KAQNNNE", "fit": true, "pins": [["1", "1", "SOLAR_IN"], ["2", "2", "GND"]], "block": "p_solar"},
+    {"d": "C203", "lcsc": "C15850", "mpn": "CL21A106KAYNNNE", "fit": true, "pins": [["1", "1", "SOLAR_IN"], ["2", "2", "GND"]], "block": "p_solar"},
+    {"d": "C204", "lcsc": "C307331", "mpn": "CL05B104KB54PNC", "fit": true, "pins": [["1", "1", "SOLAR_IN"], ["2", "2", "GND"]], "block": "p_solar"},
+    {"d": "R238", "lcsc": "C26083", "mpn": "0402WGF1004TCE", "fit": true, "pins": [["1", "1", "SOLAR_IN"], ["2", "2", "SOLAR_SENSE"]], "block": "p_solar"},
+    {"d": "R239", "lcsc": "C25755", "mpn": "0402WGF1503TCE", "fit": true, "pins": [["1", "1", "SOLAR_SENSE"], ["2", "2", "GND"]], "block": "p_solar"},
+    {"d": "C235", "lcsc": "C1525", "mpn": "CL05B104KO5NNNC", "fit": true, "pins": [["1", "1", "SOLAR_SENSE"], ["2", "2", "GND"]], "block": "p_solar"},
+    {"d": "R240", "lcsc": "C25879", "mpn": "0402WGF2201TCE", "fit": true, "pins": [["1", "1", "SOLAR_SENSE"], ["2", "2", "SOLAR_ADC"]], "block": "p_solar"},
+    {"d": "U201", "lcsc": "C154992", "mpn": "CN3791", "fit": true, "pins": [["1", "VG", "CN_VG"], ["2", "GND", "GND"], ["3", "CHRG", "CN_CHRG"], ["4", "DONE", "CN_DONE"], ["5", "COM", "CN_COM"], ["6", "MPPT", "MPPT"], ["7", "BAT", "RAW_BAT"], ["8", "CSP", "CHARGE_SENSE"], ["9", "VCC", "SOLAR_IN"], ["10", "DRV", "CN_DRV"]], "block": "p_charger"},
+    {"d": "C205", "lcsc": "C307331", "mpn": "CL05B104KB54PNC", "fit": true, "pins": [["1", "1", "SOLAR_IN"], ["2", "2", "CN_VG"]], "block": "p_charger"},
+    {"d": "R204", "lcsc": "C5126256", "mpn": "FRC0402F4023TS", "fit": true, "pins": [["1", "1", "SOLAR_IN"], ["2", "2", "MPPT"]], "block": "p_charger"},
+    {"d": "R205", "lcsc": "C25741", "mpn": "0402WGF1003TCE", "fit": true, "pins": [["1", "1", "MPPT"], ["2", "2", "GND"]], "block": "p_charger"},
+    {"d": "Q202", "lcsc": "C15127", "mpn": "AO3401A", "fit": true, "pins": [["1", "G", "CN_DRV"], ["2", "S", "SOLAR_IN"], ["3", "D", "CHG_SW_RAW"]], "block": "p_charger"},
+    {"d": "D203", "lcsc": "C193342", "mpn": "PMEG4010CEH,115", "fit": true, "pins": [["K", "K", "CHG_SW"], ["A", "A", "CHG_SW_RAW"]], "block": "p_charger"},
+    {"d": "D204", "lcsc": "C193342", "mpn": "PMEG4010CEH,115", "fit": true, "pins": [["K", "K", "CHG_SW"], ["A", "A", "GND"]], "block": "p_charger"},
+    {"d": "L201", "lcsc": "C36414", "mpn": "SWPA6045S470MT", "fit": true, "pins": [["1", "1", "CHARGE_SENSE"], ["2", "2", "CHG_SW"]], "block": "p_charger"},
+    {"d": "R202", "lcsc": "C309630", "mpn": "RL1206FR-070R2L", "fit": true, "pins": [["1", "1", "RAW_BAT"], ["2", "2", "CHARGE_SENSE"]], "block": "p_charger"},
+    {"d": "R203", "lcsc": "C25079", "mpn": "0402WGF1200TCE", "fit": true, "pins": [["1", "1", "CN_COMRC"], ["2", "2", "CN_COM"]], "block": "p_charger"},
+    {"d": "C206", "lcsc": "C16772", "mpn": "CL05B224KO5NNNC", "fit": true, "pins": [["1", "1", "GND"], ["2", "2", "CN_COMRC"]], "block": "p_charger"},
+    {"d": "LED201", "lcsc": "C2286", "mpn": "KT-0603R", "fit": true, "pins": [["A", "A", "SOLAR_IN"], ["K", "K", "LED201_K"]], "block": "p_charger"},
+    {"d": "R206", "lcsc": "C25879", "mpn": "0402WGF2201TCE", "fit": true, "pins": [["1", "1", "CN_CHRG"], ["2", "2", "LED201_K"]], "block": "p_charger"},
+    {"d": "LED202", "lcsc": "C2297", "mpn": "KT-0805G", "fit": true, "pins": [["A", "A", "SOLAR_IN"], ["K", "K", "LED202_K"]], "block": "p_charger"},
+    {"d": "R207", "lcsc": "C25879", "mpn": "0402WGF2201TCE", "fit": true, "pins": [["1", "1", "CN_DONE"], ["2", "2", "LED202_K"]], "block": "p_charger"},
+    {"d": "C207", "lcsc": "C401746", "mpn": "EEEFP1C100AR", "fit": true, "pins": [["1", "1", "RAW_BAT"], ["2", "2", "GND"]], "block": "p_charger"},
+    {"d": "C208", "lcsc": "C19666", "mpn": "CL10A475KO8NNNC", "fit": true, "pins": [["1", "1", "RAW_BAT"], ["2", "2", "GND"]], "block": "p_charger"},
+    {"d": "C209", "lcsc": "C19702", "mpn": "CL10A106KP8NNNC", "fit": true, "pins": [["1", "1", "RAW_BAT"], ["2", "2", "GND"]], "block": "p_charger"},
+    {"d": "C210", "lcsc": "C1525", "mpn": "CL05B104KO5NNNC", "fit": true, "pins": [["1", "1", "RAW_BAT"], ["2", "2", "GND"]], "block": "p_charger"},
+    {"d": "U202", "lcsc": "C14289", "mpn": "HT7533-1", "fit": true, "pins": [["1", "GND", "GND"], ["2", "IN", "SOLAR_IN"], ["3", "OUT", "TEMP_3V3"]], "block": "p_temp"},
+    {"d": "C211", "lcsc": "C19702", "mpn": "CL10A106KP8NNNC", "fit": true, "pins": [["1", "1", "TEMP_3V3"], ["2", "2", "GND"]], "block": "p_temp"},
+    {"d": "U208", "lcsc": "C9965", "mpn": "MAX809STRG", "fit": true, "pins": [["1", "GND", "GND"], ["2", "RESET#", "TEMP_VDD"], ["3", "VCC", "TEMP_3V3"]], "block": "p_temp"},
+    {"d": "C212", "lcsc": "C307331", "mpn": "CL05B104KB54PNC", "fit": true, "pins": [["1", "1", "TEMP_VDD"], ["2", "2", "GND"]], "block": "p_temp"},
+    {"d": "U203", "lcsc": "C5219772", "mpn": "TMP390A2DRLR", "fit": true, "pins": [["1", "SETA", "TMP_SETA"], ["2", "SETB", "TMP_SETB"], ["3", "GND", "GND"], ["4", "OUTB", "TEMP_FAULT_N"], ["5", "VDD", "TEMP_VDD"], ["6", "OUTA", "TEMP_FAULT_N"]], "block": "p_temp"},
+    {"d": "R208", "lcsc": "C2933083", "mpn": "FRC0402F2491TS", "fit": true, "pins": [["1", "1", "GND"], ["2", "2", "TMP_SETA"]], "block": "p_temp"},
+    {"d": "R209", "lcsc": "C11476", "mpn": "0402WGF1872TCE", "fit": true, "pins": [["1", "1", "GND"], ["2", "2", "TMP_SETB"]], "block": "p_temp"},
+    {"d": "R210", "lcsc": "C25792", "mpn": "0402WGF4702TCE", "fit": true, "pins": [["1", "1", "TEMP_VDD"], ["2", "2", "TEMP_FAULT_N"]], "block": "p_temp"},
+    {"d": "R211", "lcsc": "C25792", "mpn": "0402WGF4702TCE", "fit": true, "pins": [["1", "1", "TEMP_FAULT_N"], ["2", "2", "TEMP_EN_DRV"]], "block": "p_temp"},
+    {"d": "R212", "lcsc": "C25741", "mpn": "0402WGF1003TCE", "fit": true, "pins": [["1", "1", "TEMP_EN_DRV"], ["2", "2", "GND"]], "block": "p_temp"},
+    {"d": "Q203", "lcsc": "C20526", "mpn": "MMBT3904", "fit": true, "pins": [["1", "B", "TEMP_EN_DRV"], ["2", "E", "GND"], ["3", "C", "TEMP_CLAMP"]], "block": "p_temp"},
+    {"d": "R213", "lcsc": "C25741", "mpn": "0402WGF1003TCE", "fit": true, "pins": [["1", "1", "SOLAR_IN"], ["2", "2", "TEMP_CLAMP"]], "block": "p_temp"},
+    {"d": "Q204", "lcsc": "C20526", "mpn": "MMBT3904", "fit": true, "pins": [["1", "B", "TEMP_CLAMP"], ["2", "E", "GND"], ["3", "C", "MPPT"]], "block": "p_temp"},
+    {"d": "J203", "lcsc": "C54582899", "mpn": "XY-S2B-PH-SM4-TB", "fit": true, "pins": [["1", "BAT+", "BAT_CONN"], ["2", "BAT-", "GND"], ["3", "MP1", "GND"], ["4", "MP2", "GND"]], "block": "p_battery"},
+    {"d": "F202", "lcsc": "C207074", "mpn": "1812L200THPR", "fit": true, "pins": [["1", "1", "BAT_CONN"], ["2", "2", "BAT_FUSED"]], "block": "p_battery"},
+    {"d": "Q205", "lcsc": "C15127", "mpn": "AO3401A", "fit": true, "pins": [["1", "G", "Q205_G"], ["2", "S", "RAW_BAT"], ["3", "D", "BAT_FUSED"]], "block": "p_battery"},
+    {"d": "R214", "lcsc": "C25741", "mpn": "0402WGF1003TCE", "fit": true, "pins": [["1", "1", "GND"], ["2", "2", "Q205_G"]], "block": "p_battery"},
+    {"d": "R215", "lcsc": "C26083", "mpn": "0402WGF1004TCE", "fit": false, "pins": [["1", "1", "Q205_G"], ["2", "2", "RAW_BAT"]], "block": "p_battery"},
+    {"d": "U204", "lcsc": "C2842389", "mpn": "TPL720F33-3TR", "fit": true, "pins": [["1", "GND", "GND"], ["2", "OUT", "KEEP_ALIVE"], ["3", "IN", "RAW_BAT"]], "block": "p_battery"},
+    {"d": "C236", "lcsc": "C19702", "mpn": "CL10A106KP8NNNC", "fit": true, "pins": [["1", "1", "RAW_BAT"], ["2", "2", "GND"]], "block": "p_battery"},
+    {"d": "C214", "lcsc": "C19702", "mpn": "CL10A106KP8NNNC", "fit": true, "pins": [["1", "1", "KEEP_ALIVE"], ["2", "2", "GND"]], "block": "p_battery"},
+    {"d": "C215", "lcsc": "C1525", "mpn": "CL05B104KO5NNNC", "fit": true, "pins": [["1", "1", "KEEP_ALIVE"], ["2", "2", "GND"]], "block": "p_battery"},
+    {"d": "R216", "lcsc": "C22961", "mpn": "0603WAF2203T5E", "fit": true, "pins": [["1", "1", "VBAT_SW"], ["2", "2", "BATT_SENSE"]], "block": "p_battery"},
+    {"d": "R217", "lcsc": "C25803", "mpn": "0603WAF1003T5E", "fit": true, "pins": [["1", "1", "BATT_SENSE"], ["2", "2", "GND"]], "block": "p_battery"},
+    {"d": "C213", "lcsc": "C1525", "mpn": "CL05B104KO5NNNC", "fit": true, "pins": [["1", "1", "BATT_SENSE"], ["2", "2", "GND"]], "block": "p_battery"},
+    {"d": "R218", "lcsc": "C25879", "mpn": "0402WGF2201TCE", "fit": true, "pins": [["1", "1", "BATT_SENSE"], ["2", "2", "BATT_ADC"]], "block": "p_battery"},
+    {"d": "U205", "lcsc": "C107410", "mpn": "DS3231MZ+TRL", "fit": true, "pins": [["1", "32KHZ", "NC"], ["2", "VCC", "KEEP_ALIVE"], ["3", "INT/SQW", "WAKE_N"], ["4", "RST", "NC"], ["5", "GND", "GND"], ["6", "VBAT", "RTC_VBAT"], ["7", "SDA", "SYS_SDA"], ["8", "SCL", "SYS_SCL"]], "block": "p_rtc"},
+    {"d": "C216", "lcsc": "C1525", "mpn": "CL05B104KO5NNNC", "fit": true, "pins": [["1", "1", "KEEP_ALIVE"], ["2", "2", "GND"]], "block": "p_rtc"},
+    {"d": "BT201", "lcsc": "C70381", "mpn": "CR1220-2", "fit": true, "pins": [["1", "+", "RTC_VBAT"], ["2", "-", "GND"]], "block": "p_rtc"},
+    {"d": "C217", "lcsc": "C1523", "mpn": "0402B102K500NT", "fit": true, "pins": [["1", "1", "RTC_VBAT"], ["2", "2", "GND"]], "block": "p_rtc"},
+    {"d": "R220", "lcsc": "C25900", "mpn": "0402WGF4701TCE", "fit": true, "pins": [["1", "1", "SYS_SDA"], ["2", "2", "3V3"]], "block": "p_rtc"},
+    {"d": "R221", "lcsc": "C25900", "mpn": "0402WGF4701TCE", "fit": true, "pins": [["1", "1", "SYS_SCL"], ["2", "2", "3V3"]], "block": "p_rtc"},
+    {"d": "Q208", "lcsc": "C8545", "mpn": "2N7002", "fit": true, "pins": [["1", "G", "PWR_HOLD"], ["2", "S", "GND"], ["3", "D", "WAKE_N"]], "block": "p_latch"},
+    {"d": "R224", "lcsc": "C25741", "mpn": "0402WGF1003TCE", "fit": true, "pins": [["1", "1", "PWR_HOLD"], ["2", "2", "GND"]], "block": "p_latch"},
+    {"d": "Q209", "lcsc": "C8545", "mpn": "2N7002", "fit": true, "pins": [["1", "G", "USB_WAKE"], ["2", "S", "GND"], ["3", "D", "WAKE_N"]], "block": "p_latch"},
+    {"d": "R225", "lcsc": "C25744", "mpn": "0402WGF1002TCE", "fit": true, "pins": [["1", "1", "VBUS"], ["2", "2", "USB_WAKE"]], "block": "p_latch"},
+    {"d": "R226", "lcsc": "C25741", "mpn": "0402WGF1003TCE", "fit": true, "pins": [["1", "1", "USB_WAKE"], ["2", "2", "GND"]], "block": "p_latch"},
+    {"d": "R227", "lcsc": "C25076", "mpn": "0402WGF1000TCE", "fit": true, "pins": [["1", "1", "WAKE_N"], ["2", "2", "LATCH_LOGIC"]], "block": "p_latch"},
+    {"d": "SW201", "lcsc": "C221895", "mpn": "PTS810SJG250SMTRLFS", "fit": true, "pins": [["1", "1", "BTN_N"], ["2", "2", "BTN_N"], ["3", "3", "GND"], ["4", "4", "GND"]], "block": "p_latch"},
+    {"d": "D206", "lcsc": "C2128", "mpn": "1N4148WS", "fit": true, "pins": [["A", "A", "LATCH_LOGIC"], ["K", "K", "BTN_N"]], "block": "p_latch"},
+    {"d": "R246", "lcsc": "C26083", "mpn": "0402WGF1004TCE", "fit": true, "pins": [["1", "1", "BTN_N"], ["2", "2", "RAW_BAT"]], "block": "p_latch"},
+    {"d": "Q211", "lcsc": "C8545", "mpn": "2N7002", "fit": true, "pins": [["1", "G", "BTN_N"], ["2", "S", "GND"], ["3", "D", "BTN_SENSE"]], "block": "p_latch"},
+    {"d": "SW202", "lcsc": "C109335", "mpn": "SSSS811101", "fit": true, "pins": [["1", "1", "LATCH_LOGIC"], ["2", "2", "SYS_GATE"], ["3", "3", "NC"], ["4", "GND", "GND"], ["5", "GND", "GND"], ["6", "GND", "GND"], ["7", "GND", "GND"]], "block": "p_latch"},
+    {"d": "Q210", "lcsc": "C15127", "mpn": "AO3401A", "fit": true, "pins": [["1", "G", "Q210_G"], ["2", "S", "RAW_BAT"], ["3", "D", "VBAT_SW"]], "block": "p_latch"},
+    {"d": "R228", "lcsc": "C25792", "mpn": "0402WGF4702TCE", "fit": true, "pins": [["1", "1", "SYS_GATE"], ["2", "2", "RAW_BAT"]], "block": "p_latch"},
+    {"d": "R245", "lcsc": "C17168", "mpn": "0402WGF0000TCE", "fit": true, "pins": [["1", "1", "SYS_GATE"], ["2", "2", "Q210_G"]], "block": "p_latch"},
+    {"d": "C218", "lcsc": "C1622", "mpn": "CL10B473KB8NNNC", "fit": true, "pins": [["1", "1", "Q210_G"], ["2", "2", "RAW_BAT"]], "block": "p_latch"},
+    {"d": "C237", "lcsc": "C14663", "mpn": "CC0603KRX7R9BB104", "fit": false, "pins": [["1", "1", "Q210_G"], ["2", "2", "VBAT_SW"]], "block": "p_latch"},
+    {"d": "C219", "lcsc": "C2977552", "mpn": "RVT1C471M0607", "fit": true, "pins": [["1", "1", "VBAT_SW"], ["2", "2", "GND"]], "block": "p_latch"},
+    {"d": "C220", "lcsc": "C86295", "mpn": "CL10A226MP8NUNE", "fit": true, "pins": [["1", "1", "VBAT_SW"], ["2", "2", "GND"]], "block": "p_latch"},
+    {"d": "C221", "lcsc": "C1525", "mpn": "CL05B104KO5NNNC", "fit": true, "pins": [["1", "1", "VBAT_SW"], ["2", "2", "GND"]], "block": "p_latch"},
+    {"d": "U206", "lcsc": "C2845237", "mpn": "TPS63802DLAR", "fit": true, "pins": [["1", "EN", "BB_EN"], ["2", "MODE", "BB_MODE"], ["3", "AGND", "GND"], ["4", "FB", "FB_3V3"], ["5", "PG", "ESP_EN"], ["6", "VOUT", "3V3"], ["7", "L2", "BB_L2"], ["8", "GND", "GND"], ["9", "L1", "BB_L1"], ["10", "VIN", "VBAT_SW"]], "block": "p_3v3"},
+    {"d": "L202", "lcsc": "C668312", "mpn": "DFE201612E-R47M=P2", "fit": true, "pins": [["1", "1", "BB_L1"], ["2", "2", "BB_L2"]], "block": "p_3v3"},
+    {"d": "R230", "lcsc": "C23192", "mpn": "0603WAF5103T5E", "fit": true, "pins": [["1", "1", "3V3"], ["2", "2", "FB_3V3"]], "block": "p_3v3"},
+    {"d": "R231", "lcsc": "C23265", "mpn": "0603WAF9102T5E", "fit": true, "pins": [["1", "1", "FB_3V3"], ["2", "2", "GND"]], "block": "p_3v3"},
+    {"d": "R241", "lcsc": "C25755", "mpn": "0402WGF1503TCE", "fit": true, "pins": [["1", "1", "VBAT_SW"], ["2", "2", "BB_EN"]], "block": "p_3v3"},
+    {"d": "R242", "lcsc": "C25741", "mpn": "0402WGF1003TCE", "fit": true, "pins": [["1", "1", "BB_EN"], ["2", "2", "GND"]], "block": "p_3v3"},
+    {"d": "R243", "lcsc": "C25741", "mpn": "0402WGF1003TCE", "fit": true, "pins": [["1", "1", "BB_MODE"], ["2", "2", "GND"]], "block": "p_3v3"},
+    {"d": "R244", "lcsc": "C17168", "mpn": "0402WGF0000TCE", "fit": false, "pins": [["1", "1", "BB_MODE"], ["2", "2", "BB_MODE_CTL"]], "block": "p_3v3"},
+    {"d": "C222", "lcsc": "C86295", "mpn": "CL10A226MP8NUNE", "fit": true, "pins": [["1", "1", "VBAT_SW"], ["2", "2", "GND"]], "block": "p_3v3"},
+    {"d": "C223", "lcsc": "C1525", "mpn": "CL05B104KO5NNNC", "fit": true, "pins": [["1", "1", "VBAT_SW"], ["2", "2", "GND"]], "block": "p_3v3"},
+    {"d": "C224", "lcsc": "C86295", "mpn": "CL10A226MP8NUNE", "fit": true, "pins": [["1", "1", "3V3"], ["2", "2", "GND"]], "block": "p_3v3"},
+    {"d": "C225", "lcsc": "C86295", "mpn": "CL10A226MP8NUNE", "fit": true, "pins": [["1", "1", "3V3"], ["2", "2", "GND"]], "block": "p_3v3"},
+    {"d": "C226", "lcsc": "C1525", "mpn": "CL05B104KO5NNNC", "fit": true, "pins": [["1", "1", "3V3"], ["2", "2", "GND"]], "block": "p_3v3"},
+    {"d": "U207", "lcsc": "C15483", "mpn": "TPS63020DSJR", "fit": true, "pins": [["1", "VINA", "VBAT_SW"], ["2", "GND", "GND"], ["3", "FB", "FB_M"], ["4", "VOUT", "VMODEM"], ["5", "VOUT", "VMODEM"], ["6", "L2", "M_L2"], ["7", "L2", "M_L2"], ["8", "L1", "M_L1"], ["9", "L1", "M_L1"], ["10", "VIN", "VBAT_SW"], ["11", "VIN", "VBAT_SW"], ["12", "EN", "MODEM_EN_F"], ["13", "PS/SYNC", "M_PS"], ["14", "PG", "MODEM_PG"], ["EP", "PGND", "GND"]], "block": "p_modem"},
+    {"d": "L203", "lcsc": "C53896855", "mpn": "PCR0420-1R5-M", "fit": true, "pins": [["1", "1", "M_L1"], ["2", "2", "M_L2"]], "block": "p_modem"},
+    {"d": "R232", "lcsc": "C2909377", "mpn": "FRC0402F6803TS", "fit": true, "pins": [["1", "1", "VMODEM"], ["2", "2", "FB_M"]], "block": "p_modem"},
+    {"d": "C227", "lcsc": "C325453", "mpn": "CC0402BRNPO9BN4R7", "fit": true, "pins": [["1", "1", "VMODEM"], ["2", "2", "FB_M"]], "block": "p_modem"},
+    {"d": "R233", "lcsc": "C25741", "mpn": "0402WGF1003TCE", "fit": true, "pins": [["1", "1", "FB_M"], ["2", "2", "GND"]], "block": "p_modem"},
+    {"d": "R234", "lcsc": "C25076", "mpn": "0402WGF1000TCE", "fit": true, "pins": [["1", "1", "MODEM_EN"], ["2", "2", "MODEM_EN_F"]], "block": "p_modem"},
+    {"d": "R235", "lcsc": "C25741", "mpn": "0402WGF1003TCE", "fit": true, "pins": [["1", "1", "MODEM_EN"], ["2", "2", "GND"]], "block": "p_modem"},
+    {"d": "R236", "lcsc": "C25741", "mpn": "0402WGF1003TCE", "fit": true, "pins": [["1", "1", "M_PS"], ["2", "2", "VBAT_SW"]], "block": "p_modem"},
+    {"d": "R237", "lcsc": "C26083", "mpn": "0402WGF1004TCE", "fit": true, "pins": [["1", "1", "MODEM_PG"], ["2", "2", "3V3"]], "block": "p_modem"},
+    {"d": "C228", "lcsc": "C86295", "mpn": "CL10A226MP8NUNE", "fit": true, "pins": [["1", "1", "VBAT_SW"], ["2", "2", "GND"]], "block": "p_modem"},
+    {"d": "C229", "lcsc": "C1525", "mpn": "CL05B104KO5NNNC", "fit": true, "pins": [["1", "1", "VBAT_SW"], ["2", "2", "GND"]], "block": "p_modem"},
+    {"d": "C230", "lcsc": "C86295", "mpn": "CL10A226MP8NUNE", "fit": true, "pins": [["1", "1", "VMODEM"], ["2", "2", "GND"]], "block": "p_modem"},
+    {"d": "C231", "lcsc": "C86295", "mpn": "CL10A226MP8NUNE", "fit": true, "pins": [["1", "1", "VMODEM"], ["2", "2", "GND"]], "block": "p_modem"},
+    {"d": "C232", "lcsc": "C86295", "mpn": "CL10A226MP8NUNE", "fit": true, "pins": [["1", "1", "VMODEM"], ["2", "2", "GND"]], "block": "p_modem"},
+    {"d": "C233", "lcsc": "C2977552", "mpn": "RVT1C471M0607", "fit": true, "pins": [["1", "1", "VMODEM"], ["2", "2", "GND"]], "block": "p_modem"},
+    {"d": "C234", "lcsc": "C1525", "mpn": "CL05B104KO5NNNC", "fit": true, "pins": [["1", "1", "VMODEM"], ["2", "2", "GND"]], "block": "p_modem"},
+    {"d": "D205", "lcsc": "C46956328", "mpn": "SMAJ5.0A", "fit": false, "pins": [["K", "K", "VMODEM"], ["A", "A", "GND"]], "block": "p_modem"},
+    {"d": "TP201", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "SOLAR_IN"]], "block": "p_test", "prefix": "TP"},
+    {"d": "TP202", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "MPPT"]], "block": "p_test", "prefix": "TP"},
+    {"d": "TP203", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "CHG_SW"]], "block": "p_test", "prefix": "TP"},
+    {"d": "TP204", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "CHARGE_SENSE"]], "block": "p_test", "prefix": "TP"},
+    {"d": "TP205", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "TEMP_FAULT_N"]], "block": "p_test", "prefix": "TP"},
+    {"d": "TP206", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "RAW_BAT"]], "block": "p_test", "prefix": "TP"},
+    {"d": "TP207", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "KEEP_ALIVE"]], "block": "p_test", "prefix": "TP"},
+    {"d": "TP208", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "WAKE_N"]], "block": "p_test", "prefix": "TP"},
+    {"d": "TP209", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "SYS_GATE"]], "block": "p_test", "prefix": "TP"},
+    {"d": "TP210", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "VBAT_SW"]], "block": "p_test", "prefix": "TP"},
+    {"d": "TP211", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "3V3"]], "block": "p_test", "prefix": "TP"},
+    {"d": "TP212", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "VMODEM"]], "block": "p_test", "prefix": "TP"},
+    {"d": "TP213", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "GND"]], "block": "p_test", "prefix": "TP"},
+    {"d": "TP214", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "TMP_SETA"]], "block": "p_test", "prefix": "TP"},
+    {"d": "TP215", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "TMP_SETB"]], "block": "p_test", "prefix": "TP"},
   ];
   const BLOCKS = [["p_solar", "Block 1 \u00b7 Panel input"], ["p_charger", "Block 2 \u00b7 Solar charger (U201 CN3791)"], ["p_temp", "Block 3 \u00b7 Charge temperature cut-out"], ["p_battery", "Block 4 \u00b7 Battery input, keep-alive rail and battery sense"], ["p_rtc", "Block 5 \u00b7 RTC"], ["p_latch", "Block 5 \u00b7 Wake latch and main switch"], ["p_3v3", "Block 6 \u00b7 Main 3.3 V"], ["p_modem", "Block 6 \u00b7 Modem 3.9 V"], ["p_test", "Test points"]];
   const TEMPLATE_PREFIXES = ["TP"];
@@ -272,13 +279,26 @@
   // the project's copy, taking only a copy that has a footprint (some 4.1 copies have none, and
   // Update PCB then stops with "lacks of property Footprint"). New devices come from the system
   // library. Every placed part is checked for a footprint afterwards.
+  // 2026-11-19: getByLcscIds can return a stray device without a footprint (C9965 came back as
+  // "EasyEDA_W5500_MAX809STRG"; the project held a footprint-less "100nF" copy of C1525 beside
+  // two good "CL05B104KO5NNNC" copies). So copies are looked up by the device name and by the
+  // BOM's MPN, must carry the same LCSC code when they name one, and must have a footprint.
   let projectLib;
-  async function projectCopy(dev) {
-    if (!dev || !dev.name) return null;
+  const fpOf = (d) => (d && ((d.footprint && d.footprint.name) || d.footprintName)) || "";
+  const sameCode = (d, lcsc) => !lcsc || !d.supplierId || d.supplierId === lcsc;
+  async function findWithFootprint(names, lcsc, lib) {
+    for (const n of names.filter(Boolean)) {
+      const found = (await tryCall(() => (lib ? eda.lib_Device.search(n, lib) : eda.lib_Device.search(n)))) || [];
+      const hit = (Array.isArray(found) ? found : [found]).find((d) => d && d.name === n && sameCode(d, lcsc) && fpOf(d));
+      if (hit) return hit;
+    }
+    return null;
+  }
+  async function projectCopy(dev, mpn = "", lcsc = "") {
+    if (!dev && !mpn) return null;
     if (projectLib === undefined) projectLib = (await tryCall(() => eda.lib_LibrariesList.getProjectLibraryUuid())) || null;
     if (!projectLib) return null;
-    const found = (await tryCall(() => eda.lib_Device.search(dev.name, projectLib))) || [];
-    return (Array.isArray(found) ? found : [found]).find((d) => d && d.name === dev.name && d.footprint && d.footprint.name) || null;
+    return findWithFootprint([dev && dev.name, mpn], lcsc, projectLib);
   }
   async function sourceDevice(label, { lcsc = "", name = "", footprint = "" }) {
     if (sourceDevices.has(label)) return sourceDevices.get(label);
@@ -314,8 +334,11 @@
       return dev;
     }
     if (!devices.has(part.lcsc)) {
-      const lib = await tryCall(() => eda.lib_Device.getByLcscIds(part.lcsc));
-      devices.set(part.lcsc, (await projectCopy(lib)) || lib);
+      let lib = await tryCall(() => eda.lib_Device.getByLcscIds(part.lcsc));
+      if (Array.isArray(lib)) lib = lib[0];
+      const copy = await projectCopy(lib, part.mpn, part.lcsc);
+      if (!copy && !fpOf(lib)) lib = (await findWithFootprint([part.mpn], part.lcsc, null)) || lib;
+      devices.set(part.lcsc, copy || lib);
     }
     const dev = devices.get(part.lcsc);
     if (!dev) notFound.set(part.lcsc, [...(notFound.get(part.lcsc) || []), part.d]);
@@ -495,6 +518,14 @@
         catch (e) { warnings.push(`${part.d} pin ${l.num}: could not set the no-connect flag (${msg(e)})`); }
         continue;
       }
+      // A pin that was NC before keeps its no-connect flag through a tidy, and EasyEDA then refuses
+      // the wire (2026-11-19, U401 pins 28/29): clear the flag first.
+      try {
+        if (p.obj.getState_NoConnected && p.obj.getState_NoConnected()) {
+          p.obj.setState_NoConnected(false);
+          if ((await within(p.obj.done())) === TIMEOUT) throw new Error(noAnswer);
+        }
+      } catch (e) { warnings.push(`${part.d} pin ${l.num}: could not clear its old no-connect flag (${msg(e)})`); }
       const len = stubLen(l.net);
       const ex = p.x + l.ux * len, ey = p.y + l.uy * len;
       // Start the wire at its left (or lower) end, where EasyEDA anchors the net name.

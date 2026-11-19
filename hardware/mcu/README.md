@@ -22,7 +22,7 @@ Marked `Chosen 2026-11-17` in the netlist and BOM notes.
 
 | Item | Guide says | Chosen |
 |---|---|---|
-| Card supply switch | Load switch, active-high enable on GPIO45, 100 kΩ pull-down; part still to choose | AO3401A P-FET (Q401) driven by a 2N7002 (Q402), both already on the BOM. R415 + C406 delay the turn-on; C406 sits gate–source, so the card supply still ramps in ≈ 0.1–0.3 ms (review M11): measure the 3V3 dip at card power-on. Gate–drain 47 nF, or a load-switch IC with current limit, would give a real soft start |
+| Card supply switch | Load switch, active-high enable on GPIO45, 100 kΩ pull-down; part still to choose | AO3401A P-FET (Q401) driven by a 2N7002 (Q402), both already on the BOM. Since 2026-11-19 (owner decision, second review R2-M1) a real soft start: C407 10 nF gate–drain, R415 100 kΩ, R414 1 MΩ, C406 100 nF gate–source. SD_VDD ramps in ≈ 2 ms at ≈ 15 mA; before, C404 was charged almost as a step, which could pull 3V3 below the TPS63802's 90 % power-good and, through ESP_EN, reset the ESP32 and power the board off |
 | USB ESD | ESD protection needed | SRV05-4 (D401), the LTE sheet's SIM TVS: D+, D−, CC1, CC2. **Pin 5 left open** (2026-11-17 review): on VBUS it let the ESP32's D+ pull-up back-feed VBUS and keep the board on. VBUS has its own TPD1E10B06 (D402) |
 | GPIO3 | Still open (spare) | **microSD card detect** (SD_CD, R419 100 kΩ pull-up; owner decision 2026-11-17). The unfitted VBUS-sense divider R407/R408 was removed |
 | Boot and reset | Bring GPIO0 to a pad or button | Test pads for GPIO0, EN and GND (TP401–TP403) rather than buttons |
@@ -55,15 +55,27 @@ Details and evidence: `hardware/review/2026-11-17-schematic-review.md`. Per-part
 | R418 33 Ω in series with SD_CLK at U401 | Hardware design guidelines §1.3.8 and §1.3.12 |
 | LED401 KT-0805G with R416 100 Ω | See the table above |
 
+## Changes from the second review (owner decisions 2026-11-19)
+
+Details and evidence: `hardware/review/2026-11-19-second-review.md`.
+
+| Change | Why |
+|---|---|
+| C407 10 nF gate–drain on Q401; R415 → 100 kΩ; R414 → 1 MΩ | Soft start for the card supply, so switching it on cannot drop 3V3 below the power-good threshold that drives ESP_EN (R2-M1) |
+| C403 1 µF → 100 nF | The TPS63802 PG now supervises EN and is rated to sink 1 mA; τ = 1 ms is still far above the 50 µs t_STBL (R2-M2) |
+| GPIO35 = BTN_SENSE | Service button sense from Q211 on the power sheet: high = pressed, internal pull-up (R2-G2) |
+| GPIO36 = BB_MODE_CTL | TPS63802 MODE through DNP R244: forced PWM during recordings if G2 needs it (R2-G6) |
+
 ## Firmware rules from the review
 
 - **USB:** with D401 pin 5 open, the D+ pull-up can no longer raise VBUS. Confirm in power-sheet bring-up test 4 with the ESP32 running and no cable: VBUS must stay below 0.5 V and the board must turn off when PWR_HOLD goes low.
 - **Any reset powers the board off.** GPIO10 (PWR_HOLD) returns to an input on every ESP32 reset, so a crash, watchdog or EN reset drops power. Arm the next RTC alarm before starting work, keep the RTC alarm flag set until the commit step (the asserted INT keeps the board on through a reboot), and never release PWR_HOLD during a flash write (sector erase up to 500 ms).
-- **SD card power-off:** clear GPIO44's reset pull-up (U0RXD) early in boot and never enable internal pulls on the SD pins. To cut card power, drive CLK, CMD and D0 low, then set SD_PWR_EN low and keep the pins low ≥ 100 ms so SD_VDD discharges; otherwise the card is back-powered through R409/R410 and its pin diodes.
-- **Floating inputs:** GPIO9 (AUD_MCLK, R102 not fitted) has no external pull: enable its pull-down in firmware. GPIO3 is SD_CD with R419 pulling it up: never enable an internal pull on it.
+- **SD card power-off:** clear GPIO44's reset pull-up (U0RXD) early in boot and never enable internal pulls on the SD pins. To cut card power, drive CLK, CMD and D0 low, then set SD_PWR_EN low and keep the pins low **≥ 0.5 s** so Q401 turns off (gate τ ≈ 110 ms with the soft start) and SD_VDD discharges; otherwise the card is back-powered through R409/R410 and its pin diodes. Do the same wait before the first card power-on after boot (GPIO44's pull-up feeds SD_VDD until the app runs). Power the card only while SD_CD shows a card, and cut it when the card is removed.
+- **Floating inputs:** GPIO4 (AUD_INT_MCU), GPIO5 (MIC1_DC_SENSE), GPIO9 (AUD_MCLK), GPIO36 (BB_MODE_CTL, R244 not fitted) and GPIO37 (spare) have no external pull: enable their pull-downs in firmware. GPIO35 (BTN_SENSE): pull-up. GPIO3 is SD_CD with R419 pulling it up: never enable an internal pull on it.
 - **System I²C:** GPIO13/14 glitch low at power-up while the RTC is powered: run an I²C bus recovery before the first RTC access.
 - **ADC:** the ESP32-S3's calibrated ranges are 0–1.6 V at 6 dB and 0–2.9 V at 12 dB (chip datasheet Table 5-6). BATT_ADC (1.31 V at 4.2 V) uses 6 dB; SOLAR_ADC's 12 dB range reaches ≈ 22 V of panel.
 - **Flash and PSRAM clock (2026-11-18):** keep both at 80 MHz. ESP-IDF's *flash_psram_config* guide marks 120 MHz as experimental: it can crash after a temperature swing of about 20 °C. The N16R2's 2 MB quad PSRAM has about a quarter of the N16R8's octal-DDR bandwidth at 80 MHz; keep large read-only data such as model weights in the 16 MB memory-mapped flash.
+- **eFuses (2026-11-19):** never burn EFUSE_DIS_USB_JTAG or EFUSE_STRAP_JTAG_SEL (GPIO39–42 carry the modem UART; GPIO3 = SD_CD would then select pad JTAG). Optional: disable the ROM log on UART0 (LED401 flickers on every wake) and EFUSE_DIS_USB_OTG_DOWNLOAD_MODE (the ROM drives GPIO38–40 in that mode).
 
 ## Programming and recovery
 

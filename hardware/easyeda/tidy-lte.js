@@ -35,59 +35,59 @@
   // d: designator, lcsc: LCSC code ("" = copy a template part), fit: false = not fitted,
   // block: block in build_guide.py, pins: [pin number, pin name, net] from the netlist
   const PARTS = [
-    {"d": "R301", "lcsc": "C17477", "fit": true, "pins": [["1", "1", "VMODEM"], ["2", "2", "VBAT_M"]], "block": "l_supply"},
-    {"d": "C301", "lcsc": "C561794", "fit": true, "pins": [["1", "1", "VBAT_M"], ["2", "2", "GND"]], "block": "l_supply"},
-    {"d": "C302", "lcsc": "C1525", "fit": true, "pins": [["1", "1", "VBAT_M"], ["2", "2", "GND"]], "block": "l_supply"},
-    {"d": "C303", "lcsc": "C1562", "fit": true, "pins": [["1", "1", "VBAT_M"], ["2", "2", "GND"]], "block": "l_supply"},
-    {"d": "C304", "lcsc": "C32949", "fit": true, "pins": [["1", "1", "VBAT_M"], ["2", "2", "GND"]], "block": "l_supply"},
-    {"d": "C305", "lcsc": "C1566", "fit": true, "pins": [["1", "1", "VBAT_M"], ["2", "2", "GND"]], "block": "l_supply"},
-    {"d": "C306", "lcsc": "C1553", "fit": true, "pins": [["1", "1", "VBAT_M"], ["2", "2", "GND"]], "block": "l_supply"},
-    {"d": "U301", "lcsc": "C20421924", "fit": true, "pins": [["1", "GND", "GND"], ["2", "RESERVED", "NC"], ["3", "RESERVED", "NC"], ["4", "RESERVED", "NC"], ["5", "RESERVED", "NC"], ["6", "RESERVED", "NC"], ["7", "PWRKEY", "M_PWRKEY"], ["8", "RESERVED", "NC"], ["9", "ADC0", "NC"], ["10", "GND", "GND"], ["11", "USIM_DATA", "SIM_DATA_M"], ["12", "USIM_RST", "SIM_RST_M"], ["13", "USIM_CLK", "SIM_CLK_M"], ["14", "USIM_VDD", "USIM_VDD"], ["15", "RESET_N", "M_RESET_N"], ["16", "NET_STATUS", "M_NETSTAT"], ["17", "MAIN_RXD", "M_RXD"], ["18", "MAIN_TXD", "M_TXD"], ["19", "MAIN_DTR", "NC"], ["20", "MAIN_RI", "NC"], ["21", "MAIN_DCD", "NC"], ["22", "MAIN_CTS", "M_CTS"], ["23", "MAIN_RTS", "M_RTS"], ["24", "VDD_EXT", "VDD_EXT"], ["25", "STATUS", "M_STATUS"], ["26", "RESERVED", "NC"], ["27", "GND", "GND"], ["28", "AUX_RXD", "NC"], ["29", "AUX_TXD", "NC"], ["30", "RESERVED", "NC"], ["31", "RESERVED", "NC"], ["32", "RESERVED", "NC"], ["33", "RESERVED", "NC"], ["34", "GND", "GND"], ["35", "ANT_MAIN", "ANT_MAIN"], ["36", "GND", "GND"], ["37", "GND", "GND"], ["38", "DBG_RXD", "M_DBG_RXD"], ["39", "DBG_TXD", "M_DBG_TXD"], ["40", "GND", "GND"], ["41", "GND", "GND"], ["42", "VBAT", "VBAT_M"], ["43", "VBAT", "VBAT_M"], ["44", "RESERVED", "NC"], ["45", "GND", "GND"], ["46", "GND", "GND"], ["47", "GND", "GND"], ["48", "GND", "GND"], ["49", "RESERVED", "NC"], ["50", "RESERVED", "NC"], ["51", "RESERVED", "NC"], ["52", "RESERVED", "NC"], ["53", "RESERVED", "NC"], ["54", "RESERVED", "NC"], ["55", "RESERVED", "NC"], ["56", "RESERVED", "NC"], ["57", "RESERVED", "NC"], ["58", "RESERVED", "NC"], ["59", "USB_DP", "M_USB_DP"], ["60", "USB_DM", "M_USB_DM"], ["61", "USB_VBUS", "M_USB_VBUS"], ["62", "RESERVED", "NC"], ["63", "RESERVED", "NC"], ["64", "RESERVED", "NC"], ["65", "RESERVED", "NC"], ["66", "I2C_SDA", "NC"], ["67", "I2C_SCL", "NC"], ["68", "RESERVED", "NC"], ["69", "RESERVED", "NC"], ["70", "GND", "GND"], ["71", "GND", "GND"], ["72", "GND", "GND"], ["73", "GND", "GND"], ["74", "RESERVED", "NC"], ["75", "RESERVED", "NC"], ["76", "RESERVED", "NC"], ["77", "RESERVED", "NC"], ["78", "RESERVED", "NC"], ["79", "USIM_DET", "NC"], ["80", "RESERVED", "NC"], ["81", "RESERVED", "NC"], ["82", "USB_BOOT", "M_USB_BOOT"], ["83", "RESERVED", "NC"], ["84", "RESERVED", "NC"], ["85", "RESERVED", "NC"], ["86", "RESERVED", "NC"], ["87", "RESERVED", "NC"], ["88", "GND", "GND"], ["89", "GND", "GND"], ["90", "GND", "GND"], ["91", "GND", "GND"], ["92", "GND", "GND"], ["93", "GND", "GND"], ["94", "GND", "GND"], ["95", "GND", "GND"], ["96", "ADC1", "NC"], ["97", "RESERVED", "NC"], ["98", "RESERVED", "NC"], ["99", "RESERVED", "NC"], ["100", "RESERVED", "NC"], ["101", "RESERVED", "NC"], ["102", "RESERVED", "NC"], ["103", "RESERVED", "NC"], ["104", "RESERVED", "NC"], ["105", "RESERVED", "NC"], ["106", "RESERVED", "NC"], ["107", "RESERVED", "NC"], ["108", "RESERVED", "NC"], ["109", "RESERVED", "NC"]], "block": "l_pins"},
-    {"d": "C317", "lcsc": "C1562", "fit": false, "pins": [["1", "1", "M_NETSTAT"], ["2", "2", "GND"]], "block": "l_pins"},
-    {"d": "C318", "lcsc": "C1562", "fit": false, "pins": [["1", "1", "M_RXD"], ["2", "2", "GND"]], "block": "l_pins"},
-    {"d": "C319", "lcsc": "C1562", "fit": false, "pins": [["1", "1", "M_TXD"], ["2", "2", "GND"]], "block": "l_pins"},
-    {"d": "C320", "lcsc": "C1562", "fit": false, "pins": [["1", "1", "M_CTS"], ["2", "2", "GND"]], "block": "l_pins"},
-    {"d": "C321", "lcsc": "C1562", "fit": false, "pins": [["1", "1", "M_RTS"], ["2", "2", "GND"]], "block": "l_pins"},
-    {"d": "C322", "lcsc": "C1562", "fit": false, "pins": [["1", "1", "M_STATUS"], ["2", "2", "GND"]], "block": "l_pins"},
-    {"d": "C323", "lcsc": "C1562", "fit": false, "pins": [["1", "1", "M_DBG_TXD"], ["2", "2", "GND"]], "block": "l_pins"},
-    {"d": "Q301", "lcsc": "C20526", "fit": true, "pins": [["1", "B", "Q301_B"], ["2", "E", "GND"], ["3", "C", "M_PWRKEY"]], "block": "l_ctrl"},
-    {"d": "R302", "lcsc": "C25900", "fit": true, "pins": [["1", "1", "LTE_PWRKEY"], ["2", "2", "Q301_B"]], "block": "l_ctrl"},
-    {"d": "R303", "lcsc": "C25792", "fit": true, "pins": [["1", "1", "Q301_B"], ["2", "2", "GND"]], "block": "l_ctrl"},
-    {"d": "C316", "lcsc": "C15195", "fit": true, "pins": [["1", "1", "M_PWRKEY"], ["2", "2", "GND"]], "block": "l_ctrl"},
-    {"d": "U302", "lcsc": "C17206", "fit": true, "pins": [["1", "A1", "M_TXD"], ["2", "VCCA", "VDD_EXT"], ["3", "A2", "M_RXD"], ["4", "A3", "M_RTS"], ["5", "A4", "M_CTS"], ["6", "A5", "M_STATUS"], ["7", "A6", "NC"], ["8", "A7", "NC"], ["9", "A8", "NC"], ["10", "OE", "LS_OE"], ["11", "GND", "GND"], ["12", "B8", "NC"], ["13", "B7", "NC"], ["14", "B6", "NC"], ["15", "B5", "LTE_STATUS"], ["16", "B4", "LTE_CTS"], ["17", "B3", "LTE_RTS"], ["18", "B2", "LTE_TX"], ["19", "VCCB", "3V3"], ["20", "B1", "LTE_RX"]], "block": "l_ctrl"},
-    {"d": "R304", "lcsc": "C25741", "fit": true, "pins": [["1", "1", "VDD_EXT"], ["2", "2", "LS_OE"]], "block": "l_ctrl"},
-    {"d": "R305", "lcsc": "C26083", "fit": true, "pins": [["1", "1", "LS_OE"], ["2", "2", "GND"]], "block": "l_ctrl"},
-    {"d": "C307", "lcsc": "C1525", "fit": false, "pins": [["1", "1", "LS_OE"], ["2", "2", "GND"]], "block": "l_ctrl"},
-    {"d": "C308", "lcsc": "C1525", "fit": true, "pins": [["1", "1", "VDD_EXT"], ["2", "2", "GND"]], "block": "l_ctrl"},
-    {"d": "C309", "lcsc": "C1525", "fit": true, "pins": [["1", "1", "3V3"], ["2", "2", "GND"]], "block": "l_ctrl"},
-    {"d": "J301", "lcsc": "C428450", "fit": true, "pins": [["C1", "VCC", "USIM_VDD"], ["C2", "RST", "SIM_RST"], ["C3", "CLK", "SIM_CLK"], ["C5", "GND", "GND"], ["C6", "VPP", "NC"], ["C7", "I/O", "SIM_DATA"], ["CD", "DETECT", "NC"], ["8", "EH", "GND"]], "block": "l_sim"},
-    {"d": "R306", "lcsc": "C17168", "fit": true, "pins": [["1", "1", "SIM_RST_M"], ["2", "2", "SIM_RST"]], "block": "l_sim"},
-    {"d": "R307", "lcsc": "C17168", "fit": true, "pins": [["1", "1", "SIM_CLK_M"], ["2", "2", "SIM_CLK"]], "block": "l_sim"},
-    {"d": "R308", "lcsc": "C17168", "fit": true, "pins": [["1", "1", "SIM_DATA_M"], ["2", "2", "SIM_DATA"]], "block": "l_sim"},
-    {"d": "R309", "lcsc": "C25756", "fit": true, "pins": [["1", "1", "SIM_DATA"], ["2", "2", "USIM_VDD"]], "block": "l_sim"},
-    {"d": "C310", "lcsc": "C1562", "fit": true, "pins": [["1", "1", "SIM_RST"], ["2", "2", "GND"]], "block": "l_sim"},
-    {"d": "C311", "lcsc": "C1562", "fit": true, "pins": [["1", "1", "SIM_CLK"], ["2", "2", "GND"]], "block": "l_sim"},
-    {"d": "C312", "lcsc": "C1562", "fit": true, "pins": [["1", "1", "SIM_DATA"], ["2", "2", "GND"]], "block": "l_sim"},
-    {"d": "C313", "lcsc": "C1525", "fit": true, "pins": [["1", "1", "USIM_VDD"], ["2", "2", "GND"]], "block": "l_sim"},
-    {"d": "D301", "lcsc": "C13612", "fit": true, "pins": [["1", "IO1", "SIM_DATA"], ["2", "REF1", "GND"], ["3", "IO2", "SIM_CLK"], ["4", "IO3", "SIM_RST"], ["5", "REF2", "USIM_VDD"], ["6", "IO4", "NC"]], "block": "l_sim"},
-    {"d": "R310", "lcsc": "C17168", "fit": true, "pins": [["1", "1", "ANT_MAIN"], ["2", "2", "ANT_FEED"]], "block": "l_ant"},
-    {"d": "C314", "lcsc": "", "fit": false, "pins": [["1", "1", "ANT_MAIN"], ["2", "2", "GND"]], "block": "l_ant", "prefix": "C"},
-    {"d": "C315", "lcsc": "", "fit": false, "pins": [["1", "1", "ANT_FEED"], ["2", "2", "GND"]], "block": "l_ant", "prefix": "C"},
-    {"d": "J302", "lcsc": "C88374", "fit": true, "pins": [["1", "SIG", "ANT_FEED"], ["2", "GND", "GND"], ["3", "GND", "GND"]], "block": "l_ant"},
-    {"d": "R311", "lcsc": "C25900", "fit": true, "pins": [["1", "1", "M_USB_BOOT"], ["2", "2", "BOOT_PAD"]], "block": "l_test"},
-    {"d": "TP301", "lcsc": "", "fit": true, "pins": [["1", "TP", "VBAT_M"]], "block": "l_test", "prefix": "TP"},
-    {"d": "TP302", "lcsc": "", "fit": true, "pins": [["1", "TP", "M_PWRKEY"]], "block": "l_test", "prefix": "TP"},
-    {"d": "TP303", "lcsc": "", "fit": true, "pins": [["1", "TP", "M_RESET_N"]], "block": "l_test", "prefix": "TP"},
-    {"d": "TP304", "lcsc": "", "fit": true, "pins": [["1", "TP", "VDD_EXT"]], "block": "l_test", "prefix": "TP"},
-    {"d": "TP305", "lcsc": "", "fit": true, "pins": [["1", "TP", "M_NETSTAT"]], "block": "l_test", "prefix": "TP"},
-    {"d": "TP306", "lcsc": "", "fit": true, "pins": [["1", "TP", "M_DBG_TXD"]], "block": "l_test", "prefix": "TP"},
-    {"d": "TP307", "lcsc": "", "fit": true, "pins": [["1", "TP", "M_DBG_RXD"]], "block": "l_test", "prefix": "TP"},
-    {"d": "TP308", "lcsc": "", "fit": true, "pins": [["1", "TP", "M_USB_VBUS"]], "block": "l_test", "prefix": "TP"},
-    {"d": "TP309", "lcsc": "", "fit": true, "pins": [["1", "TP", "M_USB_DP"]], "block": "l_test", "prefix": "TP"},
-    {"d": "TP310", "lcsc": "", "fit": true, "pins": [["1", "TP", "M_USB_DM"]], "block": "l_test", "prefix": "TP"},
-    {"d": "TP311", "lcsc": "", "fit": true, "pins": [["1", "TP", "BOOT_PAD"]], "block": "l_test", "prefix": "TP"},
-    {"d": "TP312", "lcsc": "", "fit": true, "pins": [["1", "TP", "GND"]], "block": "l_test", "prefix": "TP"},
-    {"d": "TP313", "lcsc": "", "fit": true, "pins": [["1", "TP", "GND"]], "block": "l_test", "prefix": "TP"},
+    {"d": "R301", "lcsc": "C17477", "mpn": "0805W8F0000T5E", "fit": true, "pins": [["1", "1", "VMODEM"], ["2", "2", "VBAT_M"]], "block": "l_supply"},
+    {"d": "C301", "lcsc": "C561794", "mpn": "T520A107M006ATE070", "fit": true, "pins": [["1", "1", "VBAT_M"], ["2", "2", "GND"]], "block": "l_supply"},
+    {"d": "C302", "lcsc": "C1525", "mpn": "CL05B104KO5NNNC", "fit": true, "pins": [["1", "1", "VBAT_M"], ["2", "2", "GND"]], "block": "l_supply"},
+    {"d": "C303", "lcsc": "C1562", "mpn": "0402CG330J500NT", "fit": true, "pins": [["1", "1", "VBAT_M"], ["2", "2", "GND"]], "block": "l_supply"},
+    {"d": "C304", "lcsc": "C32949", "mpn": "CL05C100JB5NNNC", "fit": true, "pins": [["1", "1", "VBAT_M"], ["2", "2", "GND"]], "block": "l_supply"},
+    {"d": "C305", "lcsc": "C1566", "mpn": "0402CG3R9C500NT", "fit": true, "pins": [["1", "1", "VBAT_M"], ["2", "2", "GND"]], "block": "l_supply"},
+    {"d": "C306", "lcsc": "C1553", "mpn": "0402CG1R8C500NT", "fit": true, "pins": [["1", "1", "VBAT_M"], ["2", "2", "GND"]], "block": "l_supply"},
+    {"d": "U301", "lcsc": "C20421924", "mpn": "EG810MEULA-I05-SNNSA", "fit": true, "pins": [["1", "GND", "GND"], ["2", "RESERVED", "NC"], ["3", "RESERVED", "NC"], ["4", "RESERVED", "NC"], ["5", "RESERVED", "NC"], ["6", "RESERVED", "NC"], ["7", "PWRKEY", "M_PWRKEY"], ["8", "RESERVED", "NC"], ["9", "ADC0", "NC"], ["10", "GND", "GND"], ["11", "USIM_DATA", "SIM_DATA_M"], ["12", "USIM_RST", "SIM_RST_M"], ["13", "USIM_CLK", "SIM_CLK_M"], ["14", "USIM_VDD", "USIM_VDD"], ["15", "RESET_N", "M_RESET_N"], ["16", "NET_STATUS", "M_NETSTAT"], ["17", "MAIN_RXD", "M_RXD"], ["18", "MAIN_TXD", "M_TXD"], ["19", "MAIN_DTR", "NC"], ["20", "MAIN_RI", "NC"], ["21", "MAIN_DCD", "NC"], ["22", "MAIN_CTS", "M_CTS"], ["23", "MAIN_RTS", "M_RTS"], ["24", "VDD_EXT", "VDD_EXT"], ["25", "STATUS", "M_STATUS"], ["26", "RESERVED", "NC"], ["27", "GND", "GND"], ["28", "AUX_RXD", "NC"], ["29", "AUX_TXD", "NC"], ["30", "RESERVED", "NC"], ["31", "RESERVED", "NC"], ["32", "RESERVED", "NC"], ["33", "RESERVED", "NC"], ["34", "GND", "GND"], ["35", "ANT_MAIN", "ANT_MAIN"], ["36", "GND", "GND"], ["37", "GND", "GND"], ["38", "DBG_RXD", "M_DBG_RXD"], ["39", "DBG_TXD", "M_DBG_TXD"], ["40", "GND", "GND"], ["41", "GND", "GND"], ["42", "VBAT", "VBAT_M"], ["43", "VBAT", "VBAT_M"], ["44", "RESERVED", "NC"], ["45", "GND", "GND"], ["46", "GND", "GND"], ["47", "GND", "GND"], ["48", "GND", "GND"], ["49", "RESERVED", "NC"], ["50", "RESERVED", "NC"], ["51", "RESERVED", "NC"], ["52", "RESERVED", "NC"], ["53", "RESERVED", "NC"], ["54", "RESERVED", "NC"], ["55", "RESERVED", "NC"], ["56", "RESERVED", "NC"], ["57", "RESERVED", "NC"], ["58", "RESERVED", "NC"], ["59", "USB_DP", "M_USB_DP"], ["60", "USB_DM", "M_USB_DM"], ["61", "USB_VBUS", "M_USB_VBUS"], ["62", "RESERVED", "NC"], ["63", "RESERVED", "NC"], ["64", "RESERVED", "NC"], ["65", "RESERVED", "NC"], ["66", "I2C_SDA", "NC"], ["67", "I2C_SCL", "NC"], ["68", "RESERVED", "NC"], ["69", "RESERVED", "NC"], ["70", "GND", "GND"], ["71", "GND", "GND"], ["72", "GND", "GND"], ["73", "GND", "GND"], ["74", "RESERVED", "NC"], ["75", "RESERVED", "NC"], ["76", "RESERVED", "NC"], ["77", "RESERVED", "NC"], ["78", "RESERVED", "NC"], ["79", "USIM_DET", "NC"], ["80", "RESERVED", "NC"], ["81", "RESERVED", "NC"], ["82", "USB_BOOT", "M_USB_BOOT"], ["83", "RESERVED", "NC"], ["84", "RESERVED", "NC"], ["85", "RESERVED", "NC"], ["86", "RESERVED", "NC"], ["87", "RESERVED", "NC"], ["88", "GND", "GND"], ["89", "GND", "GND"], ["90", "GND", "GND"], ["91", "GND", "GND"], ["92", "GND", "GND"], ["93", "GND", "GND"], ["94", "GND", "GND"], ["95", "GND", "GND"], ["96", "ADC1", "NC"], ["97", "RESERVED", "NC"], ["98", "RESERVED", "NC"], ["99", "RESERVED", "NC"], ["100", "RESERVED", "NC"], ["101", "RESERVED", "NC"], ["102", "RESERVED", "NC"], ["103", "RESERVED", "NC"], ["104", "RESERVED", "NC"], ["105", "RESERVED", "NC"], ["106", "RESERVED", "NC"], ["107", "RESERVED", "NC"], ["108", "RESERVED", "NC"], ["109", "RESERVED", "NC"]], "block": "l_pins"},
+    {"d": "C317", "lcsc": "C1562", "mpn": "0402CG330J500NT", "fit": false, "pins": [["1", "1", "M_NETSTAT"], ["2", "2", "GND"]], "block": "l_pins"},
+    {"d": "C318", "lcsc": "C1562", "mpn": "0402CG330J500NT", "fit": false, "pins": [["1", "1", "M_RXD"], ["2", "2", "GND"]], "block": "l_pins"},
+    {"d": "C319", "lcsc": "C1562", "mpn": "0402CG330J500NT", "fit": false, "pins": [["1", "1", "M_TXD"], ["2", "2", "GND"]], "block": "l_pins"},
+    {"d": "C320", "lcsc": "C1562", "mpn": "0402CG330J500NT", "fit": false, "pins": [["1", "1", "M_CTS"], ["2", "2", "GND"]], "block": "l_pins"},
+    {"d": "C321", "lcsc": "C1562", "mpn": "0402CG330J500NT", "fit": false, "pins": [["1", "1", "M_RTS"], ["2", "2", "GND"]], "block": "l_pins"},
+    {"d": "C322", "lcsc": "C1562", "mpn": "0402CG330J500NT", "fit": false, "pins": [["1", "1", "M_STATUS"], ["2", "2", "GND"]], "block": "l_pins"},
+    {"d": "C323", "lcsc": "C1562", "mpn": "0402CG330J500NT", "fit": false, "pins": [["1", "1", "M_DBG_TXD"], ["2", "2", "GND"]], "block": "l_pins"},
+    {"d": "Q301", "lcsc": "C20526", "mpn": "MMBT3904", "fit": true, "pins": [["1", "B", "Q301_B"], ["2", "E", "GND"], ["3", "C", "M_PWRKEY"]], "block": "l_ctrl"},
+    {"d": "R302", "lcsc": "C25900", "mpn": "0402WGF4701TCE", "fit": true, "pins": [["1", "1", "LTE_PWRKEY"], ["2", "2", "Q301_B"]], "block": "l_ctrl"},
+    {"d": "R303", "lcsc": "C25792", "mpn": "0402WGF4702TCE", "fit": true, "pins": [["1", "1", "Q301_B"], ["2", "2", "GND"]], "block": "l_ctrl"},
+    {"d": "C316", "lcsc": "C15195", "mpn": "CL05B103KB5NNNC", "fit": true, "pins": [["1", "1", "M_PWRKEY"], ["2", "2", "GND"]], "block": "l_ctrl"},
+    {"d": "U302", "lcsc": "C17206", "mpn": "TXS0108EPWR", "fit": true, "pins": [["1", "A1", "M_TXD"], ["2", "VCCA", "VDD_EXT"], ["3", "A2", "M_RXD"], ["4", "A3", "M_RTS"], ["5", "A4", "M_CTS"], ["6", "A5", "M_STATUS"], ["7", "A6", "NC"], ["8", "A7", "NC"], ["9", "A8", "NC"], ["10", "OE", "LS_OE"], ["11", "GND", "GND"], ["12", "B8", "NC"], ["13", "B7", "NC"], ["14", "B6", "NC"], ["15", "B5", "LTE_STATUS"], ["16", "B4", "LTE_CTS"], ["17", "B3", "LTE_RTS"], ["18", "B2", "LTE_TX"], ["19", "VCCB", "3V3"], ["20", "B1", "LTE_RX"]], "block": "l_ctrl"},
+    {"d": "R304", "lcsc": "C25741", "mpn": "0402WGF1003TCE", "fit": true, "pins": [["1", "1", "VDD_EXT"], ["2", "2", "LS_OE"]], "block": "l_ctrl"},
+    {"d": "R305", "lcsc": "C26083", "mpn": "0402WGF1004TCE", "fit": true, "pins": [["1", "1", "LS_OE"], ["2", "2", "GND"]], "block": "l_ctrl"},
+    {"d": "C307", "lcsc": "C1525", "mpn": "CL05B104KO5NNNC", "fit": false, "pins": [["1", "1", "LS_OE"], ["2", "2", "GND"]], "block": "l_ctrl"},
+    {"d": "C308", "lcsc": "C1525", "mpn": "CL05B104KO5NNNC", "fit": true, "pins": [["1", "1", "VDD_EXT"], ["2", "2", "GND"]], "block": "l_ctrl"},
+    {"d": "C309", "lcsc": "C1525", "mpn": "CL05B104KO5NNNC", "fit": true, "pins": [["1", "1", "3V3"], ["2", "2", "GND"]], "block": "l_ctrl"},
+    {"d": "J301", "lcsc": "C428450", "mpn": "SNO-1303-C", "fit": true, "pins": [["C1", "VCC", "USIM_VDD"], ["C2", "RST", "SIM_RST"], ["C3", "CLK", "SIM_CLK"], ["C5", "GND", "GND"], ["C6", "VPP", "NC"], ["C7", "I/O", "SIM_DATA"], ["CD", "DETECT", "NC"], ["8", "EH", "GND"]], "block": "l_sim"},
+    {"d": "R306", "lcsc": "C17168", "mpn": "0402WGF0000TCE", "fit": true, "pins": [["1", "1", "SIM_RST_M"], ["2", "2", "SIM_RST"]], "block": "l_sim"},
+    {"d": "R307", "lcsc": "C17168", "mpn": "0402WGF0000TCE", "fit": true, "pins": [["1", "1", "SIM_CLK_M"], ["2", "2", "SIM_CLK"]], "block": "l_sim"},
+    {"d": "R308", "lcsc": "C17168", "mpn": "0402WGF0000TCE", "fit": true, "pins": [["1", "1", "SIM_DATA_M"], ["2", "2", "SIM_DATA"]], "block": "l_sim"},
+    {"d": "R309", "lcsc": "C25756", "mpn": "0402WGF1502TCE", "fit": true, "pins": [["1", "1", "SIM_DATA"], ["2", "2", "USIM_VDD"]], "block": "l_sim"},
+    {"d": "C310", "lcsc": "C1562", "mpn": "0402CG330J500NT", "fit": true, "pins": [["1", "1", "SIM_RST"], ["2", "2", "GND"]], "block": "l_sim"},
+    {"d": "C311", "lcsc": "C1562", "mpn": "0402CG330J500NT", "fit": true, "pins": [["1", "1", "SIM_CLK"], ["2", "2", "GND"]], "block": "l_sim"},
+    {"d": "C312", "lcsc": "C1562", "mpn": "0402CG330J500NT", "fit": true, "pins": [["1", "1", "SIM_DATA"], ["2", "2", "GND"]], "block": "l_sim"},
+    {"d": "C313", "lcsc": "C1525", "mpn": "CL05B104KO5NNNC", "fit": true, "pins": [["1", "1", "USIM_VDD"], ["2", "2", "GND"]], "block": "l_sim"},
+    {"d": "D301", "lcsc": "C13612", "mpn": "SRV05-4.TCT", "fit": true, "pins": [["1", "IO1", "SIM_DATA"], ["2", "REF1", "GND"], ["3", "IO2", "SIM_CLK"], ["4", "IO3", "SIM_RST"], ["5", "REF2", "USIM_VDD"], ["6", "IO4", "NC"]], "block": "l_sim"},
+    {"d": "R310", "lcsc": "C17168", "mpn": "0402WGF0000TCE", "fit": true, "pins": [["1", "1", "ANT_MAIN"], ["2", "2", "ANT_FEED"]], "block": "l_ant"},
+    {"d": "C314", "lcsc": "", "mpn": "", "fit": false, "pins": [["1", "1", "ANT_MAIN"], ["2", "2", "GND"]], "block": "l_ant", "prefix": "C"},
+    {"d": "C315", "lcsc": "", "mpn": "", "fit": false, "pins": [["1", "1", "ANT_FEED"], ["2", "2", "GND"]], "block": "l_ant", "prefix": "C"},
+    {"d": "J302", "lcsc": "C88374", "mpn": "U.FL-R-SMT-1(80)", "fit": true, "pins": [["1", "SIG", "ANT_FEED"], ["2", "GND", "GND"], ["3", "GND", "GND"]], "block": "l_ant"},
+    {"d": "R311", "lcsc": "C25900", "mpn": "0402WGF4701TCE", "fit": true, "pins": [["1", "1", "M_USB_BOOT"], ["2", "2", "BOOT_PAD"]], "block": "l_test"},
+    {"d": "TP301", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "VBAT_M"]], "block": "l_test", "prefix": "TP"},
+    {"d": "TP302", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "M_PWRKEY"]], "block": "l_test", "prefix": "TP"},
+    {"d": "TP303", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "M_RESET_N"]], "block": "l_test", "prefix": "TP"},
+    {"d": "TP304", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "VDD_EXT"]], "block": "l_test", "prefix": "TP"},
+    {"d": "TP305", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "M_NETSTAT"]], "block": "l_test", "prefix": "TP"},
+    {"d": "TP306", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "M_DBG_TXD"]], "block": "l_test", "prefix": "TP"},
+    {"d": "TP307", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "M_DBG_RXD"]], "block": "l_test", "prefix": "TP"},
+    {"d": "TP308", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "M_USB_VBUS"]], "block": "l_test", "prefix": "TP"},
+    {"d": "TP309", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "M_USB_DP"]], "block": "l_test", "prefix": "TP"},
+    {"d": "TP310", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "M_USB_DM"]], "block": "l_test", "prefix": "TP"},
+    {"d": "TP311", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "BOOT_PAD"]], "block": "l_test", "prefix": "TP"},
+    {"d": "TP312", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "GND"]], "block": "l_test", "prefix": "TP"},
+    {"d": "TP313", "lcsc": "", "mpn": "", "fit": true, "pins": [["1", "TP", "GND"]], "block": "l_test", "prefix": "TP"},
   ];
   const BLOCKS = [["l_supply", "Block 1 \u00b7 Module supply"], ["l_pins", "Block 2 \u00b7 Module pin map (U301 EG810M-EU)"], ["l_ctrl", "Block 3 \u00b7 Power key and UART level shifter"], ["l_sim", "Block 4 \u00b7 SIM"], ["l_ant", "Block 4 \u00b7 Antenna"], ["l_test", "Service pads: forced download, USB and debug UART"]];
   const TEMPLATE_PREFIXES = ["C", "TP"];
@@ -202,13 +202,26 @@
   // the project's copy, taking only a copy that has a footprint (some 4.1 copies have none, and
   // Update PCB then stops with "lacks of property Footprint"). New devices come from the system
   // library. Every placed part is checked for a footprint afterwards.
+  // 2026-11-19: getByLcscIds can return a stray device without a footprint (C9965 came back as
+  // "EasyEDA_W5500_MAX809STRG"; the project held a footprint-less "100nF" copy of C1525 beside
+  // two good "CL05B104KO5NNNC" copies). So copies are looked up by the device name and by the
+  // BOM's MPN, must carry the same LCSC code when they name one, and must have a footprint.
   let projectLib;
-  async function projectCopy(dev) {
-    if (!dev || !dev.name) return null;
+  const fpOf = (d) => (d && ((d.footprint && d.footprint.name) || d.footprintName)) || "";
+  const sameCode = (d, lcsc) => !lcsc || !d.supplierId || d.supplierId === lcsc;
+  async function findWithFootprint(names, lcsc, lib) {
+    for (const n of names.filter(Boolean)) {
+      const found = (await tryCall(() => (lib ? eda.lib_Device.search(n, lib) : eda.lib_Device.search(n)))) || [];
+      const hit = (Array.isArray(found) ? found : [found]).find((d) => d && d.name === n && sameCode(d, lcsc) && fpOf(d));
+      if (hit) return hit;
+    }
+    return null;
+  }
+  async function projectCopy(dev, mpn = "", lcsc = "") {
+    if (!dev && !mpn) return null;
     if (projectLib === undefined) projectLib = (await tryCall(() => eda.lib_LibrariesList.getProjectLibraryUuid())) || null;
     if (!projectLib) return null;
-    const found = (await tryCall(() => eda.lib_Device.search(dev.name, projectLib))) || [];
-    return (Array.isArray(found) ? found : [found]).find((d) => d && d.name === dev.name && d.footprint && d.footprint.name) || null;
+    return findWithFootprint([dev && dev.name, mpn], lcsc, projectLib);
   }
   async function sourceDevice(label, { lcsc = "", name = "", footprint = "" }) {
     if (sourceDevices.has(label)) return sourceDevices.get(label);
@@ -244,8 +257,11 @@
       return dev;
     }
     if (!devices.has(part.lcsc)) {
-      const lib = await tryCall(() => eda.lib_Device.getByLcscIds(part.lcsc));
-      devices.set(part.lcsc, (await projectCopy(lib)) || lib);
+      let lib = await tryCall(() => eda.lib_Device.getByLcscIds(part.lcsc));
+      if (Array.isArray(lib)) lib = lib[0];
+      const copy = await projectCopy(lib, part.mpn, part.lcsc);
+      if (!copy && !fpOf(lib)) lib = (await findWithFootprint([part.mpn], part.lcsc, null)) || lib;
+      devices.set(part.lcsc, copy || lib);
     }
     const dev = devices.get(part.lcsc);
     if (!dev) notFound.set(part.lcsc, [...(notFound.get(part.lcsc) || []), part.d]);
@@ -425,6 +441,14 @@
         catch (e) { warnings.push(`${part.d} pin ${l.num}: could not set the no-connect flag (${msg(e)})`); }
         continue;
       }
+      // A pin that was NC before keeps its no-connect flag through a tidy, and EasyEDA then refuses
+      // the wire (2026-11-19, U401 pins 28/29): clear the flag first.
+      try {
+        if (p.obj.getState_NoConnected && p.obj.getState_NoConnected()) {
+          p.obj.setState_NoConnected(false);
+          if ((await within(p.obj.done())) === TIMEOUT) throw new Error(noAnswer);
+        }
+      } catch (e) { warnings.push(`${part.d} pin ${l.num}: could not clear its old no-connect flag (${msg(e)})`); }
       const len = stubLen(l.net);
       const ex = p.x + l.ux * len, ey = p.y + l.uy * len;
       // Start the wire at its left (or lower) end, where EasyEDA anchors the net name.

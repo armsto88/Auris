@@ -20,6 +20,8 @@
 
 **Status 2026-11-18:** the owner decided the five open items: EG810M-EU modem (the EG800K-EU had no JLC stock), ESP32-S3-WROOM-1-N16R2 (+85 °C), microSD ESD array D403, test pads TP404–TP415, and a Panasonic BR1220 cell (bench-test at −40 °C). They are in the EasyEDA project and on the PCB, the LTE and MCU pages are laid out again (2026-11-19), and the PCB net check passes for all four sheets (export `hardware/2026-11-19/`). Still open: the bench items above and the 1.0 mm test-pad footprint at layout.
 
+**Status 2026-11-19: schematic frozen for rev A layout.** An independent second review (`hardware/review/2026-11-19-second-review.md`) found no blockers and two must-fixes; the owner approved its batch (TMP390 supply switch, card-supply soft start, 3.3 V lockout, button sense, Q210 soft-start footprints, MODE option, trip-test pads, AUDIO_EN pull-down, C403, RTC INT direct on the wake line). Applied, re-captured in place, Update PCB run, and `easyeda_check.py` passes on all four sheets (export `hardware/2026-11-19/AURIS_2026-11-19_freeze.epro2`). Freeze record and change-control rule: `hardware/review/2026-11-19-schematic-freeze.md`. Next: PCB placement (4 layers), then the bench items listed there.
+
 ## Phase 1 — Local recorder proof of function (engineering MVP)
 
 - [ ] F1-01 RTC wake → power hold → ADC capture → microSD WAV/manifest → safe shutoff.

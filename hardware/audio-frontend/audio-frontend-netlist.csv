@@ -1,7 +1,7 @@
 designator,pin,pin_name,net,fit,notes
 U101,1,IN,VBAT_SW,Y,TPS7A2033PDBVR audio LDO
 U101,2,GND,GND,Y,
-U101,3,EN,AUDIO_EN,Y,Internal 500k pull-down keeps LDO off by default
+U101,3,EN,AUDIO_EN,Y,Internal 500k pull-down is switched out while EN is high; R148 holds it low through an ESP32 reset
 U101,4,NC,NC,Y,No internal connection
 U101,5,OUT,AVDD_A,Y,
 C101,1,1,VBAT_SW,Y,LDO input cap at U101 pin 1
@@ -10,6 +10,8 @@ C102,1,1,AVDD_A,Y,LDO output cap at U101 pin 5
 C102,2,2,GND,Y,
 FB101,1,1,AVDD_A,Y,Splits PCM digital supply from analog supply
 FB101,2,2,DVDD_A,Y,
+R148,1,1,AUDIO_EN,Y,"AUDIO_EN pull-down: audio LDO off whenever GPIO7 is not driven (review R2-A1, owner decision 2026-11-19)"
+R148,2,2,GND,Y,
 U102,1,VINL2/VIN1M,AIN1M,Y,PCM1863DBTR
 U102,2,VINR2/VIN2M,AIN2M,Y,Mic 2 direct cold; stub to DNP parts only
 U102,3,VINL1/VIN1P,AIN1P,Y,
