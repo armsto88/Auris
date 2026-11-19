@@ -28,7 +28,7 @@ Cross-references (P14 = W10, P15 = W3, A4 = W16, L1 = W1, L6 = P10, M1 = W2, M3 
 - Quectel and Espressif guidance added: PWRKEY 10 nF, OE without an RC, UART filter footprints, GPIO0 pull-up, SD_CLK series resistor, input cap for the keep-alive LDO.
 - Owner decisions: shells/tabs to GND, card detect on GPIO3, D205 not fitted, −40…+85 °C switches, cold cut-out +5 °C, JST-compatible battery connector for rev A.
 - BOM cost pass: 15 extended parts moved to JLC basic/preferred equivalents.
-- 2026-11-18 owner decisions (section 8): EG810M-EU modem, ESP32-S3-WROOM-1-N16R2 module, microSD ESD array D403, test pads TP404–TP415, Panasonic BR1220 cell. Applied in EasyEDA project `AURIS_2026-11-18`; the PCB net check passes again; export in `hardware/2026-11-18/`.
+- 2026-11-18 owner decisions (section 8): EG810M-EU modem, ESP32-S3-WROOM-1-N16R2 module, microSD ESD array D403, test pads TP404–TP415, Panasonic BR1220 cell. Applied in the EasyEDA project (re-imported 2026-11-18, now named `AURIS`); the PCB net check passes again; latest export in `hardware/2026-11-19/`.
 
 **BOM cost** (JLCPCB parts plus Economic PCBA feeder fee of $3.07 per unique extended part; PCB, setup, stencil and joints excluded):
 
@@ -471,8 +471,8 @@ Still 102 unique codes, 53 extended: the modem and module replace extended parts
 
 - LTE: U301 removed with its 46 net stubs, then the EG810M-EU placed and wired (46 wires, 63 no-connect flags).
 - MCU: U401 removed with its 37 stubs, then the N16R2, D403 and TP404–TP415 placed and wired (55 wires, 4 no-connect flags).
-- The new parts sit in boxes below the existing blocks ("continued" headings); move them into place at layout.
+- The new parts first sat in boxes below the existing blocks. On 2026-11-19 both pages were re-laid out with the new `hardware/easyeda/tidy-<sheet>.js` (delete every wire, box and heading; move every part into the block layout a fresh capture would give; draw the net stubs from the netlist again). Afterwards every pin on both pages carries its netlist net (LTE 230 of 230 rows, MCU 157 of 157) and every part still has its footprint.
 
-The capture template now places a device the project already holds from the project's copy (only one that has a footprint) and flags any part placed without a footprint. After Design > Update PCB (337 PCB parts) and an export, **`easyeda_check.py` passes for all four sheets**: audio 114, power 123, LTE 53, MCU 47 parts, each with its BOM's LCSC code and every pad on its CSV net. The project and EasyEDA's BOM are in `hardware/2026-11-18/`. The old `AURIS` project in EasyEDA has half-captured LTE and MCU pages and should not be used.
+The capture template now places a device the project already holds from the project's copy (only one that has a footprint) and flags any part placed without a footprint. After Design > Update PCB (337 PCB parts) and an export, **`easyeda_check.py` passes for all four sheets**: audio 114, power 123, LTE 53, MCU 47 parts, each with its BOM's LCSC code and every pad on its CSV net. The project and EasyEDA's BOM are in `hardware/2026-11-18/`; the export after the tidy is in `hardware/2026-11-19/` and passes the same check. On 2026-11-19 the broken old `AURIS` project was deleted (backup kept outside the repo) and `AURIS_2026-11-18` renamed to **`AURIS`**.
 
 **Docs updated the same day:** the LTE, MCU, power and audio READMEs, docs 00, 03–06, 08, 11, 13–15 and 19, the major-components CSV, the 2026-11-18 LCSC snapshot and the hardware guide.
