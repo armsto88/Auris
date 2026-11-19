@@ -4,6 +4,25 @@ Layout record for the rev A board. The schematic is frozen at tag `schematic-rev
 
 **State (2026-11-19):** phase 0 and the preparation for phases 1–2. Nothing has been changed in EasyEDA yet. The PCB is still EasyEDA's 2-layer default with all 346 parts on the top side at 0°, spread over about 590 × 220 mm; no outline, tracks or vias. The read-only API probe ([`hardware/tools/easyeda_pcb_probe.js`](../tools/easyeda_pcb_probe.js)) is written but not yet run: the Claude in Chrome extension was not connected.
 
+## Board outline and arrangement (phase 0, owner decisions 2026-11-19)
+
+- **Outline 80 × 105 mm**, portrait as installed, 2 mm corner radii. **Four M3 holes** (⌀3.2 mm, unplated) 4 mm in from each corner, onto a 3D-printed plate; nothing ties the board to the box's bosses ([`enclosure-options.md`](enclosure-options.md)).
+- **All parts on the top side.**
+- **Servicing is lid-off.** No sealed SD/USB port, light pipe or sealed button: the walls carry only the mic's through-wall connector, the panel input(s) and a pressure vent. This changes F5-06 ("swappable without opening the main seal") and the light-pipe reading of F5-05 in docs/19, and docs/18's "sealed/serviceable USB-C"; those documents are not yet updated.
+- **Area check:** footprints with courtyards, the ESP32 antenna strip, U301's 3 mm ring and 1.0 mm test pads total ≈ 4,320 mm² (power 1,379, MCU 1,070, LTE 1,007, audio 864), 51% of the top side. Workable on 4 layers with the bottom free for routing; 85 × 105 mm (48%) is the fallback if placement runs out of room.
+
+| Board area (as installed) | Contents | Reason |
+|---|---|---|
+| Top-left | U401, antenna at the top edge with Espressif's keep-out | Farthest from the battery and the LTE antenna |
+| Left edge | J402 microSD, J401 USB-C, LED401, SW201 | Short SD/USB runs to U401; away from the audio inputs. Keep ≈ 20 mm clear beyond the edge (plate and box) for the card and the plug with the lid off |
+| Bottom-left | Audio front end, J101 at the bottom edge | Short lead to the mic's through-wall connector; away from the converters |
+| Bottom-right | J201, J202 | Short leads to the panel connector in the bottom wall |
+| Right edge | J203, U203, then the charger and converters | U203 next to the pack; short 3 A path to U301 |
+| Top-right | U301, J302; the LTE FPC antenna on the right wall above the pack | ≈ 80–90 mm from the ESP32 antenna |
+| Anywhere reachable with the lid off | SW202, J301, BT201, pogo row (TP401–TP403, TP413–TP415) | Used only when the unit is open |
+
+The battery (two 18650s) sits beside the board in a 25–30 mm strip, or under it on the plate if the box has ≥ 45–50 mm inside; either way the plate holds it.
+
 ## Stack-up: JLC04161H-7628, 1.6 mm, 4 layers
 
 From JLC's impedance page (jlcpcb.com/impedance, read 2026-11-19). JLC calculates 4- to 8-layer boards for Nan Ya NP-155F laminate.
@@ -79,6 +98,6 @@ After the edits, re-export and run `python3 hardware/tools/easyeda_check.py <fil
 
 ## Still to do
 
-- Phase 0: run the API probe; the owner's answers on outline, edges, mounting holes and top-side-only. Panel on a separate bracket and mic on a through-wall connector (owner, 2026-11-19); enclosure shortlist in [`enclosure-options.md`](enclosure-options.md) — the PCB mounts on a 3D-printed plate (owner, 2026-11-19), so its outline and holes are free; it must fit a box with ≥ 110 × 105 mm floor and ≥ 45 mm inside height.
+- Phase 0: run the API probe (needs the Claude in Chrome extension connected). Outline, arrangement, holes and top-side-only are decided (above). Panel on a separate bracket and mic on a through-wall connector (owner, 2026-11-19); enclosure shortlist in [`enclosure-options.md`](enclosure-options.md) — the PCB mounts on a 3D-printed plate (owner, 2026-11-19), so its outline and holes are free; it must fit a box with ≥ 110 × 105 mm floor and ≥ 45 mm inside height.
 - Phase 1: set 4 layers and this stack-up, the outline, the net classes and rules; confirm the widths in JLC's calculator.
 - Phases 2–5 per the handover.
