@@ -1,11 +1,10 @@
 designators,qty,value,description,package,suggested_mpn,lcsc,fit,notes
 U401,1,ESP32-S3-WROOM-1-N16R2,"MCU / radio module, 16 MB flash, 2 MB quad PSRAM, PCB antenna",SMD 25.5x18 mm,ESP32-S3-WROOM-1-N16R2,C2913205,Y,"ADR-001: N16R2 since 2026-11-18 (owner decision), rated −40 to +85 °C; the N16R8 is rated to +65 °C. Not the -1U variant (different footprint). Keep the antenna end clear of copper and the LTE antenna"
 C401,1,22 µF,X5R ceramic,0805,CL21A226MAQNNNE,C45783,Y,Module bulk decoupling
-C402 C405 C406,3,100 nF,X5R/X7R ceramic,0402,CL05B104KO5NNNC,C1525,Y,
-C403,1,1 µF,X5R ceramic,0603,CL10A105KB8NNNC,C15849,Y,EN delay
+C402 C405 C406 C403,4,100 nF,X5R/X7R ceramic,0402,CL05B104KO5NNNC,C1525,Y,"C403: EN delay 100 nF (was 1 µF, review R2-M2)"
 C404,1,10 µF,X5R/X7R ceramic,0603,CL10A106KP8NNNC,C19702,Y,Card supply
-R401 R409 R410 R411 R412 R413 R415 R417,8,10 kΩ,"1%, thick film",0402,0402WGF1002TCE,C25744,Y,
-R402 R414 R419,3,100 kΩ,"1%, thick film",0402,0402WGF1003TCE,C25741,Y,R402 GPIO45 pull-down; R414 card-switch gate pull-up; R419 card-detect pull-up
+R401 R409 R410 R411 R412 R413 R417,7,10 kΩ,"1%, thick film",0402,0402WGF1002TCE,C25744,Y,
+R402 R419 R415,3,100 kΩ,"1%, thick film",0402,0402WGF1003TCE,C25741,Y,R402 GPIO45 pull-down; R419 card-detect pull-up; R415 card-switch gate resistor (review R2-M1)
 R403 R404,2,5.1 kΩ,"1%, thick film",0402,0402WGF5101TCE,C25905,Y,USB-C CC pull-downs
 R405 R406,2,0 Ω,Jumper,0402,0402WGF0000TCE,C17168,Y,USB series links
 J401,1,USB-C 16-pin,"USB-C receptacle, service port only, no charging",SMD,HC-TYPE-C-16P-01A,C2894897,Y,Programming and service only (decision 2026-10-23)
@@ -18,3 +17,5 @@ D402,1,ESD 5.5 V bidir,"Low-capacitance ESD diode, ~10 pF",0402 (X1SON-2),TPD1E1
 R416,1,100 Ω,"1%, thick film",0402,0402WGF1000TCE,C25076,Y,Status LED: 2–7 mA for VF 2.6–3.1 V (was 2.2 kΩ ≈ 0.25 mA: too dim for F5-05). JLC basic part
 LED401,1,Green,"Status LED, green",0805,KT-0805G,C2297,Y,"JLC basic part; same green InGaN (VF 2.6–3.1 V, 430 mcd at 5 mA) as KT-0603G"
 R418,1,33 Ω,"1%, thick film",0402,0402WGF330JTCE,C25105,Y,SD_CLK series termination at U401. JLC basic part
+R414,1,1 MΩ,"1%, thick film",0402,0402WGF1004TCE,C26083,Y,"Card-switch gate pull-up (was 100 kΩ, review R2-M1). JLC basic part"
+C407,1,10 nF,"X7R ceramic, 50 V",0402,CL05B103KB5NNNC,C15195,Y,"Q401 gate–drain soft start for SD_VDD (review R2-M1). JLC basic part, same as C316"

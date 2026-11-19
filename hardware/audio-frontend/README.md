@@ -120,7 +120,7 @@ GPIO numbers are **proposed** and avoid strapping pins (0, 3, 45, 46), USB (19, 
 | Port | Direction (MCU view) | Proposed GPIO | Notes |
 |---|---|---|---|
 | `VBAT_SW` | power in | — | Switched battery rail after the main high-side switch |
-| `AUDIO_EN` | out | GPIO7 | High = audio domain on |
+| `AUDIO_EN` | out | GPIO7 | High = audio domain on; R148 holds it low |
 | `PREAMP_EN` | out | GPIO6 | High = preamp powered |
 | `AUD_BCK` | in | GPIO15 | 3.072 MHz from ADC |
 | `AUD_LRCK` | in | GPIO16 | 48 kHz from ADC |
@@ -177,7 +177,7 @@ TI's line-input filter (47 Ω + 10 nF, SLAS831D Fig. 63) must **not** be copied 
 | **Direct path total** | **≈ 27 mA → ≈ 100 mW** |
 | Preamp (OPA1662 both channels + mid-rail divider) | + 3.2 mA → **≈ 113 mW** |
 
-That is roughly a third of the F4-06 recording budget (≤ 350 mW), leaving ~240 mW for the ESP32-S3 and SD card. LDO regulation holds down to VBAT ≈ 3.32 V (145 mV max dropout at 300 mA, ≈ 15 mV at 30 mA); recording stops at 20 % SOC (F4-03), well above that. Below it AVDD_A follows VBAT_SW less ≈ 15 mV (SBVS338H §6.4.3), and the PCM1863 has no brown-out detector or reset pin (SLAS831D §7.3, §11.3). **Recording gate (2026-11-17 review):** start a recording only with VBAT_SW ≥ 3.35 V measured under load, and check the clock registers in step 11 before every recording.
+That is roughly a third of the F4-06 recording budget (≤ 350 mW), leaving ~240 mW for the ESP32-S3 and SD card. LDO regulation holds down to VBAT ≈ 3.32 V (145 mV max dropout at 300 mA, ≈ 15 mV at 30 mA); recording stops at 20 % SOC (F4-03), well above that. Below it AVDD_A follows VBAT_SW less ≈ 15 mV (SBVS338H §6.4.3), and the PCM1863 has no brown-out detector or reset pin (SLAS831D §7.3, §11.3). **Recording gate (raised 2026-11-19, owner decision, second review R2-G6):** start a recording only with VBAT_SW ≥ 3.6 V measured under load (was 3.35 V), and check the clock registers in step 11 before every recording. 3.35 V clears the LDO's dropout but not its PSRR: TI specifies regulation and PSRR only for VIN ≥ VOUT + 0.3 V (SBVS338H §5.5, §7.3), and near dropout VBAT_SW ripple, including the TPS63802's power-save bursts, reaches the mic node through a bias filter that is only −36 dB at 100 Hz. If the G2 noise test shows 3.35–3.6 V is clean, the gate can come back down.
 
 ### Settling after power-up
 
@@ -197,7 +197,7 @@ Mic bias RC τ = 0.1 s; preamp Cg τ = 0.1 s; mid-rail τ = 0.05 s. Allow **≥ 
 10. If using the preamp, `PREAMP_EN` high.
 11. Read back `0x72` (expect `0x0F`), `0x73` (`0x03`) and `0x74` (`0x34`) to confirm clocks; on a mismatch cycle `AUDIO_EN` and start again. Wait the settling time.
 12. ESP32-S3 I²S slave RX, Philips format, 32-bit slots, stereo; keep the top 24 bits.
-13. Power down: `PREAMP_EN` low, `AUDIO_EN` low, return pins to inputs. Drive `AUDIO_EN` low early in every boot: GPIO7 has no pull at reset and the TPS7A20's 500 kΩ pull-down is switched out while EN is high.
+13. Power down: `PREAMP_EN` low, `AUDIO_EN` low, return pins to inputs. GPIO7 has no pull at reset and the TPS7A20's 500 kΩ pull-down is switched out while EN is high, so R148 (100 kΩ) holds `AUDIO_EN` low through an ESP32 reset (2026-11-19). Keep `AUDIO_EN` low ≥ 0.5 s before re-enabling: C114 holds AVDD_A near 0.75 V for ≈ 0.14 s and the PCM1863 has no reset pin.
 
 ## Capture notes for EasyEDA Pro
 

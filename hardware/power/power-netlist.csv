@@ -57,13 +57,13 @@ R203,1,1,CN_COMRC,Y,0402WGF1200TCE: Loop compensation
 R203,2,2,CN_COM,Y,
 C206,1,1,GND,Y,CL05B224KO5NNNC: Loop compensation; return to U201 GND
 C206,2,2,CN_COMRC,Y,
-R204,1,1,SOLAR_IN,Y,FRC0402F4023TS: MPPT top: Vmp = 1.205 x (1 + R204/R205) = 6.05 V. Recalculate for the chosen panel
+R204,1,1,SOLAR_IN,Y,"FRC0402F4023TS: MPPT top: Vmp = 1.205 x (1 + R204/R205) = 6.05 V (Europe, cold winter panel). Australian builds or a cabled panel in hot sun: 330 kΩ (≈ 5.2 V; review R2-G4). Recalculate for the chosen panel and record per unit"
 R204,2,2,MPPT,Y,
 R205,1,1,MPPT,Y,0402WGF1003TCE: MPPT bottom
 R205,2,2,GND,Y,
-LED201,A,A,SOLAR_IN,Y,KT-0603R: Powered from the panel: no night drain. Check symbol pin order
+LED201,A,A,SOLAR_IN,Y,KT-0603R: Powered from the panel: no night drain. Fit for bring-up; not fitted on deployment units (review R2-P7)
 LED201,K,K,LED201_K,Y,
-LED202,A,A,SOLAR_IN,Y,"KT-0805G: Powered from the panel. Symbol pins 1 = A, 2 = K"
+LED202,A,A,SOLAR_IN,Y,"KT-0805G: Powered from the panel. Symbol pins 1 = A, 2 = K. Fit for bring-up; not fitted on deployment units (review R2-P7)"
 LED202,K,K,LED202_K,Y,
 R206,1,1,CN_CHRG,Y,0402WGF2201TCE
 R206,2,2,LED201_K,Y,
@@ -82,19 +82,22 @@ U202,2,IN,SOLAR_IN,Y,
 U202,3,OUT,TEMP_3V3,Y,
 C211,1,1,TEMP_3V3,Y,CL10A106KP8NNNC
 C211,2,2,GND,Y,
-C212,1,1,TEMP_3V3,Y,CL05B104KB54PNC
+C212,1,1,TEMP_VDD,Y,"CL05B104KB54PNC: U203 VDD bypass, at U203 pin 5"
 C212,2,2,GND,Y,
-U203,1,SETA,TMP_SETA,Y,"TMP390A2DRLR: Place to sense the battery cells, not a hot regulator"
+U203,1,SETA,TMP_SETA,Y,"TMP390A2DRLR: Place to sense the battery cells, not a hot regulator. Supplied from U208 so its POR and SET-resistor read happen on a clean edge at ≥ 2.85 V (SBOS904A §7.3; second review R2-P1)"
 U203,2,SETB,TMP_SETB,Y,
 U203,3,GND,GND,Y,
 U203,4,OUTB,TEMP_FAULT_N,Y,
-U203,5,VDD,TEMP_3V3,Y,
+U203,5,VDD,TEMP_VDD,Y,
 U203,6,OUTA,TEMP_FAULT_N,Y,
+U208,1,GND,GND,Y,"MAX809STRG (onsemi): 2.93 V push-pull reset (2.85–3.00 V, −40…+85 °C). Switches U203 VDD on with a clean edge once TEMP_3V3 is up (review R2-P1, owner decision 2026-11-19)"
+U208,2,RESET#,TEMP_VDD,Y,"Push-pull output: low below threshold (U203 off, TEMP_FAULT_N low, MPPT clamped), VCC after 140 ms above it. VOH ≥ 0.8 VCC at 500 µA"
+U208,3,VCC,TEMP_3V3,Y,Decoupled by C211
 R208,1,1,GND,Y,"FRC0402F2491TS: Hot trip +42 °C, reset +37 °C"
 R208,2,2,TMP_SETA,Y,
 R209,1,1,GND,Y,"0402WGF1872TCE: Cold trip +5 °C, reset +10 °C (owner decision 2026-11-17; was 21.5 kΩ = 0 °C)"
 R209,2,2,TMP_SETB,Y,
-R210,1,1,TEMP_3V3,Y,0402WGF1002TCE: Open-drain pull-up
+R210,1,1,TEMP_VDD,Y,"0402WGF4702TCE: Open-drain pull-up, 47 kΩ to TEMP_VDD (was 10 kΩ to TEMP_3V3): keeps U208 inside its 500 µA output rating, and an unpowered U203 reads as a fault"
 R210,2,2,TEMP_FAULT_N,Y,
 R211,1,1,TEMP_FAULT_N,Y,0402WGF4702TCE
 R211,2,2,TEMP_EN_DRV,Y,
@@ -138,9 +141,9 @@ C215,1,1,KEEP_ALIVE,Y,CL05B104KO5NNNC
 C215,2,2,GND,Y,
 C236,1,1,RAW_BAT,Y,"CL10A106KP8NNNC: at U204 pin 3 (TPL720: ≥ 1 µF at IN, Rev A.2 'Input Capacitor')"
 C236,2,2,GND,Y,
-U205,1,32KHZ,NC,Y,"DS3231MZ+TRL: ADR-002. Write INTCN=1, BBSQW=0 and EN32KHZ=0 at every boot"
+U205,1,32KHZ,NC,Y,"DS3231MZ+TRL: ADR-002. Write INTCN=1, BBSQW=0 and EN32KHZ=0 at every boot. INT/SQW drives WAKE_N directly (open drain, pull-up to ≤ 5.5 V allowed regardless of VCC; inverter Q206/Q207 removed, owner decision 2026-11-19, review P22)"
 U205,2,VCC,KEEP_ALIVE,Y,
-U205,3,INT/SQW,RTC_INT_N,Y,
+U205,3,INT/SQW,WAKE_N,Y,
 U205,4,RST,NC,Y,
 U205,5,GND,GND,Y,
 U205,6,VBAT,RTC_VBAT,Y,
@@ -152,22 +155,10 @@ BT201,1,+,RTC_VBAT,Y,"CR1220-2: pad 1 = + (EasyEDA footprint marks + at pad 1, �
 BT201,2,-,GND,Y,
 C217,1,1,RTC_VBAT,Y,0402B102K500NT: 1 nF VBAT contact-bounce filter (DS3231M: 0.1–1 nF). Fit the CR1220 after the main pack
 C217,2,2,GND,Y,
-R219,1,1,RTC_INT_N,Y,0402WGF1004TCE: INT pull-up (FieldMesh 100 kΩ raised to 1 MΩ)
-R219,2,2,KEEP_ALIVE,Y,
 R220,1,1,SYS_SDA,Y,0402WGF4701TCE: System I²C pull-up (off in sleep)
 R220,2,2,3V3,Y,
 R221,1,1,SYS_SCL,Y,0402WGF4701TCE: System I²C pull-up (off in sleep)
 R221,2,2,3V3,Y,
-R222,1,1,RTC_INT_N,Y,0402WGF1004TCE: Inverter base (FieldMesh 100 kΩ raised to 1 MΩ)
-R222,2,2,Q206_B,Y,
-Q206,1,B,Q206_B,Y,MMBT3904: Inverts RTC INT: alarm (INT low) -> RTC_WAKE high
-Q206,2,E,GND,Y,
-Q206,3,C,RTC_WAKE,Y,
-R223,1,1,RTC_WAKE,Y,0402WGF1004TCE: Inverter collector pull-up (FieldMesh 100 kΩ raised to 1 MΩ)
-R223,2,2,KEEP_ALIVE,Y,
-Q207,1,G,RTC_WAKE,Y,2N7002: RTC alarm wakes the board
-Q207,2,S,GND,Y,
-Q207,3,D,WAKE_N,Y,
 Q208,1,G,PWR_HOLD,Y,2N7002: MCU holds power on
 Q208,2,S,GND,Y,
 Q208,3,D,WAKE_N,Y,
@@ -182,8 +173,15 @@ R226,1,1,USB_WAKE,Y,0402WGF1003TCE
 R226,2,2,GND,Y,
 R227,1,1,WAKE_N,Y,0402WGF1000TCE
 R227,2,2,LATCH_LOGIC,Y,
-SW201,1,1,LATCH_LOGIC,Y,PTS810SJG250SMTRLFS: Hold until firmware asserts PWR_HOLD. Pins 1–2 and 3–4 are joined inside (C&K drawing)
-SW201,2,2,LATCH_LOGIC,Y,
+D206,A,A,LATCH_LOGIC,Y,"1N4148WS: a button press pulls LATCH_LOGIC to ≈ 0.6 V through D206. Silicon, not Schottky: ≤ 1 µA leakage keeps BTN_N high when hot (review R2-G2)"
+D206,K,K,BTN_N,Y,
+R246,1,1,BTN_N,Y,0402WGF1004TCE: BTN_N pull-up to RAW_BAT: D206 carries no current while idle; 4 µA only while pressed
+R246,2,2,RAW_BAT,Y,
+Q211,1,G,BTN_N,Y,"2N7002: button sense. Released: on, BTN_SENSE low. Pressed: off, BTN_SENSE pulled up by GPIO35. Only sinks, so nothing back-feeds the unpowered MCU"
+Q211,2,S,GND,Y,
+Q211,3,D,BTN_SENSE,Y,
+SW201,1,1,BTN_N,Y,"PTS810SJG250SMTRLFS: Hold until firmware asserts PWR_HOLD. Pins 1–2 and 3–4 are joined inside (C&K drawing). Pulls LATCH_LOGIC low through D206; the MCU reads it on BTN_SENSE (owner decision 2026-11-19, review R2-G2)"
+SW201,2,2,BTN_N,Y,
 SW201,3,3,GND,Y,
 SW201,4,4,GND,Y,
 SW202,1,1,LATCH_LOGIC,Y,"SSSS811101: Open = board can never turn on (storage, shipping). Pin 2 is the common (ALPS circuit diagram)"
@@ -193,21 +191,25 @@ SW202,4,GND,GND,Y,Frame ground terminal
 SW202,5,GND,GND,Y,
 SW202,6,GND,GND,Y,
 SW202,7,GND,GND,Y,
-Q210,1,G,SYS_GATE,Y,AO3401A: Main high-side switch
+Q210,1,G,Q210_G,Y,AO3401A: Main high-side switch
 Q210,2,S,RAW_BAT,Y,
 Q210,3,D,VBAT_SW,Y,
 R228,1,1,SYS_GATE,Y,Holds the main switch off. 47 kΩ so SW202 carries ≥ 64 µA while awake (ALPS minimum load 50 µA at 3 V); costs nothing asleep
 R228,2,2,RAW_BAT,Y,
-C218,1,1,SYS_GATE,Y,CL10B473KB8NNNC: holds Q210 off at battery connect and delays turn-off (47 kΩ × 47 nF ≈ 2 ms). Not a soft start: Q210 turns on in µs
+R245,1,1,SYS_GATE,Y,0402WGF0000TCE: Q210 gate link (0 Ω). For a soft start fit 10 kΩ with C237 100 nF and C218 2.2 µF: ≈ 1.2 A for ≈ 1.8 ms instead of ≈ 9 A (review R2-G3)
+R245,2,2,Q210_G,Y,
+C218,1,1,Q210_G,Y,CL10B473KB8NNNC: gate–source: holds Q210 off at battery connect and delays turn-off. For a soft start (C237 fitted) raise to 2.2 µF so C218 ≫ C237 keeps VGS ≈ 0 at battery hot-plug
 C218,2,2,RAW_BAT,Y,
+C237,1,1,Q210_G,N,DNP: Q210 gate–drain (Miller) capacitor for a soft start; fit 100 nF only together with R245 10 kΩ and C218 2.2 µF
+C237,2,2,VBAT_SW,N,
 C219,1,1,VBAT_SW,Y,RVT1C471M0607: + to VBAT_SW; bulk for radio peaks
 C219,2,2,GND,Y,
 C220,1,1,VBAT_SW,Y,CL10A226MP8NUNE
 C220,2,2,GND,Y,
 C221,1,1,VBAT_SW,Y,CL05B104KO5NNNC
 C221,2,2,GND,Y,
-U206,1,EN,VBAT_SW,Y,TPS63802DLAR: Node v4 rail (ADR-008). MODE low = power save. PG (pin 5) holds the ESP32 EN low until 3V3 > 95 % (pull-up R401 on the MCU sheet)
-U206,2,MODE,GND,Y,
+U206,1,EN,BB_EN,Y,"TPS63802DLAR: Node v4 rail (ADR-008). EN from R241/R242: on above 2.68–2.83 V, off below 2.43–2.58 V (precise EN, SLVSEU9D §9.3.2; review R2-G1). PG (pin 5) holds the ESP32 EN low until 3V3 > 95 % (pull-up R401 on the MCU sheet)"
+U206,2,MODE,BB_MODE,Y,
 U206,3,AGND,GND,Y,
 U206,4,FB,FB_3V3,Y,
 U206,5,PG,ESP_EN,Y,
@@ -216,6 +218,14 @@ U206,7,L2,BB_L2,Y,
 U206,8,GND,GND,Y,
 U206,9,L1,BB_L1,Y,
 U206,10,VIN,VBAT_SW,Y,
+R241,1,1,VBAT_SW,Y,"0402WGF1503TCE: U206 EN divider top: UVLO on 1.1 V × 2.5 = 2.75 V, off 1.0 V × 2.5 = 2.50 V (review R2-G1)"
+R241,2,2,BB_EN,Y,
+R242,1,1,BB_EN,Y,"0402WGF1003TCE: U206 EN divider bottom. 17 µA while awake, none while off"
+R242,2,2,GND,Y,
+R243,1,1,BB_MODE,Y,0402WGF1003TCE: U206 MODE low = power save (default)
+R243,2,2,GND,Y,
+R244,1,1,BB_MODE,N,DNP 0 Ω: lets GPIO36 select forced PWM during recordings if G2 finds power-save tones in the audio (review R2-G6)
+R244,2,2,BB_MODE_CTL,N,
 L202,1,1,BB_L1,Y,DFE201612E-R47M=P2
 L202,2,2,BB_L2,Y,
 R230,1,1,3V3,Y,0603WAF5103T5E: Vout = 0.5 x (1 + 510/91) = 3.30 V
@@ -286,9 +296,11 @@ TP204,1,TP,CHARGE_SENSE,Y,Test pad
 TP205,1,TP,TEMP_FAULT_N,Y,Test pad
 TP206,1,TP,RAW_BAT,Y,Test pad
 TP207,1,TP,KEEP_ALIVE,Y,Test pad
-TP208,1,TP,RTC_INT_N,Y,Test pad
+TP208,1,TP,WAKE_N,Y,"Test pad: wake line (RTC INT, PWR_HOLD, USB)"
 TP209,1,TP,SYS_GATE,Y,Test pad
 TP210,1,TP,VBAT_SW,Y,Test pad
 TP211,1,TP,3V3,Y,Test pad
 TP212,1,TP,VMODEM,Y,Test pad
 TP213,1,TP,GND,Y,Test pad
+TP214,1,TP,TMP_SETA,Y,TMP390 trip test (SBOS904A §7.3.2): drive > 0.8 × VDD and OUTA goes low; charging must stop (review R2-P2)
+TP215,1,TP,TMP_SETB,Y,TMP390 trip test for OUTB

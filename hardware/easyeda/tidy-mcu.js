@@ -1,4 +1,4 @@
-// Auris schematic tidy (TIDY = true; see below): mcu sheet (47 parts, 157 pin connections).
+// Auris schematic tidy (TIDY = true; see below): mcu sheet (48 parts, 159 pin connections).
 // Generated 2026-11-19 by hardware/tools/easyeda_capture.py from mcu/mcu-netlist.csv and mcu-bom.csv.
 // Don't edit this file: change the CSVs, then run the generator again.
 //
@@ -35,11 +35,11 @@
   // d: designator, lcsc: LCSC code ("" = copy a template part), fit: false = not fitted,
   // block: block in build_guide.py, pins: [pin number, pin name, net] from the netlist
   const PARTS = [
-    {"d": "U401", "lcsc": "C2913205", "fit": true, "pins": [["1", "GND", "GND"], ["2", "3V3", "3V3"], ["3", "EN", "ESP_EN"], ["4", "IO4", "AUD_INT_MCU"], ["5", "IO5", "MIC1_DC_SENSE"], ["6", "IO6", "PREAMP_EN"], ["7", "IO7", "AUDIO_EN"], ["8", "IO15", "AUD_BCK"], ["9", "IO16", "AUD_LRCK"], ["10", "IO17", "AUD_DOUT"], ["11", "IO18", "AUD_SDA"], ["12", "IO8", "AUD_SCL"], ["13", "IO19", "ESP_USB_DN"], ["14", "IO20", "ESP_USB_DP"], ["15", "IO3", "SD_CD"], ["16", "IO46", "NC"], ["17", "IO9", "AUD_MCLK"], ["18", "IO10", "PWR_HOLD"], ["19", "IO11", "MODEM_EN"], ["20", "IO12", "MODEM_PG"], ["21", "IO13", "SYS_SDA"], ["22", "IO14", "SYS_SCL"], ["23", "IO21", "LTE_PWRKEY"], ["24", "IO47", "SD_CLK_MCU"], ["25", "IO48", "SD_CMD"], ["26", "IO45", "SD_PWR_EN"], ["27", "IO0", "ESP_BOOT"], ["28", "IO35", "NC"], ["29", "IO36", "NC"], ["30", "IO37", "NC"], ["31", "IO38", "LTE_STATUS"], ["32", "IO39", "LTE_TX"], ["33", "IO40", "LTE_RX"], ["34", "IO41", "LTE_RTS"], ["35", "IO42", "LTE_CTS"], ["36", "RXD0", "SD_D0"], ["37", "TXD0", "STATUS_LED"], ["38", "IO2", "SOLAR_ADC"], ["39", "IO1", "BATT_ADC"], ["40", "GND", "GND"], ["41", "EPAD", "GND"]], "block": "m_module"},
+    {"d": "U401", "lcsc": "C2913205", "fit": true, "pins": [["1", "GND", "GND"], ["2", "3V3", "3V3"], ["3", "EN", "ESP_EN"], ["4", "IO4", "AUD_INT_MCU"], ["5", "IO5", "MIC1_DC_SENSE"], ["6", "IO6", "PREAMP_EN"], ["7", "IO7", "AUDIO_EN"], ["8", "IO15", "AUD_BCK"], ["9", "IO16", "AUD_LRCK"], ["10", "IO17", "AUD_DOUT"], ["11", "IO18", "AUD_SDA"], ["12", "IO8", "AUD_SCL"], ["13", "IO19", "ESP_USB_DN"], ["14", "IO20", "ESP_USB_DP"], ["15", "IO3", "SD_CD"], ["16", "IO46", "NC"], ["17", "IO9", "AUD_MCLK"], ["18", "IO10", "PWR_HOLD"], ["19", "IO11", "MODEM_EN"], ["20", "IO12", "MODEM_PG"], ["21", "IO13", "SYS_SDA"], ["22", "IO14", "SYS_SCL"], ["23", "IO21", "LTE_PWRKEY"], ["24", "IO47", "SD_CLK_MCU"], ["25", "IO48", "SD_CMD"], ["26", "IO45", "SD_PWR_EN"], ["27", "IO0", "ESP_BOOT"], ["28", "IO35", "BTN_SENSE"], ["29", "IO36", "BB_MODE_CTL"], ["30", "IO37", "NC"], ["31", "IO38", "LTE_STATUS"], ["32", "IO39", "LTE_TX"], ["33", "IO40", "LTE_RX"], ["34", "IO41", "LTE_RTS"], ["35", "IO42", "LTE_CTS"], ["36", "RXD0", "SD_D0"], ["37", "TXD0", "STATUS_LED"], ["38", "IO2", "SOLAR_ADC"], ["39", "IO1", "BATT_ADC"], ["40", "GND", "GND"], ["41", "EPAD", "GND"]], "block": "m_module"},
     {"d": "C401", "lcsc": "C45783", "fit": true, "pins": [["1", "1", "3V3"], ["2", "2", "GND"]], "block": "m_module"},
     {"d": "C402", "lcsc": "C1525", "fit": true, "pins": [["1", "1", "3V3"], ["2", "2", "GND"]], "block": "m_module"},
     {"d": "R401", "lcsc": "C25744", "fit": true, "pins": [["1", "1", "3V3"], ["2", "2", "ESP_EN"]], "block": "m_module"},
-    {"d": "C403", "lcsc": "C15849", "fit": true, "pins": [["1", "1", "ESP_EN"], ["2", "2", "GND"]], "block": "m_module"},
+    {"d": "C403", "lcsc": "C1525", "fit": true, "pins": [["1", "1", "ESP_EN"], ["2", "2", "GND"]], "block": "m_module"},
     {"d": "R402", "lcsc": "C25741", "fit": true, "pins": [["1", "1", "SD_PWR_EN"], ["2", "2", "GND"]], "block": "m_module"},
     {"d": "R417", "lcsc": "C25744", "fit": true, "pins": [["1", "1", "3V3"], ["2", "2", "ESP_BOOT"]], "block": "m_module"},
     {"d": "J401", "lcsc": "C2894897", "fit": true, "pins": [["A1", "GND", "GND"], ["A4", "VBUS", "VBUS"], ["A5", "CC1", "USB_CC1"], ["A6", "DP1", "USB_DP"], ["A7", "DN1", "USB_DN"], ["A8", "SBU1", "NC"], ["A9", "VBUS", "VBUS"], ["A12", "GND", "GND"], ["B1", "GND", "GND"], ["B4", "VBUS", "VBUS"], ["B5", "CC2", "USB_CC2"], ["B6", "DP2", "USB_DP"], ["B7", "DN2", "USB_DN"], ["B8", "SBU2", "NC"], ["B9", "VBUS", "VBUS"], ["B12", "GND", "GND"], ["1", "SHELL", "GND"], ["2", "SHELL", "GND"], ["3", "SHELL", "GND"], ["4", "SHELL", "GND"]], "block": "m_usb"},
@@ -60,9 +60,10 @@
     {"d": "R413", "lcsc": "C25744", "fit": true, "pins": [["1", "1", "SD_VDD"], ["2", "2", "SD_D3"]], "block": "m_sd"},
     {"d": "Q401", "lcsc": "C15127", "fit": true, "pins": [["1", "G", "SD_PSW_G"], ["2", "S", "3V3"], ["3", "D", "SD_VDD"]], "block": "m_sd"},
     {"d": "Q402", "lcsc": "C8545", "fit": true, "pins": [["1", "G", "SD_PWR_EN"], ["2", "S", "GND"], ["3", "D", "SD_PSW_DRV"]], "block": "m_sd"},
-    {"d": "R414", "lcsc": "C25741", "fit": true, "pins": [["1", "1", "3V3"], ["2", "2", "SD_PSW_G"]], "block": "m_sd"},
-    {"d": "R415", "lcsc": "C25744", "fit": true, "pins": [["1", "1", "SD_PSW_G"], ["2", "2", "SD_PSW_DRV"]], "block": "m_sd"},
+    {"d": "R414", "lcsc": "C26083", "fit": true, "pins": [["1", "1", "3V3"], ["2", "2", "SD_PSW_G"]], "block": "m_sd"},
+    {"d": "R415", "lcsc": "C25741", "fit": true, "pins": [["1", "1", "SD_PSW_G"], ["2", "2", "SD_PSW_DRV"]], "block": "m_sd"},
     {"d": "C406", "lcsc": "C1525", "fit": true, "pins": [["1", "1", "3V3"], ["2", "2", "SD_PSW_G"]], "block": "m_sd"},
+    {"d": "C407", "lcsc": "C15195", "fit": true, "pins": [["1", "1", "SD_PSW_G"], ["2", "2", "SD_VDD"]], "block": "m_sd"},
     {"d": "C404", "lcsc": "C19702", "fit": true, "pins": [["1", "1", "SD_VDD"], ["2", "2", "GND"]], "block": "m_sd"},
     {"d": "C405", "lcsc": "C1525", "fit": true, "pins": [["1", "1", "SD_VDD"], ["2", "2", "GND"]], "block": "m_sd"},
     {"d": "LED401", "lcsc": "C2297", "fit": true, "pins": [["A", "A", "LED401_A"], ["K", "K", "GND"]], "block": "m_led"},

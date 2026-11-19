@@ -245,9 +245,9 @@ details .tw { border: 0; }
       </table></div>
       <ul class="notes">
         <li><b>Where this comes from:</b> the panel input, charger, temperature cut-out, battery input and keep-alive rail are FieldMesh Node v4; the modem rail is FieldMesh Hub v2 r6; the wake latch is common to both. Decisions ADR-007, 008, 010, 011 and the owner's choices of 2026-10-23; review in doc 20. Designed and reviewed there, not yet built or field-proven.</li>
-        <li><b>Changed from FieldMesh:</b> cold trip at +5 °C as on FieldMesh (R209 18.7 kΩ; owner decision 2026-11-17, after a 0 °C setting was found to allow charging down to −2.5 °C within the TMP390's ±2.5 °C accuracy), charger inductor 47 µH, battery fuse 2.0 A hold, latch inverter resistors raised from 100 kΩ to 1 MΩ (about 5 µA instead of 46 µA), a USB wake input added, and no USB charging.</li>
+        <li><b>Changed from FieldMesh:</b> cold trip at +5 °C as on FieldMesh (R209 18.7 kΩ; owner decision 2026-11-17, after a 0 °C setting was found to allow charging down to −2.5 °C within the TMP390's ±2.5 °C accuracy), charger inductor 47 µH, battery fuse 2.0 A hold, a USB wake input added, and no USB charging. After the second review (owner decisions 2026-11-19): the RTC INT drives the wake line directly (the Q206/Q207 inverter and its 1 MΩ resistors are gone), the MCU can read the button (GPIO35), the 3.3 V converter has an undervoltage lockout (on 2.75 V, off 2.50 V), the TMP390 is powered through a MAX809 so it reads its trip resistors on a clean power-on, and Q210 has footprints for a soft start.</li>
         <li><b>Sizing target:</b> energy-neutral at 50–56°N in December with the 1S2P pack giving at least 10 days without sun. About 3 W of panel should do with the CN3791; confirm on the bench before choosing the panel.</li>
-        <li><b>Design load:</b> at most 1.0 Wh/day; recording at most 350 mW at the battery (F4-06). Sleep current is about 110 µA typical at 25 °C (≈ 160 µA with datasheet maxima), mostly the DS3231M itself; the charger's diodes add more in a hot enclosure (power README).</li>
+        <li><b>Design load:</b> at most 1.0 Wh/day; recording at most 350 mW at the battery (F4-06). Sleep current is about 101 µA typical at 25 °C (≈ 155 µA with datasheet maxima), mostly the DS3231M itself; the charger's diodes add more in a hot enclosure (power README).</li>
         <li><b>Charger:</b> the CN3791 holds the panel at its maximum-power voltage, set by R204/R205 to 6.05 V for the Node v4 panel. Recalculate them for the chosen panel. It has no power path and no safety timer, so an awake recorder delays charge termination.</li>
         <li><b>Battery state:</b> measured as voltage through the R216/R217 divider on VBAT_SW (decision 2026-10-23; the MAX17048 fuel gauge is dropped). State of charge is estimated from voltage before the modem turns on. The divider draws nothing while asleep.</li>
         <li><b>USB:</b> programming and service only. VBUS wakes the board but does not charge the battery.</li>
@@ -300,7 +300,7 @@ details .tw { border: 0; }
       <div class="sec-head"><div class="eyebrow">Block 3</div><h2>Charge temperature cut-out</h2></div>
       <figure>
         <div class="sch">{{fig:p_temp}}</div>
-        <figcaption>U203's two open-drain outputs (too hot, too cold) share TEMP_FAULT_N. Inside the window Q203 holds Q204 off and the charger runs. Outside it, Q204 pulls MPPT low and charging stops. The circuit runs from the panel through U202, so it draws nothing from the battery. Mount U203 against the cells, away from the charger's inductor and diodes.</figcaption>
+        <figcaption>U203's two open-drain outputs (too hot, too cold) share TEMP_FAULT_N. Inside the window Q203 holds Q204 off and the charger runs. Outside it, Q204 pulls MPPT low and charging stops. The circuit runs from the panel through U202, so it draws nothing from the battery. Mount U203 against the cells, away from the charger's inductor and diodes. U208 (MAX809) switches U203's supply on only once TEMP_3V3 is above 2.85–3.00 V: the TMP390 reads its trip resistors once at power-on and keeps them, so a slow dawn ramp must not reach it (2026-11-19). TP214/TP215 give TI's trip test on every board.</figcaption>
       </figure>
       {{parts:p_temp}}
     </section>
@@ -318,7 +318,7 @@ details .tw { border: 0; }
       <div class="sec-head"><div class="eyebrow">Block 6</div><h2>3.3 V and modem rails</h2></div>
       <figure>
         <div class="sch">{{fig:p_rails}}</div>
-        <figcaption>Both buck-boost converters run from VBAT_SW and hold their output from a full cell down to an empty one. U206 runs whenever the board is awake: 0.5 V × (1 + 510k/91k) = 3.30 V, and its power-good holds the ESP32-S3's EN low until 3V3 is up (2026-11-17 review). U207 is off until the MCU raises MODEM_EN for the daily sync: 0.5 V × (1 + 680k/100k) = 3.9 V. Wait for MODEM_PG (read it only with MODEM_EN high) before pressing the modem's PWRKEY, and never start U207 during a recording: it starts at its current limit into ≈ 600 µF.</figcaption>
+        <figcaption>Both buck-boost converters run from VBAT_SW and hold their output from a full cell down to an empty one. U206 runs whenever the board is awake and VBAT_SW is above its undervoltage lockout (R241/R242 on its precise EN: on at 2.75 V, off at 2.50 V; 2026-11-19): 0.5 V × (1 + 510k/91k) = 3.30 V, and its power-good holds the ESP32-S3's EN low until 3V3 is up (2026-11-17 review). MODE is low (power save) through R243; R244 can hand it to GPIO36 for forced PWM during recordings. U207 is off until the MCU raises MODEM_EN for the daily sync: 0.5 V × (1 + 680k/100k) = 3.9 V. Wait for MODEM_PG (read it only with MODEM_EN high) before pressing the modem's PWRKEY, and never start U207 during a recording: it starts at its current limit into ≈ 600 µF.</figcaption>
       </figure>
       <h3>Main 3.3 V</h3>
       {{parts:p_3v3}}
@@ -375,7 +375,7 @@ details .tw { border: 0; }
           <tr><td class="ref">4</td><td><span class="n">AUD_INT_MCU</span> (optional)</td><td>Audio</td></tr>
           <tr><td class="ref">5</td><td><span class="n">MIC1_DC_SENSE</span> (optional, ADC1)</td><td>Audio</td></tr>
           <tr><td class="ref">6</td><td><span class="n">PREAMP_EN</span></td><td>Audio</td></tr>
-          <tr><td class="ref">7</td><td><span class="n">AUDIO_EN</span></td><td>Audio</td></tr>
+          <tr><td class="ref">7</td><td><span class="n">AUDIO_EN</span> (R148 pull-down)</td><td>Audio</td></tr>
           <tr><td class="ref">8</td><td><span class="n">AUD_SCL</span></td><td>Audio</td></tr>
           <tr><td class="ref">9</td><td><span class="n">AUD_MCLK</span> (optional)</td><td>Audio</td></tr>
           <tr><td class="ref">10</td><td><span class="n">PWR_HOLD</span>: drive high first thing at boot</td><td>Power</td></tr>
@@ -386,12 +386,14 @@ details .tw { border: 0; }
           <tr><td class="ref">18</td><td><span class="n">AUD_SDA</span></td><td>Audio</td></tr>
           <tr class="dnp"><td class="ref">19, 20</td><td>USB D−, D+: programming, console and debug (built-in USB-Serial-JTAG)</td><td>Storage &amp; USB</td></tr>
           <tr><td class="ref">21</td><td><span class="n">LTE_PWRKEY</span></td><td>LTE</td></tr>
-          <tr class="dnp"><td class="ref">35, 36, 37</td><td>Spare, unconnected. Free on the N16R2; they were the octal PSRAM lines on the N16R8</td><td>—</td></tr>
+          <tr><td class="ref">35</td><td><span class="n">BTN_SENSE</span>: service button, high = pressed (internal pull-up; 2026-11-19)</td><td>Power</td></tr>
+          <tr><td class="ref">36</td><td><span class="n">BB_MODE_CTL</span>: TPS63802 MODE through DNP R244 (forced PWM option); internal pull-down</td><td>Power</td></tr>
+          <tr class="dnp"><td class="ref">37</td><td>Spare, unconnected (internal pull-down). Free on the N16R2; GPIO35–37 were the octal PSRAM lines on the N16R8</td><td>—</td></tr>
           <tr><td class="ref">38</td><td><span class="n">LTE_STATUS</span> (pull-down)</td><td>LTE</td></tr>
           <tr><td class="ref">39, 40</td><td><span class="n">LTE_TX</span>, <span class="n">LTE_RX</span> (UART1; pull-up on RX). These are the external JTAG pins; debug runs over USB instead</td><td>LTE</td></tr>
           <tr><td class="ref">41, 42</td><td><span class="n">LTE_RTS</span>, <span class="n">LTE_CTS</span></td><td>LTE</td></tr>
           <tr><td class="ref">43</td><td><span class="n">STATUS_LED</span>. Was UART0 TX: flickers with the boot ROM log, which is harmless for an LED</td><td>Storage &amp; USB</td></tr>
-          <tr><td class="ref">44</td><td><span class="n">SD_D0</span>. Was UART0 RX: an input at boot, so the card cannot be driven before firmware runs</td><td>Storage &amp; USB</td></tr>
+          <tr><td class="ref">44</td><td><span class="n">SD_D0</span>. Was UART0 RX: an input with a weak pull-up at boot, which feeds the unpowered card through R410 until firmware clears it</td><td>Storage &amp; USB</td></tr>
           <tr><td class="ref">45</td><td><span class="n">SD_PWR_EN</span>, external 100 kΩ pull-down. Strapping pin: low at boot selects the 3.3 V flash supply, and low also means card power off</td><td>Storage &amp; USB</td></tr>
           <tr><td class="ref">47, 48</td><td><span class="n">SD_CLK</span> (through R418 33 Ω), <span class="n">SD_CMD</span> (3.3 V on this module)</td><td>Storage &amp; USB</td></tr>
           <tr><td class="ref">EN</td><td><span class="n">ESP_EN</span>: held low by the TPS63802 power-good until 3V3 is up</td><td>Power</td></tr>
@@ -410,13 +412,13 @@ details .tw { border: 0; }
         <tbody>
           <tr><td><b>Alarm 1</b> (A1F flag)</td><td>One-shot, rewritten by the MCU before every power-down</td><td>Run the next scheduled job, e.g. record the 10-minute slot</td></tr>
           <tr><td><b>Alarm 2</b> (A2F flag)</td><td>Standing daily match on hour and minute, UTC; never needs touching</td><td>Daily LTE session: heartbeat, config, clock sync</td></tr>
-          <tr><td><b>Wake button</b> (SW201)</td><td>Pulls the latch low directly</td><td>Commissioning, Wi-Fi hotspot, status LED. No alarm flag set means a button or USB wake</td></tr>
+          <tr><td><b>Wake button</b> (SW201)</td><td>Pulls the latch low through D206; the MCU reads it on GPIO35 (BTN_SENSE, high = pressed), also while awake</td><td>Commissioning, Wi-Fi hotspot, status LED; long presses and a stuck button are visible to firmware</td></tr>
           <tr><td><b>USB present</b></td><td>VBUS turns on Q209 through R225/R226</td><td>USB service. USB does not charge the battery</td></tr>
         </tbody>
       </table></div>
       <ul class="notes">
         <li><b>Bus:</b> I²C address 0x68 on the system bus (SYS_SDA/SYS_SCL, 4.7 kΩ pull-ups to 3V3), alone on it for now. The audio ADC has its own bus. The fuel gauge was dropped on 2026-10-23.</li>
-        <li><b>INT/SQW:</b> active-low, open-drain, pulled up to the always-on rail and fed to the wake latch. Write <code>INTCN = 1</code>, <code>BBSQW = 0</code> and <code>EN32KHZ = 0</code> at every boot so it never outputs a square wave. Clear the I²C bus before the first access after each wake.</li>
+        <li><b>INT/SQW:</b> active-low, open-drain, wired straight to the wake line WAKE_N (pulled up through R228 to the battery; the pin allows up to 5.5 V regardless of VCC). Write <code>INTCN = 1</code>, <code>BBSQW = 0</code> and <code>EN32KHZ = 0</code> at every boot so it never outputs a square wave. Clear the I²C bus before the first access after each wake.</li>
         <li><b>Order of events at wake:</b> the MCU asserts PWR_HOLD first, reads A1F/A2F, arms the next alarm early, and clears the flags only at the commit step. Clearing a flag before PWR_HOLD would drop the INT line and cut its own power; any ESP32 reset releases PWR_HOLD, and a still-set flag then keeps the board on through the reboot.</li>
         <li><b>Accuracy:</b> ±5 ppm, about 0.43 s/day. The daily LTE sync corrects it (F2-02).</li>
         <li><b>Supply current:</b> up to 130 µA from VCC in standby, most of the board's sleep current. The VBAT pin runs only the 1 Hz square wave, not alarms, so VCC stays on the keep-alive rail. The coin cell on VBAT keeps the time if the main battery runs flat: a Panasonic BR1220 (−30 to +80 °C) in the CR1220 holder, fitted by hand (owner decision 2026-11-18). No CR1220-size cell is rated to −40 °C; bench-test it there.</li>
@@ -429,7 +431,7 @@ details .tw { border: 0; }
       <div class="sec-head"><div class="eyebrow">Power sheet, block 5</div><h2>RTC and wake latch</h2></div>
       <figure>
         <div class="sch">{{fig:p_latch}}</div>
-        <figcaption>Any of four things pulls WAKE_N low and turns on the main switch Q210: the RTC alarm (through the Q206 inverter and Q207), PWR_HOLD from the MCU (Q208), USB power (Q209) or the wake button SW201. R228 (47 kΩ) and C218 keep Q210 off by default and delay its turn-off; turn-on takes microseconds (no soft start), and C219 holds VBAT_SW up during the inrush. SW202 disconnects the latch for shipping; the RTC keeps running. With 1 MΩ for R219, R222 and R223 the latch draws about 5 µA. C216 decouples U205's VCC; C217 (1 nF) filters coin-cell contact bounce on VBAT. SW201 and SW202 are −40…+85 °C parts (2026-11-17).</figcaption>
+        <figcaption>Any of four things pulls the latch low and turns on the main switch Q210: the RTC alarm (INT/SQW directly on WAKE_N), PWR_HOLD from the MCU (Q208), USB power (Q209) or the wake button SW201 (through D206; Q211 lets the MCU read it on GPIO35). R228 (47 kΩ) and C218 keep Q210 off by default and delay its turn-off; with R245 at 0 Ω and C237 not fitted, turn-on takes microseconds, and C219 holds VBAT_SW up during the inrush. If bench test 2 shows the pack's protection tripping, fit R245 10 kΩ, C237 100 nF and C218 2.2 µF for a ≈ 2 ms soft start. SW202 disconnects the latch for shipping; the RTC keeps running. The latch draws nothing while idle. C216 decouples U205's VCC; C217 (1 nF) filters coin-cell contact bounce on VBAT. SW201 and SW202 are −40…+85 °C parts (2026-11-17).</figcaption>
       </figure>
       <h3>RTC</h3>
       {{parts:p_rtc}}
@@ -712,7 +714,7 @@ details .tw { border: 0; }
       {{comp:io}}
       <ul class="notes">
         <li><b>microSD bus (ADR-012, decided 2026-10-23):</b> SD mode, 1-bit: <span class="n">SD_CLK</span> GPIO47, <span class="n">SD_CMD</span> GPIO48, <span class="n">SD_D0</span> GPIO44, routed through the ESP32-S3 GPIO matrix. About 1–2 MB/s, 10–20 times the 96 KB/s audio needs, on fewer pins than SPI. Pull CMD, D0 and the unused D1–D3 up to the card supply with 10 kΩ; D3 high keeps the card out of SPI mode.</li>
-        <li><b>Card supply:</b> a load switch with an active-high enable on <span class="n">SD_PWR_EN</span> (GPIO45) and a 100 kΩ pull-down, so the card is off until firmware turns it on and can be power-cycled if it hangs. The same pull-down holds GPIO45's strap at the 3.3 V flash setting during reset. The switch is an AO3401A driven by a 2N7002 (Q401/Q402). Clear GPIO44's reset pull-up and drive CLK, CMD and D0 low before switching the card off, or the card is powered through its pins. Card detect goes to GPIO3 (100 kΩ pull-up); the cover pads go to GND; SD_CLK has a 33 Ω series resistor at the module.</li>
+        <li><b>Card supply:</b> a load switch with an active-high enable on <span class="n">SD_PWR_EN</span> (GPIO45) and a 100 kΩ pull-down, so the card is off until firmware turns it on and can be power-cycled if it hangs. The same pull-down holds GPIO45's strap at the 3.3 V flash setting during reset. The switch is an AO3401A driven by a 2N7002 (Q401/Q402) with a Miller soft start (C407 10 nF gate–drain, R415 100 kΩ, R414 1 MΩ; 2026-11-19): SD_VDD ramps in ≈ 2 ms, so the 3V3 step stays well above the power-good threshold that drives the ESP32 EN. Wait ≥ 0.5 s with the card off before powering it again. Clear GPIO44's reset pull-up and drive CLK, CMD and D0 low before switching the card off, or the card is powered through its pins. Card detect goes to GPIO3 (100 kΩ pull-up); the cover pads go to GND; SD_CLK has a 33 Ω series resistor at the module.</li>
         <li><b>Card ESD (owner decision 2026-11-18):</b> the slot is user-accessible, so an SRV05-4 (D403, 3 pF per line) sits at the holder on SD_CLK (card side of the 33 Ω), SD_CMD, SD_D0 and SD_CD, the four card lines that reach ESP32 pins. Its reference pin goes to 3V3, which is never below the card supply, so nothing back-feeds. D1–D3 reach only pull-ups.</li>
         <li><b>Status LED:</b> on GPIO43 (formerly UART0 TX): green KT-0805G through 100 Ω, 2–7 mA, readable in daylight. It flickers with the boot ROM log, which is harmless.</li>
         <li><b>Card size:</b> 128 GB lasts about 150 days and 256 GB about 300 days at 16-bit, 48 kHz, 1 minute in 10. Cards above 32 GB come formatted exFAT; firmware decides between exFAT support and FAT32.</li>

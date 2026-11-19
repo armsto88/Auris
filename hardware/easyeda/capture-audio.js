@@ -1,4 +1,4 @@
-// Auris schematic capture: audio sheet (114 parts, 278 pin connections).
+// Auris schematic capture: audio sheet (115 parts, 280 pin connections).
 // Generated 2026-11-19 by hardware/tools/easyeda_capture.py from audio-frontend/audio-frontend-netlist.csv and audio-frontend-bom.csv.
 // Don't edit this file: change the CSVs, then run the generator again.
 //
@@ -39,6 +39,7 @@
     {"d": "C101", "lcsc": "C15850", "fit": true, "pins": [["1", "1", "VBAT_SW"], ["2", "2", "GND"]], "block": "power"},
     {"d": "C102", "lcsc": "C15850", "fit": true, "pins": [["1", "1", "AVDD_A"], ["2", "2", "GND"]], "block": "power"},
     {"d": "FB101", "lcsc": "C1002", "fit": true, "pins": [["1", "1", "AVDD_A"], ["2", "2", "DVDD_A"]], "block": "power"},
+    {"d": "R148", "lcsc": "C25741", "fit": true, "pins": [["1", "1", "AUDIO_EN"], ["2", "2", "GND"]], "block": "power"},
     {"d": "U102", "lcsc": "C529569", "fit": true, "pins": [["1", "VINL2/VIN1M", "AIN1M"], ["2", "VINR2/VIN2M", "AIN2M"], ["3", "VINL1/VIN1P", "AIN1P"], ["4", "VINR1/VIN2P", "AIN2P"], ["5", "MICBIAS", "PCM_MICBIAS"], ["6", "VREF", "PCM_VREF"], ["7", "AGND", "GND"], ["8", "AVDD", "AVDD_A"], ["9", "XO", "PCM_XO"], ["10", "XI", "PCM_XI"], ["11", "LDO", "PCM_LDO"], ["12", "DGND", "GND"], ["13", "DVDD", "DVDD_A"], ["14", "IOVDD", "DVDD_A"], ["15", "SCKI", "PCM_SCKI"], ["16", "LRCK", "PCM_LRCK"], ["17", "BCK", "PCM_BCK"], ["18", "DOUT", "PCM_DOUT"], ["19", "GPIO3/INTC", "AUD_INT"], ["20", "GPIO2/INTB/DMCLK", "PCM_GPIO2"], ["21", "GPIO1/INTA/DMIN", "FILT_SEL1"], ["22", "MISO/GPIO0/DMIN2", "FILT_SEL0"], ["23", "MOSI/SDA", "AUD_SDA"], ["24", "MC/SCL", "AUD_SCL"], ["25", "MS/AD", "GND"], ["26", "MD0", "GND"], ["27", "VINL4/VIN4M", "AIN4M"], ["28", "VINR4/VIN3M", "AIN3M"], ["29", "VINL3/VIN4P", "AIN4P"], ["30", "VINR3/VIN3P", "AIN3P"]], "block": "adc"},
     {"d": "C103", "lcsc": "C1525", "fit": true, "pins": [["1", "1", "AVDD_A"], ["2", "2", "GND"]], "block": "adc"},
     {"d": "C104", "lcsc": "C15850", "fit": true, "pins": [["1", "1", "AVDD_A"], ["2", "2", "GND"]], "block": "adc"},

@@ -35,7 +35,7 @@ R103 R104 R105,3,33 ohm,"1%, thick film",0402,0402WGF330JTCE,C25105,Y,I2S series
 R119 R120 R124 R125,4,47 ohm,"1%, thick film",0402,0402WGF470JTCE,C25118,Y,"ADC input series R. Thick film is fine here (was thin film): no DC flows, and a 1% mismatch against the ADC's 20 kohm input is negligible"
 R135 R136 R142 R143,4,47 ohm,"1%, thick film",0402,0402WGF470JTCE,C25118,N,Mic 2 option
 R106 R107,2,4.7 kohm,"1%, thick film",0402,0402WGF4701TCE,C25900,Y,Audio I2C pull-ups. JLC basic part
-R108 R110 R111 R112 R121 R126 R128 R132,8,100 kohm,"1%, thick film",0402,0402WGF1003TCE,C25741,Y,"R121/R132 preamp input bias: only op-amp bias current flows, so thick film is fine (was thin film). JLC basic part"
+R108 R110 R111 R112 R121 R126 R128 R132 R148,9,100 kohm,"1%, thick film",0402,0402WGF1003TCE,C25741,Y,"R121/R132 preamp input bias: only op-amp bias current flows, so thick film is fine (was thin film); R148 AUDIO_EN pull-down (review R2-A1). JLC basic part"
 R116,1,470 ohm,"0.1%, thin film, 25 ppm",0603,RT0603BRD07470RL,C705779,Y,Yageo. Mic bias filter (carries DC: thin film avoids excess noise)
 R140,1,470 ohm,"0.1%, thin film, 25 ppm",0603,RT0603BRD07470RL,C705779,N,Mic 2 option
 R117,1,2.7 kohm,"0.1%, thin film, 25 ppm",0603,RT0603BRD072K7L,C705760,Y,Yageo. Mic load resistor (carries DC: thin film avoids excess noise)
