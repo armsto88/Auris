@@ -31,6 +31,16 @@ Dimensions in mm, L × W × H. "Internal" is the clear cavity.
 
 Not suitable: Bopla Euromas II (IP65), Takachi BCPC/BCAP (IP65), Gainta G3xx (ABS), Fibox Tempo (IP65), Hammond 1554 in ABS (Hammond: not for outdoor use).
 
+## Price, and cheaper options
+
+- Hammond 1554N2GY: about US$16–27 each (Octopart, myMectronic aggregators); DigiKey Canada CA$38.91 for one, CA$25.78 each at 100 (backorder). No element14 Australia price found.
+- AliExpress (search pages read 2026-11-19, EUR): generic "125 × 125 × 75 mm" outdoor junction box from €3.35 each (material and IP not stated); "IP67 ABS/polycarbonate" boxes €7.89–8.39 (titles name both materials, no dimensions); 150 × 110 × 70 mm ABS IP65 boxes €15.42. None was verified as PC or ASA with IP66+ and a known internal size.
+- Other low-cost routes not yet priced: RS PRO's own polycarbonate IP67 box at 119.8 × 119.8 × 60.1 mm (RS 186-2279), Chinese factories that sell on AliExpress with drawings and a PC option (e.g. Szomk), and LCSC's junction boxes.
+
+The catch with cheap boxes: most are ABS, which chalks and turns brittle in sun within a year or two unless UV-stabilised (F7-03 asks for 300-day service intervals in Australian and European weather); the IP rating is untested and the gasket is often a foam strip; and sizes and listings change between batches, so a PCB outline tied to one listing's bosses is a risk.
+
+**Way round it:** mount the PCB on its own holes (standoffs or a small plate fixed to the box floor), not on the box's bosses. Then any box with ≥ 110 × 105 mm floor and ≥ 45 mm inside height takes the same board: cheap boxes for rev A prototypes and bench work, and the production box (Hammond, Bocube, or a PC/ASA box bought direct from a factory with a drawing) chosen later without a PCB respin.
+
 ## Recommendation
 
 1. **First choice: Hammond 1554N2GY** (120 × 120 × 60), with 1554P2GY (80 high) as the step up if the battery goes under the PCB with room for desiccant. It is the smallest box found that holds the PCB, the pack and the antenna; Hammond is stocked by the usual distributors in Europe and Australia (not checked for this part: the sites refused automated reads).
