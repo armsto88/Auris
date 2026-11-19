@@ -39,7 +39,7 @@
 - **Modem:** EG810M-EU supply (ADR-011), Quectel AT driver, antenna, SIM/operator and RF validation; GNSS optional only.
 - **Power:** charger, main 3.3 V, keep-alive and modem supply now **selected in concept** from FieldMesh Hub v2 / Node v4 (CN3791 + TMP390A2, TPS63802, TPL720F33 + CR1220, TPS63020; ADR-007/008/010/011, 2026-10-23), but **none measured on Auris**; solar harvest **not** established; TPS7A2033 audio LDO candidate; battery capacity **TBD**.
 - **Mechanical:** enclosure/IP target, acoustic vent/membrane, windscreen, mounting system, thermal layout, manufacturing approach.
-- **SD:** 1-bit SD mode chosen (ADR-012); card power switch (AO3401A + 2N7002) and card detect on GPIO3 drawn (2026-11-17) and an ESD array on the card lines (D403, 2026-11-18), not measured; file-integrity behaviour still open.
+- **SD:** 1-bit SD mode chosen (ADR-012); card power switch (AO3401A + 2N7002) drawn (2026-11-17); flip-top holder without card detect since SC-002 (2026-11-19), SD_CD on GPIO3 only pulled up and an ESD array on the card lines (D403, 2026-11-18), not measured; file-integrity behaviour still open.
 - **Cloud/UI:** technology stack, hosting, product pricing, subscription model, API paths, deployments, production security and regulatory assessments.
 - **AI:** models, supported rates/features, detection thresholds, real-world inference latency, false-negative rates, end-user training UX.
 

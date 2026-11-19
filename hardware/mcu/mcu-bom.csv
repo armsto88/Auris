@@ -7,8 +7,8 @@ R401 R409 R410 R411 R412 R413 R417,7,10 kΩ,"1%, thick film",0402,0402WGF1002TCE
 R402 R419 R415,3,100 kΩ,"1%, thick film",0402,0402WGF1003TCE,C25741,Y,R402 GPIO45 pull-down; R419 card-detect pull-up; R415 card-switch gate resistor (review R2-M1)
 R403 R404,2,5.1 kΩ,"1%, thick film",0402,0402WGF5101TCE,C25905,Y,USB-C CC pull-downs
 R405 R406,2,0 Ω,Jumper,0402,0402WGF0000TCE,C17168,Y,USB series links
-J401,1,USB-C 16-pin,"USB-C receptacle, service port only, no charging",SMD,HC-TYPE-C-16P-01A,C2894897,Y,Programming and service only (decision 2026-10-23)
-J402,1,microSD push-push,microSD holder with card detect,SMD,TF PUSH,C393941,Y,Card must be swappable without opening the main seal (F5-06). Cover pads 10–13 to GND; card detect (pin 9) to GPIO3. SHOU HAN rates storage −25…+85 °C only: qualify at −40 °C
+J401,1,USB-C 16-pin vertical,"USB-C receptacle, vertical (used from above), service port only, no charging",SMD,TYPE-C-31-D-11,C5370448,Y,Programming and service only (decision 2026-10-23). Vertical since SC-001 (2026-11-19): used from above with the lid off. Shell tabs 17/18 to GND. HRO rates −40…+85 °C
+J402,1,microSD flip-top,"microSD holder, flip-top (hinged lid), no card detect",SMD,TF-030,C5310449,Y,"Used from above with the lid off (SC-002, 2026-11-19; lid-off servicing replaces F5-06's sealed port). Cover pads 9–12 to GND. No card-detect pin: SD_CD stays on GPIO3 with R419 pull-up and firmware finds the card by initialising it. Hanbo rates −40…+85 °C"
 D401 D403,2,SRV05-4,"4-line TVS array, 3 pF",SOT-23-6,SRV05-4.TCT,C13612,Y,"D401: USB ESD on D+, D−, CC1, CC2; pin 5 (REF2) open so the ESP32's D+ pull-up cannot back-feed VBUS. D403: microSD ESD on SD_CLK, SD_CMD, SD_D0 and SD_CD at J402; pin 5 to 3V3. Same part as D301"
 Q401,1,AO3401A,P-FET,SOT-23,AO3401A,C15127,Y,Chosen 2026-11-17: card-supply switch
 Q402,1,2N7002,N-FET,SOT-23,2N7002,C8545,Y,Chosen 2026-11-17: card-supply switch driver

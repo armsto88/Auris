@@ -24,7 +24,7 @@ Marked `Chosen 2026-11-17` in the netlist and BOM notes.
 |---|---|---|
 | Card supply switch | Load switch, active-high enable on GPIO45, 100 kΩ pull-down; part still to choose | AO3401A P-FET (Q401) driven by a 2N7002 (Q402), both already on the BOM. Since 2026-11-19 (owner decision, second review R2-M1) a real soft start: C407 10 nF gate–drain, R415 100 kΩ, R414 1 MΩ, C406 100 nF gate–source. SD_VDD ramps in ≈ 2 ms at ≈ 15 mA; before, C404 was charged almost as a step, which could pull 3V3 below the TPS63802's 90 % power-good and, through ESP_EN, reset the ESP32 and power the board off |
 | USB ESD | ESD protection needed | SRV05-4 (D401), the LTE sheet's SIM TVS: D+, D−, CC1, CC2. **Pin 5 left open** (2026-11-17 review): on VBUS it let the ESP32's D+ pull-up back-feed VBUS and keep the board on. VBUS has its own TPD1E10B06 (D402) |
-| GPIO3 | Still open (spare) | **microSD card detect** (SD_CD, R419 100 kΩ pull-up; owner decision 2026-11-17). The unfitted VBUS-sense divider R407/R408 was removed |
+| GPIO3 | Still open (spare) | **SD_CD** with R419 100 kΩ pull-up (card detect, owner decision 2026-11-17). Since SC-002 (2026-11-19) the flip-top holder has no card-detect pin, so GPIO3 just reads high and firmware finds the card by initialising it. The unfitted VBUS-sense divider R407/R408 was removed |
 | Boot and reset | Bring GPIO0 to a pad or button | Test pads for GPIO0, EN and GND (TP401–TP403) rather than buttons |
 | Status LED | GPIO43 to GND through a resistor | Green **KT-0805G** (JLC basic, same green InGaN as the KT-0603G) with **100 Ω**: 2–7 mA for VF 2.6–3.1 V. The first choice, 2.2 kΩ, gave only ≈ 0.25 mA, too dim for daylight (F5-05) |
 
@@ -41,7 +41,8 @@ Marked `owner decision 2026-11-18` in the netlist and BOM notes; prices and reas
 ## Capture notes
 
 - **J401 USB-C:** the EasyEDA symbol merges pad pairs (`A1B12`, `A4B9`, `B4A9`, `B1A12`); the capture puts the netlist's A/B rows on them by name. Shell pins 1–4 go to GND (owner decision 2026-11-17).
-- **J402 microSD:** contacts 1–8 per the SD standard; card detect is symbol pin and footprint pad `CD` (netlist pin 9) on SD_CD; cover pads 10–13 go to GND (owner decision 2026-11-17). Place D403 beside J402; it sits on the card side of R418.
+- **J402 microSD:** flip-top Hanbo TF-030 (C5310449) since SC-002 (2026-11-19), used from above with the lid off; contacts 1–8 per the SD standard; cover pads 9–12 go to GND (owner decision 2026-11-17); no card-detect pin. Place D403 beside J402; it sits on the card side of R418.
+- **J401 USB-C:** vertical HRO TYPE-C-31-D-11 (C5370448) since SC-001 (2026-11-19), used from above with the lid off; contacts A1…B12, shell tabs 17/18 to GND.
 
 ## Changes from the 2026-11-17 review
 

@@ -1,4 +1,4 @@
-// Auris schematic capture: mcu sheet (48 parts, 159 pin connections).
+// Auris schematic capture: mcu sheet (48 parts, 156 pin connections).
 // Generated 2026-11-19 by hardware/tools/easyeda_capture.py from mcu/mcu-netlist.csv and mcu-bom.csv.
 // Don't edit this file: change the CSVs, then run the generator again.
 //
@@ -42,14 +42,14 @@
     {"d": "C403", "lcsc": "C1525", "mpn": "CL05B104KO5NNNC", "fit": true, "pins": [["1", "1", "ESP_EN"], ["2", "2", "GND"]], "block": "m_module"},
     {"d": "R402", "lcsc": "C25741", "mpn": "0402WGF1003TCE", "fit": true, "pins": [["1", "1", "SD_PWR_EN"], ["2", "2", "GND"]], "block": "m_module"},
     {"d": "R417", "lcsc": "C25744", "mpn": "0402WGF1002TCE", "fit": true, "pins": [["1", "1", "3V3"], ["2", "2", "ESP_BOOT"]], "block": "m_module"},
-    {"d": "J401", "lcsc": "C2894897", "mpn": "HC-TYPE-C-16P-01A", "fit": true, "pins": [["A1", "GND", "GND"], ["A4", "VBUS", "VBUS"], ["A5", "CC1", "USB_CC1"], ["A6", "DP1", "USB_DP"], ["A7", "DN1", "USB_DN"], ["A8", "SBU1", "NC"], ["A9", "VBUS", "VBUS"], ["A12", "GND", "GND"], ["B1", "GND", "GND"], ["B4", "VBUS", "VBUS"], ["B5", "CC2", "USB_CC2"], ["B6", "DP2", "USB_DP"], ["B7", "DN2", "USB_DN"], ["B8", "SBU2", "NC"], ["B9", "VBUS", "VBUS"], ["B12", "GND", "GND"], ["1", "SHELL", "GND"], ["2", "SHELL", "GND"], ["3", "SHELL", "GND"], ["4", "SHELL", "GND"]], "block": "m_usb"},
+    {"d": "J401", "lcsc": "C5370448", "mpn": "TYPE-C-31-D-11", "fit": true, "pins": [["A1", "GND", "GND"], ["A4", "VBUS", "VBUS"], ["A5", "CC1", "USB_CC1"], ["A6", "Dp1", "USB_DP"], ["A7", "Dn1", "USB_DN"], ["A8", "SBU1", "NC"], ["A9", "VBUS", "VBUS"], ["A12", "GND", "GND"], ["B1", "GND", "GND"], ["B4", "VBUS", "VBUS"], ["B5", "CC2", "USB_CC2"], ["B6", "Dp2", "USB_DP"], ["B7", "Dn2", "USB_DN"], ["B8", "SBU2", "NC"], ["B9", "VBUS", "VBUS"], ["B12", "GND", "GND"], ["17", "EH", "GND"], ["18", "EH", "GND"]], "block": "m_usb"},
     {"d": "D401", "lcsc": "C13612", "mpn": "SRV05-4.TCT", "fit": true, "pins": [["1", "IO1", "USB_DP"], ["2", "REF1", "GND"], ["3", "IO2", "USB_DN"], ["4", "IO3", "USB_CC1"], ["5", "REF2", "NC"], ["6", "IO4", "USB_CC2"]], "block": "m_usb"},
     {"d": "D402", "lcsc": "C48260", "mpn": "TPD1E10B06DPYR", "fit": true, "pins": [["1", "1", "VBUS"], ["2", "2", "GND"]], "block": "m_usb"},
     {"d": "R403", "lcsc": "C25905", "mpn": "0402WGF5101TCE", "fit": true, "pins": [["1", "1", "USB_CC1"], ["2", "2", "GND"]], "block": "m_usb"},
     {"d": "R404", "lcsc": "C25905", "mpn": "0402WGF5101TCE", "fit": true, "pins": [["1", "1", "USB_CC2"], ["2", "2", "GND"]], "block": "m_usb"},
     {"d": "R405", "lcsc": "C17168", "mpn": "0402WGF0000TCE", "fit": true, "pins": [["1", "1", "USB_DP"], ["2", "2", "ESP_USB_DP"]], "block": "m_usb"},
     {"d": "R406", "lcsc": "C17168", "mpn": "0402WGF0000TCE", "fit": true, "pins": [["1", "1", "USB_DN"], ["2", "2", "ESP_USB_DN"]], "block": "m_usb"},
-    {"d": "J402", "lcsc": "C393941", "mpn": "TF PUSH", "fit": true, "pins": [["1", "DAT2", "SD_D2"], ["2", "CD/DAT3", "SD_D3"], ["3", "CMD", "SD_CMD"], ["4", "VDD", "SD_VDD"], ["5", "CLK", "SD_CLK"], ["6", "VSS", "GND"], ["7", "DAT0", "SD_D0"], ["8", "DAT1", "SD_D1"], ["10", "SHELL", "GND"], ["11", "SHELL", "GND"], ["12", "SHELL", "GND"], ["13", "SHELL", "GND"], ["9", "CD", "SD_CD"]], "block": "m_sd"},
+    {"d": "J402", "lcsc": "C5310449", "mpn": "TF-030", "fit": true, "pins": [["1", "DAT2", "SD_D2"], ["2", "CD/DAT3", "SD_D3"], ["3", "CMD", "SD_CMD"], ["4", "VDD", "SD_VDD"], ["5", "CLK", "SD_CLK"], ["6", "VSS", "GND"], ["7", "DAT0", "SD_D0"], ["8", "DAT1", "SD_D1"], ["9", "9", "GND"], ["10", "10", "GND"], ["11", "11", "GND"], ["12", "12", "GND"]], "block": "m_sd"},
     {"d": "D403", "lcsc": "C13612", "mpn": "SRV05-4.TCT", "fit": true, "pins": [["1", "IO1", "SD_CLK"], ["2", "REF1", "GND"], ["3", "IO2", "SD_CMD"], ["4", "IO3", "SD_D0"], ["5", "REF2", "3V3"], ["6", "IO4", "SD_CD"]], "block": "m_sd"},
     {"d": "R418", "lcsc": "C25105", "mpn": "0402WGF330JTCE", "fit": true, "pins": [["1", "1", "SD_CLK_MCU"], ["2", "2", "SD_CLK"]], "block": "m_sd"},
     {"d": "R419", "lcsc": "C25741", "mpn": "0402WGF1003TCE", "fit": true, "pins": [["1", "1", "3V3"], ["2", "2", "SD_CD"]], "block": "m_sd"},
