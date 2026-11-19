@@ -28,7 +28,7 @@ Parameter order comes from EasyEDA's type package `@jlceda/pro-api-types` 0.4.30
 | `pcb_PrimitivePolyline.delete([id])` | `true` |
 | `pcb_PrimitivePad.create(12, "MH1", x, y, 0, ["ELLIPSE", d, d], "", ["ROUND", d], 0, 0, 0, false, 0)` | Unplated hole as a free pad. Reads back right after creation as `["ELLIPSE", d, d]`, later as `["ELLIPSE", 3.2, 126]`; EasyEDA's own 1.8 mm through-hole footprint pads read back the same way (`[1.8, 70.9]`), so it is a read-back quirk; the hole stays `["ROUND", 126]`. `modify(id, {pad})` does not change it |
 | `pcb_Document.beginCommandGroup(name)` / `commitCommandGroup(groupId)` | Work; `{groupId: "apigroup-…"}` |
-| `pcb_Document.save()` | `true`, toast "Saved successfully!" |
+| `pcb_Document.save()` | `true`, toast "Saved successfully!". Returns `false` (no toast) when there is nothing to save: after the 346-part move EasyEDA had already saved by itself; a reload showed the moves stored |
 | `pcb_Drc.overwriteCurrentRuleConfiguration(cfg)` | **Only takes the PCB's own format** (from `getCurrentRuleConfiguration().config`): Track rules are `{editName, unit, isSetDefault, form: {status, data: {"1": {minValue, defaultValue, maxValue}}}}`, Safe Spacing has `tables: {"1": {status, content: [[…], …]}}`, the pair rule has `strokeWidthTables` and `diffPairSpacingTables`. A template from `getRuleConfiguration(name)` (flat `form` / `table`) returns `undefined` and changes nothing. After a write the configuration is renamed "自定义配置" (custom) |
 | `pcb_Drc.createNetClass(name, nets, {r, g, b, alpha})` | `true`. **alpha is 0–255** (1 gives 1/255, a transparent class colour). Member nets then move into the class's `sub` list in `getNetRules()` |
 | `pcb_Drc.deleteNetClass(name)` | `true` |
