@@ -6,8 +6,9 @@
 //
 // Run through the page driver (hardware/tools/easyeda_page_driver.js):
 //   __aurisStart("easyeda_pcb_probe.js", { titleRe: /^Auris probe/, timeoutMs: 300000 })
-// then poll __aurisJobResult. The same report goes to the browser console, one "[Auris probe]" line
-// per row, in case the dialog is cut short.
+// then poll __aurisJobResult and read the text in slices (hardware/layout/easyeda-pcb-api.md says
+// how). Rows also go to console.log, but EasyEDA swallows that, so it is no fallback.
+// Results of the 2026-11-19 run: hardware/layout/easyeda-pcb-api.md.
 (async () => {
   const PCB_UUID = "1171ec2ee0a2c106";
   const RUN_DRC = true;
@@ -132,15 +133,41 @@
     }
   }
 
-  // 7. Board-outline helper (pure geometry, no primitive is created)
+  // 7. Board-outline helper (pure geometry, no primitive is created). On 4.1.105 the rectangle
+  // needs 7 elements: the 6-element ["R", x, y, w, h, 0] returns undefined.
   add("== 7. Outline helpers");
-  if (eda.pcb_MathPolygon && typeof eda.pcb_MathPolygon.createPolygon === "function") {
-    const poly = await call("pcb_MathPolygon.createPolygon(R 0 0 100 70)", () => eda.pcb_MathPolygon.createPolygon(["R", 0, 0, 100, 70, 0]));
-    if (poly) add(`  polygon methods: ${methods(poly).join(" ")}`);
+  const mp = eda.pcb_MathPolygon;
+  if (mp && typeof mp.createPolygon === "function") {
+    const tries = [
+      ["R7", ["R", 0, 0, 100, 70, 0, 0]],
+      ["R6", ["R", 0, 0, 100, 70, 0]],
+      ["L closed", [0, 0, "L", 100, 0, 100, 70, 0, 70, 0, 0]],
+      ["L with ARC", [0, 0, "L", 90, 0, "ARC", 90, 100, 10, "L", 100, 70, 0, 70, 0, 0]],
+      ["CIRCLE", ["CIRCLE", 50, 35, 10]],
+    ];
+    let shown = false;
+    for (const [label, src] of tries) {
+      const poly = await call(`createPolygon ${label}`, () => mp.createPolygon(src));
+      if (!poly) continue;
+      if (!shown) { add(`  polygon methods: ${methods(poly).join(" ")}`); shown = true; }
+      try { add(`  source ${json(poly.getSource(), 160)} w ${mp.calculateWidth(poly)} h ${mp.calculateHeight(poly)}`); } catch (e) { add(`  ERROR ${msg(e)}`); }
+    }
   } else add("pcb_MathPolygon.createPolygon: missing");
 
-  // 8. DRC
-  add("== 8. DRC");
+  // 8. Layers, stack-up and rule configurations
+  add("== 8. Layers and rule configurations");
+  try {
+    const L = await eda.pcb_Layer.getAllLayers();
+    add("  " + L.filter((l) => l.id <= 70 || l.layerStatus).map((l) => `${l.id}:${l.name}/${l.type}/s${l.layerStatus}`).join("; "));
+    const s = await eda.pcb_Layer.getStackup();
+    add(`  stackup (${s.unit}, total ${s.totalThickness}): ` + s.layers.map((l) => `${l.layerId}:${l.layerType}/t${l.thickness}/er${l.permittivity}`).join(" "));
+    add("  rule configurations: " + (await eda.pcb_Drc.getAllRuleConfigurations()).map((r) => r.name).join(" | "));
+    const cur = await eda.pcb_Drc.getCurrentRuleConfiguration();
+    for (const k of Object.keys(cur.config || {})) add(`    ${k}: ${Object.keys(cur.config[k] || {}).join(", ")}`);
+  } catch (e) { add(`  ERROR ${msg(e)}`); }
+
+  // 9. DRC
+  add("== 9. DRC");
   const drc = eda.pcb_Drc;
   if (RUN_DRC && drc && typeof drc.check === "function") {
     add(`signature: ${sig(drc, "check")}`);

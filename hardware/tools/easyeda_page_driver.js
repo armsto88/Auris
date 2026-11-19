@@ -77,7 +77,9 @@
       Array.from(document.querySelectorAll('button')).find((b) => /^Run\(F9\)$/.test(b.textContent.trim())).click();
       const res = await waitFor(() => dialogs().find((d) => !seen.has(d.root) && titleRe.test(d.title)), timeoutMs, 'result dialog');
       const out = { title: res.title, text: res.root.innerText.replace(res.title, '').trim() };
-      try { press(res.root.querySelector('[class*="close"], [class*="Close"]') || res.head.querySelector('svg, i, span:last-child')); } catch (_) { /* leave it */ }
+      // 4.1: the pointer sequence alone sometimes leaves the dialog open; a plain click closes it
+      const x = res.root.querySelector('[class*="header_right_close"]') || res.root.querySelector('[class*="close"], [class*="Close"]') || res.head.querySelector('svg, i, span:last-child');
+      try { if (x) { press(x); await sleep(200); if (document.contains(x)) x.click(); } } catch (_) { /* leave it */ }
       await sleep(300);
       const rs2 = dialogs().find((d) => d.title === 'Run Script');
       const cancel = rs2 && Array.from(rs2.root.parentElement.querySelectorAll('button')).find((b) => b.textContent.trim() === 'Cancel');

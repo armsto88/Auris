@@ -2,7 +2,22 @@
 
 Layout record for the rev A board. The schematic is frozen at tag `schematic-rev-a-freeze`; the plan and rules are in [`hardware/review/handover-rev-a-pcb-layout.md`](../review/handover-rev-a-pcb-layout.md). This file holds the numbers layout works to and the decisions made, phase by phase.
 
-**State (2026-11-19):** phase 0 and the preparation for phases 1–2. Nothing has been changed in EasyEDA yet. The PCB is still EasyEDA's 2-layer default with all 346 parts on the top side at 0°, spread over about 590 × 220 mm; no outline, tracks or vias. The read-only API probe ([`hardware/tools/easyeda_pcb_probe.js`](../tools/easyeda_pcb_probe.js)) is written but not yet run: the Claude in Chrome extension was not connected.
+**State (2026-11-19, evening):** phases 0 and 1 done in EasyEDA and saved, except the two items under *Still to do*. The PCB has 4 copper layers, the 80 × 105 mm outline, the four M3 holes, the net classes and the rules below (scripts [`hardware/easyeda/pcb-phase1-board.js`](../easyeda/pcb-phase1-board.js) and [`pcb-phase1-rules.js`](../easyeda/pcb-phase1-rules.js); API notes in [`easyeda-pcb-api.md`](easyeda-pcb-api.md)). The 346 parts are still where Update PCB dropped them (top side, 0°, below the board at negative Y); no tracks or vias. DRC: 900 errors, all "Connection Error" (unrouted).
+
+## Board setup in EasyEDA (phase 1, 2026-11-19)
+
+- **Origin** at the board's bottom-left corner: outline X 0–80 mm, Y 0–105 mm, 2 mm corner radii, on the Board Outline layer.
+- **Holes** MH1–MH4: unplated ⌀3.2 mm free pads on the Multi-Layer at (4, 101), (76, 101), (4, 4), (76, 4) mm. Add a copper keep-out (≈ ⌀7 mm, for M3 heads and washers) around each before pouring.
+- **Copper layers:** 4 (Top, Inner1 = L2, Inner2 = L3, Bottom), all signal layers; L2/L3 become GND and power pours in phase 4.
+- **Rules:** the PCB's own configuration (EasyEDA now calls it "自定义配置", custom), based on JLC's 2-layer capability, which is stricter than the multilayer one: track min 0.127 mm, default **0.2 mm**; default clearance 0.152 mm (track–track raised from 0.102); via 0.305/0.61 mm. Added Track rules RF_50 (0.30 fixed), USB_90 (0.25, 0.20–0.30), PWR_3A (1.5, min 0.8 so tracks can neck into small pads), PWR_1A (0.5, min 0.3), and Safe Spacing CLR_0.2 (JLC's table with every value raised to ≥ 0.2 mm). The default differential-pair rule is set to the USB geometry: 0.25 mm tracks, 0.15 mm gap (min 0.127). The pairs are USB (USB_DP/USB_DN) and ESP_USB (ESP_USB_DP/ESP_USB_DN).
+- **Net classes** (rules on the class and on each member net):
+
+| Class | Nets | Track rule | Clearance rule |
+|---|---|---|---|
+| RF_50 | ANT_MAIN, ANT_FEED | RF_50 | CLR_0.2 |
+| USB_90 | ESP_USB_DP, ESP_USB_DN, USB_DP, USB_DN | USB_90 | default |
+| PWR_3A | BAT_CONN, BAT_FUSED, RAW_BAT, VBAT_SW, VMODEM, VBAT_M, M_L1, M_L2 (U207's inductor nodes) | PWR_3A | CLR_0.2 |
+| PWR_1A | 3V3, BB_L1, BB_L2 (U206's inductor nodes), PANEL_IN, PANEL_FUSED, SOLAR_IN, CHG_SW_RAW, CHG_SW, CHARGE_SENSE | PWR_1A | CLR_0.2 |
 
 ## Board outline and arrangement (phase 0, owner decisions 2026-11-19)
 
@@ -70,7 +85,7 @@ IPC-2221 widths for a 10 °C rise (outer 1 oz; inner 0.5 oz):
 
 1 oz copper is 0.49 mΩ per square: 30 mm of 1.5 mm track drops about 29 mV at 3 A.
 
-## Net classes (proposed, to set in EasyEDA in phase 1)
+## Net classes (the plan; as set in EasyEDA see *Board setup* above)
 
 | Class | Nets | Track | Clearance | Notes |
 |---|---|---|---|---|
@@ -98,6 +113,8 @@ After the edits, re-export and run `python3 hardware/tools/easyeda_check.py <fil
 
 ## Still to do
 
-- Phase 0: run the API probe (needs the Claude in Chrome extension connected). Outline, arrangement, holes and top-side-only are decided (above). Panel on a separate bracket and mic on a through-wall connector (owner, 2026-11-19); enclosure shortlist in [`enclosure-options.md`](enclosure-options.md) — the PCB mounts on a 3D-printed plate (owner, 2026-11-19), so its outline and holes are free; it must fit a box with ≥ 110 × 105 mm floor and ≥ 45 mm inside height.
-- Phase 1: set 4 layers and this stack-up, the outline, the net classes and rules; confirm the widths in JLC's calculator.
+- Phase 0: done (2026-11-19). Outline, arrangement, holes and top-side-only are decided (above). Panel on a separate bracket and mic on a through-wall connector (owner, 2026-11-19); enclosure shortlist in [`enclosure-options.md`](enclosure-options.md) — the PCB mounts on a 3D-printed plate (owner, 2026-11-19), so its outline and holes are free; it must fit a box with ≥ 110 × 105 mm floor and ≥ 45 mm inside height. API probe run, see [`easyeda-pcb-api.md`](easyeda-pcb-api.md).
+- Phase 1, two items left:
+  - **Physical stack-up in EasyEDA** still shows the 2-layer default (`getStackup()`), and the stack-up setters arrive only in EDA 4.2. Owner: enter JLC04161H-7628 in the Layer Manager's physical stack-up, or leave it and choose JLC04161H-7628 when ordering (the order is what JLC builds to).
+  - **Confirm the RF and USB widths in JLC's impedance calculator** (browser).
 - Phases 2–5 per the handover.
