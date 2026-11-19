@@ -33,6 +33,8 @@ Parameter order comes from EasyEDA's type package `@jlceda/pro-api-types` 0.4.30
 | `pcb_Drc.createNetClass(name, nets, {r, g, b, alpha})` | `true`. **alpha is 0–255** (1 gives 1/255, a transparent class colour). Member nets then move into the class's `sub` list in `getNetRules()` |
 | `pcb_Drc.deleteNetClass(name)` | `true` |
 | `pcb_Drc.createDifferentialPair(name, positiveNet, negativeNet)` | `true`; pairs have no row in `getNetRules()`, they use the default pair rule |
+| `lib_Footprint.updateDocumentSource(uuid, projectLibUuid, source)` | **Only accepts the footprint editor's document source.** With the library's own source (`lib_Footprint.getDocumentSource`, ~12–14 k characters) it returns `false` and changes nothing. Working route (phase 2): `tab = lib_Footprint.openInEditor(uuid, lib)`, wait ~2.5 s, `sys_FileManager.getDocumentSource()` (~33 k characters; its DOCHEAD says `docType: "PCB"` with the footprint's uuid), edit the `PAD` lines (`{head}||{body}|`, same fields as in the export), `updateDocumentSource(...)` → `true`, `dmt_EditorControl.closeDocument(tab)`. The open PCB shows the new pad geometry straight away; save the PCB afterwards |
+| `sys_ToastMessage.showMessage(text, undefined, seconds)` | Use it to report: **opening another editor tab closes the Run Script window**, and the script's result dialog then never appears. Toasts are `messager-panel` DOM nodes that the page driver's observer collects; they stay on screen for the given time, so old ones can show up in the next collection |
 | `pcb_Drc.overwriteNetRules(rules)` | `true`; set `Track` / `Safe Spacing` to a rule's `editName` on the `netClass` row and on each member in its `sub` list. It accepts names that do not exist, so write the rules first |
 
 ## Units and coordinates

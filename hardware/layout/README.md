@@ -2,7 +2,7 @@
 
 Layout record for the rev A board. The schematic is frozen at tag `schematic-rev-a-freeze`; the plan and rules are in [`hardware/review/handover-rev-a-pcb-layout.md`](../review/handover-rev-a-pcb-layout.md). This file holds the numbers layout works to and the decisions made, phase by phase.
 
-**State (2026-11-19, evening):** phases 0 and 1 done in EasyEDA and saved, except the two items under *Still to do*. The PCB has 4 copper layers, the 80 × 105 mm outline, the four M3 holes, the net classes and the rules below (scripts [`hardware/easyeda/pcb-phase1-board.js`](../easyeda/pcb-phase1-board.js) and [`pcb-phase1-rules.js`](../easyeda/pcb-phase1-rules.js); API notes in [`easyeda-pcb-api.md`](easyeda-pcb-api.md)). The 346 parts are still where Update PCB dropped them (top side, 0°, below the board at negative Y); no tracks or vias. DRC: 900 errors, all "Connection Error" (unrouted).
+**State (2026-11-19, evening):** phases 0, 1 and 2 done in EasyEDA and saved, except the phase 1 items under *Still to do*. Phase 2 export `hardware/2026-11-19/AURIS_2026-11-19_phase2.epro2` passes `easyeda_check.py`. The PCB has 4 copper layers, the 80 × 105 mm outline, the four M3 holes, the net classes and the rules below (scripts [`hardware/easyeda/pcb-phase1-board.js`](../easyeda/pcb-phase1-board.js) and [`pcb-phase1-rules.js`](../easyeda/pcb-phase1-rules.js); API notes in [`easyeda-pcb-api.md`](easyeda-pcb-api.md)). The 346 parts are still where Update PCB dropped them (top side, 0°, below the board at negative Y); no tracks or vias. DRC: 900 errors, all "Connection Error" (unrouted).
 
 ## Board setup in EasyEDA (phase 1, 2026-11-19)
 
@@ -109,7 +109,13 @@ Current pads read from `hardware/2026-11-19/AURIS_2026-11-19_freeze.epro2`; targ
 | All 54 test pads | Library `Test-Point-0.5mm`: one 0.5 mm round top pad | **1.0 mm round top pad**, mask default. TP401–TP403 and TP413–TP415 (BOOT, EN, GND, U0TXD, U0RXD, 3V3) in one row at 2.54 mm for the pogo jig | MCU README; second review R2-X4 |
 | J401 (HC-TYPE-C-16P-01A) | `USB-C-SMD_HC-TYPE-C-16P-01A` | **Pads 3/4 (front shell legs, y −2.41): copper 1.0 × 1.8, slot 0.6 × 1.4** (now 1.6 / 1.2). **Pads 1/2 (rear shell legs): move from y +1.77 to +1.87** (4.28 mm from pads 3/4, now 4.18); copper 1.0 × 2.1 and slot 0.6 × 1.7 already right. Signal-pad pitches, widths and inner edges match the drawing (the pads run 0.15 mm further back than drawn, which does no harm), and so do the ⌀0.65 locating holes (NPTH at ±2.89, +1.27) | HCTL drawing `C2894897_HC-TYPE-C-16P-01A.pdf`, recommended PCB layout (drawn for a 0.8 mm board: on 1.6 mm the shell legs do not pass through, so pin-in-paste) |
 
-After the edits, re-export and run `python3 hardware/tools/easyeda_check.py <file>`: it must still pass.
+**Done 2026-11-19** with [`hardware/easyeda/pcb-phase2-footprints.js`](../easyeda/pcb-phase2-footprints.js), which edits the project-library footprints in place (the PCB takes pad geometry from them and keeps only pad-to-net links). Checked against the freeze export: only these eight footprints changed (62 pads; both Test-Point-0.5mm copies, one per test-point device), pad numbers unchanged, all 981 pad-to-net links identical, and `easyeda_check.py` gives the same output as for the freeze export. Notes:
+
+- The X1SON-2 footprint is shared by **D101, D102 and D402** (all TPD1E10B06DPYR; D102 is the unfitted mic-2 option), so D102 gets the TI land too.
+- X1SON-2 pad corners stay square: TI's 0.05 mm radius is cosmetic, and EasyEDA's `radius` field has no documented unit.
+- The footprint names are unchanged (the test-point footprint is still called `Test-Point-0.5mm`, now with a 1.0 mm pad).
+- DRC after the change: 8 clearance errors, all between neighbouring 1.0 mm test pads in the unplaced pile; they go away with placement. C207's library silkscreen touches its pad edges at the same 7 points as before the change (JLC clips silkscreen on pads).
+- The 2.54 mm pogo row (TP401–TP403, TP413–TP415) is placement, phase 3.
 
 ## Still to do
 
@@ -117,4 +123,5 @@ After the edits, re-export and run `python3 hardware/tools/easyeda_check.py <fil
 - Phase 1, two items left:
   - **Physical stack-up in EasyEDA** still shows the 2-layer default (`getStackup()`), and the stack-up setters arrive only in EDA 4.2. Owner: enter JLC04161H-7628 in the Layer Manager's physical stack-up, or leave it and choose JLC04161H-7628 when ordering (the order is what JLC builds to).
   - **Confirm the RF and USB widths in JLC's impedance calculator** (browser).
-- Phases 2–5 per the handover.
+- Phase 2: done (above).
+- Phases 3–5 per the handover. Phase 3 starts with the pogo row and the board-area plan in *Board outline and arrangement*.
