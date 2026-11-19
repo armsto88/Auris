@@ -79,6 +79,6 @@ After the edits, re-export and run `python3 hardware/tools/easyeda_check.py <fil
 
 ## Still to do
 
-- Phase 0: run the API probe; the owner's answers on outline, edges, mounting holes and top-side-only.
+- Phase 0: run the API probe; the owner's answers on outline, edges, mounting holes and top-side-only. Panel on a separate bracket and mic on a through-wall connector (owner, 2026-11-19); enclosure shortlist in [`enclosure-options.md`](enclosure-options.md) — the PCB outline and holes follow the chosen box.
 - Phase 1: set 4 layers and this stack-up, the outline, the net classes and rules; confirm the widths in JLC's calculator.
 - Phases 2–5 per the handover.
