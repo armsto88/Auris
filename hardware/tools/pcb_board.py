@@ -19,6 +19,9 @@ from easyeda_check import read_epru  # noqa: E402
 
 MIL = 0.0254
 BODY_LAYER = 48          # Component Shape Layer: the footprint's body outline
+# Bodies (mm, footprint frame) for footprints that have no body outline on layer 48, so parts
+# are not placed under them. TF-030: JLC gives 13.1 x 13.8 mm; centred, rounded up to 14 mm.
+BODY_OVERRIDE = {"CONN-SMD_TF-030": [(-6.55, -7.0), (6.55, 7.0)]}
 SHEETS = ["audio-frontend", "power", "lte", "mcu"]
 
 
@@ -79,7 +82,7 @@ class Footprint:
         for h, b in recs:
             if h["type"] in ("POLY", "FILL") and str(b.get("layerId")) == str(BODY_LAYER):
                 body += [(x * MIL, y * MIL) for x, y in path_points(b.get("path"))]
-        self.body = body
+        self.body = body or list(BODY_OVERRIDE.get(name, []))
 
     def extent(self, margin=0.0):
         xs, ys = [], []
