@@ -41,6 +41,8 @@ The catch with cheap boxes: most are ABS, which chalks and turns brittle in sun 
 
 **Way round it:** mount the PCB on its own holes (standoffs or a small plate fixed to the box floor), not on the box's bosses. Then any box with ≥ 110 × 105 mm floor and ≥ 45 mm inside height takes the same board: cheap boxes for rev A prototypes and bench work, and the production box (Hammond, Bocube, or a PC/ASA box bought direct from a factory with a drawing) chosen later without a PCB respin.
 
+**Owner decision 2026-11-19:** the PCB mounts on a 3D-printed plate, so its outline and holes are not tied to any box's bosses. The plate can also carry the battery and hold the LTE antenna in a fixed place.
+
 ## Recommendation
 
 1. **First choice: Hammond 1554N2GY** (120 × 120 × 60), with 1554P2GY (80 high) as the step up if the battery goes under the PCB with room for desiccant. It is the smallest box found that holds the PCB, the pack and the antenna; Hammond is stocked by the usual distributors in Europe and Australia (not checked for this part: the sites refused automated reads).
