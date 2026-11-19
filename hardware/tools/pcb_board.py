@@ -20,8 +20,9 @@ from easyeda_check import read_epru  # noqa: E402
 MIL = 0.0254
 BODY_LAYER = 48          # Component Shape Layer: the footprint's body outline
 # Bodies (mm, footprint frame) for footprints that have no body outline on layer 48, so parts
-# are not placed under them. TF-030: JLC gives 13.1 x 13.8 mm; centred, rounded up to 14 mm.
-BODY_OVERRIDE = {"CONN-SMD_TF-030": [(-6.55, -7.0), (6.55, 7.0)]}
+# are not placed under them. TF-030 (Hanbo drawing): 13.10 wide, centred on the cover pads;
+# 13.80 long, from 3.70 below the contacts' bottom edge to 4.65 above the upper cover pads' bottom edge.
+BODY_OVERRIDE = {"CONN-SMD_TF-030": [(-6.55, -6.05), (6.55, 7.75)]}
 SHEETS = ["audio-frontend", "power", "lte", "mcu"]
 
 

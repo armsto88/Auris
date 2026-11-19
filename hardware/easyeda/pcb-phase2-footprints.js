@@ -71,6 +71,17 @@
         ? near(b.defaultPad.height, 82.677) && b.hole && near(b.hole.width, 66.929) && near(b.centerY, mm(1.87), 0.5)
         : near(b.defaultPad.height, mm(1.8)) && b.hole && near(b.hole.width, mm(1.4)) && near(b.centerY, mm(-2.41), 0.5)),
       apply: (b) => { if (Number(b.num) <= 2) b.centerY = mm(1.87); else { b.defaultPad.height = mm(1.8); b.hole.width = mm(1.4); } } },
+    // Added in phase 3 after SC-002 (J402 is now the Hanbo TF-030): the library footprint has the
+    // contact row 0.10 mm right of the drawing and the upper cover pads 0.10 mm high. Hanbo TF-030
+    // drawing (recommended PCB layout): #08 at -4.50, #01 at +3.20 from the cover-pad centreline;
+    // upper cover pads' bottom edge 5.45 above the contacts' bottom edge (centre +5.70 from the contacts).
+    { fp: "e0ed2a6d9b179b77", label: "J402 TF-030 per Hanbo drawing: contacts 0.10 left, pads 9/11 at y +4.10", parts: ["J402"], count: 10,
+      pick: (n) => (n >= 1 && n <= 9) || n === 11,
+      was: (b) => (Number(b.num) <= 8 ? near(b.centerX, mm(3.30 - 1.10 * (Number(b.num) - 1)), 0.5) && near(b.centerY, mm(-1.60), 0.5)
+        : near(b.centerY, mm(4.20), 0.5) && near(Math.abs(b.centerX), mm(6.88), 0.5)),
+      is: (b) => (Number(b.num) <= 8 ? near(b.centerX, mm(3.20 - 1.10 * (Number(b.num) - 1)), 0.5) && near(b.centerY, mm(-1.60), 0.5)
+        : near(b.centerY, mm(4.10), 0.5) && near(Math.abs(b.centerX), mm(6.88), 0.5)),
+      apply: (b) => { if (Number(b.num) <= 8) b.centerX = mm(3.20 - 1.10 * (Number(b.num) - 1)); else b.centerY = mm(4.10); } },
   ];
 
   // The pad lines are "{head}||{body}|"; only PAD bodies are re-serialised
@@ -134,7 +145,7 @@
   add("== 2. PCB pads after the change");
   const comps = await eda.pcb_PrimitiveComponent.getAll();
   const byDes = (d) => comps.find((c) => { try { return c.getState_Designator() === d; } catch (_) { return false; } });
-  for (const [d, nums] of [["U301", ["1", "35", "45", "95"]], ["D101", ["1"]], ["F201", ["1"]], ["F202", ["1"]], ["C207", ["1"]], ["TP101", ["1"]], ["J401", ["1", "3"]]]) {
+  for (const [d, nums] of [["U301", ["1", "35", "45", "95"]], ["D101", ["1"]], ["F201", ["1"]], ["F202", ["1"]], ["C207", ["1"]], ["TP101", ["1"]], ["J401", ["A1", "17"]], ["J402", ["1", "8", "9", "10"]]]) {
     const c = byDes(d);
     if (!c) { add(`${d}: not found`); continue; }
     try {
