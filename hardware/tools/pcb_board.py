@@ -68,7 +68,18 @@ class Pad:
         self.x, self.y = b["centerX"] * MIL, b["centerY"] * MIL
         self.shape = dp.get("padType")
         w, h = dp.get("width", 0) * MIL, dp.get("height", 0) * MIL
-        if (round(b.get("padAngle") or 0) % 180) == 90:
+        self.poly = None
+        self.off = (0.0, 0.0)      # centre of the copper's bounding box relative to the pad centre (polygon pads are not always centred)
+        if dp.get("padType") == "POLYGON" and dp.get("path"):      # e.g. U207's exposed pad: outline in mil around the pad centre
+            pts = [(x * MIL, y * MIL) for x, y in path_points(dp["path"])]
+            if pts:
+                self.poly = pts
+                x0, x1 = min(x for x, _ in pts), max(x for x, _ in pts)
+                y0, y1 = min(y for _, y in pts), max(y for _, y in pts)
+                w, h = x1 - x0, y1 - y0
+                # the path is in the footprint frame (not around the pad centre): DRC-checked 2026-11-20 on U202 pad 2
+                self.off = ((x0 + x1) / 2 - self.x, (y0 + y1) / 2 - self.y)
+        if (round(b.get("padAngle") or 0) % 180) == 90 and self.poly is None:   # a polygon's path is already in the footprint frame
             w, h = h, w
         self.w, self.h = w, h
         self.layer = b.get("layerId")
@@ -84,13 +95,23 @@ class Footprint:
             if h["type"] in ("POLY", "FILL") and str(b.get("layerId")) == str(BODY_LAYER):
                 body += [(x * MIL, y * MIL) for x, y in path_points(b.get("path"))]
         self.body = body or list(BODY_OVERRIDE.get(name, []))
+        # unplated holes: FILL circles on the Multi-Layer (12), e.g. J401's locating holes, BT201's slot (mm)
+        self.npth = []
+        for h, b in recs:
+            if h["type"] == "FILL" and str(b.get("layerId")) == "12":
+                path = b.get("path")
+                if isinstance(path, list) and path and isinstance(path[0], list):
+                    path = path[0]
+                if isinstance(path, list) and path and path[0] == "CIRCLE":
+                    self.npth.append((path[1] * MIL, path[2] * MIL, path[3] * MIL))
 
     def extent(self, margin=0.0):
         xs, ys = [], []
         for x, y in self.body:
             xs.append(x); ys.append(y)
         for p in self.pads:
-            xs += [p.x - p.w / 2, p.x + p.w / 2]; ys += [p.y - p.h / 2, p.y + p.h / 2]
+            cx, cy = p.x + p.off[0], p.y + p.off[1]        # polygon pads: the copper's bounding box is offset
+            xs += [cx - p.w / 2, cx + p.w / 2]; ys += [cy - p.h / 2, cy + p.h / 2]
         if not xs:
             return (-0.5 - margin, -0.5 - margin, 0.5 + margin, 0.5 + margin)
         return (min(xs) - margin, min(ys) - margin, max(xs) + margin, max(ys) + margin)
