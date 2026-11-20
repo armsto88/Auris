@@ -40,7 +40,7 @@ GND_NETS = {"GND"}
 
 # ------------------------------------------------------------------ anchors: x, y, angle
 ANCHORS = {
-    "U401": (10.5, 88.61, 0),        # body 1.5..19.5 x 79.5..105; antenna strip y 99..105 over the notch
+    "U401": (13.5, 88.61, 0),        # pass 4: body 4.5..22.5 x 79.5..105; antenna strip y 99..105 over the notch, 3V3/EN caps in the strip at x 2-3
     # J401 and J402 are used from above since SC-001/SC-002 (2026-11-19): no edge needed
     "J401": (4.5, 73.0, 90),         # vertical USB-C just below the module, near its USB pins
     "J402": (9.0, 56.0, 90),         # flip-top microSD below J401, contact row facing the module and the SD parts
@@ -57,10 +57,10 @@ ANCHORS = {
     "J302": (77.4, 91.0, 0),         # u.FL to the LTE antenna on the right wall
 }
 POGO = ["TP401", "TP402", "TP403", "TP413", "TP414", "TP415"]     # 2.54 mm pogo row
-POGO_AT = (23.0, 80.5, 0.0, 2.54)                                 # x, first y, angle, pitch (up)
+POGO_AT = (26.0, 80.5, 0.0, 2.54)                                 # x, first y, angle, pitch (up)
 
 # ------------------------------------------------------------------ block regions (x0, y0, x1, y1)
-ANT_KEEP = (19.5, 95.5, 36.0, 99.0)     # no parts just below the antenna cut-out
+ANT_KEEP = (22.5, 95.5, 39.0, 99.0)     # no parts just below the antenna cut-out
 REGIONS = {
     "m_module": [(19.5, 64, 40, 95.5), (0, 76, 20, 79.5)],
     "m_test": [(19.5, 54, 44, 95.5)],
@@ -350,7 +350,8 @@ def check(board, place, targets):
     ring_r = (x0 - U301_RING, y0 - U301_RING, x1 + U301_RING, y1 + U301_RING)
     near = [d for d, r in rects.items() if d != "U301" and overlap(r, ring_r)]
     out.append(f"within 3 mm of U301: {near}")
-    ant = (1.5, 99.0, 19.5, 105.0)
+    ux = ANCHORS["U401"][0]
+    ant = (ux - 9.0, 99.0, ux + 9.0, 105.0)   # the antenna strip, 18 mm wide, over the notch
     close = [f"{d} {dist_box(rects[d], ant):.1f}" for d in rects if d != "U401" and dist_box(rects[d], ant) < 10]
     out.append(f"parts within 10 mm of the antenna strip: {close}")
     # note targets: distance from the part's pad on the shared net to the target pad
