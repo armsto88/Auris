@@ -23,7 +23,7 @@
 
 - UV-stabilized polycarbonate commercial enclosure for prototypes. Aim for testable ingress protection (initial IP66 design target; IP67 only after validation).
 - Mount an acoustic opening/replaceable windscreen under a protected downward-facing geometry with hydrophobic acoustic membrane and separate pressure-equalization vent where needed.
-- Internally protect microSD and nano-SIM; use a sealed/serviceable USB-C approach, solar lead routing and mounting system appropriate for branches/posts.
+- microSD, nano-SIM and USB-C sit on the board and are used with the lid off (lid-off service, owner decision 2026-11-19, ADR-028: no sealed port, light pipe or sealed button in the wall; the walls carry only the mic's through-wall connector, the panel input(s) and a vent); solar lead routing and mounting system appropriate for branches/posts.
 - Zone electronics into **audio analogue**, **RF/LTE**, **switch-mode power**, **digital/SD**, to reduce conducted and radiated coupling.
 - Prioritize microphone/membrane field service without removing the full enclosure if tests support a separable acoustic head.
 - Check any membrane/windscreen attenuation through the actual assembled product before publishing calibrated SPL metrics.

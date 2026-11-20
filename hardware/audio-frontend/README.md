@@ -218,7 +218,7 @@ Mic bias RC τ = 0.1 s; preamp Cg τ = 0.1 s; mid-rail τ = 0.05 s. Allow **≥ 
 4. MIC1_OUT trace short, guarded by ground, away from the crystal, I²S lines, buck-boost loop, SD bus and LTE antenna feed.
 5. Crystal and load caps tight to pins 9/10 with a ground guard ring.
 6. AVDD_A star from C102: separate branches to ADC AVDD, mic bias filter, preamp switch.
-7. Leave space and pads for a shield can over the analog section (fit only if G2 shows radiated pickup).
+7. Leave space and pads for a shield can over the analog section (fit only if G2 shows radiated pickup). **Rev A: not applied** (owner decision 2026-11-20, placement review question 7): no pad ring is reserved; if G2 shows radiated pickup, rev B gets the can and the audio corner is re-fitted around it.
 
 ## What the prototype must measure (feeds G2)
 

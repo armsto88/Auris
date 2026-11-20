@@ -110,8 +110,8 @@ All rows are priority **V1** and status **OPEN** (no verification evidence yet).
 | F5-02 | Without coverage, a button press starts a Wi-Fi hotspot (WPA2, per-device passphrase on the label/QR, ≤ 15 min idle timeout) serving a local page from device flash: status, test recording with level/clipping and playback, set clock from phone, edit schedule and gain preset, upload a signed config bundle, download manifest, start/end deployment | D6 | Offline field trial |
 | F5-03 | Local config edits become a new revision with source `local`, are reported at the next LTE session, and are never silently overwritten by the cloud | D5, D6 | Config conflict test |
 | F5-04 | Scheduled recordings take priority over service mode; the Wi-Fi radio is paused during a recording | H-01, R05 | Recording during an open service session; RF noise check |
-| F5-05 | A status LED reports the test-recording, SD and config result after a button press, readable in daylight | D6 | Field check |
-| F5-06 | The SD card is swappable without opening the main seal; the device checks the new card and resumes | D2 | Swap test |
+| F5-05 | A status LED on the board reports the test-recording, SD and config result after a button press, readable in daylight with the lid off (no light pipe: service is lid-off, owner decision 2026-11-19, ADR-028) | D6 | Field check, lid off |
+| F5-06 | The SD card is swappable in the field with the lid off (flip-top holder on the board, used from above; the lid gasket is re-closed after the swap, owner decision 2026-11-19, ADR-028); the device checks the new card and resumes | D2 | Swap test, including re-closing the lid |
 
 **Position capture note:** browsers block geolocation on plain-HTTP pages, so the hotspot page cannot read the phone's GPS. Position is captured by the cloud web app (HTTPS, installable so it works offline) and joined via the deployment ID. The hotspot page accepts typed coordinates as a fallback.
 
