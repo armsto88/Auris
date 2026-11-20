@@ -44,7 +44,7 @@ ANCHORS = {
     # J401 and J402 are used from above since SC-001/SC-002 (2026-11-19): no edge needed
     "J401": (4.5, 73.0, 90),         # vertical USB-C just below the module, near its USB pins
     "J402": (9.0, 56.0, 90),         # flip-top microSD below J401, contact row facing the module and the SD parts
-    "J301": (8.325, 39.5, 270),      # SIM, slot at the left edge (shell pad 8 copper 0.5 mm in)
+    "J301": (71.675, 66.6, 90),      # pass 7: SIM at the right edge under U301's SIM corner (pins 11-14), slot facing right, shell pad 8 copper 0.5 mm in
     "J101": (14.0, 3.45, 0),         # mic 1, bottom edge (mount pads 0.5 mm in)
     "J102": (28.0, 3.45, 0),         # mic 2 option, bottom edge
     "J201": (50.0, 3.6, 0),          # panel inputs, bottom edge
@@ -55,10 +55,11 @@ ANCHORS = {
     "U102": (22.0, 20.0, 90),        # PCM1863: analog end (pins 1-8, 27-30) down toward J101, digital end up
     "U301": (62.5, 85.5, 0),         # LTE module, top-right; pad 35 (RF) top-right
     "J302": (77.4, 91.0, 0),         # u.FL to the LTE antenna on the right wall
-    # service cluster at the right edge (owner, 2026-11-20, pass 5): button, ship switch and LED together, reachable lid-off
-    "SW201": (76.0, 59.0, 0),
-    "SW202": (76.0, 68.0, 90),     # pass 6: knob toward the board edge (owner 2026-11-20)
-    "LED401": (70.5, 55.0, 0),
+    # service cluster at the right edge (owner, 2026-11-20, pass 5): button, ship switch and LED together, reachable lid-off;
+    # pass 7 slid it down between J203 and J301
+    "SW201": (76.0, 47.0, 0),
+    "SW202": (76.0, 54.2, 90),     # pass 6: knob toward the board edge (owner 2026-11-20)
+    "LED401": (70.8, 51.2, 90),
 }
 POGO = ["TP404", "TP401", "TP402", "TP403", "TP413", "TP414", "TP415"]     # 2.54 mm pogo row (TP404 = PWR_HOLD added in pass 5)
 POGO_AT = (26.0, 77.96, 0.0, 2.54)                                        # x, first y, angle, pitch (up)
@@ -70,21 +71,23 @@ REGIONS = {
     "m_test": [(19.5, 54, 44, 95.5)],
     "m_sd": [(17, 46, 38, 79)],
     "m_usb": [(7, 64, 22, 79.5)],
-    "m_led": [(14, 37, 30, 50)],
-    "l_sim": [(14, 33, 34, 50)],
+    "m_led": [(60, 42, 80, 60)],        # pass 7: R416 with the LED in the service cluster
+    "l_sim": [(54, 56, 80, 74)],        # pass 7: SIM filter at the holder, under U301's ring
     "l_pins": [(40, 62, 80, 99)],
     "l_ant": [(72.5, 72, 80, 98)],
-    "l_supply": [(42, 58, 80, 77)],
+    "l_supply": [(44, 97.35, 72.4, 104.7)],   # pass 4: VBAT array in the strip above U301 (pads 42/43 on its top row)
     "l_ctrl": [(34, 56, 54, 98)],
     "l_test": [(32, 52, 56, 98)],
     "p_battery": [(52, 30, 80, 54)],
     "p_temp": [(18, 42, 44, 62)],
     "p_modem": [(44, 46, 80, 76)],
-    "p_charger": [(34, 10, 70, 38)],
-    "p_solar": [(34, 0, 74, 20)],
+    "p_charger": [(46, 12, 80, 36)],    # pass 7: charger core in the bottom-right corner, away from the audio
+    "p_solar": [(34, 0, 74, 22)],
     "p_3v3": [(20, 52, 46, 80)],
     "p_rtc": [(18, 30, 58, 62)],
-    "p_latch": [(62, 52, 80, 76), (18, 30, 58, 62)],   # latch transistors beside the service cluster since pass 5
+    "p_latch": [(56, 42, 80, 60), (18, 30, 58, 62)],   # button-side latch parts (Q211, D206, R246, R228) beside the service cluster
+    "p_wake": [(18, 30, 58, 62)],       # pass 7: Q208/Q209 at their inputs (RTC INT, VBUS divider, PWR_HOLD)
+    "p_gate": [(54, 44, 68, 58)],       # pass 7: R245/C237 at Q210's gate
     "p_test": [(18, 10, 80, 64)],
     "mic": [(0, 0, 47, 37)], "mic2": [(0, 0, 47, 37)], "presupply": [(0, 0, 47, 37)],
     "preamp": [(0, 0, 47, 37)], "direct": [(0, 0, 47, 37)], "adc": [(0, 0, 47, 37)],
@@ -94,7 +97,9 @@ ORDER = ["m_module", "m_test", "m_sd", "m_usb", "m_led", "l_sim", "l_pins", "l_a
          "l_test", "p_battery", "p_modem", "p_temp", "p_charger", "p_solar", "p_3v3", "p_rtc", "p_latch",
          "p_test", "adc", "direct", "clockio", "power", "preamp", "presupply", "mic", "mic2", "test"]
 # parts placed in another block's region than their schematic block
-REGION_OF = {"Q210": "p_battery", "R216": "p_battery", "R416": "p_latch"}   # pass 5: R228 moved with the latch, R416 with the LED
+REGION_OF = {"Q210": "p_battery", "R216": "p_battery", "R416": "m_led",     # pass 5: R228 moved with the latch, R416 with the LED
+             "Q208": "p_wake", "Q209": "p_wake", "R245": "p_gate", "C237": "p_gate",   # pass 7 (review 2, R2-F2)
+             "Q204": "p_charger"}                                                       # pass 7: MPPT clamp at the charger (R2-F4)
 EDGE_OK = {"U401", "J301", "J101", "J102", "J201", "J202", "J203", "J302"}
 
 

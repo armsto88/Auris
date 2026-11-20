@@ -37,6 +37,22 @@ Parameter order comes from EasyEDA's type package `@jlceda/pro-api-types` 0.4.30
 | `sys_ToastMessage.showMessage(text, undefined, seconds)` | Use it to report: **opening another editor tab closes the Run Script window**, and the script's result dialog then never appears. Toasts are `messager-panel` DOM nodes that the page driver's observer collects; they stay on screen for the given time, so old ones can show up in the next collection |
 | `pcb_Drc.overwriteNetRules(rules)` | `true`; set `Track` / `Safe Spacing` to a rule's `editName` on the `netClass` row and on each member in its `sub` list. It accepts names that do not exist, so write the rules first |
 
+## Write calls confirmed in phase 4 (2026-11-20, routing)
+
+Signatures from `@jlceda/pro-api-types` 0.4.30 (`npm pack`, `index.d.ts`); behaviour checked on 4.1.105.
+
+| Call | Result |
+|---|---|
+| `pcb_PrimitiveRegion.create(layer, polygon, rules, name, lineWidth, lock)` | Works with `["CIRCLE", x, y, r]` and `["R", left, top, w, h, 0, 0]` sources; a point-list source (`[x, y, "L", …]`) makes `createPolygon` return an object the create call rejects ("Cannot read properties of undefined (reading 'primitiveId')"). Rules: 2 no components, 5 no wires, 6 no fills, 7 no pours, 8 no inner electrical layers, 9 follow region rule. Layer 12 = all layers. Names are upper-cased ("PROHIBIT" is the stored type) |
+| `pcb_PrimitivePour.create(net, layer, polygon, "solid", preserveIslands, name, priority, lineWidth, lock)` | Same polygon rule. **Names are upper-cased and duplicates get a digit appended** ("VMODEM OUT1"), so an idempotent script must match on that. **Priority is a per-layer order, lower number wins, and EasyEDA renumbers what you pass**: pours created under the L1 GND pour (order 1) never filled; the fix is to delete and re-create the GND pour last with a large number (it then gets the highest order). A pour with no same-net pad or via on its layer stays empty when islands are removed (the L3 power pours fill once the fan-out vias exist). `rebuildAllCopperRegions()` returns the poured areas; `pcb_PrimitivePoured.getAll()` lists them |
+| `pcb_PrimitiveLine.create(net, layer, x0, y0, x1, y1, width, lock)` | Works; mil. `getAll(net, layer, lock)`: the first argument is the net (pass `undefined` to filter by layer only) |
+| `pcb_PrimitiveVia.create(net, x, y, hole, diameter, 0, null, null, lock)` | Works; `getAll(net, lock)`; `delete([ids])` |
+| `pcb_Drc.check(false, false, true)` violation objects | `errorType`, `ruleName`, `obj1/obj2 {typeName, suffix "(NET): <component primitive id><pad id>"}`, `explanation.param.minDistance`, `errData.position` (not board mm). The component primitive id is the COMPONENT record id in the export, so the export maps ids to designators |
+| `pcb_PrimitiveComponent.getAllPinsByPrimitiveId(id)` pad objects | `getState_Pad()` gives the shape; for a POLYGON pad the path is in **board** coordinates when read from the PCB, and in the **footprint frame** (not around the pad centre) in the footprint document. `pcb_board.py` reads it that way since 2026-11-20 (U202 pad 2, DRC-confirmed) |
+| `pcb_Document.autoRouting(props)` / `startAutoRouting` | Present (`RoutingNets`, `layers`, `ignoreNets`, `existingPrimitiveMode`); not used: the owner chose the repo's own router (`hardware/layout/router.py`) |
+
+Through-hole pads: `layerId` 12 in the footprint, hole `{holeType, width, height}` with width > 0 (SMD pads carry width 0). Scripts that create thousands of primitives run ≈ 10 ms per call; the page driver's job runs on while `javascript_tool` calls poll `__aurisJobResult`.
+
 ## Units and coordinates
 
 - **Everything is in mil**: component and pad X/Y, pad sizes (U301 pad 1 is `["RECT", 39.4, 27.6, 0]`, the 1.0 × 0.7 mm pad in the footprint table), stack-up thicknesses (`unit: "mil"`). 80 × 105 mm = 3149.6 × 4133.9 mil.
@@ -93,3 +109,6 @@ Other classes in 4.1.105: pcb_Event, pcb_RayTracerEngine; dmt_EditorControl, dmt
 - Result text comes back through `javascript_tool`, which cuts each result at about 1,000 characters. Read long reports in 950-character slices, eleven slices per `browser_batch` call. Replace `=`, `&` and `?` first (with ＝ ＆ ？): the tool blocks output that looks like a query string.
 - `console.log` from the script or the page does not reach `read_console_messages` (EasyEDA replaces it), so the probe's console rows are not a fallback.
 - The driver's pointer-event press did not always close the result dialog; a plain `.click()` on its `[class*="header_right_close"]` icon does (the driver now does both).
+- **Opening the project (2026-11-20, pass 7):** the synthetic dblclick on the start page's `[class*="prj_name_"]` "AURIS" no longer opened the project (no tree, `pcb_PrimitiveComponent.getAll()` then fails inside EasyEDA with "Cannot read properties of null (reading 'map')"). Navigating the tab to `https://pro.easyeda.com/editor#id=3ba79283056140b08e7552182142ce8a` (the project row's own link) opens AURIS with PCB1 active; it is only a hash change, so a driver injected before stays loaded.
+- **Scripts without a file:** `window.__aurisRun(codeString, { titleRe })` takes the code text directly, so a short read-only probe can be run from `javascript_tool` without writing a file (start it as a job and poll, as `__aurisStart` does).
+- **Moving parts on a board that already has pours:** the filled copper stays where it was poured, and DRC reports a "Clearance Error / Copper Region(Filled)" for every pad that moved into it (130 after pass 7). `pcb_PrimitivePour.rebuildAllCopperRegions()` re-fills the existing pours (outlines unchanged; with no vias yet only the three GND pours fill) and the errors go away; save afterwards.
