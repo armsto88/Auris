@@ -1,0 +1,16 @@
+designator,x_mm,y_mm,angle,set
+C237,70.78,72.74,0,service
+D206,71.00,61.00,90,service
+LED401,70.50,55.00,0,service
+Q208,69.12,68.65,90,service
+Q209,65.46,69.50,0,service
+Q211,69.07,64.91,0,service
+R228,71.57,70.25,90,service
+R245,71.57,64.25,90,service
+R246,71.32,58.32,0,service
+SW201,76.00,59.00,0,service
+SW202,76.00,68.00,270,service
+TP404,26.00,77.96,0,pogo
+R416,70.50,52.60,0,service
+Q402,27.98,75.18,0,pogo
+C406,24.51,78.09,90,pogo

@@ -55,9 +55,13 @@ ANCHORS = {
     "U102": (22.0, 20.0, 90),        # PCM1863: analog end (pins 1-8, 27-30) down toward J101, digital end up
     "U301": (62.5, 85.5, 0),         # LTE module, top-right; pad 35 (RF) top-right
     "J302": (77.4, 91.0, 0),         # u.FL to the LTE antenna on the right wall
+    # service cluster at the right edge (owner, 2026-11-20, pass 5): button, ship switch and LED together, reachable lid-off
+    "SW201": (76.0, 59.0, 0),
+    "SW202": (76.0, 68.0, 90),     # pass 6: knob toward the board edge (owner 2026-11-20)
+    "LED401": (70.5, 55.0, 0),
 }
-POGO = ["TP401", "TP402", "TP403", "TP413", "TP414", "TP415"]     # 2.54 mm pogo row
-POGO_AT = (26.0, 80.5, 0.0, 2.54)                                 # x, first y, angle, pitch (up)
+POGO = ["TP404", "TP401", "TP402", "TP403", "TP413", "TP414", "TP415"]     # 2.54 mm pogo row (TP404 = PWR_HOLD added in pass 5)
+POGO_AT = (26.0, 77.96, 0.0, 2.54)                                        # x, first y, angle, pitch (up)
 
 # ------------------------------------------------------------------ block regions (x0, y0, x1, y1)
 ANT_KEEP = (22.5, 95.5, 39.0, 99.0)     # no parts just below the antenna cut-out
@@ -80,7 +84,7 @@ REGIONS = {
     "p_solar": [(34, 0, 74, 20)],
     "p_3v3": [(20, 52, 46, 80)],
     "p_rtc": [(18, 30, 58, 62)],
-    "p_latch": [(18, 30, 58, 62)],
+    "p_latch": [(62, 52, 80, 76), (18, 30, 58, 62)],   # latch transistors beside the service cluster since pass 5
     "p_test": [(18, 10, 80, 64)],
     "mic": [(0, 0, 47, 37)], "mic2": [(0, 0, 47, 37)], "presupply": [(0, 0, 47, 37)],
     "preamp": [(0, 0, 47, 37)], "direct": [(0, 0, 47, 37)], "adc": [(0, 0, 47, 37)],
@@ -90,7 +94,7 @@ ORDER = ["m_module", "m_test", "m_sd", "m_usb", "m_led", "l_sim", "l_pins", "l_a
          "l_test", "p_battery", "p_modem", "p_temp", "p_charger", "p_solar", "p_3v3", "p_rtc", "p_latch",
          "p_test", "adc", "direct", "clockio", "power", "preamp", "presupply", "mic", "mic2", "test"]
 # parts placed in another block's region than their schematic block
-REGION_OF = {"SW201": "m_led", "Q210": "p_battery", "R228": "p_battery"}
+REGION_OF = {"Q210": "p_battery", "R216": "p_battery", "R416": "p_latch"}   # pass 5: R228 moved with the latch, R416 with the LED
 EDGE_OK = {"U401", "J301", "J101", "J102", "J201", "J202", "J203", "J302"}
 
 
