@@ -1,0 +1,1805 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>AURIS Concept Plan</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: a field plan. Shared language bar, sticky section index on the left, one reading column; diagrams span the column and scroll sideways on phones. */
+:root {
+  --bg: #F2F5F1;
+  --surface: #FFFFFF;
+  --surface-2: #E8EEE8;
+  --ink: #13201A;
+  --ink-2: #405049;
+  --muted: #64736B;
+  --line: #D4DCD5;
+  --line-strong: #AEBBB2;
+  --accent: #2B684C;
+  --accent-ink: #FFFFFF;
+  --accent-soft: #DAEAE1;
+  --open: #8A5200;
+  --open-soft: #F6E9D2;
+  --d-energy: #eb6834;
+  --d-always: #eda100;
+  --d-main: #2a78d6;
+  --d-audio: #1baf7a;
+  --d-modem: #6250d6;
+  --f-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --f-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color-scheme: light;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #101713; --surface: #161F1A; --surface-2: #1D2822; --ink: #E1E9E3; --ink-2: #A9B7AF; --muted: #84948C;
+    --line: #28332D; --line-strong: #46544D; --accent: #7CC5A0; --accent-ink: #0E1511; --accent-soft: #1D3228;
+    --open: #E3B467; --open-soft: #352A15;
+    --d-energy: #d95926; --d-always: #c98500; --d-main: #3987e5; --d-audio: #199e70; --d-modem: #9085e9;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #101713; --surface: #161F1A; --surface-2: #1D2822; --ink: #E1E9E3; --ink-2: #A9B7AF; --muted: #84948C;
+  --line: #28332D; --line-strong: #46544D; --accent: #7CC5A0; --accent-ink: #0E1511; --accent-soft: #1D3228;
+  --open: #E3B467; --open-soft: #352A15;
+  --d-energy: #d95926; --d-always: #c98500; --d-main: #3987e5; --d-audio: #199e70; --d-modem: #9085e9;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 16px/1.62 var(--f-body); -webkit-font-smoothing: antialiased; }
+img { max-width: 100%; }
+a { color: var(--accent); text-underline-offset: 2px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; color: var(--ink); }
+h2 { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.2; }
+h3 { font-size: 1.06rem; font-weight: 600; line-height: 1.3; }
+p { margin: 0; }
+.num, .figs dd b { font-variant-numeric: tabular-nums; }
+
+.wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+/* Language bar */
+.topbar { background: var(--surface); border-bottom: 1px solid var(--line); }
+.topbar .wrap { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-block: 10px; }
+.brand { font: 700 0.95rem var(--f-display); letter-spacing: 0.1em; color: var(--ink); }
+.seg { display: inline-flex; border: 1px solid var(--line-strong); border-radius: 8px; overflow: hidden; }
+.seg button { font: 500 0.85rem var(--f-body); padding: 6px 14px; background: transparent; color: var(--ink-2); border: 0; cursor: pointer; }
+.seg button + button { border-left: 1px solid var(--line-strong); }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+.seg button:hover:not([aria-pressed="true"]) { background: var(--surface-2); }
+
+/* Hero */
+.hero { background: var(--surface); border-bottom: 1px solid var(--line); }
+.hero .wrap { padding-block: 40px 44px; display: grid; gap: 16px; }
+.eyebrow, .toc-h, .figs dt, .lbl { font: 500 0.75rem/1.3 var(--f-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.hero h1 { font-size: clamp(2.8rem, 7vw, 4.4rem); font-weight: 700; letter-spacing: 0.04em; line-height: 1; }
+.tagline { font-family: var(--f-display); font-size: clamp(1.15rem, 2.4vw, 1.45rem); font-weight: 500; color: var(--accent); max-width: 44ch; }
+.lead { font-size: 1.08rem; color: var(--ink-2); max-width: 64ch; }
+.status { display: flex; gap: 12px; align-items: flex-start; max-width: 76ch; padding: 12px 16px; background: var(--open-soft); border-radius: 10px; color: var(--ink); font-size: 0.95rem; }
+.status .dot { flex: none; width: 10px; height: 10px; margin-top: 7px; border-radius: 50%; background: var(--open); }
+.figs { margin: 8px 0 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.figs > div { background: var(--surface); padding: 18px 20px; display: grid; gap: 4px; align-content: start; }
+.figs dd { margin: 0; color: var(--ink-2); font-size: 0.9rem; }
+.figs dd b { display: block; font: 700 1.9rem/1.15 var(--f-display); color: var(--ink); letter-spacing: -0.01em; }
+@media (max-width: 760px) { .figs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 460px) { .figs { grid-template-columns: minmax(0, 1fr); } }
+
+/* Page layout */
+.layout { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 56px; padding-block: 24px 64px; }
+.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); align-self: start; padding-top: 32px; display: grid; gap: 12px; }
+.toc ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.toc a { display: block; padding: 5px 10px; border-radius: 6px; color: var(--ink-2); text-decoration: none; font-size: 0.9rem; border-left: 2px solid transparent; }
+.toc a:hover { background: var(--surface-2); color: var(--ink); }
+.toc a.on { color: var(--ink); border-left-color: var(--accent); background: var(--surface); }
+.toc-lang { justify-self: start; font: 500 0.82rem var(--f-body); color: var(--accent); background: transparent; border: 1px solid var(--line-strong); border-radius: 6px; padding: 4px 10px; cursor: pointer; }
+@media (max-width: 980px) {
+  .layout { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .toc { position: static; padding-top: 16px; }
+  .toc ul { display: flex; flex-wrap: wrap; gap: 6px; }
+  .toc a { border: 1px solid var(--line); background: var(--surface); padding: 4px 10px; }
+  .toc a.on { border-color: var(--accent); }
+  .toc-lang { display: none; }
+}
+
+main { min-width: 0; }
+section { padding-block: 44px; border-top: 1px solid var(--line); display: grid; gap: 20px; scroll-margin-top: 16px; }
+section:first-child { border-top: 0; }
+.intro { color: var(--ink-2); max-width: 68ch; font-size: 1.02rem; }
+.note { max-width: 70ch; color: var(--ink-2); font-size: 0.95rem; }
+
+/* Tags and load pills */
+.tag { display: inline-block; white-space: nowrap; vertical-align: 1px; font: 500 0.7rem/1 var(--f-mono); letter-spacing: 0.03em; padding: 4px 7px; border-radius: 999px; border: 1px solid var(--line-strong); color: var(--ink-2); background: transparent; }
+.tag.sel { background: var(--accent-soft); border-color: transparent; color: var(--accent); }
+.tag.later { border-color: var(--accent); color: var(--accent); }
+.tag.open { background: var(--open-soft); border-color: transparent; color: var(--open); }
+li .tag { margin-left: 6px; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; font-size: 0.88rem; color: var(--muted); }
+.load { display: inline-block; white-space: nowrap; font: 600 0.72rem/1 var(--f-mono); letter-spacing: 0.03em; padding: 5px 8px; border-radius: 6px; }
+.load.l { background: var(--accent-soft); color: var(--accent); }
+.load.m { background: var(--open-soft); color: var(--open); }
+.load.h { background: var(--open); color: var(--bg); }
+.load.x { border: 1px dashed var(--line-strong); color: var(--muted); }
+
+/* Grids and cards */
+.cols-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.cols-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 760px) { .cols-2, .cols-3 { grid-template-columns: minmax(0, 1fr); } }
+.stack { display: grid; gap: 16px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 20px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.card.hl { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.card p { color: var(--ink-2); font-size: 0.95rem; }
+.ticks { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.ticks li { position: relative; padding-left: 18px; color: var(--ink-2); font-size: 0.95rem; line-height: 1.5; }
+.ticks li::before { content: ""; position: absolute; left: 2px; top: 0.62em; width: 6px; height: 6px; border-radius: 50%; background: var(--line-strong); }
+.card.hl .ticks li::before, .remote .ticks li::before { background: var(--accent); }
+.ticks.split { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 28px; }
+@media (max-width: 620px) { .ticks.split { grid-template-columns: minmax(0, 1fr); } }
+
+.principles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px 28px; }
+.principles div { display: grid; gap: 4px; min-width: 0; }
+.principles p { color: var(--ink-2); font-size: 0.95rem; }
+@media (max-width: 760px) { .principles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 460px) { .principles { grid-template-columns: minmax(0, 1fr); } }
+
+/* Remote scheduling feature */
+.remote { background: var(--accent-soft); border-radius: 14px; padding: 24px; display: grid; gap: 16px; }
+.remote > p { color: var(--ink-2); max-width: 70ch; }
+.remote .lbl { color: var(--accent); }
+.remote .cols-2 { gap: 28px; }
+.remote .cols-2 > div { display: grid; gap: 10px; align-content: start; min-width: 0; }
+.remote .foot { font-size: 0.9rem; color: var(--ink-2); border-top: 1px solid color-mix(in srgb, var(--accent) 30%, transparent); padding-top: 12px; }
+
+/* Tables */
+.tbl { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 0.93rem; }
+th, td { text-align: left; vertical-align: top; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+tr:last-child td { border-bottom: 0; }
+th { font: 500 0.72rem/1.3 var(--f-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); background: var(--surface-2); }
+td { color: var(--ink-2); }
+td:first-child { color: var(--ink); font-weight: 500; }
+td.n, th.n { text-align: right; white-space: nowrap; }
+td.n { color: var(--ink); }
+tr.total td { background: var(--surface-2); color: var(--ink); font-weight: 600; }
+.tbl.kv td:first-child { width: 30%; }
+.tbl caption { caption-side: bottom; text-align: left; padding: 10px 14px; font: 400 0.8rem/1.4 var(--f-mono); color: var(--muted); }
+
+/* Facts */
+.facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.facts > div { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; display: grid; gap: 4px; align-content: start; min-width: 0; }
+.facts b { font: 700 1.55rem/1.1 var(--f-display); color: var(--ink); }
+.facts p { font-size: 0.88rem; color: var(--ink-2); }
+@media (max-width: 760px) { .facts { grid-template-columns: minmax(0, 1fr); } }
+
+/* Diagrams */
+.fig { margin: 0; display: grid; gap: 10px; }
+.dg { padding: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; overflow-x: auto; color: var(--ink-2); }
+.dg svg { display: block; width: 100%; height: auto; min-width: 700px; }
+.dg.narrow svg { min-width: 600px; }
+figcaption { font-size: 0.875rem; color: var(--muted); max-width: 74ch; }
+.dg .n { fill: var(--surface); stroke: var(--line-strong); stroke-width: 1.25; }
+.dg .n.hl { stroke: var(--accent); stroke-width: 2; }
+.dg .n.k-energy { stroke: var(--d-energy); stroke-width: 1.75; fill: color-mix(in srgb, var(--d-energy) 9%, var(--surface)); }
+.dg .n.k-always { stroke: var(--d-always); stroke-width: 1.75; fill: color-mix(in srgb, var(--d-always) 11%, var(--surface)); }
+.dg .n.k-main { stroke: var(--d-main); stroke-width: 1.75; fill: color-mix(in srgb, var(--d-main) 9%, var(--surface)); }
+.dg .n.k-audio { stroke: var(--d-audio); stroke-width: 1.75; fill: color-mix(in srgb, var(--d-audio) 10%, var(--surface)); }
+.dg .n.k-modem { stroke: var(--d-modem); stroke-width: 1.75; fill: color-mix(in srgb, var(--d-modem) 9%, var(--surface)); }
+.dg .n.later { stroke-dasharray: 5 4; }
+.dg .t { fill: var(--ink); font: 600 14px var(--f-display); }
+.dg .s { fill: var(--ink-2); font: 400 12px var(--f-body); }
+.dg .m { fill: var(--muted); font: 400 11.5px var(--f-body); }
+.dg .el { fill: var(--muted); font: 500 11.5px var(--f-body); }
+.dg .pl { fill: var(--ink); font: 600 10.5px var(--f-body); }
+.dg .in { fill: var(--accent-ink); font: 600 12px var(--f-body); }
+.dg .c { text-anchor: middle; }
+.dg .r { text-anchor: end; }
+.dg .e { fill: none; stroke: var(--ink-2); stroke-width: 1.5; }
+.dg .e.dash { stroke-dasharray: 5 4; }
+.dg .e.pw { stroke: var(--d-energy); stroke-width: 2.5; }
+.dg .e.lead { stroke: var(--line-strong); stroke-width: 1; }
+.dg .ah { fill: var(--ink-2); }
+.dg .ah-e { fill: var(--d-energy); }
+.dg .ax { stroke: var(--line-strong); stroke-width: 1; }
+.dg .tick { fill: var(--accent); }
+.dg .lte { stroke: var(--d-modem); stroke-width: 3; }
+.dg .seg-r { fill: var(--accent); }
+.dg .seg-w { fill: var(--ink-2); }
+.dg .seg-off { fill: var(--surface-2); stroke: var(--line); }
+.dg .zoom { stroke: var(--line-strong); stroke-width: 1; stroke-dasharray: 3 3; fill: none; }
+.dg .board { fill: color-mix(in srgb, var(--accent) 7%, var(--surface)); stroke: var(--ink-2); stroke-width: 1.5; }
+.dg .pack { fill: none; stroke: var(--d-energy); stroke-width: 1.5; stroke-dasharray: 6 4; }
+.dg .part { fill: var(--surface); stroke: var(--ink-2); stroke-width: 1.1; }
+.dg .part.k-main { fill: color-mix(in srgb, var(--d-main) 14%, var(--surface)); stroke: var(--d-main); }
+.dg .part.k-modem { fill: color-mix(in srgb, var(--d-modem) 14%, var(--surface)); stroke: var(--d-modem); }
+.dg .part.k-audio { fill: color-mix(in srgb, var(--d-audio) 16%, var(--surface)); stroke: var(--d-audio); }
+.dg .part.k-energy { fill: color-mix(in srgb, var(--d-energy) 14%, var(--surface)); stroke: var(--d-energy); }
+.dg .part.k-always { fill: color-mix(in srgb, var(--d-always) 18%, var(--surface)); stroke: var(--d-always); }
+.dg .ant { fill: color-mix(in srgb, var(--d-main) 30%, var(--surface)); stroke: none; }
+.dg .hole { fill: var(--bg); stroke: var(--muted); stroke-width: 1; }
+.dg .soc1 { fill: var(--accent); fill-opacity: 0.14; }
+.dg .soc2 { fill: var(--accent); fill-opacity: 0.32; }
+.dg .soc3 { fill: var(--accent); fill-opacity: 0.55; }
+.dg .soc4 { fill: var(--accent); fill-opacity: 0.85; }
+.key { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 0.85rem; color: var(--ink-2); }
+.key span { display: inline-flex; align-items: center; gap: 7px; }
+.key i { width: 14px; height: 10px; border-radius: 3px; border: 2px solid; display: inline-block; }
+.key .k1 { border-color: var(--d-energy); } .key .k2 { border-color: var(--d-always); } .key .k3 { border-color: var(--d-main); }
+.key .k4 { border-color: var(--d-audio); } .key .k5 { border-color: var(--d-modem); }
+
+/* Energy budget bar list */
+.budget { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 20px; display: grid; gap: 14px; }
+.bars { display: grid; grid-template-columns: minmax(104px, 200px) minmax(0, 1fr) 72px; column-gap: 14px; row-gap: 12px; align-items: center; }
+.bars .bl { font-size: 0.92rem; color: var(--ink); }
+.bars .bl small { display: block; color: var(--muted); font-size: 0.78rem; }
+.bars .bv { font: 500 0.9rem var(--f-mono); color: var(--ink); text-align: right; }
+.track { position: relative; height: 16px; border-right: 1px solid var(--line); background-image: linear-gradient(to right, var(--line) 1px, transparent 1px); background-size: 25% 100%; }
+.track .bar { position: absolute; inset: 2px auto 2px 0; width: var(--v); min-width: 3px; background: var(--accent); border-radius: 0 4px 4px 0; }
+.axis { position: relative; height: 18px; font: 400 0.75rem var(--f-mono); color: var(--muted); }
+.axis span { position: absolute; top: 0; transform: translateX(-50%); white-space: nowrap; }
+.axis span:first-child { transform: none; }
+.axis span:last-child { transform: translateX(-100%); }
+.budget .total { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 0.92rem; color: var(--ink-2); }
+.budget .total b { color: var(--ink); }
+@media (max-width: 520px) { .bars { grid-template-columns: 96px minmax(0, 1fr) 62px; column-gap: 10px; } }
+
+/* Steps */
+.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; display: grid; gap: 12px; }
+.steps li { counter-increment: s; display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 10px; color: var(--ink-2); font-size: 0.95rem; }
+.steps li::before { content: counter(s); width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font: 600 0.8rem var(--f-mono); color: var(--accent); border: 1.5px solid var(--accent); background: var(--surface); }
+.meta { font: 500 0.78rem var(--f-mono); color: var(--accent); }
+
+/* Lineage chain */
+.chain { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.chain span { padding: 6px 12px; border-radius: 8px; font-size: 0.9rem; border: 1px solid var(--line-strong); color: var(--ink-2); background: var(--surface); }
+.chain span.v1 { background: var(--accent-soft); border-color: transparent; color: var(--ink); font-weight: 500; }
+.chain b { color: var(--muted); font-weight: 400; }
+
+/* Roadmap */
+.progress { list-style: none; margin: 0 0 0 6px; padding: 0; border-left: 2px solid var(--line); }
+.progress li { position: relative; padding: 0 0 14px 22px; display: grid; grid-template-columns: 116px minmax(0, 1fr); gap: 12px; font-size: 0.95rem; color: var(--ink-2); }
+.progress li::before { content: ""; position: absolute; left: -7px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--surface); border: 2px solid var(--accent); }
+.progress li.done::before { background: var(--accent); }
+.progress li.next::before { border-color: var(--open); border-style: dashed; }
+.progress .when { font: 500 0.82rem/1.6 var(--f-mono); color: var(--ink); }
+@media (max-width: 520px) { .progress li { grid-template-columns: minmax(0, 1fr); gap: 2px; } }
+.phases { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 860px) { .phases { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .phases { grid-template-columns: minmax(0, 1fr); } }
+.phase { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px; display: grid; gap: 8px; align-content: start; }
+.phase.now { border-color: var(--open); box-shadow: inset 0 0 0 1px var(--open); }
+.phase .ph { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.phase .pn { font: 700 1.6rem/1 var(--f-display); color: var(--accent); }
+.phase p { font-size: 0.92rem; color: var(--ink-2); }
+.phase .exit { font-size: 0.85rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 8px; }
+.gates { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.gates div { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; font-size: 0.88rem; color: var(--ink-2); display: flex; gap: 10px; align-items: baseline; }
+.gates b { font: 600 0.82rem var(--f-mono); color: var(--ink); }
+@media (max-width: 620px) { .gates { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+.limits { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 28px; }
+.limits div { display: grid; gap: 2px; min-width: 0; }
+.limits p { font-size: 0.93rem; color: var(--ink-2); }
+@media (max-width: 620px) { .limits { grid-template-columns: minmax(0, 1fr); } }
+
+footer { border-top: 1px solid var(--line); background: var(--surface); }
+footer .wrap { padding-block: 28px; display: grid; gap: 8px; font-size: 0.85rem; color: var(--muted); }
+footer code { font: 400 0.8rem var(--f-mono); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <span class="brand">AURIS</span>
+    <div class="seg" role="group" aria-label="Language / Sprache">
+      <button type="button" data-set-lang="en" aria-pressed="true" lang="en">English</button>
+      <button type="button" data-set-lang="de" aria-pressed="false" lang="de">Deutsch</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================== ENGLISH ============================== -->
+<div class="lang" data-lang="en" lang="en">
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Concept plan · 21 November 2026</p>
+    <h1>AURIS</h1>
+    <p class="tagline">Record the evidence. Understand the soundscape. Detect what matters.</p>
+    <p class="lead">A solar-powered acoustic recorder for long, unattended field surveys. It records on a schedule you set from the dashboard, keeps every recording on its microSD card, and checks in once a day over LTE.</p>
+    <p class="status"><span class="dot" aria-hidden="true"></span><span><strong>Status.</strong> Schematic frozen on 19 November 2026; the rev A board (4 layers, 80 × 105 mm) is placed and routing is next. Nothing is built or measured yet, so all figures are design targets.</span></p>
+    <dl class="figs">
+      <div><dt>Audio</dt><dd><b>48 kHz</b>16-bit mono WAV with GUANO metadata</dd></div>
+      <div><dt>Schedule</dt><dd><b>144 / day</b>by default; change it remotely from the dashboard</dd></div>
+      <div><dt>Runs for</dt><dd><b>≈ 300 days</b>on a 256 GB card, kept going by solar (≈ 150 on 128 GB)</dd></div>
+      <div><dt>Remote link</dt><dd><b>1 × / day</b>LTE: health, schedule and clock; ≤ 1 MB a month</dd></div>
+      <div><dt>Recording yield</dt><dd><b>≥ 99.5 %</b>of scheduled minutes in any 30 days</dd></div>
+      <div><dt>Parts per unit</dt><dd><b>≈ $150–205</b>complete unit at 100 units, preliminary</dd></div>
+    </dl>
+  </div>
+</header>
+
+<div class="wrap layout">
+  <nav class="toc" aria-label="Sections">
+    <p class="toc-h">Contents</p>
+    <ul>
+      <li><a href="#why">Why AURIS</a></li>
+      <li><a href="#mission">Mission and users</a></li>
+      <li><a href="#system">How it fits together</a></li>
+      <li><a href="#day">A day in the field</a></li>
+      <li><a href="#features">V1 features</a></li>
+      <li><a href="#outputs">On-chip analysis</a></li>
+      <li><a href="#hardware">Hardware</a></li>
+      <li><a href="#power">Power and energy</a></li>
+      <li><a href="#setup">Setup and service</a></li>
+      <li><a href="#board">Board and enclosure</a></li>
+      <li><a href="#data">Dashboard and data</a></li>
+      <li><a href="#costs">Preliminary costs</a></li>
+      <li><a href="#roadmap">Roadmap</a></li>
+      <li><a href="#risks">Risks and open questions</a></li>
+      <li><a href="#limits">What it does not claim</a></li>
+    </ul>
+    <button type="button" class="toc-lang" data-set-lang="de" lang="de">Auf Deutsch lesen</button>
+  </nav>
+
+  <main>
+
+    <section id="why">
+      <h2>Why AURIS</h2>
+      <p class="intro">Cheap recorders fail in rain and humidity; professional ones are expensive and closed. Teams lose data to power problems and time to setup. AURIS aims at the gap.</p>
+      <div class="cols-3">
+        <div class="card">
+          <p class="lbl">Low-cost loggers</p>
+          <ul class="ticks"><li>Affordable</li><li>Fragile in wet and cold</li><li>Setup often needs a laptop</li><li>Silent until collected</li></ul>
+        </div>
+        <div class="card hl">
+          <p class="lbl">AURIS</p>
+          <ul class="ticks"><li>Affordable for 10–100+ units</li><li>Runs for months, until the card is full</li><li>Set up and scheduled from a phone or the dashboard</li><li>Reports its health every day</li></ul>
+        </div>
+        <div class="card">
+          <p class="lbl">Professional recorders</p>
+          <ul class="ticks"><li>Rugged and proven</li><li>Several hundred US$ per unit</li><li>Closed software</li><li>Rarely report remotely</li></ul>
+        </div>
+      </div>
+      <div class="principles">
+        <div><h3>Raw audio is the evidence</h3><p>Metrics and AI scores always point back to the recording.</p></div>
+        <div><h3>Recording never waits</h3><p>Valid data needs no LTE, cloud or login.</p></div>
+        <div><h3>Off between jobs</h3><p>Only the clock runs while the recorder waits.</p></div>
+        <div><h3>Recoverable in the field</h3><p>Hotspot page, button and USB work without internet.</p></div>
+        <div><h3>Reproducible</h3><p>Firmware, settings, mic and filters travel with every file.</p></div>
+        <div><h3>Recorder first</h3><p>Measurements, detectors and remote operations come after.</p></div>
+      </div>
+    </section>
+
+    <section id="mission">
+      <h2>Mission and users</h2>
+      <p class="intro">V1 is sized for one reference mission (DRM-1): a long-term biodiversity survey that runs until the SD card is full. Energy must never be the reason it stops.</p>
+      <div class="tbl kv">
+        <table>
+          <caption>Owner decisions of 23 Oct 2026. Values are design targets.</caption>
+          <tbody>
+            <tr><td>Schedule</td><td>60 s every 10 minutes, day and night (144 a day); changeable remotely</td></tr>
+            <tr><td>Audio</td><td>48 kHz mono 16-bit WAV: 5.76 MB per file, 0.83 GB per day</td></tr>
+            <tr><td>Service interval</td><td>128 GB ≈ 150 days, 256 GB ≈ 300 days; card swapped on site</td></tr>
+            <tr><td>Connectivity</td><td>One LTE check-in a day, no 2G; no audio upload in V1</td></tr>
+            <tr><td>Design site</td><td>50–56°N in December; −20 to +35 °C ambient</td></tr>
+            <tr><td>Regions</td><td>Europe and Australia; a hot-climate requirement is still to be written</td></tr>
+            <tr><td>Target</td><td>≥ 99.5 % of scheduled minutes recorded; every miss logged with its cause</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="cols-2">
+        <div class="card hl">
+          <p class="lbl">First users</p>
+          <h3>Ecologists, conservation teams and survey consultancies</h3>
+          <p>Remote surveys where every site visit is expensive and missing data is the costliest failure.</p>
+        </div>
+        <div class="card">
+          <p class="lbl">Later</p>
+          <ul class="ticks"><li>Research institutions running long-term studies</li><li>Biosecurity teams watching for one known sound</li><li>Noise researchers, once calibration is validated</li><li>Operators logging machinery events</li></ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="system">
+      <h2>How it fits together</h2>
+      <p class="intro">Audio stays on the recorder and comes home on the SD card. LTE carries a small daily exchange: health up, schedule and settings down. On site, a phone uses the web app or, without coverage, the recorder's own hotspot.</p>
+      <figure class="fig">
+        <div class="dg">
+          <svg viewBox="0 0 1000 320" role="img" aria-label="System overview: the solar panel charges the recorder; audio goes to microSD and reaches the lab by card swap; once a day the recorder sends health to the cloud and receives schedule and settings over LTE; the web app talks to the cloud; on site a phone binds the recorder through the web app, or uses its Wi-Fi hotspot when there is no coverage.">
+            <defs>
+              <marker id="m-sys" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="ah"/></marker>
+              <marker id="m-sys-e" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="ah-e"/></marker>
+            </defs>
+            <rect x="65" y="16" width="160" height="42" rx="8" class="n k-energy"/>
+            <text x="145" y="42" class="t c">Solar panel</text>
+            <rect x="40" y="104" width="210" height="88" rx="10" class="n hl"/>
+            <text x="145" y="134" class="t c">AURIS recorder</text>
+            <text x="145" y="154" class="s c">records to microSD on schedule</text>
+            <text x="145" y="172" class="m c">audio stays on the card</text>
+            <rect x="40" y="252" width="210" height="56" rx="10" class="n"/>
+            <text x="145" y="276" class="t c">Lab storage and analysis</text>
+            <text x="145" y="295" class="m c">full-resolution WAV files</text>
+            <rect x="420" y="104" width="200" height="88" rx="10" class="n"/>
+            <text x="520" y="134" class="t c">Cloud platform</text>
+            <text x="520" y="154" class="s c">devices · deployments · schedules</text>
+            <text x="520" y="172" class="m c">health history</text>
+            <rect x="780" y="104" width="180" height="88" rx="10" class="n"/>
+            <text x="870" y="134" class="t c">Web dashboard</text>
+            <text x="870" y="154" class="s c">phone or desktop browser</text>
+            <text x="870" y="172" class="m c">projects · schedules · fleet</text>
+            <rect x="420" y="252" width="200" height="56" rx="10" class="n"/>
+            <text x="520" y="276" class="t c">Phone on site</text>
+            <text x="520" y="295" class="m c">browser, no app install</text>
+            <path d="M145,58 V102" class="e pw" marker-end="url(#m-sys-e)"/>
+            <text x="153" y="85" class="el">charge</text>
+            <path d="M252,148 H418" class="e" marker-start="url(#m-sys)" marker-end="url(#m-sys)"/>
+            <text x="335" y="138" class="el c">LTE, once a day</text>
+            <text x="335" y="166" class="el c">health ↑  schedule ↓</text>
+            <path d="M622,148 H778" class="e" marker-start="url(#m-sys)" marker-end="url(#m-sys)"/>
+            <text x="700" y="138" class="el c">HTTPS</text>
+            <path d="M145,192 V250" class="e" marker-end="url(#m-sys)"/>
+            <text x="153" y="218" class="el">card swap</text>
+            <text x="153" y="233" class="el">at service visits</text>
+            <path d="M418,280 H350 V178 H252" class="e dash" marker-start="url(#m-sys)" marker-end="url(#m-sys)"/>
+            <text x="342" y="262" class="el r">Wi-Fi hotspot</text>
+            <text x="342" y="277" class="el r">(no coverage)</text>
+            <path d="M622,280 H870 V194" class="e" marker-start="url(#m-sys)" marker-end="url(#m-sys)"/>
+            <text x="745" y="270" class="el c">scan QR · GPS · bind to deployment</text>
+          </svg>
+        </div>
+        <figcaption>Three independent paths: audio by card, health and settings by LTE, and the phone on site. Losing LTE never stops recording.</figcaption>
+      </figure>
+    </section>
+
+    <section id="day">
+      <h2>A day in the field</h2>
+      <p class="intro">Between jobs the main board is switched off and only the clock runs. An alarm wakes it; it records, saves, sets the next alarm and switches itself off.</p>
+      <figure class="fig">
+        <div class="dg">
+          <svg viewBox="0 0 1000 206" role="img" aria-label="Timeline to scale: 144 one-minute recordings over 24 hours and one LTE check-in in a daily window; a zoom into one 10-minute slot shows wake within 2 seconds, a 60-second recording, a few seconds to write and arm the next alarm, then about 9 minutes off.">
+            <defs>
+              <pattern id="p-ticks" x="40" y="46" width="6.388889" height="24" patternUnits="userSpaceOnUse"><rect width="1.6" height="24" class="tick"/></pattern>
+            </defs>
+            <text x="40" y="22"><tspan class="t">One day</tspan><tspan class="m" dx="10">144 recordings of 60 s, one every 10 minutes (UTC)</tspan></text>
+            <rect x="40" y="46" width="920" height="24" fill="url(#p-ticks)"/>
+            <line x1="40" y1="70.5" x2="960" y2="70.5" class="ax"/>
+            <line x1="501.3" y1="32" x2="501.3" y2="70" class="lte"/>
+            <text x="509" y="40" class="el">LTE check-in in its daily window</text>
+            <text x="40" y="88" class="m">00:00</text><text x="270" y="88" class="m c">06:00</text><text x="500" y="88" class="m c">12:00</text><text x="730" y="88" class="m c">18:00</text><text x="960" y="88" class="m r">24:00</text>
+            <path d="M270,71 L40,124" class="zoom"/><path d="M276.4,71 L960,124" class="zoom"/>
+            <rect x="40" y="124" width="3.07" height="26" class="seg-w"/>
+            <rect x="43.07" y="124" width="92" height="26" class="seg-r"/>
+            <rect x="135.07" y="124" width="9.2" height="26" class="seg-w"/>
+            <rect x="146.27" y="124.5" width="813.23" height="25" class="seg-off"/>
+            <text x="89" y="141" class="in c">record 60 s</text>
+            <text x="553" y="141" class="s c">off for about 9 minutes: only the clock and keep-alive run (≤ 200 µA)</text>
+            <line x1="41.5" y1="150" x2="41.5" y2="158" class="ax"/><line x1="139.7" y1="150" x2="139.7" y2="158" class="ax"/>
+            <text x="40" y="171" class="el">wake ≤ 2 s</text>
+            <text x="137" y="171" class="el">write, hash, arm next alarm</text>
+            <text x="40" y="196" class="m">06:00:00</text><text x="500" y="196" class="m c">one 10-minute slot, to scale</text><text x="960" y="196" class="m r">06:10:00</text>
+          </svg>
+        </div>
+        <figcaption>Default DRM-1 schedule, to scale. The LTE session never overlaps a recording. Wake and write times are estimates.</figcaption>
+      </figure>
+      <figure class="fig">
+        <div class="dg">
+          <svg viewBox="0 0 1100 384" role="img" aria-label="Operating states: Off, Boot, Record, Process, Commit, back to Off. A due sync with enough battery passes through Sync before Commit. A button or USB wake goes to Service; a failed self-test goes to Recovery; both end in Commit.">
+            <defs><marker id="m-st" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="ah"/></marker></defs>
+            <rect x="16" y="140" width="150" height="54" rx="10" class="n"/><text x="91" y="163" class="t c">Off</text><text x="91" y="181" class="m c">only the clock runs</text>
+            <rect x="246" y="140" width="150" height="54" rx="10" class="n"/><text x="321" y="163" class="t c">Boot</text><text x="321" y="181" class="m c">hold power, check state</text>
+            <rect x="476" y="140" width="150" height="54" rx="10" class="n hl"/><text x="551" y="163" class="t c">Record</text><text x="551" y="181" class="m c">WAV to microSD</text>
+            <rect x="706" y="140" width="150" height="54" rx="10" class="n"/><text x="781" y="163" class="t c">Process</text><text x="781" y="181" class="m c">fingerprint, hash, filters</text>
+            <rect x="936" y="140" width="150" height="54" rx="10" class="n"/><text x="1011" y="163" class="t c">Commit</text><text x="1011" y="181" class="m c">flush, arm next alarm</text>
+            <rect x="746" y="40" width="150" height="54" rx="10" class="n k-modem"/><text x="821" y="63" class="t c">Sync</text><text x="821" y="81" class="m c">LTE: health, schedule, clock</text>
+            <rect x="476" y="250" width="150" height="54" rx="10" class="n"/><text x="551" y="273" class="t c">Service</text><text x="551" y="291" class="m c">hotspot page or USB</text>
+            <rect x="476" y="316" width="150" height="54" rx="10" class="n"/><text x="551" y="339" class="t c">Recovery</text><text x="551" y="357" class="m c">log fault, safe schedule</text>
+            <path d="M166,167 H244" class="e" marker-end="url(#m-st)"/><text x="206" y="159" class="el c">wake</text>
+            <path d="M396,167 H474" class="e" marker-end="url(#m-st)"/><text x="436" y="159" class="el c">job due</text>
+            <path d="M626,167 H704" class="e" marker-end="url(#m-st)"/><text x="666" y="159" class="el c">file closed</text>
+            <path d="M856,167 H934" class="e" marker-end="url(#m-st)"/><text x="896" y="159" class="el c">no sync due</text>
+            <path d="M800,140 V96" class="e" marker-end="url(#m-st)"/><text x="792" y="122" class="el r">sync due, battery OK</text>
+            <path d="M896,67 H1011 V138" class="e" marker-end="url(#m-st)"/><text x="953" y="59" class="el c">done or failed</text>
+            <path d="M1086,167 H1094 V12 H91 V138" class="e dash" marker-end="url(#m-st)"/><text x="560" y="30" class="el c">next alarm armed, power released</text>
+            <path d="M306,194 V277 H474" class="e" marker-end="url(#m-st)"/><text x="391" y="269" class="el c">button or USB</text>
+            <path d="M276,194 V343 H474" class="e" marker-end="url(#m-st)"/><text x="391" y="335" class="el c">self-test fails</text>
+            <path d="M626,277 H990 V196" class="e" marker-end="url(#m-st)"/><text x="808" y="269" class="el c">session ends</text>
+            <path d="M626,343 H1032 V196" class="e" marker-end="url(#m-st)"/><text x="829" y="335" class="el c">safe fallback</text>
+            <text x="91" y="214" class="m c">woken by alarm,</text><text x="91" y="230" class="m c">button or USB</text>
+          </svg>
+        </div>
+        <figcaption>Every wake ends in Commit: files closed, next alarm set, power released. A job that overruns drops non-essential work, so the next recording is never at risk.</figcaption>
+      </figure>
+    </section>
+
+    <section id="features">
+      <h2>V1 features</h2>
+      <p class="intro">Everything here is a V1 requirement unless tagged. Nothing is built or verified yet.</p>
+      <div class="remote">
+        <p class="lbl">Remote scheduling</p>
+        <h3>Schedules are set from the dashboard</h3>
+        <p>Recording plans are edited in the web dashboard and reach each recorder at its next daily check-in. Changing what a recorder does needs no site visit.</p>
+        <div class="cols-2">
+          <div>
+            <p class="meta">What you can set remotely</p>
+            <ul class="ticks">
+              <li>Interval and duration, 1 s to 1 h per recording</li>
+              <li>Daily windows, such as dawn and dusk choruses</li>
+              <li>Gain preset and analog high-pass corner</li>
+              <li>Digital filters for the recording or for analysis</li>
+              <li>Low-battery schedule and its thresholds</li>
+              <li>Time of the daily check-in</li>
+              <li>Sunrise-relative and seasonal plans <span class="tag later">Later</span></li>
+            </ul>
+          </div>
+          <div>
+            <p class="meta">How a change reaches the recorder</p>
+            <ol class="steps">
+              <li>Edit one recorder, or apply a project template.</li>
+              <li>It is saved as a signed revision; the dashboard shows when it will arrive.</li>
+              <li>At its next check-in the recorder applies it between recordings.</li>
+              <li>The dashboard shows applied or rejected. A rejected plan leaves the last good one running.</li>
+            </ol>
+          </div>
+        </div>
+        <p class="foot">Changes arrive within a day. On site, the hotspot page applies them at once and reports them back at the next check-in.</p>
+      </div>
+      <div class="legend"><span><span class="tag">Candidate</span> part not locked</span><span><span class="tag">Rev A test</span> decided by bench data</span><span><span class="tag later">After V1</span> later phase</span><span><span class="tag open">Open</span> decision pending</span></div>
+      <div class="cols-2">
+        <div class="card"><h3>Recording</h3><ul class="ticks">
+          <li>48 kHz, 16-bit mono WAV, starting within 2 s of schedule</li>
+          <li>Gain set per unit at the factory, plus a "loud site" preset</li>
+          <li>Analog high-pass against wind: 36 Hz, 100 Hz (default) or 1 kHz</li>
+          <li>Optional digital filters; the stored WAV stays wide-band by default</li>
+        </ul></div>
+        <div class="card"><h3>Acoustic head</h3><ul class="ticks">
+          <li>Separate head on a through-wall connector, swappable in the field</li>
+          <li>Low-noise electret, Primo EM272/EM273 class <span class="tag">Candidate</span></li>
+          <li>Direct and +12 dB preamp inputs; bench tests pick one <span class="tag">Rev A test</span></li>
+          <li>Second channel laid out for stereo or a hydrophone <span class="tag">Option</span></li>
+        </ul></div>
+        <div class="card"><h3>Storage and integrity</h3><ul class="ticks">
+          <li>microSD up to 256 GB; days-to-full reported daily</li>
+          <li>Never overwrites or deletes; stops cleanly when full</li>
+          <li>A power cut loses at most the file being written</li>
+          <li>SHA-256 manifest on the card; 5 s buffer for slow writes</li>
+        </ul></div>
+        <div class="card"><h3>Time</h3><ul class="ticks">
+          <li>±5 ppm clock (≈ 0.4 s a day) with a job alarm and a daily sync alarm</li>
+          <li>Synced over LTE daily (≤ 1 s error) or from the phone on site</li>
+          <li>Every file flagged LTE-synced, phone-set or unsynced</li>
+          <li>No missed or doubled slots at midnight, month end or leap day</li>
+        </ul></div>
+        <div class="card"><h3>Power and solar</h3><ul class="ticks">
+          <li>MPPT solar charging; inputs for a bracket panel and a cabled panel</li>
+          <li>1S2P 18650 pack, ≥ 10 sunless days at 0 °C</li>
+          <li>Charges only between +5 and +42 °C</li>
+          <li>Steps down as charge falls, restarts by itself; ship-mode switch</li>
+        </ul></div>
+        <div class="card"><h3>Remote link</h3><ul class="ticks">
+          <li>One LTE Cat 1 check-in a day; EU, AU and NZ bands; no 2G</li>
+          <li>≤ 1 MB a month, capped retries; never affects recording</li>
+          <li>Signed settings; a bad set is rejected and the last good one stays</li>
+          <li>Audio clip upload over LTE <span class="tag later">After V1</span></li>
+        </ul></div>
+        <div class="card"><h3>Setup and service</h3><ul class="ticks">
+          <li>Setup in a phone browser, no app: scan, bind, test, deploy in ≈ 5 min</li>
+          <li>No coverage: the button starts a Wi-Fi hotspot with a local setup page</li>
+          <li>Lid-off service: USB-C, flip-top microSD, SIM, button and LED on the board</li>
+          <li>Firmware update path <span class="tag open">Open</span></li>
+        </ul></div>
+        <div class="card"><h3>Health and provenance</h3><ul class="ticks">
+          <li>Daily heartbeat ≤ 1 KB: battery, panel, temperature, card, missed slots with causes, mic drift, faults</li>
+          <li>Mic fingerprint per recording flags a blocked or wet membrane</li>
+          <li>GUANO metadata: serial, deployment, settings and hash, firmware, time quality, mic, filters</li>
+          <li>Per-device identity; no shared secret in firmware</li>
+        </ul></div>
+      </div>
+    </section>
+
+    <section id="outputs">
+      <h2>On-chip analysis and outputs</h2>
+      <p class="intro">Besides the WAV file, the ESP32-S3 can summarise each recording before it switches off. Summaries always derive from the stored audio and never replace it, and they must fit the chip's memory and the energy budget.</p>
+      <figure class="fig">
+        <div class="dg">
+          <svg viewBox="0 0 1000 360" role="img" aria-label="Processing pipeline: ADC samples split three ways. The record filter (none by default) feeds the 16-bit WAV with GUANO, kept unchanged with its SHA-256 in the manifest. The mic fingerprint, taken before any filter, feeds the daily heartbeat. The analysis filter feeds FFT frames, which feed indices and descriptors, sound levels and an edge detector; their results go to a file on the SD card and a daily summary.">
+            <defs><marker id="m-pp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="ah"/></marker></defs>
+            <rect x="16" y="142" width="130" height="52" rx="10" class="n k-audio"/><text x="81" y="164" class="t c">ADC samples</text><text x="81" y="182" class="m c">24-bit, 48 kHz</text>
+            <rect x="200" y="40" width="150" height="52" rx="10" class="n"/><text x="275" y="62" class="t c">Record filter</text><text x="275" y="80" class="m c">default: none</text>
+            <rect x="200" y="142" width="150" height="52" rx="10" class="n"/><text x="275" y="164" class="t c">Mic fingerprint</text><text x="275" y="182" class="m c">before any filter</text>
+            <rect x="200" y="244" width="150" height="52" rx="10" class="n"/><text x="275" y="266" class="t c">Analysis filter</text><text x="275" y="284" class="m c">set in the schedule</text>
+            <rect x="400" y="40" width="150" height="52" rx="10" class="n hl"/><text x="475" y="62" class="t c">WAV + GUANO</text><text x="475" y="80" class="m c">16-bit, microSD</text>
+            <rect x="400" y="244" width="150" height="52" rx="10" class="n later"/><text x="475" y="266" class="t c">FFT frames</text><text x="475" y="284" class="m c">≈ 5,600 per file</text>
+            <rect x="600" y="196" width="170" height="46" rx="10" class="n later"/><text x="685" y="215" class="t c">Indices, descriptors</text><text x="685" y="232" class="m c">Phase 3</text>
+            <rect x="600" y="250" width="170" height="46" rx="10" class="n later"/><text x="685" y="269" class="t c">Sound levels</text><text x="685" y="286" class="m c">Phase 3, calibrated</text>
+            <rect x="600" y="304" width="170" height="46" rx="10" class="n later"/><text x="685" y="323" class="t c">Edge detector</text><text x="685" y="340" class="m c">Phase 4, INT8 model</text>
+            <rect x="820" y="40" width="164" height="52" rx="10" class="n"/><text x="902" y="62" class="t c">Evidence</text><text x="902" y="80" class="m c">kept unchanged</text>
+            <rect x="820" y="142" width="164" height="52" rx="10" class="n k-modem"/><text x="902" y="164" class="t c">Heartbeat</text><text x="902" y="182" class="m c">daily, ≤ 1 KB · V1</text>
+            <rect x="820" y="247" width="164" height="52" rx="10" class="n later"/><text x="902" y="269" class="t c">Results</text><text x="902" y="287" class="m c">SD file + daily summary</text>
+            <path d="M146,168 H175 V66 H198" class="e" marker-end="url(#m-pp)"/>
+            <path d="M146,168 H198" class="e" marker-end="url(#m-pp)"/>
+            <path d="M146,168 H175 V270 H198" class="e" marker-end="url(#m-pp)"/>
+            <path d="M350,66 H398" class="e" marker-end="url(#m-pp)"/>
+            <path d="M550,66 H818" class="e" marker-end="url(#m-pp)"/><text x="685" y="58" class="el c">SHA-256 in manifest</text>
+            <path d="M350,168 H818" class="e" marker-end="url(#m-pp)"/><text x="585" y="160" class="el c">level, clipping, noise floor per band</text>
+            <path d="M350,270 H398" class="e" marker-end="url(#m-pp)"/>
+            <path d="M550,270 H575 V219 H598" class="e" marker-end="url(#m-pp)"/>
+            <path d="M550,270 H575 V273 H598" class="e" marker-end="url(#m-pp)"/>
+            <path d="M550,270 H575 V327 H598" class="e" marker-end="url(#m-pp)"/>
+            <path d="M770,219 H795 V273" class="e"/>
+            <path d="M770,327 H795 V273" class="e"/>
+            <path d="M770,273 H818" class="e" marker-end="url(#m-pp)"/>
+          </svg>
+        </div>
+        <figcaption>Where each output is computed. Dashed boxes come after V1. The fingerprint is taken before any filter, the stored WAV gets only the record filter, and analysis works on its own copy, so it never changes the evidence.</figcaption>
+      </figure>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Output</th><th>What it gives</th><th>Load on the chip</th><th>When</th></tr></thead>
+          <tbody>
+            <tr><td>Recording and manifest</td><td>WAV with GUANO, SHA-256, event log</td><td><span class="load l">Light</span></td><td>V1</td></tr>
+            <tr><td>Mic fingerprint</td><td>Level, clipping, noise floor per band; drift flag</td><td><span class="load l">Light</span></td><td>V1</td></tr>
+            <tr><td>Effort log</td><td>Scheduled vs recorded slots, cause of each miss</td><td><span class="load l">Light</span></td><td>V1</td></tr>
+            <tr><td>Basic descriptors</td><td>RMS, peak, band energy, spectral centroid, activity</td><td><span class="load l">Light</span></td><td>Phase 3</td></tr>
+            <tr><td>Ecoacoustic indices</td><td>ACI, NDSI, Bioacoustic Index, entropy, ADI, AEI per file</td><td><span class="load m">Moderate</span></td><td>Phase 3</td></tr>
+            <tr><td>Sound levels</td><td>LAeq, LCeq, L10 to L90, octave bands; only with per-unit calibration</td><td><span class="load l">Light</span></td><td>Phase 3</td></tr>
+            <tr><td>Target detector</td><td>Score per window; candidate list with time, score and model version; "unknown" kept</td><td><span class="load h">Heavy</span></td><td>Phase 4</td></tr>
+            <tr><td>Species ID, embeddings, training</td><td>BirdNET-class models, clustering, Detector Builder</td><td><span class="load x">Off chip</span></td><td>Cloud or lab</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="facts">
+        <div><b>≈ 2.3 s</b><p>Estimated spectrogram time for one 60 s file: ≈ 5,600 FFT frames of 1,024 points at an assumed 100,000 cycles each, on one 240 MHz core. To benchmark.</p></div>
+        <div><b>≈ 3 s</b><p>Extra wake time per recording that the energy margin allows: each second costs ≈ 0.01 Wh a day at ≈ 0.3 W. Analysis run during the recording, on the second core, costs far less.</p></div>
+        <div><b>≈ 3.5 KB</b><p>A day of indices (144 files × 6 values) fits the LTE budget easily. One 10 s audio clip is ≈ 0.96 MB, about a month of V1 data.</p></div>
+      </div>
+      <div class="cols-2">
+        <div class="card"><h3>What the chip has</h3><ul class="ticks">
+          <li>2 cores up to 240 MHz with vector instructions; no neural accelerator</li>
+          <li>512 KB fast internal RAM, shared with the firmware</li>
+          <li>2 MB PSRAM, of which ≈ 0.5 MB holds the 5 s audio buffer</li>
+          <li>16 MB flash for firmware and model weights</li>
+        </ul></div>
+        <div class="card"><h3>What that means for a detector</h3><ul class="ticks">
+          <li>One narrow target against background and confusers, not a species list</li>
+          <li>Small INT8 model; the runtime supports only some operators, so each model package is checked before it ships</li>
+          <li>Runs after each recording, not continuously; results arrive at the next check-in</li>
+          <li>Scores are not probabilities; random negative clips are kept to measure misses</li>
+        </ul></div>
+      </div>
+      <p class="note">Memory, speed and energy per inference must be measured on the real module (gate G8) before any detector ships. Large multi-species models run in the cloud or the lab, on the WAV files from the card.</p>
+    </section>
+
+    <section id="hardware">
+      <h2>Hardware</h2>
+      <p class="intro">One ESP32-S3 module runs everything. A dedicated converter listens, a clock wakes the board, and an LTE modem handles the daily check-in.</p>
+      <figure class="fig">
+        <div class="dg">
+          <svg viewBox="0 0 1000 372" role="img" aria-label="Signal block diagram: acoustic head to analog front end to audio ADC, which sends I2S audio to the ESP32-S3. The ESP32-S3 talks to the clock over I2C, the LTE modem over UART (with antenna and nano-SIM), microSD in 1-bit SD mode, USB-C, and a phone through its Wi-Fi hotspot.">
+            <defs><marker id="m-hw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="ah"/></marker></defs>
+            <rect x="16" y="172" width="124" height="56" rx="10" class="n k-audio"/><text x="78" y="196" class="t c">Acoustic head</text><text x="78" y="214" class="m c">electret, outside</text>
+            <rect x="168" y="172" width="150" height="56" rx="10" class="n k-audio"/><text x="243" y="196" class="t c">Analog front end</text><text x="243" y="214" class="m c">bias · preamp · high-pass</text>
+            <rect x="346" y="172" width="136" height="56" rx="10" class="n k-audio"/><text x="414" y="196" class="t c">Audio ADC</text><text x="414" y="214" class="m c">PCM1863, 24-bit</text>
+            <rect x="540" y="150" width="180" height="100" rx="12" class="n k-main"/><text x="630" y="180" class="t c">ESP32-S3</text><text x="630" y="200" class="s c">2 cores · 16 MB flash</text><text x="630" y="217" class="s c">2 MB PSRAM</text><text x="630" y="234" class="m c">Wi-Fi for the hotspot</text>
+            <rect x="590" y="30" width="140" height="56" rx="10" class="n k-always"/><text x="660" y="54" class="t c">Real-time clock</text><text x="660" y="72" class="m c">DS3231M, 2 alarms</text>
+            <rect x="350" y="30" width="140" height="56" rx="10" class="n"/><text x="420" y="54" class="t c">Phone on site</text><text x="420" y="72" class="m c">hotspot page</text>
+            <rect x="800" y="172" width="160" height="56" rx="10" class="n k-modem"/><text x="880" y="196" class="t c">LTE modem</text><text x="880" y="214" class="m c">EG810M-EU, Cat 1</text>
+            <rect x="815" y="60" width="130" height="44" rx="10" class="n"/><text x="880" y="87" class="t c">LTE antenna</text>
+            <rect x="815" y="300" width="130" height="44" rx="10" class="n"/><text x="880" y="327" class="t c">nano-SIM</text>
+            <rect x="500" y="310" width="110" height="52" rx="10" class="n"/><text x="555" y="332" class="t c">microSD</text><text x="555" y="350" class="m c">≤ 256 GB</text>
+            <rect x="650" y="310" width="110" height="52" rx="10" class="n"/><text x="705" y="332" class="t c">USB-C</text><text x="705" y="350" class="m c">console, flashing</text>
+            <path d="M140,200 H166" class="e" marker-end="url(#m-hw)"/>
+            <path d="M318,200 H344" class="e" marker-end="url(#m-hw)"/>
+            <path d="M482,200 H538" class="e" marker-end="url(#m-hw)"/><text x="510" y="192" class="el c">I²S</text>
+            <path d="M660,148 V88" class="e" marker-start="url(#m-hw)" marker-end="url(#m-hw)"/><text x="668" y="122" class="el">I²C</text>
+            <path d="M570,148 V58 H492" class="e dash" marker-start="url(#m-hw)" marker-end="url(#m-hw)"/><text x="578" y="122" class="el">Wi-Fi</text>
+            <path d="M722,200 H798" class="e" marker-start="url(#m-hw)" marker-end="url(#m-hw)"/><text x="760" y="192" class="el c">UART</text>
+            <path d="M880,170 V106" class="e" marker-start="url(#m-hw)" marker-end="url(#m-hw)"/><text x="888" y="142" class="el">RF</text>
+            <path d="M880,230 V298" class="e" marker-start="url(#m-hw)" marker-end="url(#m-hw)"/>
+            <path d="M555,252 V308" class="e" marker-start="url(#m-hw)" marker-end="url(#m-hw)"/><text x="563" y="284" class="el">SD, 1-bit</text>
+            <path d="M705,252 V308" class="e" marker-start="url(#m-hw)" marker-end="url(#m-hw)"/><text x="713" y="284" class="el">USB</text>
+          </svg>
+        </div>
+        <figcaption>The audio converter is clock master from its own 24.576 MHz crystal, because the ESP32-S3 has no audio PLL. Its I²C runs on a separate bus, so the switched-off converter is never back-powered.</figcaption>
+      </figure>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Function</th><th>Part</th><th>Why</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>Processor, Wi-Fi</td><td>ESP32-S3-WROOM-1-N16R2</td><td>Rated to +85 °C for a sealed box in sun</td><td><span class="tag sel">Selected</span></td></tr>
+            <tr><td>Clock and wake</td><td>DS3231M</td><td>±5 ppm, two alarms, runs with the board off</td><td><span class="tag sel">Selected</span></td></tr>
+            <tr><td>Audio converter</td><td>PCM1863</td><td>24-bit, programmable gain, input select</td><td><span class="tag">Candidate</span></td></tr>
+            <tr><td>Microphone</td><td>Primo EM272 / EM273</td><td>Low self-noise, common in bioacoustics</td><td><span class="tag">Candidate</span></td></tr>
+            <tr><td>LTE modem</td><td>Quectel EG810M-EU</td><td>Cat 1, EU/AU/NZ bands, in stock</td><td><span class="tag sel">Selected</span></td></tr>
+            <tr><td>Solar charger</td><td>CN3791 + TMP390</td><td>MPPT with hot and cold cut-out</td><td><span class="tag sel">Selected</span></td></tr>
+            <tr><td>Main 3.3 V</td><td>TPS63802</td><td>Buck-boost, holds 3.3 V as the cell drops</td><td><span class="tag sel">Selected</span></td></tr>
+            <tr><td>Modem supply</td><td>TPS63020, 3.9 V</td><td>Handles transmit current pulses</td><td><span class="tag sel">Selected</span></td></tr>
+            <tr><td>Audio supply</td><td>TPS7A2033</td><td>Low noise, on only while recording</td><td><span class="tag">Candidate</span></td></tr>
+            <tr><td>Keep-alive</td><td>TPL720F33 + CR1220</td><td>1.4 µA regulator; coin cell backs the clock</td><td><span class="tag sel">Selected</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">"Selected" means chosen for the concept, not validated. The board has 4 copper layers, measures 80 × 105 mm and carries 346 parts, all on the top side.</p>
+    </section>
+
+    <section id="power">
+      <h2>Power and energy</h2>
+      <p class="intro">Each part is powered only when it is needed. The clock domain never switches off; everything else sits behind one load switch that the wake latch closes.</p>
+      <figure class="fig">
+        <div class="dg">
+          <svg viewBox="0 0 1000 396" role="img" aria-label="Power tree: bracket and cabled panels feed the MPPT solar charger, which charges the battery pack. The battery feeds the always-on domain (keep-alive regulator, clock with coin cell, wake latch) and, through a load switch closed by the latch, three switched rails: main 3.3 V, low-noise audio 3.3 V and modem 3.9 V. The MCU holds power on until its job is done.">
+            <defs>
+              <marker id="m-pw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="ah"/></marker>
+              <marker id="m-pw-e" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="ah-e"/></marker>
+            </defs>
+            <rect x="16" y="56" width="160" height="52" rx="10" class="n k-energy"/><text x="96" y="78" class="t c">Bracket panel</text><text x="96" y="96" class="m c">≈ 4 W, 6 V class</text>
+            <rect x="16" y="136" width="160" height="52" rx="10" class="n k-energy"/><text x="96" y="158" class="t c">Cabled panel</text><text x="96" y="176" class="m c">optional, for shade</text>
+            <rect x="226" y="86" width="170" height="72" rx="10" class="n k-energy"/><text x="311" y="110" class="t c">Solar charger</text><text x="311" y="128" class="s c">MPPT buck</text><text x="311" y="145" class="m c">charges +5 to +42 °C</text>
+            <rect x="226" y="236" width="170" height="72" rx="10" class="n k-energy"/><text x="311" y="260" class="t c">Battery pack</text><text x="311" y="278" class="s c">1S2P 18650, ≈ 5.2 Ah</text><text x="311" y="295" class="m c">fused, reverse-protected</text>
+            <rect x="456" y="16" width="230" height="112" rx="12" class="n k-always"/><text x="571" y="42" class="t c">Always on</text><text x="571" y="62" class="s c">keep-alive 3.3 V regulator</text><text x="571" y="80" class="s c">clock with coin-cell backup</text><text x="571" y="98" class="s c">wake latch</text><text x="571" y="117" class="m c">≤ 200 µA in total</text>
+            <rect x="456" y="244" width="230" height="56" rx="10" class="n"/><text x="571" y="268" class="t c">Load switch</text><text x="571" y="286" class="m c">closed by the wake latch</text>
+            <text x="571" y="322" class="m c">feeds the three rails</text>
+            <rect x="760" y="150" width="224" height="70" rx="10" class="n k-main"/><text x="872" y="172" class="t c">Main 3.3 V</text><text x="872" y="190" class="s c">ESP32-S3 · microSD · LED</text><text x="872" y="208" class="m c">on for every job</text>
+            <rect x="760" y="232" width="224" height="70" rx="10" class="n k-audio"/><text x="872" y="254" class="t c">Audio 3.3 V, low noise</text><text x="872" y="272" class="s c">mic bias · preamp · ADC</text><text x="872" y="290" class="m c">on only while recording</text>
+            <rect x="760" y="314" width="224" height="70" rx="10" class="n k-modem"/><text x="872" y="336" class="t c">Modem 3.9 V</text><text x="872" y="354" class="s c">LTE modem · SIM</text><text x="872" y="372" class="m c">daily check-in only</text>
+            <path d="M176,82 H201 V122 H224" class="e pw" marker-end="url(#m-pw-e)"/>
+            <path d="M176,162 H201 V122" class="e pw"/>
+            <path d="M311,158 V234" class="e pw" marker-end="url(#m-pw-e)"/><text x="319" y="200" class="el">charge</text>
+            <path d="M396,272 H454" class="e pw" marker-end="url(#m-pw-e)"/>
+            <path d="M426,272 V72 H454" class="e pw" marker-end="url(#m-pw-e)"/>
+            <path d="M686,272 H723 V347 H758" class="e pw" marker-end="url(#m-pw-e)"/>
+            <path d="M723,272 V185 H758" class="e pw" marker-end="url(#m-pw-e)"/>
+            <path d="M723,265 H758" class="e pw" marker-end="url(#m-pw-e)"/>
+            <path d="M560,128 V242" class="e dash" marker-end="url(#m-pw)"/><text x="568" y="182" class="el">wake</text><text x="568" y="198" class="el">alarm · button · USB</text>
+            <path d="M800,150 V100 H688" class="e dash" marker-end="url(#m-pw)"/><text x="808" y="122" class="el">MCU holds power</text><text x="808" y="138" class="el">until the job is done</text>
+          </svg>
+        </div>
+        <div class="key" aria-hidden="true"><span><i class="k1"></i>energy in</span><span><i class="k2"></i>always on</span><span><i class="k3"></i>main digital</span><span><i class="k4"></i>audio</span><span><i class="k5"></i>modem</span></div>
+        <figcaption>Thick lines carry battery power; dashed lines are control signals. The modem rail never starts during a recording, because its inrush can pull the battery rail down by a volt or more.</figcaption>
+      </figure>
+      <div class="budget">
+        <p class="lbl">Daily energy budget, DRM-1 (targets)</p>
+        <div class="bars" role="img" aria-label="Daily energy budget targets: recording 0.84 Wh, wake and commit 0.05 Wh, LTE session 0.05 Wh, off state 0.02 Wh; sum 0.96 Wh against a design load of 1.0 Wh.">
+          <span class="bl">Recording<small>≤ 350 mW × 2.4 h</small></span><span class="track" title="Recording: 0.84 Wh/day"><span class="bar" style="--v:84%"></span></span><span class="bv">0.84 Wh</span>
+          <span class="bl">Wake and commit<small>≤ 1.25 J × 144</small></span><span class="track" title="Wake and commit: 0.05 Wh/day"><span class="bar" style="--v:5%"></span></span><span class="bv">0.05 Wh</span>
+          <span class="bl">LTE session<small>weak-signal attach</small></span><span class="track" title="LTE session: 0.05 Wh/day"><span class="bar" style="--v:5%"></span></span><span class="bv">0.05 Wh</span>
+          <span class="bl">Off state<small>≤ 200 µA, 24 h</small></span><span class="track" title="Off state: 0.02 Wh/day"><span class="bar" style="--v:2%"></span></span><span class="bv">0.02 Wh</span>
+          <span></span><span class="axis"><span style="left:0">0</span><span style="left:50%">0.5</span><span style="left:100%">1.0 Wh</span></span><span></span>
+        </div>
+        <div class="total"><span>Sum <b class="num">0.96 Wh</b></span><span>Design load <b class="num">≤ 1.0 Wh/day</b></span></div>
+      </div>
+      <div class="card"><h3>Sizing the panel and pack</h3><ul class="ticks">
+        <li><strong>Panel ≈ 4 W:</strong> 1.0 Wh ÷ (0.5 sun hours × 0.5 efficiency) in a 50–56°N December. The MPPT charger may allow 3 W once measured.</li>
+        <li><strong>Mount it steep:</strong> winter noon sun at 52°N is only ≈ 15° high; near-vertical also sheds rain and leaves.</li>
+        <li><strong>Pack ≈ 19 Wh</strong> nominal against ≈ 15 Wh needed for 10 sunless days at 0 °C.</li>
+      </ul></div>
+      <figure class="fig">
+        <div class="dg narrow">
+          <svg viewBox="0 0 1000 168" role="img" aria-label="Battery ladder: below 10 percent safe off; 10 to 20 percent heartbeat only; 20 to 40 percent reduced schedule; above 40 percent full schedule; steps back up with at least 10 percent hysteresis.">
+            <defs><marker id="m-soc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="ah"/></marker></defs>
+            <text x="40" y="32" class="m">0 %</text><text x="132" y="32" class="el c">10 %</text><text x="224" y="32" class="el c">20 %</text><text x="408" y="32" class="el c">40 %</text><text x="960" y="32" class="m r">100 %</text>
+            <rect x="40" y="42" width="90" height="34" rx="4" class="soc1"/><rect x="133" y="42" width="89" height="34" class="soc2"/><rect x="225" y="42" width="181" height="34" class="soc3"/><rect x="409" y="42" width="551" height="34" rx="4" class="soc4"/>
+            <text x="86" y="98" class="t c">Safe off</text><text x="86" y="115" class="m c">stops cleanly</text>
+            <text x="178" y="98" class="t c">Heartbeat</text><text x="178" y="115" class="m c">daily LTE only</text>
+            <text x="316" y="98" class="t c">Reduced schedule</text><text x="316" y="115" class="m c">set in the dashboard</text>
+            <text x="684" y="98" class="t c">Full schedule</text><text x="684" y="115" class="m c">as planned, e.g. 144 recordings a day</text>
+            <path d="M940,146 H60" class="e" marker-end="url(#m-soc)"/>
+            <text x="500" y="140" class="el c">as charge falls it steps down; it steps back up with ≥ 10 % hysteresis</text>
+          </svg>
+        </div>
+        <figcaption>Charge is estimated from battery voltage, read before the modem starts. Thresholds are tunable. It never browns out mid-write and restarts on its own after a full depletion.</figcaption>
+      </figure>
+    </section>
+
+    <section id="setup">
+      <h2>Setup and service</h2>
+      <p class="intro">Built for a field worker with a phone and gloves, with or without coverage. There is no app to install.</p>
+      <div class="cols-2">
+        <div class="card"><p class="meta">With LTE coverage · about 5 minutes</p><ol class="steps">
+          <li>Scan the recorder's QR code; the web app opens in the browser.</li>
+          <li>Bind it to a deployment; the phone adds its GPS position.</li>
+          <li>Press the button: the recorder fetches its schedule over LTE, records 10 s and reports back.</li>
+          <li>Check the "Ready to deploy" list and close the lid.</li>
+        </ol></div>
+        <div class="card"><p class="meta">No coverage · local hotspot</p><ol class="steps">
+          <li>Press the button: the recorder starts a WPA2 hotspot; the passphrase is on its label.</li>
+          <li>Open its local page: status, test recording with level, clipping and playback.</li>
+          <li>Set the clock from the phone (the old offset is logged first) and adjust the schedule.</li>
+          <li>Start the deployment; position comes from the installed web app or is typed in.</li>
+        </ol></div>
+      </div>
+      <div class="card"><h3>Service visit, lid off</h3><ul class="ticks split">
+        <li>Swap the card in its flip-top holder; the recorder checks it and resumes</li>
+        <li>A button press and the status LED confirm test recording, card and settings</li>
+        <li>USB-C for console and firmware, with the battery connected</li>
+        <li>A scheduled recording always beats a service session</li>
+        <li>The hotspot closes after 15 minutes idle</li>
+        <li>Re-close the lid gasket before leaving</li>
+      </ul></div>
+    </section>
+
+    <section id="board">
+      <h2>Board and enclosure</h2>
+      <p class="intro">The board is zoned so the quiet audio input sits far from the converters and the radio. Everything used during service is reachable with the lid off.</p>
+      <figure class="fig">
+        <div class="dg">
+          <svg viewBox="0 0 820 440" role="img" aria-label="Top view of the 80 by 105 millimetre rev A board: ESP32-S3 module top left with its antenna over a board notch; USB-C and microSD on the left edge; clock and coin cell in the centre; audio converter, preamp and mic connector bottom left; LTE modem and antenna connector top right with the SIM below; button, switch, LED and battery lead on the right edge; solar charger and two panel inputs bottom right; battery pack under the board.">
+            <path d="M392,30 H554 V408 H266 V51.6 H392 Z" class="board"/>
+            <rect x="338" y="66" width="144" height="252" rx="6" class="pack"/>
+            <text x="410" y="84" class="m c">battery pack</text><text x="410" y="98" class="m c">below the board</text>
+            <circle cx="410" cy="44.4" r="5.8" class="hole"/><circle cx="539.6" cy="44.4" r="5.8" class="hole"/><circle cx="280.4" cy="393.6" r="5.8" class="hole"/><circle cx="539.6" cy="393.6" r="5.8" class="hole"/>
+            <rect x="282.2" y="32.2" width="64.8" height="91.8" rx="2" class="part k-main"/><rect x="283" y="33" width="63.2" height="20.8" class="ant"/><text x="314.6" y="94" class="pl c">ESP32-S3</text>
+            <rect x="271.4" y="128.4" width="21.6" height="28.8" rx="2" class="part"/>
+            <rect x="273.6" y="182.4" width="49.6" height="47.2" rx="2" class="part"/><text x="298.4" y="210" class="pl c">microSD</text>
+            <rect x="374" y="120" width="32.4" height="36" rx="2" class="part k-main"/><text x="390.2" y="142" class="pl c">3.3 V</text>
+            <rect x="459.1" y="71.8" width="63.8" height="56.8" rx="2" class="part k-modem"/><text x="491" y="104" class="pl c">LTE</text>
+            <rect x="539.2" y="75" width="10.8" height="10.8" rx="1" class="part k-modem"/>
+            <rect x="504.3" y="146.6" width="39.6" height="43.2" rx="2" class="part"/><text x="524.1" y="172" class="pl c">SIM</text>
+            <rect x="406.4" y="166.8" width="43.2" height="32.4" rx="2" class="part k-modem"/><text x="428" y="187" class="pl c">3.9 V</text>
+            <rect x="341.6" y="253.2" width="28.8" height="27" rx="2" class="part k-always"/><text x="356" y="270" class="pl c">RTC</text>
+            <circle cx="410" cy="260.4" r="25.9" class="part k-always"/><text x="410" y="264" class="pl c">CR1220</text>
+            <rect x="510.8" y="194.4" width="39.6" height="52.2" rx="2" class="part"/>
+            <rect x="524.8" y="251.4" width="21.6" height="28.8" rx="2" class="part k-energy"/>
+            <rect x="332.6" y="318" width="25.2" height="36" rx="2" class="part k-audio"/><text x="345.2" y="340" class="pl c">ADC</text>
+            <rect x="371" y="316.6" width="18" height="21.6" rx="2" class="part k-audio"/>
+            <rect x="298.4" y="384.8" width="36" height="21.6" rx="2" class="part k-audio"/>
+            <rect x="474.8" y="285.6" width="72" height="68.4" rx="2" class="part k-energy"/><text x="510.8" y="323" class="pl c">charger</text>
+            <rect x="433.4" y="381.4" width="25.2" height="25.2" rx="2" class="part k-energy"/><rect x="473" y="381.4" width="25.2" height="25.2" rx="2" class="part k-energy"/>
+            <path d="M256,43 H281" class="e lead"/><text x="250" y="47" class="s r">Wi-Fi antenna over a board notch</text>
+            <path d="M256,92 H281" class="e lead"/><text x="250" y="96" class="s r">ESP32-S3 module</text>
+            <path d="M256,143 H270" class="e lead"/><text x="250" y="147" class="s r">USB-C, plugged from above</text>
+            <path d="M256,206 H272" class="e lead"/><text x="250" y="210" class="s r">Flip-top microSD</text>
+            <path d="M256,267 H340" class="e lead"/><text x="250" y="271" class="s r">Real-time clock and coin cell</text>
+            <path d="M256,336 H331" class="e lead"/><text x="250" y="340" class="s r">Audio converter and preamp</text>
+            <path d="M256,402 H297" class="e lead"/><text x="250" y="406" class="s r">Mic connector to the acoustic head</text>
+            <path d="M564,80 H551" class="e lead"/><text x="570" y="84" class="s">U.FL to the LTE antenna on the wall</text>
+            <path d="M564,110 H524" class="e lead"/><text x="570" y="114" class="s">LTE modem</text>
+            <path d="M564,168 H545" class="e lead"/><text x="570" y="172" class="s">nano-SIM, side entry</text>
+            <path d="M564,220 H551" class="e lead"/><text x="570" y="224" class="s">Wake button, ship switch, LED</text>
+            <path d="M564,266 H547" class="e lead"/><text x="570" y="270" class="s">Battery lead</text>
+            <path d="M564,320 H548" class="e lead"/><text x="570" y="324" class="s">Solar charger</text>
+            <path d="M564,404 H499" class="e lead"/><text x="570" y="408" class="s">Two panel inputs</text>
+            <text x="410" y="430" class="m c">80 mm wide · mic and panel leads leave through the bottom wall</text>
+          </svg>
+        </div>
+        <figcaption>Rev A top view, to scale, from placement pass 7 (20 Nov 2026). Routing has not started; the pack position is assumed until the mounting plate is drawn.</figcaption>
+      </figure>
+      <div class="cols-2">
+        <div class="card"><h3>Enclosure</h3><ul class="ticks">
+          <li>UV-stabilised polycarbonate; Hammond 1554P2GY (120 × 120 × 80 mm) is first choice <span class="tag open">Open</span></li>
+          <li>IP66 is a test target: driving rain and condensation over a 300-day interval</li>
+          <li>Board, pack and LTE antenna sit on a 3D-printed plate, so any box with ≥ 110 × 105 mm floor fits</li>
+          <li>The walls carry only the mic connector, panel input(s) and a vent</li>
+        </ul></div>
+        <div class="card"><h3>Mounting, heat and radio</h3><ul class="ticks">
+          <li>Panel on its own bracket; the box in its shade keeps internal air ≤ 65 °C</li>
+          <li>Mic head with a downward, protected port and a replaceable membrane</li>
+          <li>Antennas ≈ 80–90 mm apart; isolation measured in the box, external LTE antenna as fallback</li>
+          <li>Charging stops above +42 °C, which matters in Australian sun</li>
+        </ul></div>
+      </div>
+    </section>
+
+    <section id="data">
+      <h2>Dashboard and data</h2>
+      <p class="intro">Every result traces back to the recording and settings that produced it. Projects, sites and physical recorders are kept apart, so a unit can be swapped without breaking the history.</p>
+      <div class="chain" aria-label="Data lineage from project to model">
+        <span class="v1">Project</span><b>→</b><span class="v1">Deployment</span><b>→</b><span class="v1">Recorder</span><b>→</b><span class="v1">Recording</span><b>→</b><span>Measurement</span><b>→</b><span>Candidate</span><b>→</b><span>Human review</span><b>→</b><span>Dataset</span><b>→</b><span>Model</span>
+      </div>
+      <p class="legend"><span><span class="tag sel">shaded</span> in V1</span><span><span class="tag">outlined</span> later phases</span></p>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Dashboard area</th><th>What it shows</th><th>When</th></tr></thead>
+          <tbody>
+            <tr><td>Schedules and settings</td><td>Edit recording plans per recorder or project; see pending, applied or rejected</td><td>V1</td></tr>
+            <tr><td>Recorder detail</td><td>Battery, card, versions, faults, next recording and check-in</td><td>V1</td></tr>
+            <tr><td>Deployment</td><td>Where, when, with which mic and settings</td><td>V1</td></tr>
+            <tr><td>Fleet and coverage</td><td>Health of every unit; scheduled vs recorded minutes by site and day</td><td>Phase 2</td></tr>
+            <tr><td>Recording catalogue</td><td>Where each file is: on the device, queued or in the cloud</td><td>Phase 2</td></tr>
+            <tr><td>Soundscape and noise</td><td>Indices and levels over time, with the method shown</td><td>Phase 3</td></tr>
+            <tr><td>Review queue</td><td>Candidate detections awaiting a human decision</td><td>Phase 3–4</td></tr>
+            <tr><td>Detector Builder</td><td>Train and roll out a project's own detector</td><td>Phase 5</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="cols-2">
+        <div class="card"><h3>Honest status</h3><ul class="ticks">
+          <li>"Off by schedule" is never shown as a fault</li>
+          <li>Effort shows scheduled and recorded minutes side by side</li>
+          <li>Detections stay "unreviewed" until a person decides</li>
+        </ul></div>
+        <div class="card"><h3>Security and privacy</h3><ul class="ticks">
+          <li>Per-device identity, signed settings, encrypted traffic</li>
+          <li>Audio can capture voices: each project sets purpose, access and retention; GDPR needs legal review</li>
+          <li>Backend technology and hosting <span class="tag open">Open</span></li>
+        </ul></div>
+      </div>
+    </section>
+
+    <section id="costs">
+      <h2>Preliminary costs</h2>
+      <p class="intro">A first estimate of the parts in one complete unit. The board figure comes from the repo's BOM costing; the rest are retail checks or allowances, not quotes.</p>
+      <div class="tbl">
+        <table>
+          <caption>US$ per unit. Board costed with JLCPCB prices on 21 Nov 2026; retail prices checked the same day, € converted at ≈ 1.15.</caption>
+          <thead><tr><th>Item</th><th class="n">10 units</th><th class="n">100 units</th><th>Basis</th></tr></thead>
+          <tbody>
+            <tr><td>Main board: parts and assembly fees</td><td class="n">49.52</td><td class="n">28.14</td><td>JLCPCB costing of the frozen BOM</td></tr>
+            <tr><td>PCB fabrication, assembly setup</td><td class="n">10–15</td><td class="n">3–6</td><td>Allowance</td></tr>
+            <tr><td>Microphone capsule</td><td class="n">25</td><td class="n">25</td><td>Working allowance</td></tr>
+            <tr><td>Battery pack: 2 × 18650, protection, lead</td><td class="n">15–35</td><td class="n">15–30</td><td>Allowance; cells €2–9 each retail</td></tr>
+            <tr><td>Solar panel, 6 V, ≈ 5 W</td><td class="n">10–20</td><td class="n">10–18</td><td>Retail €10–18</td></tr>
+            <tr><td>Enclosure, Hammond 1554P2GY</td><td class="n">25.55</td><td class="n">23.90</td><td>Distributor price, 25+ break</td></tr>
+            <tr><td>microSD, 128 GB high endurance</td><td class="n">20–45</td><td class="n">18–40</td><td>Retail; 256 GB costs more</td></tr>
+            <tr><td>LTE antenna and IoT SIM</td><td class="n">≈ 15</td><td class="n">≈ 15</td><td>Example SIM: €12 for 10 years, 500 MB</td></tr>
+            <tr><td>Acoustic head, connectors, vent, bracket</td><td class="n">10–25</td><td class="n">10–20</td><td>Allowance</td></tr>
+            <tr class="total"><td>Complete unit</td><td class="n">≈ 180–255</td><td class="n">≈ 150–205</td><td>Preliminary</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="cols-3">
+        <div class="card"><h3>Cost drivers</h3><p>Board, microphone, enclosure and SD card make up about 60&nbsp;%. Cheaper factory-made boxes exist but are unproven for UV and sealing.</p></div>
+        <div class="card"><h3>Running costs</h3><p>SIM data ≈ €1.20 a year on the example plan (check LTE Cat 1 coverage per country, especially Australia). Hosting is not costed. A card swap every 5–10 months.</p></div>
+        <div class="card"><h3>Not included</h3><p>Radio and EMC approval (CE, RCM), environmental tests, calibration gear, labour, shipping, duties and VAT, warranty, cloud. No retail price is set.</p></div>
+      </div>
+    </section>
+
+    <section id="roadmap">
+      <h2>Roadmap</h2>
+      <p class="intro">Progress is gated by test results, not dates. A phase ends only when its exit check passes.</p>
+      <ul class="progress">
+        <li class="done"><span class="when">22 Oct 2026</span><span>Engineering brief baselined</span></li>
+        <li class="done"><span class="when">23 Oct</span><span>Reference mission set; solar and LTE move into V1</span></li>
+        <li class="done"><span class="when">17–18 Nov</span><span>First datasheet review; modem and module changed for stock and heat</span></li>
+        <li class="done"><span class="when">19 Nov</span><span>Independent second review; schematic frozen for rev A</span></li>
+        <li class="done"><span class="when">19–20 Nov</span><span>PCB stack-up, outline, footprints and seven placement passes</span></li>
+        <li class="next"><span class="when">Next</span><span>Route rev A, order boards, bench gates G1 to G5</span></li>
+      </ul>
+      <div class="phases">
+        <div class="phase now"><div class="ph"><span class="pn">0</span><span class="tag open">Now</span></div><h3>Close architecture blockers</h3><p>Pin map, power tree, parts and layout; first bench checks of the riskiest circuits.</p><p class="exit">Exit: signed power tree, measured high-risk results.</p></div>
+        <div class="phase"><div class="ph"><span class="pn">1</span></div><h3>Local recorder proof</h3><p>Wake, record, write and shut down on schedule; USB console; failure injection.</p><p class="exit">Exit: reproducible recordings, no unexplained loss.</p></div>
+        <div class="phase"><div class="ph"><span class="pn">2</span></div><h3>Connected pilot</h3><p>Daily LTE check-in, dashboard scheduling, fleet view, solar balance; 3–5 units beside a reference recorder.</p><p class="exit">Exit: recording unaffected by the network; gaps reported correctly.</p></div>
+        <div class="phase"><div class="ph"><span class="pn">3</span></div><h3>Measurements and review</h3><p>Descriptors, indices, calibrated levels, review queue, clip requests.</p><p class="exit">Exit: methods reproducible and shown on every chart.</p></div>
+        <div class="phase"><div class="ph"><span class="pn">4</span></div><h3>Edge detector</h3><p>One narrow target on the chip; control clips kept; signed model rollout.</p><p class="exit">Exit: claims limited to what reviewed data supports.</p></div>
+        <div class="phase"><div class="ph"><span class="pn">5</span></div><h3>Detector Builder</h3><p>Teams label, train, compare and stage their own models.</p><p class="exit">Exit: project models without leaky evaluation.</p></div>
+      </div>
+      <div class="gates">
+        <div><b>G0</b>Architecture</div><div><b>G1</b>Power and wake</div><div><b>G2</b>Audio chain</div>
+        <div><b>G3</b>Storage</div><div><b>G4</b>LTE and solar</div><div><b>G5</b>Integrated recorder</div>
+        <div><b>G6</b>Environmental</div><div><b>G7</b>Controlled pilot</div><div><b>G8</b>Model qualification</div>
+      </div>
+      <p class="note"><strong>Research tracks</strong>, each needing its own decision first: ultrasonic head for bats, event-triggered camera, continuous listening, GNSS, Wi-Fi sync, links with other environmental sensors.</p>
+    </section>
+
+    <section id="risks">
+      <h2>Risks and open questions</h2>
+      <p class="intro">The highest risks all threaten the recordings themselves. Each has a test that closes it.</p>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Risk</th><th>What could happen</th><th>How it gets closed</th></tr></thead>
+          <tbody>
+            <tr><td>Wake latch or clock fault</td><td>Never wakes, or never switches off</td><td>Wake and leakage bench tests, watchdog recovery (G1)</td></tr>
+            <tr><td>Modem current pulses</td><td>Brown-out, reboot, corrupted card</td><td>Pulse tests at low battery and cold (G4)</td></tr>
+            <tr><td>Solar collapse or unsafe charging</td><td>Flat battery or battery hazard</td><td>Real-panel sweep, cut-out trip test on every board (G4)</td></tr>
+            <tr><td>Card write vs power-down</td><td>Silently missing or broken files</td><td>Buffered writes, 1,000+ random power cuts (G3)</td></tr>
+            <tr><td>Audio noise or interference</td><td>Poor recordings, missed calls</td><td>Noise spectra with everything running, in the box (G2)</td></tr>
+            <tr><td>Modem supply</td><td>No modems for the build</td><td>Buy early; the older module still fits the footprint</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card"><h3>Still to decide</h3><ul class="ticks split">
+        <li>Enclosure, sealing, membrane, condensation</li>
+        <li>Hot-climate requirement for Australia</li>
+        <li>Firmware update path in V1</li>
+        <li>Card size shipped: 128 or 256 GB</li>
+        <li>Mic-drift threshold, from bench data</li>
+        <li>SIM and operator plan per country</li>
+        <li>Backend technology and hosting</li>
+        <li>Business model and price</li>
+      </ul></div>
+    </section>
+
+    <section id="limits">
+      <h2>What AURIS does not claim</h2>
+      <p class="intro">These stay off the table until tests back them up.</p>
+      <div class="limits">
+        <div><h3>A certified sound level meter</h3><p>No IEC 61672 class claim; raw amplitude is not SPL without validated calibration.</p></div>
+        <div><h3>A bat or ultrasound recorder</h3><p>V1 is audible-band at 48 kHz. Ultrasound needs its own head and proof.</p></div>
+        <div><h3>Continuous listening or live alerts</h3><p>The board is off between jobs; alerts wait for the next check-in.</p></div>
+        <div><h3>Proven runtime or solar autonomy</h3><p>Estimates until boards are measured through a winter.</p></div>
+        <div><h3>Species identification</h3><p>On-chip AI flags candidates for review. No detection does not mean no species.</p></div>
+        <div><h3>IP67</h3><p>IP66 is a test target for the assembled enclosure.</p></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  <div class="wrap">
+    <span>AURIS concept plan, compiled 21 November 2026 from the engineering brief (<code>docs/00</code> to <code>docs/19</code>), the hardware sheets, the rev A layout record and the BOM costing.</span>
+    <span>"Selected" means chosen for the concept, "candidate" means not locked, and nothing is verified until tested.</span>
+  </div>
+</footer>
+</div>
+
+<!-- ============================== DEUTSCH ============================== -->
+<div class="lang" data-lang="de" lang="de" hidden>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Konzeptplan · 21. November 2026</p>
+    <h1>AURIS</h1>
+    <p class="tagline">Belege aufzeichnen. Klanglandschaften verstehen. Erkennen, was zählt.</p>
+    <p class="lead">Ein solarbetriebener Akustikrekorder für lange, unbeaufsichtigte Feldaufnahmen. Er nimmt nach einem Plan auf, den Sie im Dashboard festlegen, behält jede Aufnahme auf seiner microSD-Karte und meldet sich einmal täglich per LTE.</p>
+    <p class="status"><span class="dot" aria-hidden="true"></span><span><strong>Stand.</strong> Schaltplan am 19. November 2026 eingefroren; die Bauteile der Platine Rev. A (4 Lagen, 80 × 105 mm) sind platziert, als Nächstes folgt das Routing. Noch ist nichts gebaut oder gemessen, alle Zahlen sind Auslegungsziele.</span></p>
+    <dl class="figs">
+      <div><dt>Audio</dt><dd><b>48 kHz</b>16-Bit-Mono-WAV mit GUANO-Metadaten</dd></div>
+      <div><dt>Aufnahmeplan</dt><dd><b>144 / Tag</b>Standard; im Dashboard aus der Ferne änderbar</dd></div>
+      <div><dt>Laufzeit</dt><dd><b>≈ 300 Tage</b>mit 256-GB-Karte, solar versorgt (≈ 150 mit 128 GB)</dd></div>
+      <div><dt>Fernverbindung</dt><dd><b>1 × / Tag</b>LTE: Status, Plan und Uhrzeit; ≤ 1 MB pro Monat</dd></div>
+      <div><dt>Aufnahmequote</dt><dd><b>≥ 99,5 %</b>der geplanten Minuten in jedem 30-Tage-Zeitraum</dd></div>
+      <div><dt>Teile pro Gerät</dt><dd><b>≈ 150–205 $</b>komplettes Gerät bei 100 Stück, vorläufig</dd></div>
+    </dl>
+  </div>
+</header>
+
+<div class="wrap layout">
+  <nav class="toc" aria-label="Abschnitte">
+    <p class="toc-h">Inhalt</p>
+    <ul>
+      <li><a href="#de-why">Warum AURIS</a></li>
+      <li><a href="#de-mission">Einsatz und Nutzer</a></li>
+      <li><a href="#de-system">Gesamtsystem</a></li>
+      <li><a href="#de-day">Ein Tag im Feld</a></li>
+      <li><a href="#de-features">Funktionen V1</a></li>
+      <li><a href="#de-outputs">Analyse auf dem Chip</a></li>
+      <li><a href="#de-hardware">Hardware</a></li>
+      <li><a href="#de-power">Energie</a></li>
+      <li><a href="#de-setup">Einrichtung und Wartung</a></li>
+      <li><a href="#de-board">Platine und Gehäuse</a></li>
+      <li><a href="#de-data">Dashboard und Daten</a></li>
+      <li><a href="#de-costs">Vorläufige Kosten</a></li>
+      <li><a href="#de-roadmap">Fahrplan</a></li>
+      <li><a href="#de-risks">Risiken und offene Fragen</a></li>
+      <li><a href="#de-limits">Was AURIS nicht verspricht</a></li>
+    </ul>
+    <button type="button" class="toc-lang" data-set-lang="en" lang="en">Read in English</button>
+  </nav>
+
+  <main>
+
+    <section id="de-why">
+      <h2>Warum AURIS</h2>
+      <p class="intro">Günstige Rekorder fallen bei Regen und Feuchte aus, professionelle sind teuer und geschlossen. Teams verlieren Daten durch Stromprobleme und Zeit bei der Einrichtung. AURIS zielt auf die Lücke dazwischen.</p>
+      <div class="cols-3">
+        <div class="card"><p class="lbl">Günstige Logger</p><ul class="ticks"><li>Preiswert</li><li>Empfindlich bei Nässe und Kälte</li><li>Einrichtung oft nur mit Laptop</li><li>Stumm bis zum Einsammeln</li></ul></div>
+        <div class="card hl"><p class="lbl">AURIS</p><ul class="ticks"><li>Bezahlbar für 10–100+ Geräte</li><li>Läuft monatelang, bis die Karte voll ist</li><li>Einrichtung und Aufnahmeplan per Handy oder Dashboard</li><li>Meldet täglich seinen Zustand</li></ul></div>
+        <div class="card"><p class="lbl">Profi-Rekorder</p><ul class="ticks"><li>Robust und bewährt</li><li>Mehrere hundert US$ pro Gerät</li><li>Geschlossene Software</li><li>Selten mit Fernmeldung</li></ul></div>
+      </div>
+      <div class="principles">
+        <div><h3>Rohaudio ist der Beleg</h3><p>Kennzahlen und KI-Werte verweisen immer auf die Aufnahme.</p></div>
+        <div><h3>Die Aufnahme wartet nie</h3><p>Gültige Daten brauchen kein LTE, keine Cloud, kein Login.</p></div>
+        <div><h3>Aus zwischen den Jobs</h3><p>Während der Wartezeit läuft nur die Uhr.</p></div>
+        <div><h3>Im Feld wiederherstellbar</h3><p>Hotspot-Seite, Taste und USB funktionieren ohne Internet.</p></div>
+        <div><h3>Reproduzierbar</h3><p>Firmware, Einstellungen, Mikrofon und Filter reisen mit jeder Datei.</p></div>
+        <div><h3>Zuerst der Rekorder</h3><p>Messwerte, Detektoren und Fernbetrieb kommen danach.</p></div>
+      </div>
+    </section>
+
+    <section id="de-mission">
+      <h2>Einsatz und Nutzer</h2>
+      <p class="intro">V1 ist für eine Referenzmission ausgelegt (DRM-1): eine Langzeit-Biodiversitätserfassung, die läuft, bis die SD-Karte voll ist. Energie darf nie der Grund für ein Ende sein.</p>
+      <div class="tbl kv">
+        <table>
+          <caption>Entscheidungen des Projektverantwortlichen vom 23.10.2026. Werte sind Auslegungsziele.</caption>
+          <tbody>
+            <tr><td>Aufnahmeplan</td><td>60 s alle 10 Minuten, Tag und Nacht (144 pro Tag); aus der Ferne änderbar</td></tr>
+            <tr><td>Audio</td><td>48 kHz, Mono, 16-Bit-WAV: 5,76 MB pro Datei, 0,83 GB pro Tag</td></tr>
+            <tr><td>Wartungsintervall</td><td>128 GB ≈ 150 Tage, 256 GB ≈ 300 Tage; Kartentausch vor Ort</td></tr>
+            <tr><td>Verbindung</td><td>Ein LTE-Abgleich pro Tag, kein 2G; kein Audio-Upload in V1</td></tr>
+            <tr><td>Auslegungsstandort</td><td>50–56° N im Dezember; −20 bis +35 °C Umgebung</td></tr>
+            <tr><td>Regionen</td><td>Europa und Australien; eine Anforderung für heißes Klima fehlt noch</td></tr>
+            <tr><td>Ziel</td><td>≥ 99,5 % der geplanten Minuten aufgenommen; jeder Ausfall mit Ursache protokolliert</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="cols-2">
+        <div class="card hl"><p class="lbl">Erste Nutzer</p><h3>Ökologinnen und Ökologen, Naturschutzteams und Gutachterbüros</h3><p>Entlegene Erhebungen, bei denen jeder Standortbesuch teuer ist und fehlende Daten der teuerste Fehler sind.</p></div>
+        <div class="card"><p class="lbl">Später</p><ul class="ticks"><li>Forschungseinrichtungen mit Langzeitstudien</li><li>Biosicherheitsteams, die auf ein bekanntes Geräusch achten</li><li>Lärmforschung, sobald die Kalibrierung validiert ist</li><li>Betreiber, die Maschinenereignisse protokollieren</li></ul></div>
+      </div>
+    </section>
+
+    <section id="de-system">
+      <h2>Gesamtsystem</h2>
+      <p class="intro">Das Audio bleibt auf dem Rekorder und kommt per SD-Karte nach Hause. LTE trägt nur einen kleinen täglichen Austausch: Status hin, Aufnahmeplan und Einstellungen zurück. Vor Ort nutzt ein Handy die Web-App oder, ohne Netz, den Hotspot des Rekorders.</p>
+      <figure class="fig">
+        <div class="dg">
+          <svg viewBox="0 0 1000 320" role="img" aria-label="Systemübersicht: Das Solarmodul lädt den Rekorder; Audio geht auf die microSD-Karte und per Kartentausch ins Labor; einmal täglich sendet der Rekorder per LTE seinen Status an die Cloud und erhält Aufnahmeplan und Einstellungen; das Dashboard spricht mit der Cloud; vor Ort ordnet ein Handy den Rekorder über die Web-App zu oder nutzt ohne Netz seinen WLAN-Hotspot.">
+            <defs>
+              <marker id="m-sys-de" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="ah"/></marker>
+              <marker id="m-sys-e-de" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="ah-e"/></marker>
+            </defs>
+            <rect x="65" y="16" width="160" height="42" rx="8" class="n k-energy"/>
+            <text x="145" y="42" class="t c">Solarmodul</text>
+            <rect x="40" y="104" width="210" height="88" rx="10" class="n hl"/>
+            <text x="145" y="134" class="t c">AURIS-Rekorder</text>
+            <text x="145" y="154" class="s c">nimmt nach Plan auf microSD auf</text>
+            <text x="145" y="172" class="m c">Audio bleibt auf der Karte</text>
+            <rect x="40" y="252" width="210" height="56" rx="10" class="n"/>
+            <text x="145" y="276" class="t c">Labor: Archiv und Analyse</text>
+            <text x="145" y="295" class="m c">WAV in voller Auflösung</text>
+            <rect x="420" y="104" width="200" height="88" rx="10" class="n"/>
+            <text x="520" y="134" class="t c">Cloud-Plattform</text>
+            <text x="520" y="154" class="s c">Geräte · Einsätze · Pläne</text>
+            <text x="520" y="172" class="m c">Statusverlauf</text>
+            <rect x="780" y="104" width="180" height="88" rx="10" class="n"/>
+            <text x="870" y="134" class="t c">Web-Dashboard</text>
+            <text x="870" y="154" class="s c">Browser auf Handy oder PC</text>
+            <text x="870" y="172" class="m c">Projekte · Pläne · Flotte</text>
+            <rect x="420" y="252" width="200" height="56" rx="10" class="n"/>
+            <text x="520" y="276" class="t c">Handy vor Ort</text>
+            <text x="520" y="295" class="m c">Browser, keine App nötig</text>
+            <path d="M145,58 V102" class="e pw" marker-end="url(#m-sys-e-de)"/>
+            <text x="153" y="85" class="el">lädt</text>
+            <path d="M252,148 H418" class="e" marker-start="url(#m-sys-de)" marker-end="url(#m-sys-de)"/>
+            <text x="335" y="138" class="el c">LTE, einmal täglich</text>
+            <text x="335" y="166" class="el c">Status ↑  Plan ↓</text>
+            <path d="M622,148 H778" class="e" marker-start="url(#m-sys-de)" marker-end="url(#m-sys-de)"/>
+            <text x="700" y="138" class="el c">HTTPS</text>
+            <path d="M145,192 V250" class="e" marker-end="url(#m-sys-de)"/>
+            <text x="153" y="218" class="el">Kartentausch</text>
+            <text x="153" y="233" class="el">bei Wartungsbesuchen</text>
+            <path d="M418,280 H350 V178 H252" class="e dash" marker-start="url(#m-sys-de)" marker-end="url(#m-sys-de)"/>
+            <text x="342" y="262" class="el r">WLAN-Hotspot</text>
+            <text x="342" y="277" class="el r">(ohne Netz)</text>
+            <path d="M622,280 H870 V194" class="e" marker-start="url(#m-sys-de)" marker-end="url(#m-sys-de)"/>
+            <text x="745" y="270" class="el c">QR · GPS · Einsatz zuordnen</text>
+          </svg>
+        </div>
+        <figcaption>Drei unabhängige Wege: Audio per Karte, Status und Einstellungen per LTE, das Handy vor Ort. Fällt LTE aus, läuft die Aufnahme weiter.</figcaption>
+      </figure>
+    </section>
+
+    <section id="de-day">
+      <h2>Ein Tag im Feld</h2>
+      <p class="intro">Zwischen den Jobs ist die Hauptplatine abgeschaltet, nur die Uhr läuft. Ein Alarm weckt sie; sie nimmt auf, speichert, setzt den nächsten Alarm und schaltet sich selbst ab.</p>
+      <figure class="fig">
+        <div class="dg">
+          <svg viewBox="0 0 1000 206" role="img" aria-label="Maßstäblicher Zeitstrahl: 144 einminütige Aufnahmen über 24 Stunden und ein LTE-Abgleich im täglichen Zeitfenster; die Vergrößerung eines 10-Minuten-Intervalls zeigt Wecken in höchstens 2 Sekunden, 60 Sekunden Aufnahme, einige Sekunden zum Schreiben und Alarmsetzen, dann etwa 9 Minuten aus.">
+            <defs>
+              <pattern id="p-ticks-de" x="40" y="46" width="6.388889" height="24" patternUnits="userSpaceOnUse"><rect width="1.6" height="24" class="tick"/></pattern>
+            </defs>
+            <text x="40" y="22"><tspan class="t">Ein Tag</tspan><tspan class="m" dx="10">144 Aufnahmen à 60 s, alle 10 Minuten (UTC)</tspan></text>
+            <rect x="40" y="46" width="920" height="24" fill="url(#p-ticks-de)"/>
+            <line x1="40" y1="70.5" x2="960" y2="70.5" class="ax"/>
+            <line x1="501.3" y1="32" x2="501.3" y2="70" class="lte"/>
+            <text x="509" y="40" class="el">LTE-Abgleich im täglichen Zeitfenster</text>
+            <text x="40" y="88" class="m">00:00</text><text x="270" y="88" class="m c">06:00</text><text x="500" y="88" class="m c">12:00</text><text x="730" y="88" class="m c">18:00</text><text x="960" y="88" class="m r">24:00</text>
+            <path d="M270,71 L40,124" class="zoom"/><path d="M276.4,71 L960,124" class="zoom"/>
+            <rect x="40" y="124" width="3.07" height="26" class="seg-w"/>
+            <rect x="43.07" y="124" width="92" height="26" class="seg-r"/>
+            <rect x="135.07" y="124" width="9.2" height="26" class="seg-w"/>
+            <rect x="146.27" y="124.5" width="813.23" height="25" class="seg-off"/>
+            <text x="89" y="141" class="in c">Aufnahme 60 s</text>
+            <text x="553" y="141" class="s c">ca. 9 Minuten aus: nur Uhr und Erhaltungsregler laufen (≤ 200 µA)</text>
+            <line x1="41.5" y1="150" x2="41.5" y2="158" class="ax"/><line x1="139.7" y1="150" x2="139.7" y2="158" class="ax"/>
+            <text x="40" y="171" class="el">Wecken ≤ 2 s</text>
+            <text x="137" y="171" class="el">schreiben, Prüfsumme, nächster Alarm</text>
+            <text x="40" y="196" class="m">06:00:00</text><text x="500" y="196" class="m c">ein 10-Minuten-Intervall, maßstäblich</text><text x="960" y="196" class="m r">06:10:00</text>
+          </svg>
+        </div>
+        <figcaption>Standardplan DRM-1, maßstäblich. Der LTE-Abgleich überschneidet sich nie mit einer Aufnahme. Weck- und Schreibzeiten sind Schätzungen.</figcaption>
+      </figure>
+      <figure class="fig">
+        <div class="dg">
+          <svg viewBox="0 0 1100 384" role="img" aria-label="Betriebszustände: Aus, Start, Aufnahme, Verarbeitung, Abschluss, zurück zu Aus. Ein fälliger Abgleich mit genug Akku läuft vor dem Abschluss über Abgleich. Wecken per Taste oder USB führt zu Wartung, ein fehlgeschlagener Selbsttest zu Wiederherstellung; beide enden im Abschluss.">
+            <defs><marker id="m-st-de" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="ah"/></marker></defs>
+            <rect x="16" y="140" width="150" height="54" rx="10" class="n"/><text x="91" y="163" class="t c">Aus</text><text x="91" y="181" class="m c">nur die Uhr läuft</text>
+            <rect x="246" y="140" width="150" height="54" rx="10" class="n"/><text x="321" y="163" class="t c">Start</text><text x="321" y="181" class="m c">Strom halten, prüfen</text>
+            <rect x="476" y="140" width="150" height="54" rx="10" class="n hl"/><text x="551" y="163" class="t c">Aufnahme</text><text x="551" y="181" class="m c">WAV auf microSD</text>
+            <rect x="706" y="140" width="150" height="54" rx="10" class="n"/><text x="781" y="163" class="t c">Verarbeitung</text><text x="781" y="181" class="m c">Kennwerte, Hash, Filter</text>
+            <rect x="936" y="140" width="150" height="54" rx="10" class="n"/><text x="1011" y="163" class="t c">Abschluss</text><text x="1011" y="181" class="m c">speichern, Alarm setzen</text>
+            <rect x="746" y="40" width="150" height="54" rx="10" class="n k-modem"/><text x="821" y="63" class="t c">Abgleich</text><text x="821" y="81" class="m c">LTE: Status, Plan, Uhr</text>
+            <rect x="476" y="250" width="150" height="54" rx="10" class="n"/><text x="551" y="273" class="t c">Wartung</text><text x="551" y="291" class="m c">Hotspot-Seite oder USB</text>
+            <rect x="476" y="316" width="150" height="54" rx="10" class="n"/><text x="551" y="339" class="t c">Wiederherstellung</text><text x="551" y="357" class="m c">Fehler loggen, Notplan</text>
+            <path d="M166,167 H244" class="e" marker-end="url(#m-st-de)"/><text x="206" y="159" class="el c">wecken</text>
+            <path d="M396,167 H474" class="e" marker-end="url(#m-st-de)"/><text x="436" y="159" class="el c">Job fällig</text>
+            <path d="M626,167 H704" class="e" marker-end="url(#m-st-de)"/><text x="666" y="159" class="el c">Datei zu</text>
+            <path d="M856,167 H934" class="e" marker-end="url(#m-st-de)"/><text x="896" y="159" class="el c">kein Abgleich</text>
+            <path d="M800,140 V96" class="e" marker-end="url(#m-st-de)"/><text x="792" y="122" class="el r">Abgleich fällig, Akku OK</text>
+            <path d="M896,67 H1011 V138" class="e" marker-end="url(#m-st-de)"/><text x="953" y="59" class="el c">fertig oder Fehler</text>
+            <path d="M1086,167 H1094 V12 H91 V138" class="e dash" marker-end="url(#m-st-de)"/><text x="560" y="30" class="el c">nächster Alarm gesetzt, Strom aus</text>
+            <path d="M306,194 V277 H474" class="e" marker-end="url(#m-st-de)"/><text x="391" y="269" class="el c">Taste oder USB</text>
+            <path d="M276,194 V343 H474" class="e" marker-end="url(#m-st-de)"/><text x="391" y="335" class="el c">Selbsttest scheitert</text>
+            <path d="M626,277 H990 V196" class="e" marker-end="url(#m-st-de)"/><text x="808" y="269" class="el c">Sitzung endet</text>
+            <path d="M626,343 H1032 V196" class="e" marker-end="url(#m-st-de)"/><text x="829" y="335" class="el c">sicherer Rückfall</text>
+            <text x="91" y="214" class="m c">geweckt durch Alarm,</text><text x="91" y="230" class="m c">Taste oder USB</text>
+          </svg>
+        </div>
+        <figcaption>Jedes Wecken endet im Abschluss: Dateien geschlossen, nächster Alarm gesetzt, Strom freigegeben. Überzieht ein Job, fällt Nebensächliches weg, damit die nächste Aufnahme nie gefährdet ist.</figcaption>
+      </figure>
+    </section>
+
+    <section id="de-features">
+      <h2>Funktionen V1</h2>
+      <p class="intro">Alles hier ist eine V1-Anforderung, sofern nicht markiert. Noch ist nichts gebaut oder geprüft.</p>
+      <div class="remote">
+        <p class="lbl">Aufnahmeplan aus der Ferne</p>
+        <h3>Aufnahmepläne werden im Dashboard festgelegt</h3>
+        <p>Aufnahmepläne werden im Web-Dashboard bearbeitet und erreichen jeden Rekorder beim nächsten täglichen Abgleich. Um zu ändern, was ein Rekorder tut, ist kein Standortbesuch nötig.</p>
+        <div class="cols-2">
+          <div>
+            <p class="meta">Aus der Ferne einstellbar</p>
+            <ul class="ticks">
+              <li>Intervall und Dauer, 1 s bis 1 h pro Aufnahme</li>
+              <li>Tägliche Zeitfenster, etwa Morgen- und Abendchor</li>
+              <li>Verstärkungsprofil und analoger Hochpass</li>
+              <li>Digitale Filter für Aufnahme oder Analyse</li>
+              <li>Sparplan bei schwachem Akku und seine Schwellen</li>
+              <li>Uhrzeit des täglichen Abgleichs</li>
+              <li>Pläne relativ zum Sonnenaufgang und saisonal <span class="tag later">Später</span></li>
+            </ul>
+          </div>
+          <div>
+            <p class="meta">So erreicht eine Änderung den Rekorder</p>
+            <ol class="steps">
+              <li>Einen Rekorder bearbeiten oder eine Projektvorlage anwenden.</li>
+              <li>Die Änderung wird als signierte Revision gespeichert; das Dashboard zeigt, wann sie ankommt.</li>
+              <li>Beim nächsten Abgleich übernimmt der Rekorder sie zwischen zwei Aufnahmen.</li>
+              <li>Das Dashboard zeigt übernommen oder abgelehnt. Bei Ablehnung läuft der letzte gültige Plan weiter.</li>
+            </ol>
+          </div>
+        </div>
+        <p class="foot">Änderungen kommen innerhalb eines Tages an. Vor Ort übernimmt die Hotspot-Seite sie sofort und meldet sie beim nächsten Abgleich zurück.</p>
+      </div>
+      <div class="legend"><span><span class="tag">Kandidat</span> Bauteil nicht festgelegt</span><span><span class="tag">Test Rev. A</span> entscheidet die Messung</span><span><span class="tag later">Nach V1</span> spätere Phase</span><span><span class="tag open">Offen</span> Entscheidung ausstehend</span></div>
+      <div class="cols-2">
+        <div class="card"><h3>Aufnahme</h3><ul class="ticks">
+          <li>48 kHz, 16-Bit-Mono-WAV, Start höchstens 2 s nach Plan</li>
+          <li>Verstärkung pro Gerät im Werk eingestellt, dazu ein Profil für laute Standorte</li>
+          <li>Analoger Hochpass gegen Wind: 36 Hz, 100 Hz (Standard) oder 1 kHz</li>
+          <li>Optionale Digitalfilter; die gespeicherte WAV bleibt standardmäßig breitbandig</li>
+        </ul></div>
+        <div class="card"><h3>Akustikkopf</h3><ul class="ticks">
+          <li>Eigener Kopf an einer Wanddurchführung, im Feld tauschbar</li>
+          <li>Rauscharmes Elektretmikrofon, Klasse Primo EM272/EM273 <span class="tag">Kandidat</span></li>
+          <li>Direkter Eingang und +12-dB-Vorverstärker; Labortests wählen einen aus <span class="tag">Test Rev. A</span></li>
+          <li>Zweiter Kanal vorbereitet für Stereo oder Hydrofon <span class="tag">Option</span></li>
+        </ul></div>
+        <div class="card"><h3>Speicher und Integrität</h3><ul class="ticks">
+          <li>microSD bis 256 GB; Tage bis voll täglich gemeldet</li>
+          <li>Überschreibt und löscht nie; stoppt sauber, wenn voll</li>
+          <li>Ein Stromausfall kostet höchstens die gerade geschriebene Datei</li>
+          <li>SHA-256-Manifest auf der Karte; 5-s-Puffer für langsame Schreibvorgänge</li>
+        </ul></div>
+        <div class="card"><h3>Zeit</h3><ul class="ticks">
+          <li>Uhr mit ±5 ppm (≈ 0,4 s pro Tag), mit Job-Alarm und täglichem Abgleich-Alarm</li>
+          <li>Täglich per LTE gestellt (≤ 1 s Fehler) oder vor Ort vom Handy</li>
+          <li>Jede Datei markiert: LTE-gestellt, vom Handy gestellt oder ungestellt</li>
+          <li>Keine fehlenden oder doppelten Slots um Mitternacht, Monatsende oder Schalttag</li>
+        </ul></div>
+        <div class="card"><h3>Energie und Solar</h3><ul class="ticks">
+          <li>MPPT-Solarladung; Eingänge für Modul an Halterung und Modul mit Kabel</li>
+          <li>1S2P-18650-Akkupack, ≥ 10 Tage ohne Sonne bei 0 °C</li>
+          <li>Lädt nur zwischen +5 und +42 °C</li>
+          <li>Stuft bei sinkender Ladung ab und startet selbst neu; Transportschalter</li>
+        </ul></div>
+        <div class="card"><h3>Fernverbindung</h3><ul class="ticks">
+          <li>Ein LTE-Cat-1-Abgleich pro Tag; Bänder für EU, AU und NZ; kein 2G</li>
+          <li>≤ 1 MB pro Monat, begrenzte Wiederholungen; beeinflusst nie die Aufnahme</li>
+          <li>Signierte Einstellungen; ungültige werden abgelehnt, die letzten gültigen bleiben</li>
+          <li>Audioclips per LTE hochladen <span class="tag later">Nach V1</span></li>
+        </ul></div>
+        <div class="card"><h3>Einrichtung und Wartung</h3><ul class="ticks">
+          <li>Einrichtung im Handy-Browser ohne App: scannen, zuordnen, testen, ausbringen in ≈ 5 min</li>
+          <li>Ohne Netz startet die Taste einen WLAN-Hotspot mit lokaler Einrichtungsseite</li>
+          <li>Wartung bei offenem Deckel: USB-C, microSD mit Klappdeckel, SIM, Taste und LED auf der Platine</li>
+          <li>Weg für Firmware-Updates <span class="tag open">Offen</span></li>
+        </ul></div>
+        <div class="card"><h3>Status und Herkunft</h3><ul class="ticks">
+          <li>Tägliche Statusmeldung ≤ 1 KB: Akku, Modul, Temperatur, Karte, ausgefallene Slots mit Ursache, Mikrofondrift, Fehler</li>
+          <li>Mikrofon-Kennwerte jeder Aufnahme erkennen eine verstopfte oder nasse Membran</li>
+          <li>GUANO-Metadaten: Seriennummer, Einsatz, Einstellungen mit Hash, Firmware, Zeitqualität, Mikrofon, Filter</li>
+          <li>Eigene Identität pro Gerät; kein gemeinsames Geheimnis in der Firmware</li>
+        </ul></div>
+      </div>
+    </section>
+
+    <section id="de-outputs">
+      <h2>Analyse auf dem Chip und Ausgaben</h2>
+      <p class="intro">Neben der WAV-Datei kann der ESP32-S3 jede Aufnahme zusammenfassen, bevor er abschaltet. Zusammenfassungen stammen immer aus dem gespeicherten Audio und ersetzen es nie; sie müssen in den Speicher des Chips und ins Energiebudget passen.</p>
+      <figure class="fig">
+        <div class="dg">
+          <svg viewBox="0 0 1000 360" role="img" aria-label="Verarbeitungskette: Die ADC-Samples teilen sich dreifach. Das Aufnahmefilter (standardmäßig keins) speist die 16-Bit-WAV mit GUANO, die unverändert mit SHA-256 im Manifest bleibt. Die Mikrofon-Kennwerte, vor jedem Filter erfasst, gehen in die tägliche Statusmeldung. Das Analysefilter speist FFT-Frames, daraus entstehen Indizes und Kennzahlen, Schallpegel und ein Edge-Detektor; ihre Ergebnisse gehen in eine Datei auf der SD-Karte und eine Tagesübersicht.">
+            <defs><marker id="m-pp-de" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="ah"/></marker></defs>
+            <rect x="16" y="142" width="130" height="52" rx="10" class="n k-audio"/><text x="81" y="164" class="t c">ADC-Samples</text><text x="81" y="182" class="m c">24 Bit, 48 kHz</text>
+            <rect x="200" y="40" width="150" height="52" rx="10" class="n"/><text x="275" y="62" class="t c">Aufnahmefilter</text><text x="275" y="80" class="m c">Standard: keines</text>
+            <rect x="200" y="142" width="150" height="52" rx="10" class="n"/><text x="275" y="164" class="t c">Mikrofon-Kennwerte</text><text x="275" y="182" class="m c">vor jedem Filter</text>
+            <rect x="200" y="244" width="150" height="52" rx="10" class="n"/><text x="275" y="266" class="t c">Analysefilter</text><text x="275" y="284" class="m c">im Aufnahmeplan</text>
+            <rect x="400" y="40" width="150" height="52" rx="10" class="n hl"/><text x="475" y="62" class="t c">WAV + GUANO</text><text x="475" y="80" class="m c">16 Bit, microSD</text>
+            <rect x="400" y="244" width="150" height="52" rx="10" class="n later"/><text x="475" y="266" class="t c">FFT-Frames</text><text x="475" y="284" class="m c">≈ 5.600 pro Datei</text>
+            <rect x="600" y="196" width="170" height="46" rx="10" class="n later"/><text x="685" y="215" class="t c">Indizes, Kennzahlen</text><text x="685" y="232" class="m c">Phase 3</text>
+            <rect x="600" y="250" width="170" height="46" rx="10" class="n later"/><text x="685" y="269" class="t c">Schallpegel</text><text x="685" y="286" class="m c">Phase 3, kalibriert</text>
+            <rect x="600" y="304" width="170" height="46" rx="10" class="n later"/><text x="685" y="323" class="t c">Edge-Detektor</text><text x="685" y="340" class="m c">Phase 4, INT8-Modell</text>
+            <rect x="820" y="40" width="164" height="52" rx="10" class="n"/><text x="902" y="62" class="t c">Beleg</text><text x="902" y="80" class="m c">bleibt unverändert</text>
+            <rect x="820" y="142" width="164" height="52" rx="10" class="n k-modem"/><text x="902" y="164" class="t c">Statusmeldung</text><text x="902" y="182" class="m c">täglich, ≤ 1 KB · V1</text>
+            <rect x="820" y="247" width="164" height="52" rx="10" class="n later"/><text x="902" y="269" class="t c">Ergebnisse</text><text x="902" y="287" class="m c">SD-Datei + Tagesübersicht</text>
+            <path d="M146,168 H175 V66 H198" class="e" marker-end="url(#m-pp-de)"/>
+            <path d="M146,168 H198" class="e" marker-end="url(#m-pp-de)"/>
+            <path d="M146,168 H175 V270 H198" class="e" marker-end="url(#m-pp-de)"/>
+            <path d="M350,66 H398" class="e" marker-end="url(#m-pp-de)"/>
+            <path d="M550,66 H818" class="e" marker-end="url(#m-pp-de)"/><text x="685" y="58" class="el c">SHA-256 im Manifest</text>
+            <path d="M350,168 H818" class="e" marker-end="url(#m-pp-de)"/><text x="585" y="160" class="el c">Pegel, Clipping, Grundrauschen je Band</text>
+            <path d="M350,270 H398" class="e" marker-end="url(#m-pp-de)"/>
+            <path d="M550,270 H575 V219 H598" class="e" marker-end="url(#m-pp-de)"/>
+            <path d="M550,270 H575 V273 H598" class="e" marker-end="url(#m-pp-de)"/>
+            <path d="M550,270 H575 V327 H598" class="e" marker-end="url(#m-pp-de)"/>
+            <path d="M770,219 H795 V273" class="e"/>
+            <path d="M770,327 H795 V273" class="e"/>
+            <path d="M770,273 H818" class="e" marker-end="url(#m-pp-de)"/>
+          </svg>
+        </div>
+        <figcaption>Wo jede Ausgabe entsteht. Gestrichelte Kästen kommen nach V1. Die Mikrofon-Kennwerte werden vor jedem Filter erfasst, die gespeicherte WAV erhält nur das Aufnahmefilter, und die Analyse arbeitet auf einer eigenen Kopie, verändert den Beleg also nie.</figcaption>
+      </figure>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Ausgabe</th><th>Was sie liefert</th><th>Last auf dem Chip</th><th>Wann</th></tr></thead>
+          <tbody>
+            <tr><td>Aufnahme und Manifest</td><td>WAV mit GUANO, SHA-256, Ereignisprotokoll</td><td><span class="load l">Gering</span></td><td>V1</td></tr>
+            <tr><td>Mikrofon-Kennwerte</td><td>Pegel, Clipping, Grundrauschen je Band; Driftwarnung</td><td><span class="load l">Gering</span></td><td>V1</td></tr>
+            <tr><td>Aufwandsprotokoll</td><td>Geplante vs. aufgenommene Slots, Ursache jedes Ausfalls</td><td><span class="load l">Gering</span></td><td>V1</td></tr>
+            <tr><td>Einfache Kennzahlen</td><td>RMS, Spitze, Bandenergie, spektraler Schwerpunkt, Aktivität</td><td><span class="load l">Gering</span></td><td>Phase 3</td></tr>
+            <tr><td>Ökoakustische Indizes</td><td>ACI, NDSI, Bioacoustic Index, Entropie, ADI, AEI pro Datei</td><td><span class="load m">Mittel</span></td><td>Phase 3</td></tr>
+            <tr><td>Schallpegel</td><td>LAeq, LCeq, L10 bis L90, Oktavbänder; nur mit Kalibrierung pro Gerät</td><td><span class="load l">Gering</span></td><td>Phase 3</td></tr>
+            <tr><td>Zieldetektor</td><td>Wert pro Fenster; Kandidatenliste mit Zeit, Wert und Modellversion; „unbekannt“ bleibt erhalten</td><td><span class="load h">Hoch</span></td><td>Phase 4</td></tr>
+            <tr><td>Artbestimmung, Embeddings, Training</td><td>Modelle der BirdNET-Klasse, Clustering, Detector Builder</td><td><span class="load x">Nicht auf dem Chip</span></td><td>Cloud oder Labor</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="facts">
+        <div><b>≈ 2,3 s</b><p>Geschätzte Spektrogrammzeit für eine 60-s-Datei: ≈ 5.600 FFT-Frames mit 1.024 Punkten bei angenommenen 100.000 Takten pro Frame, auf einem 240-MHz-Kern. Noch zu messen.</p></div>
+        <div><b>≈ 3 s</b><p>Zusätzliche Wachzeit pro Aufnahme, die der Energiepuffer erlaubt: Jede Sekunde kostet ≈ 0,01 Wh pro Tag bei ≈ 0,3 W. Analyse während der Aufnahme auf dem zweiten Kern kostet viel weniger.</p></div>
+        <div><b>≈ 3,5 KB</b><p>Ein Tag Indizes (144 Dateien × 6 Werte) passt leicht ins LTE-Budget. Ein 10-s-Audioclip hat ≈ 0,96 MB, etwa einen Monat V1-Daten.</p></div>
+      </div>
+      <div class="cols-2">
+        <div class="card"><h3>Was der Chip bietet</h3><ul class="ticks">
+          <li>2 Kerne bis 240 MHz mit Vektorbefehlen; kein KI-Beschleuniger</li>
+          <li>512 KB schneller interner RAM, geteilt mit der Firmware</li>
+          <li>2 MB PSRAM, davon ≈ 0,5 MB für den 5-s-Audiopuffer</li>
+          <li>16 MB Flash für Firmware und Modellgewichte</li>
+        </ul></div>
+        <div class="card"><h3>Was das für einen Detektor bedeutet</h3><ul class="ticks">
+          <li>Ein eng gefasstes Ziel gegen Hintergrund und Verwechsler, keine Artenliste</li>
+          <li>Kleines INT8-Modell; die Laufzeit kennt nur einen Teil der Operatoren, daher wird jedes Modellpaket vor der Auslieferung geprüft</li>
+          <li>Läuft nach jeder Aufnahme, nicht dauerhaft; Ergebnisse kommen beim nächsten Abgleich</li>
+          <li>Werte sind keine Wahrscheinlichkeiten; zufällige Negativclips bleiben, um Fehlstellen zu messen</li>
+        </ul></div>
+      </div>
+      <p class="note">Speicher, Rechenzeit und Energie pro Inferenz müssen auf dem echten Modul gemessen werden (Prüfstufe G8), bevor ein Detektor ausgeliefert wird. Große Mehrarten-Modelle laufen in der Cloud oder im Labor, auf den WAV-Dateien von der Karte.</p>
+    </section>
+
+    <section id="de-hardware">
+      <h2>Hardware</h2>
+      <p class="intro">Ein ESP32-S3-Modul steuert alles. Ein eigener Wandler hört zu, eine Uhr weckt die Platine, und ein LTE-Modem übernimmt den täglichen Abgleich.</p>
+      <figure class="fig">
+        <div class="dg">
+          <svg viewBox="0 0 1000 372" role="img" aria-label="Signal-Blockschaltbild: Akustikkopf zu analogem Frontend zu Audio-ADC, der per I2S an den ESP32-S3 liefert. Der ESP32-S3 spricht per I2C mit der Uhr, per UART mit dem LTE-Modem (mit Antenne und Nano-SIM), im 1-Bit-SD-Modus mit der microSD-Karte, mit USB-C und über seinen WLAN-Hotspot mit einem Handy.">
+            <defs><marker id="m-hw-de" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="ah"/></marker></defs>
+            <rect x="16" y="172" width="124" height="56" rx="10" class="n k-audio"/><text x="78" y="196" class="t c">Akustikkopf</text><text x="78" y="214" class="m c">Elektret, außen</text>
+            <rect x="168" y="172" width="150" height="56" rx="10" class="n k-audio"/><text x="243" y="196" class="t c">Analoges Frontend</text><text x="243" y="214" class="m c">Vorverstärker, Hochpass</text>
+            <rect x="346" y="172" width="136" height="56" rx="10" class="n k-audio"/><text x="414" y="196" class="t c">Audio-ADC</text><text x="414" y="214" class="m c">PCM1863, 24 Bit</text>
+            <rect x="540" y="150" width="180" height="100" rx="12" class="n k-main"/><text x="630" y="180" class="t c">ESP32-S3</text><text x="630" y="200" class="s c">2 Kerne · 16 MB Flash</text><text x="630" y="217" class="s c">2 MB PSRAM</text><text x="630" y="234" class="m c">WLAN für den Hotspot</text>
+            <rect x="590" y="30" width="140" height="56" rx="10" class="n k-always"/><text x="660" y="54" class="t c">Echtzeituhr</text><text x="660" y="72" class="m c">DS3231M, 2 Alarme</text>
+            <rect x="350" y="30" width="140" height="56" rx="10" class="n"/><text x="420" y="54" class="t c">Handy vor Ort</text><text x="420" y="72" class="m c">Hotspot-Seite</text>
+            <rect x="800" y="172" width="160" height="56" rx="10" class="n k-modem"/><text x="880" y="196" class="t c">LTE-Modem</text><text x="880" y="214" class="m c">EG810M-EU, Cat 1</text>
+            <rect x="815" y="60" width="130" height="44" rx="10" class="n"/><text x="880" y="87" class="t c">LTE-Antenne</text>
+            <rect x="815" y="300" width="130" height="44" rx="10" class="n"/><text x="880" y="327" class="t c">Nano-SIM</text>
+            <rect x="500" y="310" width="110" height="52" rx="10" class="n"/><text x="555" y="332" class="t c">microSD</text><text x="555" y="350" class="m c">≤ 256 GB</text>
+            <rect x="650" y="310" width="110" height="52" rx="10" class="n"/><text x="705" y="332" class="t c">USB-C</text><text x="705" y="350" class="m c">Konsole, Flashen</text>
+            <path d="M140,200 H166" class="e" marker-end="url(#m-hw-de)"/>
+            <path d="M318,200 H344" class="e" marker-end="url(#m-hw-de)"/>
+            <path d="M482,200 H538" class="e" marker-end="url(#m-hw-de)"/><text x="510" y="192" class="el c">I²S</text>
+            <path d="M660,148 V88" class="e" marker-start="url(#m-hw-de)" marker-end="url(#m-hw-de)"/><text x="668" y="122" class="el">I²C</text>
+            <path d="M570,148 V58 H492" class="e dash" marker-start="url(#m-hw-de)" marker-end="url(#m-hw-de)"/><text x="578" y="122" class="el">WLAN</text>
+            <path d="M722,200 H798" class="e" marker-start="url(#m-hw-de)" marker-end="url(#m-hw-de)"/><text x="760" y="192" class="el c">UART</text>
+            <path d="M880,170 V106" class="e" marker-start="url(#m-hw-de)" marker-end="url(#m-hw-de)"/><text x="888" y="142" class="el">HF</text>
+            <path d="M880,230 V298" class="e" marker-start="url(#m-hw-de)" marker-end="url(#m-hw-de)"/>
+            <path d="M555,252 V308" class="e" marker-start="url(#m-hw-de)" marker-end="url(#m-hw-de)"/><text x="563" y="284" class="el">SD, 1 Bit</text>
+            <path d="M705,252 V308" class="e" marker-start="url(#m-hw-de)" marker-end="url(#m-hw-de)"/><text x="713" y="284" class="el">USB</text>
+          </svg>
+        </div>
+        <figcaption>Der Audiowandler gibt den Takt aus seinem eigenen 24,576-MHz-Quarz vor, weil der ESP32-S3 keine Audio-PLL hat. Sein I²C läuft auf einem eigenen Bus, damit der abgeschaltete Wandler nie rückgespeist wird.</figcaption>
+      </figure>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Funktion</th><th>Bauteil</th><th>Warum</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>Prozessor, WLAN</td><td>ESP32-S3-WROOM-1-N16R2</td><td>Bis +85 °C für ein geschlossenes Gehäuse in der Sonne</td><td><span class="tag sel">Gewählt</span></td></tr>
+            <tr><td>Uhr und Wecken</td><td>DS3231M</td><td>±5 ppm, zwei Alarme, läuft bei abgeschalteter Platine</td><td><span class="tag sel">Gewählt</span></td></tr>
+            <tr><td>Audiowandler</td><td>PCM1863</td><td>24 Bit, programmierbare Verstärkung, Eingangswahl</td><td><span class="tag">Kandidat</span></td></tr>
+            <tr><td>Mikrofon</td><td>Primo EM272 / EM273</td><td>Geringes Eigenrauschen, in der Bioakustik verbreitet</td><td><span class="tag">Kandidat</span></td></tr>
+            <tr><td>LTE-Modem</td><td>Quectel EG810M-EU</td><td>Cat 1, Bänder für EU/AU/NZ, lieferbar</td><td><span class="tag sel">Gewählt</span></td></tr>
+            <tr><td>Solarladeregler</td><td>CN3791 + TMP390</td><td>MPPT mit Hitze- und Kälteabschaltung</td><td><span class="tag sel">Gewählt</span></td></tr>
+            <tr><td>Haupt-3,3 V</td><td>TPS63802</td><td>Buck-Boost, hält 3,3 V bei sinkender Zellspannung</td><td><span class="tag sel">Gewählt</span></td></tr>
+            <tr><td>Modemversorgung</td><td>TPS63020, 3,9 V</td><td>Verkraftet die Sendestromspitzen</td><td><span class="tag sel">Gewählt</span></td></tr>
+            <tr><td>Audioversorgung</td><td>TPS7A2033</td><td>Rauscharm, nur während der Aufnahme an</td><td><span class="tag">Kandidat</span></td></tr>
+            <tr><td>Erhaltungsversorgung</td><td>TPL720F33 + CR1220</td><td>Regler mit 1,4 µA; Knopfzelle puffert die Uhr</td><td><span class="tag sel">Gewählt</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">„Gewählt“ heißt für das Konzept ausgewählt, nicht validiert. Die Platine hat 4 Kupferlagen, misst 80 × 105 mm und trägt 346 Bauteile, alle auf der Oberseite.</p>
+    </section>
+
+    <section id="de-power">
+      <h2>Energie</h2>
+      <p class="intro">Jedes Bauteil wird nur versorgt, wenn es gebraucht wird. Der Uhrenbereich schaltet nie ab; alles andere liegt hinter einem Lastschalter, den die Weckschaltung schließt.</p>
+      <figure class="fig">
+        <div class="dg">
+          <svg viewBox="0 0 1000 396" role="img" aria-label="Versorgungsbaum: Modul an Halterung und Modul mit Kabel speisen den MPPT-Solarladeregler, der den Akkupack lädt. Der Akku versorgt den Immer-an-Bereich (Erhaltungsregler, Uhr mit Knopfzelle, Weckschaltung) und über einen Lastschalter drei geschaltete Schienen: Haupt-3,3 V, rauscharme Audio-3,3 V und Modem-3,9 V. Die MCU hält den Strom, bis ihr Job erledigt ist.">
+            <defs>
+              <marker id="m-pw-de" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="ah"/></marker>
+              <marker id="m-pw-e-de" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="ah-e"/></marker>
+            </defs>
+            <rect x="16" y="56" width="160" height="52" rx="10" class="n k-energy"/><text x="96" y="78" class="t c">Modul (Halterung)</text><text x="96" y="96" class="m c">≈ 4 W, 6-V-Klasse</text>
+            <rect x="16" y="136" width="160" height="52" rx="10" class="n k-energy"/><text x="96" y="158" class="t c">Modul (Kabel)</text><text x="96" y="176" class="m c">optional, für Schatten</text>
+            <rect x="226" y="86" width="170" height="72" rx="10" class="n k-energy"/><text x="311" y="110" class="t c">Solarladeregler</text><text x="311" y="128" class="s c">MPPT, Abwärtswandler</text><text x="311" y="145" class="m c">lädt bei +5 bis +42 °C</text>
+            <rect x="226" y="236" width="170" height="72" rx="10" class="n k-energy"/><text x="311" y="260" class="t c">Akkupack</text><text x="311" y="278" class="s c">1S2P 18650, ≈ 5,2 Ah</text><text x="311" y="295" class="m c">abgesichert, verpolgeschützt</text>
+            <rect x="456" y="16" width="230" height="112" rx="12" class="n k-always"/><text x="571" y="42" class="t c">Immer an</text><text x="571" y="62" class="s c">Erhaltungsregler 3,3 V</text><text x="571" y="80" class="s c">Uhr mit Knopfzellenpuffer</text><text x="571" y="98" class="s c">Weckschaltung</text><text x="571" y="117" class="m c">≤ 200 µA insgesamt</text>
+            <rect x="456" y="244" width="230" height="56" rx="10" class="n"/><text x="571" y="268" class="t c">Lastschalter</text><text x="571" y="286" class="m c">von der Weckschaltung geschlossen</text>
+            <text x="571" y="322" class="m c">versorgt die drei Schienen</text>
+            <rect x="760" y="150" width="224" height="70" rx="10" class="n k-main"/><text x="872" y="172" class="t c">Haupt-3,3 V</text><text x="872" y="190" class="s c">ESP32-S3 · microSD · LED</text><text x="872" y="208" class="m c">bei jedem Job an</text>
+            <rect x="760" y="232" width="224" height="70" rx="10" class="n k-audio"/><text x="872" y="254" class="t c">Audio-3,3 V, rauscharm</text><text x="872" y="272" class="s c">Mikrofon · Vorverstärker · ADC</text><text x="872" y="290" class="m c">nur während der Aufnahme</text>
+            <rect x="760" y="314" width="224" height="70" rx="10" class="n k-modem"/><text x="872" y="336" class="t c">Modem-3,9 V</text><text x="872" y="354" class="s c">LTE-Modem · SIM</text><text x="872" y="372" class="m c">nur zum täglichen Abgleich</text>
+            <path d="M176,82 H201 V122 H224" class="e pw" marker-end="url(#m-pw-e-de)"/>
+            <path d="M176,162 H201 V122" class="e pw"/>
+            <path d="M311,158 V234" class="e pw" marker-end="url(#m-pw-e-de)"/><text x="319" y="200" class="el">laden</text>
+            <path d="M396,272 H454" class="e pw" marker-end="url(#m-pw-e-de)"/>
+            <path d="M426,272 V72 H454" class="e pw" marker-end="url(#m-pw-e-de)"/>
+            <path d="M686,272 H723 V347 H758" class="e pw" marker-end="url(#m-pw-e-de)"/>
+            <path d="M723,272 V185 H758" class="e pw" marker-end="url(#m-pw-e-de)"/>
+            <path d="M723,265 H758" class="e pw" marker-end="url(#m-pw-e-de)"/>
+            <path d="M560,128 V242" class="e dash" marker-end="url(#m-pw-de)"/><text x="568" y="182" class="el">wecken</text><text x="568" y="198" class="el">Alarm · Taste · USB</text>
+            <path d="M800,150 V100 H688" class="e dash" marker-end="url(#m-pw-de)"/><text x="808" y="122" class="el">MCU hält den Strom,</text><text x="808" y="138" class="el">bis der Job erledigt ist</text>
+          </svg>
+        </div>
+        <div class="key" aria-hidden="true"><span><i class="k1"></i>Energiezufuhr</span><span><i class="k2"></i>immer an</span><span><i class="k3"></i>Digitalteil</span><span><i class="k4"></i>Audio</span><span><i class="k5"></i>Modem</span></div>
+        <figcaption>Dicke Linien führen Akkustrom, gestrichelte sind Steuersignale. Die Modemschiene startet nie während einer Aufnahme, weil ihr Einschaltstrom die Akkuspannung um ein Volt oder mehr einbrechen lassen kann.</figcaption>
+      </figure>
+      <div class="budget">
+        <p class="lbl">Tägliches Energiebudget, DRM-1 (Zielwerte)</p>
+        <div class="bars" role="img" aria-label="Tägliches Energiebudget: Aufnahme 0,84 Wh, Wecken und Abschluss 0,05 Wh, LTE-Abgleich 0,05 Wh, Aus-Zustand 0,02 Wh; Summe 0,96 Wh bei einer Auslegungslast von 1,0 Wh.">
+          <span class="bl">Aufnahme<small>≤ 350 mW × 2,4 h</small></span><span class="track" title="Aufnahme: 0,84 Wh/Tag"><span class="bar" style="--v:84%"></span></span><span class="bv">0,84 Wh</span>
+          <span class="bl">Wecken, Abschluss<small>≤ 1,25 J × 144</small></span><span class="track" title="Wecken und Abschluss: 0,05 Wh/Tag"><span class="bar" style="--v:5%"></span></span><span class="bv">0,05 Wh</span>
+          <span class="bl">LTE-Abgleich<small>bei schwachem Signal</small></span><span class="track" title="LTE-Abgleich: 0,05 Wh/Tag"><span class="bar" style="--v:5%"></span></span><span class="bv">0,05 Wh</span>
+          <span class="bl">Aus-Zustand<small>≤ 200 µA, 24 h</small></span><span class="track" title="Aus-Zustand: 0,02 Wh/Tag"><span class="bar" style="--v:2%"></span></span><span class="bv">0,02 Wh</span>
+          <span></span><span class="axis"><span style="left:0">0</span><span style="left:50%">0,5</span><span style="left:100%">1,0 Wh</span></span><span></span>
+        </div>
+        <div class="total"><span>Summe <b class="num">0,96 Wh</b></span><span>Auslegungslast <b class="num">≤ 1,0 Wh/Tag</b></span></div>
+      </div>
+      <div class="card"><h3>Modul und Akku dimensionieren</h3><ul class="ticks">
+        <li><strong>Modul ≈ 4 W:</strong> 1,0 Wh ÷ (0,5 Sonnenstunden × 0,5 Wirkungsgrad) im Dezember bei 50–56° N. Mit dem MPPT-Regler reichen nach Messung eventuell 3 W.</li>
+        <li><strong>Steil montieren:</strong> Die Wintersonne steht bei 52° N mittags nur ≈ 15° hoch; fast senkrecht lässt auch Regen und Laub ablaufen.</li>
+        <li><strong>Akku ≈ 19 Wh</strong> nominal gegenüber ≈ 15 Wh Bedarf für 10 Tage ohne Sonne bei 0 °C.</li>
+      </ul></div>
+      <figure class="fig">
+        <div class="dg narrow">
+          <svg viewBox="0 0 1000 168" role="img" aria-label="Akkustufen: unter 10 Prozent sicher aus; 10 bis 20 Prozent nur Statusmeldung; 20 bis 40 Prozent reduzierter Plan; über 40 Prozent voller Plan; Rückkehr mit mindestens 10 Prozent Hysterese.">
+            <defs><marker id="m-soc-de" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="ah"/></marker></defs>
+            <text x="40" y="32" class="m">0 %</text><text x="132" y="32" class="el c">10 %</text><text x="224" y="32" class="el c">20 %</text><text x="408" y="32" class="el c">40 %</text><text x="960" y="32" class="m r">100 %</text>
+            <rect x="40" y="42" width="90" height="34" rx="4" class="soc1"/><rect x="133" y="42" width="89" height="34" class="soc2"/><rect x="225" y="42" width="181" height="34" class="soc3"/><rect x="409" y="42" width="551" height="34" rx="4" class="soc4"/>
+            <text x="86" y="98" class="t c">Sicher aus</text><text x="86" y="115" class="m c">stoppt sauber</text>
+            <text x="178" y="98" class="t c">Nur Status</text><text x="178" y="115" class="m c">nur LTE-Abgleich</text>
+            <text x="316" y="98" class="t c">Reduzierter Plan</text><text x="316" y="115" class="m c">im Dashboard festgelegt</text>
+            <text x="684" y="98" class="t c">Voller Plan</text><text x="684" y="115" class="m c">wie geplant, z. B. 144 Aufnahmen pro Tag</text>
+            <path d="M940,146 H60" class="e" marker-end="url(#m-soc-de)"/>
+            <text x="500" y="140" class="el c">bei sinkender Ladung stuft er ab; zurück mit ≥ 10 % Hysterese</text>
+          </svg>
+        </div>
+        <figcaption>Die Ladung wird aus der Akkuspannung geschätzt, gemessen vor dem Modemstart. Die Schwellen sind einstellbar. Er bricht nie mitten im Schreiben ein und startet nach völliger Entladung von selbst neu.</figcaption>
+      </figure>
+    </section>
+
+    <section id="de-setup">
+      <h2>Einrichtung und Wartung</h2>
+      <p class="intro">Gemacht für Feldpersonal mit Handy und Handschuhen, mit oder ohne Netz. Es gibt keine App zu installieren.</p>
+      <div class="cols-2">
+        <div class="card"><p class="meta">Mit LTE-Netz · etwa 5 Minuten</p><ol class="steps">
+          <li>QR-Code des Rekorders scannen; die Web-App öffnet sich im Browser.</li>
+          <li>Einem Einsatz zuordnen; das Handy ergänzt seine GPS-Position.</li>
+          <li>Taste drücken: Der Rekorder holt seinen Plan per LTE, nimmt 10 s auf und meldet zurück.</li>
+          <li>Checkliste „Bereit zum Ausbringen“ prüfen und Deckel schließen.</li>
+        </ol></div>
+        <div class="card"><p class="meta">Ohne Netz · lokaler Hotspot</p><ol class="steps">
+          <li>Taste drücken: Der Rekorder startet einen WPA2-Hotspot; das Passwort steht auf seinem Etikett.</li>
+          <li>Lokale Seite öffnen: Status, Testaufnahme mit Pegel, Clipping und Wiedergabe.</li>
+          <li>Uhr vom Handy stellen (die alte Abweichung wird vorher protokolliert) und Plan anpassen.</li>
+          <li>Einsatz starten; die Position kommt aus der installierten Web-App oder wird eingetippt.</li>
+        </ol></div>
+      </div>
+      <div class="card"><h3>Wartungsbesuch bei offenem Deckel</h3><ul class="ticks split">
+        <li>Karte im Klappdeckel-Halter tauschen; der Rekorder prüft sie und läuft weiter</li>
+        <li>Tastendruck und Status-LED bestätigen Testaufnahme, Karte und Einstellungen</li>
+        <li>USB-C für Konsole und Firmware, mit angeschlossenem Akku</li>
+        <li>Eine geplante Aufnahme hat immer Vorrang vor der Wartung</li>
+        <li>Der Hotspot schließt nach 15 Minuten ohne Nutzung</li>
+        <li>Vor dem Gehen die Deckeldichtung wieder schließen</li>
+      </ul></div>
+    </section>
+
+    <section id="de-board">
+      <h2>Platine und Gehäuse</h2>
+      <p class="intro">Die Platine ist in Zonen geteilt, damit der leise Audioeingang weit weg von den Wandlern und dem Funk sitzt. Alles, was bei der Wartung gebraucht wird, ist bei offenem Deckel erreichbar.</p>
+      <figure class="fig">
+        <div class="dg">
+          <svg viewBox="0 0 820 440" role="img" aria-label="Draufsicht der 80 × 105 mm großen Platine Rev. A: ESP32-S3-Modul oben links mit Antenne über einer Aussparung; USB-C und microSD am linken Rand; Uhr und Knopfzelle in der Mitte; Audiowandler, Vorverstärker und Mikrofonbuchse unten links; LTE-Modem und Antennenbuchse oben rechts, darunter die SIM; Taste, Schalter, LED und Akkuanschluss am rechten Rand; Solarladeregler und zwei Moduleingänge unten rechts; Akkupack unter der Platine.">
+            <path d="M392,30 H554 V408 H266 V51.6 H392 Z" class="board"/>
+            <rect x="338" y="66" width="144" height="252" rx="6" class="pack"/>
+            <text x="410" y="84" class="m c">Akkupack</text><text x="410" y="98" class="m c">unter der Platine</text>
+            <circle cx="410" cy="44.4" r="5.8" class="hole"/><circle cx="539.6" cy="44.4" r="5.8" class="hole"/><circle cx="280.4" cy="393.6" r="5.8" class="hole"/><circle cx="539.6" cy="393.6" r="5.8" class="hole"/>
+            <rect x="282.2" y="32.2" width="64.8" height="91.8" rx="2" class="part k-main"/><rect x="283" y="33" width="63.2" height="20.8" class="ant"/><text x="314.6" y="94" class="pl c">ESP32-S3</text>
+            <rect x="271.4" y="128.4" width="21.6" height="28.8" rx="2" class="part"/>
+            <rect x="273.6" y="182.4" width="49.6" height="47.2" rx="2" class="part"/><text x="298.4" y="210" class="pl c">microSD</text>
+            <rect x="374" y="120" width="32.4" height="36" rx="2" class="part k-main"/><text x="390.2" y="142" class="pl c">3,3 V</text>
+            <rect x="459.1" y="71.8" width="63.8" height="56.8" rx="2" class="part k-modem"/><text x="491" y="104" class="pl c">LTE</text>
+            <rect x="539.2" y="75" width="10.8" height="10.8" rx="1" class="part k-modem"/>
+            <rect x="504.3" y="146.6" width="39.6" height="43.2" rx="2" class="part"/><text x="524.1" y="172" class="pl c">SIM</text>
+            <rect x="406.4" y="166.8" width="43.2" height="32.4" rx="2" class="part k-modem"/><text x="428" y="187" class="pl c">3,9 V</text>
+            <rect x="341.6" y="253.2" width="28.8" height="27" rx="2" class="part k-always"/><text x="356" y="270" class="pl c">RTC</text>
+            <circle cx="410" cy="260.4" r="25.9" class="part k-always"/><text x="410" y="264" class="pl c">CR1220</text>
+            <rect x="510.8" y="194.4" width="39.6" height="52.2" rx="2" class="part"/>
+            <rect x="524.8" y="251.4" width="21.6" height="28.8" rx="2" class="part k-energy"/>
+            <rect x="332.6" y="318" width="25.2" height="36" rx="2" class="part k-audio"/><text x="345.2" y="340" class="pl c">ADC</text>
+            <rect x="371" y="316.6" width="18" height="21.6" rx="2" class="part k-audio"/>
+            <rect x="298.4" y="384.8" width="36" height="21.6" rx="2" class="part k-audio"/>
+            <rect x="474.8" y="285.6" width="72" height="68.4" rx="2" class="part k-energy"/><text x="510.8" y="323" class="pl c">Laderegler</text>
+            <rect x="433.4" y="381.4" width="25.2" height="25.2" rx="2" class="part k-energy"/><rect x="473" y="381.4" width="25.2" height="25.2" rx="2" class="part k-energy"/>
+            <path d="M256,43 H281" class="e lead"/><text x="250" y="47" class="s r">WLAN-Antenne über Aussparung</text>
+            <path d="M256,92 H281" class="e lead"/><text x="250" y="96" class="s r">ESP32-S3-Modul</text>
+            <path d="M256,143 H270" class="e lead"/><text x="250" y="147" class="s r">USB-C, von oben gesteckt</text>
+            <path d="M256,206 H272" class="e lead"/><text x="250" y="210" class="s r">microSD mit Klappdeckel</text>
+            <path d="M256,267 H340" class="e lead"/><text x="250" y="271" class="s r">Echtzeituhr und Knopfzelle</text>
+            <path d="M256,336 H331" class="e lead"/><text x="250" y="340" class="s r">Audiowandler und Vorverstärker</text>
+            <path d="M256,402 H297" class="e lead"/><text x="250" y="406" class="s r">Mikrofonbuchse zum Akustikkopf</text>
+            <path d="M564,80 H551" class="e lead"/><text x="570" y="84" class="s">U.FL zur LTE-Antenne an der Wand</text>
+            <path d="M564,110 H524" class="e lead"/><text x="570" y="114" class="s">LTE-Modem</text>
+            <path d="M564,168 H545" class="e lead"/><text x="570" y="172" class="s">Nano-SIM, seitlich</text>
+            <path d="M564,220 H551" class="e lead"/><text x="570" y="224" class="s">Wecktaste, Transportschalter, LED</text>
+            <path d="M564,266 H547" class="e lead"/><text x="570" y="270" class="s">Akkuanschluss</text>
+            <path d="M564,320 H548" class="e lead"/><text x="570" y="324" class="s">Solarladeregler</text>
+            <path d="M564,404 H499" class="e lead"/><text x="570" y="408" class="s">Zwei Moduleingänge</text>
+            <text x="410" y="430" class="m c">80 mm breit · Mikrofon- und Modulkabel gehen durch die Unterseite</text>
+          </svg>
+        </div>
+        <figcaption>Draufsicht Rev. A, maßstäblich, nach Platzierungsdurchgang 7 (20.11.2026). Das Routing hat noch nicht begonnen; die Lage des Akkus ist angenommen, bis die Montageplatte gezeichnet ist.</figcaption>
+      </figure>
+      <div class="cols-2">
+        <div class="card"><h3>Gehäuse</h3><ul class="ticks">
+          <li>UV-stabilisiertes Polycarbonat; erste Wahl Hammond 1554P2GY (120 × 120 × 80 mm) <span class="tag open">Offen</span></li>
+          <li>IP66 ist ein Testziel: Schlagregen und Kondensation über 300 Tage</li>
+          <li>Platine, Akku und LTE-Antenne sitzen auf einer 3D-gedruckten Platte, daher passt jedes Gehäuse mit ≥ 110 × 105 mm Bodenfläche</li>
+          <li>Die Wände tragen nur Mikrofonbuchse, Moduleingang bzw. -eingänge und ein Druckausgleichselement</li>
+        </ul></div>
+        <div class="card"><h3>Montage, Wärme und Funk</h3><ul class="ticks">
+          <li>Modul an eigener Halterung; das Gehäuse in seinem Schatten hält die Innenluft ≤ 65 °C</li>
+          <li>Mikrofonkopf mit nach unten gerichteter, geschützter Öffnung und tauschbarer Membran</li>
+          <li>Antennen ≈ 80–90 mm auseinander; Entkopplung wird im Gehäuse gemessen, externe LTE-Antenne als Rückfall</li>
+          <li>Laden endet oberhalb +42 °C, wichtig in australischer Sonne</li>
+        </ul></div>
+      </div>
+    </section>
+
+    <section id="de-data">
+      <h2>Dashboard und Daten</h2>
+      <p class="intro">Jedes Ergebnis lässt sich auf die Aufnahme und Einstellungen zurückführen, aus denen es stammt. Projekte, Standorte und Geräte werden getrennt geführt, sodass ein Gerät getauscht werden kann, ohne die Historie zu brechen.</p>
+      <div class="chain" aria-label="Datenherkunft vom Projekt bis zum Modell">
+        <span class="v1">Projekt</span><b>→</b><span class="v1">Einsatz</span><b>→</b><span class="v1">Rekorder</span><b>→</b><span class="v1">Aufnahme</span><b>→</b><span>Messwert</span><b>→</b><span>Kandidat</span><b>→</b><span>Prüfung durch Menschen</span><b>→</b><span>Datensatz</span><b>→</b><span>Modell</span>
+      </div>
+      <p class="legend"><span><span class="tag sel">hinterlegt</span> in V1</span><span><span class="tag">umrandet</span> spätere Phasen</span></p>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Dashboard-Bereich</th><th>Was er zeigt</th><th>Wann</th></tr></thead>
+          <tbody>
+            <tr><td>Pläne und Einstellungen</td><td>Aufnahmepläne pro Rekorder oder Projekt bearbeiten; ausstehend, übernommen oder abgelehnt sehen</td><td>V1</td></tr>
+            <tr><td>Rekorder-Detail</td><td>Akku, Karte, Versionen, Fehler, nächste Aufnahme und nächster Abgleich</td><td>V1</td></tr>
+            <tr><td>Einsatz</td><td>Wo, wann, mit welchem Mikrofon und welchen Einstellungen</td><td>V1</td></tr>
+            <tr><td>Flotte und Abdeckung</td><td>Zustand aller Geräte; geplante vs. aufgenommene Minuten je Standort und Tag</td><td>Phase 2</td></tr>
+            <tr><td>Aufnahmekatalog</td><td>Wo jede Datei liegt: auf dem Gerät, in der Warteschlange oder in der Cloud</td><td>Phase 2</td></tr>
+            <tr><td>Klanglandschaft und Lärm</td><td>Indizes und Pegel im Zeitverlauf, mit angezeigter Methode</td><td>Phase 3</td></tr>
+            <tr><td>Prüfwarteschlange</td><td>Kandidaten, die auf eine menschliche Entscheidung warten</td><td>Phase 3–4</td></tr>
+            <tr><td>Detector Builder</td><td>Eigenen Detektor eines Projekts trainieren und ausrollen</td><td>Phase 5</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="cols-2">
+        <div class="card"><h3>Ehrliche Statusanzeige</h3><ul class="ticks">
+          <li>„Planmäßig aus“ wird nie als Fehler angezeigt</li>
+          <li>Der Aufwand zeigt geplante und aufgenommene Minuten nebeneinander</li>
+          <li>Detektionen bleiben „ungeprüft“, bis ein Mensch entscheidet</li>
+        </ul></div>
+        <div class="card"><h3>Sicherheit und Datenschutz</h3><ul class="ticks">
+          <li>Eigene Identität pro Gerät, signierte Einstellungen, verschlüsselte Übertragung</li>
+          <li>Audio kann Stimmen erfassen: Jedes Projekt legt Zweck, Zugriff und Aufbewahrung fest; die DSGVO braucht eine rechtliche Prüfung</li>
+          <li>Backend-Technik und Hosting <span class="tag open">Offen</span></li>
+        </ul></div>
+      </div>
+    </section>
+
+    <section id="de-costs">
+      <h2>Vorläufige Kosten</h2>
+      <p class="intro">Eine erste Schätzung der Teile für ein komplettes Gerät. Die Platinenkosten stammen aus der Stücklistenkalkulation im Repository; der Rest sind Händlerpreise oder Pauschalen, keine Angebote.</p>
+      <div class="tbl">
+        <table>
+          <caption>US$ pro Gerät. Platine mit JLCPCB-Preisen vom 21.11.2026 kalkuliert; Händlerpreise am selben Tag geprüft, € mit ≈ 1,15 umgerechnet.</caption>
+          <thead><tr><th>Position</th><th class="n">10 Stück</th><th class="n">100 Stück</th><th>Grundlage</th></tr></thead>
+          <tbody>
+            <tr><td>Hauptplatine: Teile und Bestückungsgebühren</td><td class="n">49,52</td><td class="n">28,14</td><td>JLCPCB-Kalkulation der eingefrorenen Stückliste</td></tr>
+            <tr><td>Leiterplattenfertigung, Bestückungs-Einrichtung</td><td class="n">10–15</td><td class="n">3–6</td><td>Pauschale</td></tr>
+            <tr><td>Mikrofonkapsel</td><td class="n">25</td><td class="n">25</td><td>Arbeitspauschale</td></tr>
+            <tr><td>Akkupack: 2 × 18650, Schutzschaltung, Kabel</td><td class="n">15–35</td><td class="n">15–30</td><td>Pauschale; Zellen im Handel 2–9 € pro Stück</td></tr>
+            <tr><td>Solarmodul, 6 V, ≈ 5 W</td><td class="n">10–20</td><td class="n">10–18</td><td>Handel 10–18 €</td></tr>
+            <tr><td>Gehäuse, Hammond 1554P2GY</td><td class="n">25,55</td><td class="n">23,90</td><td>Distributorpreis, ab 25 Stück</td></tr>
+            <tr><td>microSD, 128 GB High Endurance</td><td class="n">20–45</td><td class="n">18–40</td><td>Handel; 256 GB kostet mehr</td></tr>
+            <tr><td>LTE-Antenne und IoT-SIM</td><td class="n">≈ 15</td><td class="n">≈ 15</td><td>Beispiel-SIM: 12 € für 10 Jahre, 500 MB</td></tr>
+            <tr><td>Akustikkopf, Steckverbinder, Druckausgleich, Halterung</td><td class="n">10–25</td><td class="n">10–20</td><td>Pauschale</td></tr>
+            <tr class="total"><td>Komplettes Gerät</td><td class="n">≈ 180–255</td><td class="n">≈ 150–205</td><td>Vorläufig</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="cols-3">
+        <div class="card"><h3>Kostentreiber</h3><p>Platine, Mikrofon, Gehäuse und SD-Karte machen etwa 60&nbsp;% aus. Günstigere Gehäuse direkt vom Hersteller gibt es, ihre UV-Beständigkeit und Dichtheit sind aber unbewiesen.</p></div>
+        <div class="card"><h3>Laufende Kosten</h3><p>SIM-Daten ≈ 1,20 € pro Jahr mit dem Beispieltarif (LTE-Cat-1-Abdeckung je Land prüfen, besonders in Australien). Hosting ist nicht kalkuliert. Ein Kartentausch alle 5–10 Monate.</p></div>
+        <div class="card"><h3>Nicht enthalten</h3><p>Funk- und EMV-Zulassung (CE, RCM), Umwelttests, Kalibriertechnik, Arbeitszeit, Versand, Zölle und Mehrwertsteuer, Gewährleistung, Cloud. Ein Verkaufspreis ist nicht festgelegt.</p></div>
+      </div>
+    </section>
+
+    <section id="de-roadmap">
+      <h2>Fahrplan</h2>
+      <p class="intro">Der Fortschritt richtet sich nach Testergebnissen, nicht nach Terminen. Eine Phase endet erst, wenn ihre Abschlussprüfung bestanden ist.</p>
+      <ul class="progress">
+        <li class="done"><span class="when">22.10.2026</span><span>Technisches Konzept als Grundlage festgelegt</span></li>
+        <li class="done"><span class="when">23.10.</span><span>Referenzmission festgelegt; Solar und LTE kommen in V1</span></li>
+        <li class="done"><span class="when">17.–18.11.</span><span>Erste Datenblattprüfung; Modem und Modul wegen Verfügbarkeit und Hitze getauscht</span></li>
+        <li class="done"><span class="when">19.11.</span><span>Unabhängige zweite Prüfung; Schaltplan für Rev. A eingefroren</span></li>
+        <li class="done"><span class="when">19.–20.11.</span><span>Lagenaufbau, Umriss, Footprints und sieben Platzierungsdurchgänge</span></li>
+        <li class="next"><span class="when">Als Nächstes</span><span>Rev. A routen, Platinen bestellen, Laborprüfstufen G1 bis G5</span></li>
+      </ul>
+      <div class="phases">
+        <div class="phase now"><div class="ph"><span class="pn">0</span><span class="tag open">Jetzt</span></div><h3>Architekturfragen klären</h3><p>Pinbelegung, Versorgungsbaum, Bauteile und Layout; erste Labortests der riskantesten Schaltungen.</p><p class="exit">Abschluss: freigegebener Versorgungsbaum, gemessene Risikoergebnisse.</p></div>
+        <div class="phase"><div class="ph"><span class="pn">1</span></div><h3>Lokaler Funktionsnachweis</h3><p>Wecken, Aufnehmen, Schreiben und Abschalten nach Plan; USB-Konsole; Fehlereinspeisung.</p><p class="exit">Abschluss: reproduzierbare Aufnahmen ohne unerklärte Verluste.</p></div>
+        <div class="phase"><div class="ph"><span class="pn">2</span></div><h3>Vernetzter Pilot</h3><p>Täglicher LTE-Abgleich, Aufnahmepläne im Dashboard, Flottenansicht, Solarbilanz; 3–5 Geräte neben einem Referenzrekorder.</p><p class="exit">Abschluss: Aufnahme unabhängig vom Netz; Lücken korrekt gemeldet.</p></div>
+        <div class="phase"><div class="ph"><span class="pn">3</span></div><h3>Messwerte und Prüfung</h3><p>Kennzahlen, Indizes, kalibrierte Pegel, Prüfwarteschlange, Clip-Anforderungen.</p><p class="exit">Abschluss: Methoden reproduzierbar und an jedem Diagramm sichtbar.</p></div>
+        <div class="phase"><div class="ph"><span class="pn">4</span></div><h3>Edge-Detektor</h3><p>Ein eng gefasstes Ziel auf dem Chip; Kontrollclips bleiben erhalten; signierte Modellauslieferung.</p><p class="exit">Abschluss: Aussagen nur so weit, wie geprüfte Daten sie tragen.</p></div>
+        <div class="phase"><div class="ph"><span class="pn">5</span></div><h3>Detector Builder</h3><p>Teams annotieren, trainieren, vergleichen und rollen eigene Modelle stufenweise aus.</p><p class="exit">Abschluss: Projektmodelle ohne verfälschte Auswertung.</p></div>
+      </div>
+      <div class="gates">
+        <div><b>G0</b>Architektur</div><div><b>G1</b>Versorgung und Wecken</div><div><b>G2</b>Audiokette</div>
+        <div><b>G3</b>Speicher</div><div><b>G4</b>LTE und Solar</div><div><b>G5</b>Gesamtgerät</div>
+        <div><b>G6</b>Umwelt</div><div><b>G7</b>Kontrollierter Pilot</div><div><b>G8</b>Modellqualifikation</div>
+      </div>
+      <p class="note"><strong>Forschungsstränge</strong>, jeder braucht zuerst eine eigene Entscheidung: Ultraschallkopf für Fledermäuse, ereignisgesteuerte Kamera, Daueraufnahme, GNSS, WLAN-Synchronisation, Kopplung mit anderen Umweltsensoren.</p>
+    </section>
+
+    <section id="de-risks">
+      <h2>Risiken und offene Fragen</h2>
+      <p class="intro">Die größten Risiken bedrohen alle die Aufnahmen selbst. Für jedes gibt es einen Test, der es ausräumt.</p>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Risiko</th><th>Was passieren könnte</th><th>Wie es ausgeräumt wird</th></tr></thead>
+          <tbody>
+            <tr><td>Fehler in Weckschaltung oder Uhr</td><td>Wacht nie auf oder schaltet nie ab</td><td>Weck- und Leckstromtests, Watchdog-Wiederherstellung (G1)</td></tr>
+            <tr><td>Stromspitzen des Modems</td><td>Spannungseinbruch, Neustart, beschädigte Karte</td><td>Pulstests bei leerem Akku und Kälte (G4)</td></tr>
+            <tr><td>Solarausfall oder unsicheres Laden</td><td>Leerer Akku oder Akkugefahr</td><td>Messreihe mit echtem Modul, Abschalttest an jeder Platine (G4)</td></tr>
+            <tr><td>Schreiben vs. Abschalten</td><td>Unbemerkt fehlende oder defekte Dateien</td><td>Gepuffertes Schreiben, über 1.000 zufällige Stromunterbrechungen (G3)</td></tr>
+            <tr><td>Rauschen oder Störungen im Audio</td><td>Schlechte Aufnahmen, verpasste Rufe</td><td>Rauschspektren mit allem in Betrieb, im Gehäuse (G2)</td></tr>
+            <tr><td>Verfügbarkeit des Modems</td><td>Keine Modems für den Bau</td><td>Früh kaufen; das ältere Modul passt auf denselben Footprint</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card"><h3>Noch zu entscheiden</h3><ul class="ticks split">
+        <li>Gehäuse, Dichtung, Membran, Kondensation</li>
+        <li>Anforderung für heißes Klima (Australien)</li>
+        <li>Weg für Firmware-Updates in V1</li>
+        <li>Ausgelieferte Kartengröße: 128 oder 256 GB</li>
+        <li>Schwelle für Mikrofondrift, aus Labordaten</li>
+        <li>SIM- und Netzbetreiberplan je Land</li>
+        <li>Backend-Technik und Hosting</li>
+        <li>Geschäftsmodell und Preis</li>
+      </ul></div>
+    </section>
+
+    <section id="de-limits">
+      <h2>Was AURIS nicht verspricht</h2>
+      <p class="intro">Diese Aussagen bleiben tabu, bis Tests sie stützen.</p>
+      <div class="limits">
+        <div><h3>Ein geeichter Schallpegelmesser</h3><p>Keine Klasse nach IEC 61672; Rohamplitude ist ohne validierte Kalibrierung kein Schalldruckpegel.</p></div>
+        <div><h3>Ein Fledermaus- oder Ultraschallrekorder</h3><p>V1 arbeitet im Hörbereich bei 48 kHz. Ultraschall braucht einen eigenen Kopf und Nachweis.</p></div>
+        <div><h3>Daueraufnahme oder Live-Alarme</h3><p>Zwischen den Jobs ist die Platine aus; Alarme warten auf den nächsten Abgleich.</p></div>
+        <div><h3>Belegte Laufzeit oder Solarautarkie</h3><p>Schätzungen, bis Platinen einen Winter lang gemessen sind.</p></div>
+        <div><h3>Artbestimmung</h3><p>KI auf dem Chip markiert Kandidaten zur Prüfung. Keine Detektion heißt nicht: keine Art.</p></div>
+        <div><h3>IP67</h3><p>IP66 ist ein Testziel für das montierte Gehäuse.</p></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  <div class="wrap">
+    <span>AURIS-Konzeptplan, zusammengestellt am 21. November 2026 aus dem technischen Konzept (<code>docs/00</code> bis <code>docs/19</code>), den Hardware-Blättern, dem Layout-Protokoll Rev. A und der Stücklistenkalkulation.</span>
+    <span>„Gewählt“ heißt für das Konzept ausgewählt, „Kandidat“ heißt nicht festgelegt, und nichts gilt als geprüft, bevor es getestet ist.</span>
+  </div>
+</footer>
+</div>
+
+<script>
+(function () {
+  var KEY = 'auris-lang';
+  var blocks = Array.prototype.slice.call(document.querySelectorAll('.lang'));
+  var buttons = Array.prototype.slice.call(document.querySelectorAll('[data-set-lang]'));
+
+  function sectionInView() {
+    var secs = document.querySelectorAll('.lang:not([hidden]) main section[id]');
+    var best = null;
+    for (var i = 0; i < secs.length; i++) {
+      if (secs[i].getBoundingClientRect().top <= window.innerHeight * 0.3) best = secs[i];
+    }
+    return best;
+  }
+
+  function setLang(lang, keepPlace) {
+    var sec = keepPlace ? sectionInView() : null;
+    var key = sec ? sec.id.replace(/^de-/, '') : null;
+    blocks.forEach(function (b) { b.hidden = b.getAttribute('data-lang') !== lang; });
+    document.documentElement.lang = lang;
+    document.title = lang === 'de' ? 'AURIS Konzeptplan' : 'AURIS Concept Plan';
+    buttons.forEach(function (b) {
+      if (b.closest('.seg')) b.setAttribute('aria-pressed', String(b.getAttribute('data-set-lang') === lang));
+    });
+    try { localStorage.setItem(KEY, lang); } catch (e) { /* storage optional */ }
+    if (key) {
+      var target = document.getElementById(lang === 'de' ? 'de-' + key : key);
+      if (target) target.scrollIntoView({ behavior: 'auto' });
+    }
+  }
+
+  buttons.forEach(function (b) {
+    b.addEventListener('click', function () { setLang(b.getAttribute('data-set-lang'), true); });
+  });
+
+  var lang = 'en';
+  try { lang = localStorage.getItem(KEY) || 'en'; } catch (e) { /* storage optional */ }
+  if (/^#de-/.test(location.hash)) lang = 'de';
+  else if (location.hash.length > 1 && document.getElementById(location.hash.slice(1))) lang = 'en';
+  if (lang !== 'en' && lang !== 'de') lang = 'en';
+  setLang(lang, false);
+
+  try {
+    if (!('IntersectionObserver' in window)) return;
+    var links = Array.prototype.slice.call(document.querySelectorAll('.toc a'));
+    var byId = {};
+    links.forEach(function (a) { byId[a.getAttribute('href').slice(1)] = a; });
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var a = byId[e.target.id];
+        if (!a) return;
+        var nav = a.closest('.toc');
+        nav.querySelectorAll('a.on').forEach(function (x) { x.classList.remove('on'); });
+        a.classList.add('on');
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+    document.querySelectorAll('main section[id]').forEach(function (s) { io.observe(s); });
+  } catch (err) { /* navigation highlight is optional */ }
+})();
+</script>
+</body>
+</html>
